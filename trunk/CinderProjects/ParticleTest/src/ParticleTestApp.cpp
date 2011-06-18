@@ -4,7 +4,7 @@
 #include "cinder/gl/gl.h"
 
 #include "Particle.h"
-//#include "Emitter.h"
+#include "Emitter.h"
 
 using namespace ci;
 using namespace ci::app;
