@@ -5,31 +5,13 @@
 #include "cinder/gl/gl.h"
 
 #include <list>
-using std::list;
+
+using namespace std;
 
 class Emitter
 {
 public:
-public:
-private:
-private:
-
-  list<Particle*>  mParticles;
-	list<Modifier*>  mModifiers;     // All the modifiers
-	
-  float 					mParticlesPerFrame;
-  float 					mParticlesPerFrameCount;
-  
-  bool            mKilled;
-  
-  Emitter(std::string particleImageFile, float ppf) 
-  {
-    // particleImage = p.loadImage(particleImageFile);
-    
-    mParticlesPerFrameCount = 0;
-    mParticlesPerFrame = ppf;
-    mKilled = false;
-  }
+  Emitter(std::string particleImageFile, float ppf);
 
   // A method to test if the particle system still has particles
   bool dead() 
@@ -52,58 +34,19 @@ private:
   	mKilled = true;
   }
   
-  void update()
-  {
-  	mParticlesPerFrameCount += mParticlesPerFrame;
-  	
-  	if (!mKilled && mParticlesPerFrameCount >= 1.0f)
-  	{
-	  	// create and add particles
-	    for (int i=(int)mParticlesPerFrameCount; i > 0; i--)
-	    {
-	    	mParticles.push_back(createParticle());
-	    }
-	    
-	    mParticlesPerFrameCount = 0.0f;
-  	}
-  	
-    // Update particles
-    for (list<Particle*>::iterator pit = mParticles.begin(); pit != mParticles.end();)
-    {
-      Particle *p = *pit;
+  void update();
 
-      // Update modifiers
-      for (list<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
-      {
-        Modifier *m = *mit;
-        
-        m->apply(p);
-      }
-      
-      p->update();
-      
-      if (p->dead())
-      {
-        pit = mParticles.erase(pit);
-      }
-      else
-        pit++;
-    }
-    
-  }
+  void draw();
 
-  void draw()
-  {
-   	glBegin(GL_QUADS);
-
-    //p.texture(particleImage);
-  	// Draw all particles
-    for (list<Particle*>::iterator it = mParticles.begin(); it != mParticles.end(); it++)
-      (*it)->draw();
-    
-  	glEnd();
-  }
-
+private:
   virtual Particle* createParticle() = 0; 
 
+  list<Particle*>  mParticles;
+	list<Modifier*>  mModifiers;     // All the modifiers
+	
+  float 					mParticlesPerFrame;
+  float 					mParticlesPerFrameCount;
+  
+  bool            mKilled;
 };
+
