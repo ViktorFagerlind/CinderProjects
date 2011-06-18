@@ -3,29 +3,27 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
 
-static const float fullLife_C = 100.0;
-
 // --------------------------------------------------------------------------------------------------------------------
 
-Particle::Particle(Vec3f position, Vec3f velocity, float size)
-: mLife(fullLife_C),
+Particle::Particle(Vec3f position, float size, Vec3f velocity)
+: mLife(Particle_fullLife_C),
+  mOriginalSize(size),
+  mCurrentSize(size),
   mAcceleration(Vec3f::zero()), 
   mVelocity(velocity), 
   mPosition(position),
-  mOriginalSize(size),
-  mCurrentSize(size),
   mOpacity(1)
 {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
-Particle::Particle(Vec3f position, float minVelocity, float maxVelocity, float size)
-: mLife(fullLife_C),
-  mAcceleration(Vec3f::zero()), 
-  mPosition(position),
+Particle::Particle(Vec3f position, float size, float minVelocity, float maxVelocity)
+: mLife(Particle_fullLife_C),
   mOriginalSize(size),
   mCurrentSize(size),
+  mAcceleration(Vec3f::zero()), 
+  mPosition(position),
   mOpacity(255.0)
 {
   mVelocity = Vec3f(Rand::randFloat (minVelocity, maxVelocity),
