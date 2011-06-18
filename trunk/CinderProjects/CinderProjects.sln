@@ -1,0 +1,31 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleTest", "ParticleTest\vc10\ParticleTest.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicParticle", "..\cinder_0.8.2_vc2010\samples\BasicParticles\vc10\BasicParticle.vcxproj", "{0FBA703A-EC65-4E37-9629-96F5E9C83A2F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HodginParticles", "..\cinder_0.8.2_vc2010\samples\HodginParticles\vc10\HodginParticles.vcxproj", "{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Debug|Win32.Build.0 = Debug|Win32
+		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Release|Win32.ActiveCfg = Release|Win32
+		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Release|Win32.Build.0 = Release|Win32
+		{0FBA703A-EC65-4E37-9629-96F5E9C83A2F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0FBA703A-EC65-4E37-9629-96F5E9C83A2F}.Debug|Win32.Build.0 = Debug|Win32
+		{0FBA703A-EC65-4E37-9629-96F5E9C83A2F}.Release|Win32.ActiveCfg = Release|Win32
+		{0FBA703A-EC65-4E37-9629-96F5E9C83A2F}.Release|Win32.Build.0 = Release|Win32
+		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Debug|Win32.Build.0 = Debug|Win32
+		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Release|Win32.ActiveCfg = Release|Win32
+		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
