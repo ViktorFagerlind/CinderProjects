@@ -7,11 +7,12 @@
 #include <list>
 
 using namespace std;
+using namespace ci;
 
 class Emitter
 {
 public:
-  Emitter(std::string particleImageFile, float ppf);
+  Emitter(std::string particleImageFile, float particlesPerFrame);
 
   // A method to test if the particle system still has particles
   bool dead() 

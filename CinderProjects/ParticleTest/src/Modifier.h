@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Particle.h"
 
 class Modifier 

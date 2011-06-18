@@ -4,14 +4,16 @@
 
 using namespace ci;
 
+const float Particle_fullLife_C = 100.0;
+
 class Particle
 {
 public:
   // Basic constructor
-  Particle(Vec3f position, Vec3f velocity, float size);
+  Particle(Vec3f position, float size, Vec3f velocity);
 
   // Random velocity constructor
-  Particle(Vec3f position, float minVelocity, float maxVelocity, float size);
+  Particle(Vec3f position, float size, float minVelocity, float maxVelocity);
 
   float  getLife () 						    {return mLife;};
   void   setLife (float life) 		  {mLife = life;};

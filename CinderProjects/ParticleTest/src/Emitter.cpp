@@ -1,11 +1,11 @@
 #include "Emitter.h"
 
-Emitter::Emitter(std::string particleImageFile, float ppf) 
+Emitter::Emitter(std::string particleImageFile, float particlesPerFrame) 
 {
   // particleImage = p.loadImage(particleImageFile);
     
   mParticlesPerFrameCount = 0;
-  mParticlesPerFrame = ppf;
+  mParticlesPerFrame = particlesPerFrame;
   mKilled = false;
 }
 
