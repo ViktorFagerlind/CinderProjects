@@ -2,17 +2,21 @@
 
 #include "Particle.h"
 #include "Modifier.h"
+#include "cinder/ImageIo.h"
+#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
 
 #include <list>
 
-using namespace std;
 using namespace ci;
+using std::list;
 
 class Emitter
 {
 public:
-  Emitter(std::string particleImageFile, float particlesPerFrame);
+  Emitter(std::string particleImageFile, const float particlesPerFrame);
+
+  virtual ~Emitter();
 
   // A method to test if the particle system still has particles
   bool dead() 
@@ -39,15 +43,17 @@ public:
 
   void draw();
 
-private:
   virtual Particle* createParticle() = 0; 
 
-  list<Particle*>  mParticles;
-	list<Modifier*>  mModifiers;     // All the modifiers
+private:
+  list<Particle*> mParticles;
+	list<Modifier*> mModifiers;     // All the modifiers
 	
   float 					mParticlesPerFrame;
   float 					mParticlesPerFrameCount;
   
   bool            mKilled;
+
+  gl::Texture    *mParticleTexture;
 };
 

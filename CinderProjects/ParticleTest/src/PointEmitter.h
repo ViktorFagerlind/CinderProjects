@@ -3,13 +3,12 @@
 #include "cinder/Rand.h"
 
 using namespace ci;
-using namespace std;
 
 class PointEmitter : public Emitter 
 {
 public:
 	PointEmitter(Vec3f  position, 
-							 string	particleImageFile, 
+							 std::string	particleImageFile, 
   						 float  particlesPerFrame, 
 							 float 	minParticleSize,
 							 float 	maxParticleSize,
