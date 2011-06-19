@@ -18,20 +18,18 @@ class ParticleApp : public AppBasic
 	void update();
 	void draw();
 
-  Particle        *p;
   PointEmitter    *pe;
   CommonModifier  *cm;
 };
 
 void ParticleApp::setup()
 {
-  //p   = new Particle (Vec3f(100, 100, 0), Vec3f(0, 0, 0), 10);
   pe  = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, (float)getWindowHeight()/2.0f, 0), //position
                          "test",  // image file
                          100.0f,  // particles per frame
                          1.0f,    // min size
                          2.0f,    // max size
-                         -1.0f,    // min vel
+                         -1.0f,   // min vel
                          1.0f);   // max vel
 
   cm = new CommonModifier(1, 1, 0.5, 1, 1);
