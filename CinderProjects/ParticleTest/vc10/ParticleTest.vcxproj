@@ -113,6 +113,7 @@
     <ClInclude Include="..\src\CommonModifier.h" />
     <ClInclude Include="..\src\Emitter.h" />
     <ClInclude Include="..\src\Modifier.h" />
+    <ClInclude Include="..\src\MyStrings.h" />
     <ClInclude Include="..\src\Particle.h" />
     <ClInclude Include="..\src\PointEmitter.h" />
   </ItemGroup>
