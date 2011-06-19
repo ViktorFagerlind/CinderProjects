@@ -2,6 +2,7 @@
 #include "cinder/gl/gl.h"
 
 #include "MyStrings.h"
+#include "ParticleSystem.h"
 #include "PointEmitter.h"
 #include "ImageEmitter.h"
 #include "CommonModifier.h"
@@ -12,17 +13,21 @@ using namespace ci::app;
 
 class ParticleApp : public AppBasic 
 {
-  public:
+public:
   void prepareSettings( Settings *settings );
 	void setup();
 	void mouseDown( MouseEvent event );	
+	void keyDown( KeyEvent event );
 	void update();
 	void draw();
 
-  PointEmitter    *pe;
-  ImageEmitter    *ie;
-
+private:
+	void createEmitter(size_t index);
+  
+private:
   Font mFont;
+
+  ParticleSystem *ps;
 };
 
 
@@ -34,66 +39,16 @@ void ParticleApp::prepareSettings( Settings *settings )
 
 void ParticleApp::setup()
 {
-  CommonModifier  *cm;
-  GravityModifier *gm;
-
-
-  pe  = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
-                         "../Media/Images/ring_flare2.png",  // image file
-                         100.0f,  // particles per frame
-                         10.0f,   // min size
-                         20.0f,   // max size
-                         -2.0f,   // min vel
-                         2.0f);   // max vel
-
-  cm = new CommonModifier(1,    // lifeChange
-                          1,    // relativeStartSize
-                          0.5,  // relativeEndSize
-                          1,    // startOpacity
-                          0);   // endOpacity
-
-  gm = new GravityModifier(Vec3f(0,0.08f,0));
-
-  pe->addModifier (cm);
-  pe->addModifier (gm);
-
-  ie = new 	ImageEmitter("../Media/Images/fire.png", 
-                         100.0f,
-                         "../Media/Images/lines.png", 
-                         Vec3f((float)getWindowWidth()/2.0f, 500, 0),
-                         10.0f,   // min size
-                         20.0f,   // max size
-                         -1.0f,   // min vel
-                         1.0f,    // max vel
-							           500,     // emitter width
-							           250,      // emitter height
-							           10);     // emitter depth
-
-  cm = new CommonModifier(1,    // lifeChange
-                          1,    // relativeStartSize
-                          0.5,  // relativeEndSize
-                          0.7,  // startOpacity
-                          0);   // endOpacity
-
-  gm = new GravityModifier(Vec3f(0,-0.05f,0));
-
-  ie->addModifier (cm);
-  ie->addModifier (gm);
+  ps = new ParticleSystem();
 
   mFont = Font( "Quicksand Book Regular", 12.0f );
 
   setFrameRate (30.0f);
 }
 
-void ParticleApp::mouseDown( MouseEvent event )
-{
-  size_t count = pe->getCount();
-}
-
 void ParticleApp::update()
 {
-//  pe->update();
-  ie->update();
+  ps->update();
 }
 
 void ParticleApp::draw()
@@ -107,10 +62,98 @@ void ParticleApp::draw()
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 
-//  pe->draw();
-  ie->draw();
+  ps->draw();
 
   gl::drawString( "Framerate: " + MyString::toString((size_t)getAverageFps()), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
+}
+
+void ParticleApp::mouseDown( MouseEvent event )
+{
+  size_t count = ps->getCount();
+}
+
+void ParticleApp::keyDown( KeyEvent event )
+{
+  char c = event.getChar();
+
+  createEmitter((size_t) (c-'1'));
+}
+
+void ParticleApp::createEmitter(size_t index)
+{
+  static PointEmitter *pe = NULL;
+  static ImageEmitter *ie = NULL;
+
+  CommonModifier  *cm;
+  GravityModifier *gm;
+
+  switch(index)
+  {
+    case 0:
+      if (pe == NULL)
+      {
+        pe = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
+                               "../Media/Images/ring_flare2.png",  // image file
+                               100.0f,  // particles per frame
+                               10.0f,   // min size
+                               20.0f,   // max size
+                               -2.0f,   // min vel
+                               2.0f);   // max vel
+
+        cm = new CommonModifier(1,    // lifeChange
+                                1,    // relativeStartSize
+                                0.5,  // relativeEndSize
+                                1,    // startOpacity
+                                0);   // endOpacity
+
+        gm = new GravityModifier(Vec3f(0,0.08f,0));
+
+        pe->addModifier (cm);
+        pe->addModifier (gm);
+
+        ps->addEmitter (pe);
+      }
+      else
+      {
+        pe->kill();
+        pe = NULL;
+      }
+      break;
+    case 1:
+      if (ie == NULL)
+      {
+        ie = new 	ImageEmitter("../Media/Images/fire.png", 
+                               100.0f,
+                               "../Media/Images/lines.png", 
+                               Vec3f((float)getWindowWidth()/2.0f, 500, 0),
+                               10.0f,   // min size
+                               20.0f,   // max size
+                               -1.0f,   // min vel
+                               1.0f,    // max vel
+							                 500,     // emitter width
+							                 250,     // emitter height
+							                 10);     // emitter depth
+
+        cm = new CommonModifier(1,    // lifeChange
+                                1,    // relativeStartSize
+                                0,  // relativeEndSize
+                                0.7,  // startOpacity
+                                0);   // endOpacity
+
+        gm = new GravityModifier(Vec3f(0,-0.05f,0));
+
+        ie->addModifier (cm);
+        ie->addModifier (gm);
+
+        ps->addEmitter (ie);
+      }
+      else
+      {
+        ie->kill();
+        ie = NULL;
+      }
+      break;
+  }
 }
 
 CINDER_APP_BASIC (ParticleApp, RendererGl)
