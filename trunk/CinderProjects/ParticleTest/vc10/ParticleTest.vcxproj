@@ -110,12 +110,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\AreaEmitter.h" />
+    <ClInclude Include="..\src\ColorModifier.h" />
     <ClInclude Include="..\src\CommonModifier.h" />
     <ClInclude Include="..\src\Emitter.h" />
+    <ClInclude Include="..\src\GravityModifier.h" />
+    <ClInclude Include="..\src\ImageEmitter.h" />
     <ClInclude Include="..\src\Modifier.h" />
     <ClInclude Include="..\src\MyStrings.h" />
     <ClInclude Include="..\src\Particle.h" />
+    <ClInclude Include="..\src\ParticleSystem.h" />
+    <ClInclude Include="..\src\PerlinModifier.h" />
     <ClInclude Include="..\src\PointEmitter.h" />
+    <ClInclude Include="..\src\VortexModifier.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

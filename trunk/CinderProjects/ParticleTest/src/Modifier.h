@@ -6,4 +6,6 @@ class Modifier
 {
 public:
   virtual void apply (Particle *const particle) = 0;
+
+  virtual void update () {};
 };

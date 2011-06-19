@@ -40,12 +40,19 @@ void Emitter::update()
 	  mParticlesPerFrameCount = 0.0f;
   }
   	
+  // Update modifiers
+  for (list<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
+  {
+    Modifier *m = *mit;
+    m->update();
+  }
+
   // Update particles
   for (list<Particle*>::iterator pit = mParticles.begin(); pit != mParticles.end();)
   {
     Particle *p = *pit;
 
-    // Update modifiers
+    // Update particles for modifiers
     for (list<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
     {
       Modifier *m = *mit;
