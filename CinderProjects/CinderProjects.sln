@@ -6,6 +6,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicParticle", "..\cinder_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HodginParticles", "..\cinder_0.8.2_vc2010\samples\HodginParticles\vc10\HodginParticles.vcxproj", "{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestRelease", "TestRelease\vc10\TestRelease.vcxproj", "{E347D717-3CBF-4E94-9BF4-CF7D7B991A2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -24,6 +26,10 @@ Global
 		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Debug|Win32.Build.0 = Debug|Win32
 		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Release|Win32.ActiveCfg = Release|Win32
 		{FB217C4C-2EBF-4DE1-97AE-484FFB8A7209}.Release|Win32.Build.0 = Release|Win32
+		{E347D717-3CBF-4E94-9BF4-CF7D7B991A2C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E347D717-3CBF-4E94-9BF4-CF7D7B991A2C}.Debug|Win32.Build.0 = Debug|Win32
+		{E347D717-3CBF-4E94-9BF4-CF7D7B991A2C}.Release|Win32.ActiveCfg = Release|Win32
+		{E347D717-3CBF-4E94-9BF4-CF7D7B991A2C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
