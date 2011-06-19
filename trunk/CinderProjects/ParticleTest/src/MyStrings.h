@@ -10,7 +10,7 @@ public:
   {
     char rawNumberString[20];
 
-    sprintf(rawNumberString, "%u", number);
+    sprintf_s(rawNumberString, "%u", number);
 
     return std::string(rawNumberString);
   }

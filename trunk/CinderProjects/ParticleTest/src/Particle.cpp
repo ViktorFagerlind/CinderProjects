@@ -5,7 +5,7 @@
 
 // --------------------------------------------------------------------------------------------------------------------
 
-Particle::Particle(Vec3f position, float size, Vec3f velocity)
+Particle::Particle(const Vec3f& position, float size, const Vec3f& velocity)
 : mLife(Particle_fullLife_C),
   mOriginalSize(size),
   mCurrentSize(size),
@@ -18,7 +18,7 @@ Particle::Particle(Vec3f position, float size, Vec3f velocity)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-Particle::Particle(Vec3f position, float size, float minVelocity, float maxVelocity)
+Particle::Particle(const Vec3f& position, float size, float minVelocity, float maxVelocity)
 : mLife(Particle_fullLife_C),
   mOriginalSize(size),
   mCurrentSize(size),
@@ -33,7 +33,7 @@ Particle::Particle(Vec3f position, float size, float minVelocity, float maxVeloc
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void Particle::applyForce(Vec3f force) 
+void Particle::applyForce(const Vec3f& force) 
 {
   mAcceleration += force;
 }  
@@ -51,13 +51,20 @@ void Particle::update()
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void Particle::draw() 
+void Particle::draw()
 {
-  glColor3f (1, 0 , 0);
+	glColor4f( 1, 1, 1, mOpacity);
 
+  glTexCoord2f(0, 0);
 	glVertex3f(mPosition.x-mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);
+
+  glTexCoord2f(1, 0);
 	glVertex3f(mPosition.x+mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);
+
+  glTexCoord2f(1, 1);
 	glVertex3f(mPosition.x+mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
+
+  glTexCoord2f(0, 1);
 	glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
 }
 

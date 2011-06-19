@@ -1,12 +1,28 @@
 #include "Emitter.h"
 
-Emitter::Emitter(std::string particleImageFile, float particlesPerFrame) 
+Emitter::Emitter(std::string particleImageFile, const float particlesPerFrame) 
 {
-  // particleImage = p.loadImage(particleImageFile);
+  mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
     
   mParticlesPerFrameCount = 0;
   mParticlesPerFrame = particlesPerFrame;
   mKilled = false;
+}
+
+Emitter::~Emitter()
+{
+  for (list<Particle*>::iterator it = mParticles.begin(); it != mParticles.end(); it++)
+  {
+    delete (*it);
+  }
+
+  for (list<Modifier*>::iterator it = mModifiers.begin(); it != mModifiers.end(); it++)
+  {
+    delete (*it);
+  }
+  
+  mParticles.clear();
+  mModifiers.clear();
 }
 
 void Emitter::update()
@@ -41,6 +57,7 @@ void Emitter::update()
       
     if (p->dead())
     {
+      delete (p);
       pit = mParticles.erase(pit);
     }
     else
@@ -51,9 +68,11 @@ void Emitter::update()
 
 void Emitter::draw()
 {
+	glEnable( GL_TEXTURE_2D );
+  mParticleTexture->bind();
+
   glBegin(GL_QUADS);
 
-  //p.texture(particleImage);
   // Draw all particles
   for (list<Particle*>::iterator it = mParticles.begin(); it != mParticles.end(); it++)
     (*it)->draw();

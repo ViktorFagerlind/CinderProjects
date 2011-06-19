@@ -24,7 +24,7 @@ public:
     
     particle->scaleSize(particle->getLife() * mSizeK + mSizeM);
     
-    particle->setOpacity(255.0f * (particle->getLife() * mOpacityK + mOpacityM));
+    particle->setOpacity(particle->getLife() * mOpacityK + mOpacityM);
   }
 
 private:
