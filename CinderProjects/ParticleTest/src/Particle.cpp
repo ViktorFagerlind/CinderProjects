@@ -12,7 +12,7 @@ Particle::Particle(const Vec3f& position, float size, const Vec3f& velocity)
   mAcceleration(Vec3f::zero()), 
   mVelocity(velocity), 
   mPosition(position),
-  mOpacity(1)
+  mColor(1, 1, 1, 1)
 {
 }
 
@@ -24,7 +24,7 @@ Particle::Particle(const Vec3f& position, float size, float minVelocity, float m
   mCurrentSize(size),
   mAcceleration(Vec3f::zero()), 
   mPosition(position),
-  mOpacity(255.0)
+  mColor(1, 1, 1, 1)
 {
   mVelocity = Vec3f(Rand::randFloat (minVelocity, maxVelocity),
                     Rand::randFloat (minVelocity, maxVelocity),
@@ -53,7 +53,7 @@ void Particle::update()
 
 void Particle::draw()
 {
-	glColor4f( 1, 1, 1, mOpacity);
+	glColor4f( mColor.r, mColor.g, mColor.b, mColor.a);
 
   glTexCoord2f(0, 0);
 	glVertex3f(mPosition.x-mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);

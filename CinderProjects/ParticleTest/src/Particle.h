@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cinder/Color.h"
 #include "cinder/Vector.h"
 
 using namespace ci;
@@ -18,14 +19,18 @@ public:
   const Vec3f& getPosition () 						{return mPosition;};
 
   const Vec3f& getVelocity () 						{return mVelocity;};
+  void setVelocity (Vec3f& velocity) 			{mVelocity = velocity;};
 
   float  getLife () 						          {return mLife;};
   void   setLife (const float life) 		  {mLife = life;};
   
   void   scaleSize (const float scalar)   {mCurrentSize = scalar * mOriginalSize;}
   
-  float  getOpacity () 				            {return mOpacity;}
-  void   setOpacity (const float opacity) {mOpacity = opacity;}
+  float  getOpacity () 				            {return mColor.a;}
+  void   setOpacity (const float opacity) {mColor.a = opacity;}
+  
+  const ColorAf&  getColor () 				            {return mColor;}
+  void            setColor (const ColorAf& color) {mColor = color;}
   
   // Method to apply a force vector to the Particle object
   void applyForce(const Vec3f& force);
@@ -43,9 +48,10 @@ private:
   Vec3f   mPosition;
   Vec3f   mVelocity;
   Vec3f   mAcceleration;
+  ColorAf mColor;
+
   
   float   mLife;
-  float   mOpacity;
   float   mOriginalSize;
   float   mCurrentSize;
 };

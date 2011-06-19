@@ -9,8 +9,10 @@
 #include "ImageEmitter.h"
 
 #include "CommonModifier.h"
+#include "ColorModifier.h"
 #include "GravityModifier.h"
 #include "VortexModifier.h"
+#include "PerlinModifier.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -90,8 +92,10 @@ void ParticleApp::createEmitter(size_t index)
   static ImageEmitter *ie = NULL;
 
   CommonModifier  *cm;
+  ColorModifier   *colorModifier;
   GravityModifier *gm;
   VortexModifier  *vm;
+  PerlinModifier  *pm;
 
   switch(index)
   {
@@ -108,9 +112,7 @@ void ParticleApp::createEmitter(size_t index)
 
         cm = new CommonModifier(1,    // lifeChange
                                 1,    // relativeStartSize
-                                0.5,  // relativeEndSize
-                                1,    // startOpacity
-                                0);   // endOpacity
+                                0.5);  // relativeEndSize
 
         gm = new GravityModifier(Vec3f(0,0.08f,0));
 
@@ -142,9 +144,7 @@ void ParticleApp::createEmitter(size_t index)
 
         cm = new CommonModifier(1,    // lifeChange
                                 1,    // relativeStartSize
-                                0,  // relativeEndSize
-                                0.7,  // startOpacity
-                                0.0f);   // endOpacity
+                                0);  // relativeEndSize
 
         gm = new GravityModifier(Vec3f(0,-0.05f,0));
 
@@ -162,32 +162,48 @@ void ParticleApp::createEmitter(size_t index)
     case 2:
       if (ae == NULL)
       {
-        ae = new AreaEmitter(Vec3f(0, 0, 0), //position
-                             "../Media/Images/particle1.jpg",  // image file
-                             200, //particlesPerFrame,
-  						               getWindowWidth(), //width
-  						               getWindowHeight(), //height 
-							               3, // minParticleSize
-							               3, // maxParticleSize
+/*
+        ae = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
+                               "../Media/Images/flare.png",  // image file
+                               100.0f,  // particles per frame
+                               2.0f,   // min size
+                               2.0f,   // max size
+                               -5.0f,   // min vel
+                               5.0f);   // max vel
+*/
+        ae = new AreaEmitter(Vec3f(50, 50, 0),                //position
+                             "../Media/Images/flare.png",   // image file
+                             300, //particlesPerFrame,
+  						               getWindowWidth()-50, //width
+  						               getWindowHeight()-50, //height 
+							               6, // minParticleSize
+							               6, // maxParticleSize
 							               0.0f, // minParticleVelocity
 							               0.0f);  // maxParticleVelocity
 
-        gm = new GravityModifier(Vec3f(0,0.05f,0));
+        gm = new GravityModifier(Vec3f(0,0.5f,0));
 
-        cm = new CommonModifier(0.7,  // lifeChange
+        cm = new CommonModifier(2,    // lifeChange
                                 1,    // relativeStartSize
-                                0.5,  // relativeEndSize
-                                1,    // startOpacity
-                                0);   // endOpacity
-        vm = new VortexModifier (Vec3f((float)getWindowWidth()/2.0f, 500.0f, 0),
-                                 0.4f,   // strength
+                                2);    // relativeEndSize
+        colorModifier = new ColorModifier (ColorAf(0.2, 0.2, 1, 1), // startColor
+                                           ColorAf(0.5, 0.6, 0.9, 1), // middleColor
+                                           ColorAf(1, 1, 1, 0), // endColor
+                                           0.5f);            // middleTime
+        ae->addModifier (colorModifier);
+
+        pm = new PerlinModifier();
+        ae->addModifier (pm);
+
+        vm = new VortexModifier (Vec3f(800.0f, 500.0f, 0),
+                                 2.0f,   // strength
                                  0.001f,    // damping
-                                 500,     // radius
+                                 1000,     // radius
                                  -30 * 3.14f / 180.0f); // angle
         ae->addModifier (vm);
 
         vm = new VortexModifier (Vec3f(200.0f, 300.0f, 0),
-                                 0.4f,   // strength
+                                 3.4f,   // strength
                                  0.001f,    // damping
                                  500,     // radius
                                  -30 * 3.14f / 180.0f); // angle
