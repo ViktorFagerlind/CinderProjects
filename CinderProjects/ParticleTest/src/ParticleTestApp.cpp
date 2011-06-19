@@ -3,10 +3,14 @@
 
 #include "MyStrings.h"
 #include "ParticleSystem.h"
+
+#include "AreaEmitter.h"
 #include "PointEmitter.h"
 #include "ImageEmitter.h"
+
 #include "CommonModifier.h"
 #include "GravityModifier.h"
+#include "VortexModifier.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -82,10 +86,12 @@ void ParticleApp::keyDown( KeyEvent event )
 void ParticleApp::createEmitter(size_t index)
 {
   static PointEmitter *pe = NULL;
+  static AreaEmitter  *ae = NULL;
   static ImageEmitter *ie = NULL;
 
   CommonModifier  *cm;
   GravityModifier *gm;
+  VortexModifier  *vm;
 
   switch(index)
   {
@@ -138,7 +144,7 @@ void ParticleApp::createEmitter(size_t index)
                                 1,    // relativeStartSize
                                 0,  // relativeEndSize
                                 0.7,  // startOpacity
-                                0);   // endOpacity
+                                0.0f);   // endOpacity
 
         gm = new GravityModifier(Vec3f(0,-0.05f,0));
 
@@ -153,6 +159,52 @@ void ParticleApp::createEmitter(size_t index)
         ie = NULL;
       }
       break;
+    case 2:
+      if (ae == NULL)
+      {
+        ae = new AreaEmitter(Vec3f(0, 0, 0), //position
+                             "../Media/Images/particle1.jpg",  // image file
+                             200, //particlesPerFrame,
+  						               getWindowWidth(), //width
+  						               getWindowHeight(), //height 
+							               3, // minParticleSize
+							               3, // maxParticleSize
+							               0.0f, // minParticleVelocity
+							               0.0f);  // maxParticleVelocity
+
+        gm = new GravityModifier(Vec3f(0,0.05f,0));
+
+        cm = new CommonModifier(0.7,  // lifeChange
+                                1,    // relativeStartSize
+                                0.5,  // relativeEndSize
+                                1,    // startOpacity
+                                0);   // endOpacity
+        vm = new VortexModifier (Vec3f((float)getWindowWidth()/2.0f, 500.0f, 0),
+                                 0.4f,   // strength
+                                 0.001f,    // damping
+                                 500,     // radius
+                                 -30 * 3.14f / 180.0f); // angle
+        ae->addModifier (vm);
+
+        vm = new VortexModifier (Vec3f(200.0f, 300.0f, 0),
+                                 0.4f,   // strength
+                                 0.001f,    // damping
+                                 500,     // radius
+                                 -30 * 3.14f / 180.0f); // angle
+        ae->addModifier (vm);
+
+        ae->addModifier (cm);
+        ae->addModifier (gm);
+
+        ps->addEmitter (ae);
+      }
+      else
+      {
+        ae->kill();
+        ae = NULL;
+      }
+      break;
+
   }
 }
 

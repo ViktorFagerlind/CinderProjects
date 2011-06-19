@@ -15,6 +15,10 @@ public:
   // Random velocity constructor
   Particle(const Vec3f& position, float size, float minVelocity, float maxVelocity);
 
+  const Vec3f& getPosition () 						{return mPosition;};
+
+  const Vec3f& getVelocity () 						{return mVelocity;};
+
   float  getLife () 						          {return mLife;};
   void   setLife (const float life) 		  {mLife = life;};
   
@@ -36,9 +40,9 @@ public:
   bool dead();
 
 private:
-  Vec3f mPosition;
-  Vec3f mVelocity;
-  Vec3f mAcceleration;
+  Vec3f   mPosition;
+  Vec3f   mVelocity;
+  Vec3f   mAcceleration;
   
   float   mLife;
   float   mOpacity;
