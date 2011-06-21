@@ -27,13 +27,13 @@ public:
 	{
   }
 
-  Particle* createParticle() 
+  void defineParticle (Particle* particle) 
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
     Vec3f particlePosition = mPosition + Vec3f(Rand::randFloat(mWidth), Rand::randFloat(mHeight), 0);
 
-	  return new Particle(particlePosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
+	  particle->define(particlePosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
   }
 
 private:

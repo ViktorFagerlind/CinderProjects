@@ -24,11 +24,11 @@ public:
 	{
   }
 
-  Particle* createParticle() 
+  void defineParticle (Particle* particle)
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
-	  return new Particle(mPosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
+	  particle->define(mPosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
   }
 
 private:

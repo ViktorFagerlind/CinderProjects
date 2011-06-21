@@ -39,8 +39,7 @@ private:
 
 void ParticleApp::prepareSettings( Settings *settings )
 {
-    settings->setWindowSize (1280, 768);
-    settings->setFrameRate (60.0f);
+  settings->setWindowSize (1280, 768);
 }
 
 void ParticleApp::setup()
@@ -49,7 +48,7 @@ void ParticleApp::setup()
 
   mFont = Font( "Quicksand Book Regular", 12.0f );
 
-  setFrameRate (30.0f);
+  createEmitter(3);
 }
 
 void ParticleApp::update()
@@ -59,7 +58,11 @@ void ParticleApp::update()
 
 void ParticleApp::draw()
 {
+  static size_t frameCount = 0;
+  static size_t particleCount = 0;
+
 	// clear out the window with black
+	//glClearColor (Rand::randFloat(1), 0, 0, 0);
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT);
 
@@ -70,7 +73,12 @@ void ParticleApp::draw()
 
   ps->draw();
 
-  gl::drawString( "Framerate: " + MyString::toString((size_t)getAverageFps()), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
+  if ((frameCount % 10) == 0)
+    particleCount = ps->getCount();
+
+  frameCount++;
+
+  gl::drawString( "FPS: " + MyString::toString((size_t)getAverageFps()) + "Count: " + MyString::toString(particleCount), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
 }
 
 void ParticleApp::mouseDown( MouseEvent event )
@@ -89,6 +97,7 @@ void ParticleApp::createEmitter(size_t index)
 {
   static PointEmitter *pe = NULL;
   static AreaEmitter  *ae = NULL;
+  static AreaEmitter  *te = NULL;
   static ImageEmitter *ie = NULL;
 
   CommonModifier  *cm;
@@ -171,13 +180,13 @@ void ParticleApp::createEmitter(size_t index)
                                -5.0f,   // min vel
                                5.0f);   // max vel
 */
-        ae = new AreaEmitter(Vec3f(50, 50, 0),                //position
+        ae = new AreaEmitter(Vec3f(30, 30, 0),                //position
                              "../Media/Images/flare.png",   // image file
                              300, //particlesPerFrame,
-  						               getWindowWidth()-50, //width
-  						               getWindowHeight()-50, //height 
-							               6, // minParticleSize
-							               6, // maxParticleSize
+  						               getWindowWidth()-60, //width
+  						               getWindowHeight()-60, //height 
+							               5, // minParticleSize
+							               5, // maxParticleSize
 							               0.0f, // minParticleVelocity
 							               0.0f);  // maxParticleVelocity
 
@@ -186,9 +195,9 @@ void ParticleApp::createEmitter(size_t index)
         cm = new CommonModifier(2,    // lifeChange
                                 1,    // relativeStartSize
                                 2);    // relativeEndSize
-        colorModifier = new ColorModifier (ColorAf(0.2, 0.2, 1, 1), // startColor
-                                           ColorAf(0.5, 0.6, 0.9, 1), // middleColor
-                                           ColorAf(1, 1, 1, 0), // endColor
+        colorModifier = new ColorModifier (ColorAf(1, 0.5, 0.2, 1), // startColor
+                                           ColorAf(0.8, 0.3, 0.4, 1), // middleColor
+                                           ColorAf(0.2, 0.2, 1, 0), // endColor
                                            0.5f);            // middleTime
         ae->addModifier (colorModifier);
 
@@ -218,6 +227,33 @@ void ParticleApp::createEmitter(size_t index)
       {
         ae->kill();
         ae = NULL;
+      }
+      break;
+    case 3:
+      if (te == NULL)
+      {
+        te = new AreaEmitter(Vec3f(30, 30, 0),                //position
+                             "../Media/Images/flare.png",   // image file
+                             20000, //particlesPerFrame,
+  						               getWindowWidth()-60, //width
+  						               getWindowHeight()-60, //height 
+							               1, // minParticleSize
+							               1, // maxParticleSize
+							               0.0f, // minParticleVelocity
+							               0.0f);  // maxParticleVelocity
+
+        cm = new CommonModifier(10,    // lifeChange
+                                1,    // relativeStartSize
+                                1);   // relativeEndSize
+
+        te->addModifier (cm);
+
+        ps->addEmitter (te);
+      }
+      else
+      {
+        te->kill();
+        te = NULL;
       }
       break;
 

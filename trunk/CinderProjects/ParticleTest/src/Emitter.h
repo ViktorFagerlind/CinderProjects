@@ -21,7 +21,7 @@ public:
   // A method to test if the particle system still has particles
   bool dead() 
   {
-    return mKilled && mParticles.empty();
+    return mKilled && mParticleCount == 0;
   }
 
   void addModifier (Modifier *const modifier)
@@ -31,7 +31,7 @@ public:
   
   size_t getCount()
   {
-  	return mParticles.size();
+  	return mParticleCount;
   }
   
   void kill() 
@@ -43,14 +43,19 @@ public:
 
   void draw();
 
-  virtual Particle* createParticle() = 0; 
+  virtual void defineParticle (Particle* particle) = 0; 
 
 private:
-  list<Particle*> mParticles;
+//  list<Particle*> mParticles;
+  Particle       *mParticles;
+
 	list<Modifier*> mModifiers;     // All the modifiers
 	
   float 					mParticlesPerFrame;
-  float 					mParticlesPerFrameCount;
+  float 					mParticlesToCreate;
+
+  const size_t    mMaxNofParticles;
+  size_t          mParticleCount;
   
   bool            mKilled;
 

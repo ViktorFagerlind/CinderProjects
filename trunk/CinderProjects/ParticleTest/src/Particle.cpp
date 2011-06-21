@@ -5,27 +5,23 @@
 
 // --------------------------------------------------------------------------------------------------------------------
 
-Particle::Particle(const Vec3f& position, float size, const Vec3f& velocity)
-: mLife(Particle_fullLife_C),
-  mOriginalSize(size),
-  mCurrentSize(size),
-  mAcceleration(Vec3f::zero()), 
-  mVelocity(velocity), 
-  mPosition(position),
-  mColor(1, 1, 1, 1)
+Particle::Particle()
+: mIsDead(true)
 {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
-Particle::Particle(const Vec3f& position, float size, float minVelocity, float maxVelocity)
-: mLife(Particle_fullLife_C),
-  mOriginalSize(size),
-  mCurrentSize(size),
-  mAcceleration(Vec3f::zero()), 
-  mPosition(position),
-  mColor(1, 1, 1, 1)
+void Particle::define(const Vec3f& position, float size, float minVelocity, float maxVelocity)
 {
+  mLife         = Particle_fullLife_C;
+  mOriginalSize = size;
+  mCurrentSize  = size;
+  mAcceleration = Vec3f::zero();
+  mPosition     = position;
+  mColor        = ColorAf(1, 1, 1, 1);
+  mIsDead       = false;
+
   mVelocity = Vec3f(Rand::randFloat (minVelocity, maxVelocity),
                     Rand::randFloat (minVelocity, maxVelocity),
                     Rand::randFloat (minVelocity, maxVelocity));
@@ -47,6 +43,8 @@ void Particle::update()
   mPosition += mVelocity;
 
   mAcceleration = Vec3f::zero(); // Kill the acceleration for each update
+
+  mIsDead = mLife <= 0.0;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -68,9 +66,3 @@ void Particle::draw()
 	glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
 }
 
-// --------------------------------------------------------------------------------------------------------------------
-
-bool Particle::dead() 
-{
-  return mLife <= 0.0;
-}
