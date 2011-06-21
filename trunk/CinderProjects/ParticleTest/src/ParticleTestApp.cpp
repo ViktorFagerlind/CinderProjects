@@ -48,7 +48,7 @@ void ParticleApp::setup()
 
   mFont = Font( "Quicksand Book Regular", 12.0f );
 
-  createEmitter(3);
+//  createEmitter(3);
 }
 
 void ParticleApp::update()
@@ -113,7 +113,7 @@ void ParticleApp::createEmitter(size_t index)
       {
         pe = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
                                "../Media/Images/ring_flare2.png",  // image file
-                               100.0f,  // particles per frame
+                               1.0f,  // particles per frame
                                10.0f,   // min size
                                20.0f,   // max size
                                -2.0f,   // min vel
@@ -234,7 +234,7 @@ void ParticleApp::createEmitter(size_t index)
       {
         te = new AreaEmitter(Vec3f(30, 30, 0),                //position
                              "../Media/Images/flare.png",   // image file
-                             20000, //particlesPerFrame,
+                             10000, //particlesPerFrame,
   						               getWindowWidth()-60, //width
   						               getWindowHeight()-60, //height 
 							               1, // minParticleSize
@@ -242,7 +242,7 @@ void ParticleApp::createEmitter(size_t index)
 							               0.0f, // minParticleVelocity
 							               0.0f);  // maxParticleVelocity
 
-        cm = new CommonModifier(10,    // lifeChange
+        cm = new CommonModifier(1,    // lifeChange
                                 1,    // relativeStartSize
                                 1);   // relativeEndSize
 

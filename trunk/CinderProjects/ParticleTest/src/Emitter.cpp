@@ -1,7 +1,7 @@
 #include "Emitter.h"
 
 Emitter::Emitter(std::string particleImageFile, const float particlesPerFrame) 
-: mMaxNofParticles(200000),
+: mMaxNofParticles(2000000),
   mParticleCount(0)
 {
   mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
@@ -26,6 +26,9 @@ void Emitter::update()
   // Update how many particles to create this frame
   size_t nofParticlesToCreateThisFrame = mKilled ? 0 : (size_t)mParticlesToCreate;
 
+  if (nofParticlesToCreateThisFrame + mParticleCount > mMaxNofParticles)
+    nofParticlesToCreateThisFrame = mMaxNofParticles - mParticleCount;
+
   // update particles left to create
   mParticlesToCreate -= (float)nofParticlesToCreateThisFrame;
   	
@@ -36,52 +39,72 @@ void Emitter::update()
     m->update();
   }
 
+  // Remove dead particles
+  /*
+  for (size_t pi = 0; pi < mParticleCount; pi++)
+  {
+    if (mParticles[pi].mIsDead)
+    {
+      mParticles[pi] = mParticles[mParticleCount-1];
+      mParticleCount--;
+    }
+  }
+  */
+
+  // Create new particles
+  for (size_t pi = 0; pi < nofParticlesToCreateThisFrame; pi++)
+  {
+    defineParticle (&mParticles[mParticleCount+pi]);
+  }
+  mParticleCount += nofParticlesToCreateThisFrame;
+
   // Update particles
-  for (size_t pi = 0; pi < mMaxNofParticles; pi++)
+  for (size_t pi = 0; pi < mParticleCount; pi++)
   {
     Particle *p = &mParticles[pi];
 
-    if (p->mIsDead && nofParticlesToCreateThisFrame > 0)
+    while (p->mIsDead)
     {
-      defineParticle (p);
-      nofParticlesToCreateThisFrame--;
+      *p = mParticles[mParticleCount-1];
+      mParticleCount--;
 
-      mParticleCount++;
+      if (mParticleCount == 0)
+        return;
     }
 
-    if (!p->mIsDead)
+    // Update particles for modifiers
+    /*
+    for (list<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
     {
-      // Update particles for modifiers
-      for (list<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
-      {
-        Modifier *m = *mit;
+      Modifier *m = *mit;
         
-        m->apply(p);
-      }
-
-      p->update();
-
-      if (p->mIsDead)
-        mParticleCount--;
+      m->apply(p);
     }
+    */
+      
+    p->setLife(p->getLife()-1.0f); // TBD
+
+    p->update();
   }
     
 }
 
 void Emitter::draw()
 {
+/* profiling...
 	glEnable( GL_TEXTURE_2D );
   mParticleTexture->bind();
 
   glBegin(GL_QUADS);
+*/
+
+  glBegin(GL_POINTS);
 
   // Draw all particles
-  for (size_t pi = 0; pi < mMaxNofParticles; pi++)
+  for (size_t pi = 0; pi < mParticleCount; pi++)
   {
     Particle *p = &mParticles[pi];
-
-    if(!p->mIsDead)
-      p->draw();
+    p->draw();
   }
     
   glEnd();
