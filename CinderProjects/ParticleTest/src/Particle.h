@@ -2,6 +2,7 @@
 
 #include "cinder/Color.h"
 #include "cinder/Vector.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 
@@ -34,9 +35,40 @@ public:
   // Method to apply a force vector to the Particle object
   void applyForce(const Vec3f& force);
 
-  void update();
+  inline void update()
+  {
+    mVelocity += mAcceleration;
+    
+    mPosition += mVelocity;
 
-  void draw();
+    mAcceleration = Vec3f::zero(); // Kill the acceleration for each update
+
+    mIsDead = mLife <= 0.0;
+  }
+
+
+  inline void draw()
+  {
+  /* for profiling...*/
+	  glVertex3f(mPosition.x, mPosition.y, mPosition.z);
+  /*
+	  glColor4f( mColor.r, mColor.g, mColor.b, mColor.a);
+
+    glTexCoord2f(0, 0);
+	  glVertex3f(mPosition.x-mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);
+
+    glTexCoord2f(1, 0);
+	  glVertex3f(mPosition.x+mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);
+
+    glTexCoord2f(1, 1);
+	  glVertex3f(mPosition.x+mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
+
+    glTexCoord2f(0, 1);
+	  glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
+  */
+  }
+
+
 
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -48,7 +80,6 @@ private:
   Vec3f   mVelocity;
   Vec3f   mAcceleration;
   ColorAf mColor;
-
   
   float   mLife;
   float   mOriginalSize;

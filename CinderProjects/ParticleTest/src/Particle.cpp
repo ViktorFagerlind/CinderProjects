@@ -36,33 +36,3 @@ void Particle::applyForce(const Vec3f& force)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void Particle::update() 
-{
-  mVelocity += mAcceleration;
-    
-  mPosition += mVelocity;
-
-  mAcceleration = Vec3f::zero(); // Kill the acceleration for each update
-
-  mIsDead = mLife <= 0.0;
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-
-void Particle::draw()
-{
-	glColor4f( mColor.r, mColor.g, mColor.b, mColor.a);
-
-  glTexCoord2f(0, 0);
-	glVertex3f(mPosition.x-mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);
-
-  glTexCoord2f(1, 0);
-	glVertex3f(mPosition.x+mCurrentSize, mPosition.y-mCurrentSize, mPosition.z);
-
-  glTexCoord2f(1, 1);
-	glVertex3f(mPosition.x+mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
-
-  glTexCoord2f(0, 1);
-	glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
-}
-
