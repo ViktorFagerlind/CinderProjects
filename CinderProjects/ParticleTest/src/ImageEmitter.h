@@ -36,7 +36,7 @@ public:
     delete mEmitterImage;
   }
 
-  Particle* createParticle() 
+  void defineParticle (Particle* particle) 
 	{
 		Vec2i imagePosition;
 		
@@ -48,10 +48,10 @@ public:
 		
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
-	  return new Particle(relativeParticlePos + mPosition, 
-	  										particleSize, 
-	  										mMinVelocity, 
-	  										mMaxVelocity);
+	  particle->define(relativeParticlePos + mPosition, 
+	  								 particleSize, 
+	  								 mMinVelocity, 
+	  							   mMaxVelocity);
   }
 	
 private:

@@ -12,7 +12,7 @@ public:
 	PerlinModifier ()
 	{
   	mPerlin.setSeed (clock());
-    mAnimationCounter = 0;
+    mAnimationCounter = 0.0f;
 	}
 	
   void update () 
@@ -47,5 +47,5 @@ public:
 private:
 	const Vec3f mGravity;
 	Perlin			mPerlin;
-	size_t      mAnimationCounter;
+	float       mAnimationCounter;
 };

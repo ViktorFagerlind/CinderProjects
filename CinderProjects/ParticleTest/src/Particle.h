@@ -10,11 +10,10 @@ const float Particle_fullLife_C = 100.0;
 class Particle
 {
 public:
-  // Basic constructor
-  Particle(const Vec3f& position, float size, const Vec3f& velocity);
 
-  // Random velocity constructor
-  Particle(const Vec3f& position, float size, float minVelocity, float maxVelocity);
+  Particle();
+
+  void define(const Vec3f& position, float size, float minVelocity, float maxVelocity);
 
   const Vec3f& getPosition () 						{return mPosition;};
 
@@ -41,8 +40,8 @@ public:
 
 // --------------------------------------------------------------------------------------------------------------------
 
-  // Is the particle still useful?
-  bool dead();
+public:
+  bool    mIsDead;
 
 private:
   Vec3f   mPosition;
