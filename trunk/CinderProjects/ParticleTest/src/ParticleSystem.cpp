@@ -69,9 +69,9 @@ void ParticleSystem::updateModifiers()
 
 void ParticleSystem::update()
 {
-  updateModifiers();
-
   updateEmitters();
+
+  updateModifiers();
 }
 
 void ParticleSystem::draw()
