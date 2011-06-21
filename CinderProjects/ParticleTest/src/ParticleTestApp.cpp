@@ -179,7 +179,7 @@ void ParticleApp::createEmitter(size_t index)
   						               getWindowWidth()-60, //width
   						               getWindowHeight()-60, //height 
 							               5, // minParticleSize
-							               10, // maxParticleSize
+							               5, // maxParticleSize
 							               0.0f, // minParticleVelocity
 							               0.0f);  // maxParticleVelocity
 
@@ -188,7 +188,7 @@ void ParticleApp::createEmitter(size_t index)
         cm = new CommonModifier(2,    // lifeChange
                                 1,    // relativeStartSize
                                 2);    // relativeEndSize
-        colorModifier = new ColorModifier (ColorAf(1, 0.5, 0.2, 1), // startColor
+        colorModifier = new ColorModifier (ColorAf(1, 0.5, 0.2, 0), // startColor
                                            ColorAf(0.8, 0.3, 0.4, 1), // middleColor
                                            ColorAf(0.2, 0.2, 1, 0), // endColor
                                            0.5f);            // middleTime
