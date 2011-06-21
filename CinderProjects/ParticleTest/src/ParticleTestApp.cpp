@@ -48,7 +48,7 @@ void ParticleApp::setup()
 
   mFont = Font( "Quicksand Book Regular", 12.0f );
 
-//  createEmitter(3);
+  setFrameRate(1000);
 }
 
 void ParticleApp::update()
@@ -62,7 +62,6 @@ void ParticleApp::draw()
   static size_t particleCount = 0;
 
 	// clear out the window with black
-	//glClearColor (Rand::randFloat(1), 0, 0, 0);
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT);
 
@@ -111,7 +110,8 @@ void ParticleApp::createEmitter(size_t index)
     case 0:
       if (pe == NULL)
       {
-        pe = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
+        pe = new PointEmitter (300000,
+                               Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
                                "../Media/Images/ring_flare2.png",  // image file
                                1.0f,  // particles per frame
                                10.0f,   // min size
@@ -125,8 +125,8 @@ void ParticleApp::createEmitter(size_t index)
 
         gm = new GravityModifier(Vec3f(0,0.08f,0));
 
-        pe->addModifier (cm);
-        pe->addModifier (gm);
+        ps->addModifier (cm);
+        ps->addModifier (gm);
 
         ps->addEmitter (pe);
       }
@@ -139,7 +139,8 @@ void ParticleApp::createEmitter(size_t index)
     case 1:
       if (ie == NULL)
       {
-        ie = new 	ImageEmitter("../Media/Images/fire.png", 
+        ie = new 	ImageEmitter(300000,
+                               "../Media/Images/fire.png", 
                                100.0f,
                                "../Media/Images/lines.png", 
                                Vec3f((float)getWindowWidth()/2.0f, 500, 0),
@@ -157,8 +158,8 @@ void ParticleApp::createEmitter(size_t index)
 
         gm = new GravityModifier(Vec3f(0,-0.05f,0));
 
-        ie->addModifier (cm);
-        ie->addModifier (gm);
+        ps->addModifier (cm);
+        ps->addModifier (gm);
 
         ps->addEmitter (ie);
       }
@@ -171,22 +172,14 @@ void ParticleApp::createEmitter(size_t index)
     case 2:
       if (ae == NULL)
       {
-/*
-        ae = new PointEmitter(Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
-                               "../Media/Images/flare.png",  // image file
-                               100.0f,  // particles per frame
-                               2.0f,   // min size
-                               2.0f,   // max size
-                               -5.0f,   // min vel
-                               5.0f);   // max vel
-*/
-        ae = new AreaEmitter(Vec3f(30, 30, 0),                //position
+        ae = new AreaEmitter(300000,
+                             Vec3f(30, 30, 0),                //position
                              "../Media/Images/flare.png",   // image file
-                             300, //particlesPerFrame,
+                             1000, //particlesPerFrame,
   						               getWindowWidth()-60, //width
   						               getWindowHeight()-60, //height 
 							               5, // minParticleSize
-							               5, // maxParticleSize
+							               10, // maxParticleSize
 							               0.0f, // minParticleVelocity
 							               0.0f);  // maxParticleVelocity
 
@@ -199,27 +192,27 @@ void ParticleApp::createEmitter(size_t index)
                                            ColorAf(0.8, 0.3, 0.4, 1), // middleColor
                                            ColorAf(0.2, 0.2, 1, 0), // endColor
                                            0.5f);            // middleTime
-        ae->addModifier (colorModifier);
+        ps->addModifier (colorModifier);
 
-        pm = new PerlinModifier();
-        ae->addModifier (pm);
+//        pm = new PerlinModifier();
+//        ps->addModifier (pm);
 
         vm = new VortexModifier (Vec3f(800.0f, 500.0f, 0),
                                  2.0f,   // strength
                                  0.001f,    // damping
                                  1000,     // radius
                                  -30 * 3.14f / 180.0f); // angle
-        ae->addModifier (vm);
+        ps->addModifier (vm);
 
         vm = new VortexModifier (Vec3f(200.0f, 300.0f, 0),
                                  3.4f,   // strength
                                  0.001f,    // damping
                                  500,     // radius
                                  -30 * 3.14f / 180.0f); // angle
-        ae->addModifier (vm);
+        ps->addModifier (vm);
 
-        ae->addModifier (cm);
-        ae->addModifier (gm);
+        ps->addModifier (cm);
+        ps->addModifier (gm);
 
         ps->addEmitter (ae);
       }
@@ -229,10 +222,12 @@ void ParticleApp::createEmitter(size_t index)
         ae = NULL;
       }
       break;
+
     case 3:
       if (te == NULL)
       {
-        te = new AreaEmitter(Vec3f(30, 30, 0),                //position
+        te = new AreaEmitter(2000000,
+                             Vec3f(30, 30, 0),                //position
                              "../Media/Images/flare.png",   // image file
                              10000, //particlesPerFrame,
   						               getWindowWidth()-60, //width
@@ -246,7 +241,7 @@ void ParticleApp::createEmitter(size_t index)
                                 1,    // relativeStartSize
                                 1);   // relativeEndSize
 
-        te->addModifier (cm);
+        ps->addModifier (cm);
 
         ps->addEmitter (te);
       }

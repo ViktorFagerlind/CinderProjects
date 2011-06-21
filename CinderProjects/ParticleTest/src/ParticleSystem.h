@@ -10,57 +10,27 @@ using std::list;
 class ParticleSystem
 {
 public:
-  ParticleSystem()
-  {
-  }
+  ParticleSystem();
 
-  virtual ~ParticleSystem()
-  {
-    for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-      delete (*it);
+  virtual ~ParticleSystem();
 
-    mEmitters.clear();
-  }
-
-  void addEmitter (Emitter *const emitter)
-  {
-  	mEmitters.push_back (emitter);
-  }
+  void addEmitter (Emitter *const emitter);
   
-  size_t getCount()
-  {
-    size_t count = 0;
+  void addModifier (Modifier *const modifier);
 
-    for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-      count += (*it)->getCount();
-    
-  	return count;
-  }
+  size_t getCount();
   
-  void update()
-  {
-    for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end();)
-    {
-      Emitter *e = *it;
-      e->update();
+  void update();
 
-  	  if (e->dead())
-      {
-  	  	it = mEmitters.erase (it);
-        delete e;
-      }
-      else
-        it++;
-    }
-  }
+  void draw();
 
-  void draw()
-  {
-    for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-      (*it)->draw();
-  }
+public:
+  void updateEmitters();
+  void updateModifiers();
 
 private:
   list<Emitter*>  mEmitters;
+
+	list<Modifier*> mModifiers;
 };
 

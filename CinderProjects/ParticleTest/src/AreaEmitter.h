@@ -7,7 +7,8 @@ using namespace ci;
 class AreaEmitter : public Emitter 
 {
 public:
-	AreaEmitter (Vec3f  position, 
+	AreaEmitter (const size_t maxNofParticles,
+               Vec3f  position, 
 							 std::string	particleImageFile, 
                const float particlesPerFrame,
   						 const float  width, 
@@ -16,7 +17,7 @@ public:
 							 const float 	maxParticleSize,
 							 const float 	minParticleVelocity,
 							 const float 	maxParticleVelocity) 
-  : Emitter (particleImageFile, particlesPerFrame),
+  : Emitter (maxNofParticles, particleImageFile, particlesPerFrame),
     mPosition           (position),
     mWidth              (width),
     mHeight             (height),

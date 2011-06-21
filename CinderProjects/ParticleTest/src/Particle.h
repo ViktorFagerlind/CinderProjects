@@ -21,8 +21,8 @@ public:
   const Vec3f& getVelocity () 						{return mVelocity;};
   void setVelocity (Vec3f& velocity) 			{mVelocity = velocity;};
 
-  float  getLife () 						          {return mLife;};
-  void   setLife (const float life) 		  {mLife = life;};
+  float  getLife ()                              {return mLife;};
+  void   decreaseLife (const float lifeDecrease) {mLife -= lifeDecrease;};
   
   void   scaleSize (const float scalar)   {mCurrentSize = scalar * mOriginalSize;}
   
@@ -49,9 +49,9 @@ public:
 
   inline void draw()
   {
-  /* for profiling...*/
-	  glVertex3f(mPosition.x, mPosition.y, mPosition.z);
-  /*
+  /* for profiling...
+	  glVertex3f(mPosition.x, mPosition.y, mPosition.z); */
+  
 	  glColor4f( mColor.r, mColor.g, mColor.b, mColor.a);
 
     glTexCoord2f(0, 0);
@@ -65,7 +65,6 @@ public:
 
     glTexCoord2f(0, 1);
 	  glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
-  */
   }
 
 
