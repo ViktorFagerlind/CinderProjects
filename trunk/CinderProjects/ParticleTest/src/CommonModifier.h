@@ -13,9 +13,9 @@ public:
 		mSizeK = (relativeStartSize - relativeEndSize) / Particle_fullLife_C;
 	}
 	
-  void apply(Particle *const particle) 
+  inline void apply(Particle *const particle) 
 	{
-    particle->setLife(particle->getLife() - mLifeChange);
+    particle->decreaseLife (mLifeChange);
     
     particle->scaleSize(particle->getLife() * mSizeK + mSizeM);
   }

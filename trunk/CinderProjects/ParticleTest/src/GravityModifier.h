@@ -12,7 +12,7 @@ public:
 	{
 	}
 	
-  void apply(Particle *const particle) 
+  inline void apply(Particle *const particle) 
 	{
     particle->applyForce (mGravity);  
   }

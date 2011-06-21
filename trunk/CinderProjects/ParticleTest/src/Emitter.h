@@ -14,7 +14,7 @@ using std::list;
 class Emitter
 {
 public:
-  Emitter(std::string particleImageFile, const float particlesPerFrame);
+  Emitter(const size_t maxNofParticles, std::string particleImageFile, const float particlesPerFrame);
 
   virtual ~Emitter();
 
@@ -24,11 +24,6 @@ public:
     return mKilled && mParticleCount == 0;
   }
 
-  void addModifier (Modifier *const modifier)
-  {
-  	mModifiers.push_back (modifier);
-  }
-  
   size_t getCount()
   {
   	return mParticleCount;
@@ -38,6 +33,8 @@ public:
   {
   	mKilled = true;
   }
+
+  void applyModifierToParticles(Modifier *modifier);
   
   void update();
 
@@ -46,11 +43,8 @@ public:
   virtual void defineParticle (Particle* particle) = 0; 
 
 private:
-//  list<Particle*> mParticles;
   Particle       *mParticles;
 
-	list<Modifier*> mModifiers;     // All the modifiers
-	
   float 					mParticlesPerFrame;
   float 					mParticlesToCreate;
 

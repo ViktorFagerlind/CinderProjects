@@ -7,7 +7,8 @@
 class ImageEmitter : public Emitter 
 {
 public:
-	ImageEmitter(std::string particleImageFile, 
+	ImageEmitter(const size_t maxNofParticles,
+               std::string particleImageFile, 
                const float particlesPerFrame,
                std::string emitterImageFile, 
                const Vec3f& position,
@@ -18,7 +19,7 @@ public:
 							 float  width,
 							 float  height,
 							 float  depth) 
-  : Emitter(particleImageFile, particlesPerFrame),
+  : Emitter(maxNofParticles, particleImageFile, particlesPerFrame),
     mPosition(position),
 		mMinParticleSize(minParticleSize),
 		mMaxParticleSize(maxParticleSize),
