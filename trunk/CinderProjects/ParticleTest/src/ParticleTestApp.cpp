@@ -110,7 +110,7 @@ void ParticleApp::createEmitter(size_t index)
     case 0:
       if (pe == NULL)
       {
-        pe = new PointEmitter (300000,
+        pe = new PointEmitter (100000,
                                Vec3f((float)getWindowWidth()/2.0f, 100, 0), //position
                                "../Media/Images/ring_flare2.png",  // image file
                                1.0f,  // particles per frame

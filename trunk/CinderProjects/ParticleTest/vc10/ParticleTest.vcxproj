@@ -81,6 +81,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -91,7 +94,7 @@
     <Link>
       <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\cinder_0.8.2_vc2010\lib;..\..\..\cinder_0.8.2_vc2010\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -106,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\Emitter.cpp" />
     <ClCompile Include="..\src\Particle.cpp" />
+    <ClCompile Include="..\src\ParticleSystem.cpp" />
     <ClCompile Include="..\src\ParticleTestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
