@@ -47,11 +47,12 @@ public:
   }
 
 
+
   inline void draw()
   {
-  /* for profiling...
+    /* for profiling...
 	  glVertex3f(mPosition.x, mPosition.y, mPosition.z); */
-  
+
 	  glColor4f( mColor.r, mColor.g, mColor.b, mColor.a);
 
     glTexCoord2f(0, 0);
@@ -67,20 +68,18 @@ public:
 	  glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
   }
 
-
-
 // --------------------------------------------------------------------------------------------------------------------
 
 public:
   bool    mIsDead;
+  Vec3f   mPosition;
+  ColorAf mColor;
+  float   mCurrentSize;
 
 private:
-  Vec3f   mPosition;
   Vec3f   mVelocity;
   Vec3f   mAcceleration;
-  ColorAf mColor;
   
   float   mLife;
   float   mOriginalSize;
-  float   mCurrentSize;
 };
