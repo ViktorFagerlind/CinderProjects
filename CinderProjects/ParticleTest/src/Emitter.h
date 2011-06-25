@@ -40,6 +40,8 @@ public:
 
   void draw();
 
+  void drawArray();
+
   virtual void defineParticle (Particle* particle) = 0; 
 
 private:
@@ -54,5 +56,9 @@ private:
   bool            mKilled;
 
   gl::Texture    *mParticleTexture;
+
+  Vec3f          *mVerticies;
+  GLfloat        *mTextureCoordinates;
+  ColorAf        *mColors;
 };
 

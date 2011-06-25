@@ -8,10 +8,13 @@ ParticleSystem::ParticleSystem()
 
 ParticleSystem::~ParticleSystem()
 {
-  for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     delete (*it);
-
   mEmitters.clear();
+
+  for (vector<Modifier*>::iterator it = mModifiers.begin(); it != mModifiers.end(); it++)
+    delete (*it);
+  mModifiers.clear();
 }
 
 void ParticleSystem::addEmitter (Emitter *const emitter)
@@ -28,7 +31,7 @@ size_t ParticleSystem::getCount()
 {
   size_t count = 0;
 
-  for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     count += (*it)->getCount();
     
   return count;
@@ -36,7 +39,7 @@ size_t ParticleSystem::getCount()
   
 void ParticleSystem::updateEmitters()
 {
-  for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end();)
+  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end();)
   {
     Emitter *e = *it;
     e->update();
@@ -54,12 +57,12 @@ void ParticleSystem::updateEmitters()
 void ParticleSystem::updateModifiers()
 {
   // Update modifiers
-  for (list<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
+  for (vector<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
   {
     Modifier *m = *mit;
     m->update();
 
-    for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+    for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     {
       Emitter *e = *it;
       e->applyModifierToParticles (m);
@@ -76,6 +79,9 @@ void ParticleSystem::update()
 
 void ParticleSystem::draw()
 {
-  for (list<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-    (*it)->draw();
+  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+    //(*it)->draw();
+    (*it)->drawArray();
 }
+
+

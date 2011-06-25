@@ -2,10 +2,10 @@
 
 #include "Emitter.h"
 
-#include <list>
+#include <vector>
 
 using namespace ci;
-using std::list;
+using std::vector;
 
 class ParticleSystem
 {
@@ -24,13 +24,13 @@ public:
 
   void draw();
 
-public:
+private:
   void updateEmitters();
   void updateModifiers();
 
 private:
-  list<Emitter*>  mEmitters;
+  vector<Emitter*>  mEmitters;
 
-	list<Modifier*> mModifiers;
+	vector<Modifier*> mModifiers;
 };
 
