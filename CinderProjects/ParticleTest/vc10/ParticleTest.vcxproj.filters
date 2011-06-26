@@ -13,18 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\ParticleSystem">
+      <UniqueIdentifier>{1a948a0a-748f-41f8-a413-d87ddfa54801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Emitters">
+      <UniqueIdentifier>{ceb76f5b-1756-455f-9cb7-36e532a3324c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Modifiers">
+      <UniqueIdentifier>{3652a54f-d8ee-4a0b-a0f9-cc50dfa0ebd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{08ecf6a2-f8ff-40a9-9bac-d5d8569562bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\ParticleTestApp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\Emitter.cpp">
+      <Filter>Source Files\Emitters</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Particle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Emitter.cpp">
+    <ClCompile Include="..\src\ParticleTestApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,44 +44,47 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\CommonModifier.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\src\AreaEmitter.h">
+      <Filter>Source Files\Emitters</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Emitter.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Modifier.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Particle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PointEmitter.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\MyStrings.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GravityModifier.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Emitters</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ImageEmitter.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Emitters</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ParticleSystem.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\src\Modifier.h">
+      <Filter>Source Files\Modifiers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\VortexModifier.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\src\GravityModifier.h">
+      <Filter>Source Files\Modifiers</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\AreaEmitter.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PerlinModifier.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\src\CommonModifier.h">
+      <Filter>Source Files\Modifiers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ColorModifier.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PerlinModifier.h">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\VortexModifier.h">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MyStrings.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Particle.h">
+      <Filter>Source Files\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ParticleSystem.h">
+      <Filter>Source Files\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ParticleSystemManager.h">
+      <Filter>Source Files\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PointEmitter.h">
+      <Filter>Source Files\Emitters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

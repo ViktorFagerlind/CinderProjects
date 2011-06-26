@@ -124,6 +124,7 @@
     <ClInclude Include="..\src\MyStrings.h" />
     <ClInclude Include="..\src\Particle.h" />
     <ClInclude Include="..\src\ParticleSystem.h" />
+    <ClInclude Include="..\src\ParticleSystemManager.h" />
     <ClInclude Include="..\src\PerlinModifier.h" />
     <ClInclude Include="..\src\PointEmitter.h" />
     <ClInclude Include="..\src\VortexModifier.h" />

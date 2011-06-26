@@ -39,7 +39,7 @@ public:
     force *= forceStrength;
 
     // apply damping
-    force -= particleVelocity * particleVelocity.lengthSquared() * mDamping;
+    force -= particleVelocity * particleVelocity.length() * mDamping;
 
     particle->applyForce(force);
   }

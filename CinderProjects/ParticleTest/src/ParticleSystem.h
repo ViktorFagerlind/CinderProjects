@@ -20,6 +20,10 @@ public:
 
   size_t getCount();
   
+  void kill();
+
+  bool dead();
+
   void update();
 
   void draw();
