@@ -70,6 +70,28 @@ void ParticleSystem::updateModifiers()
   }
 }
 
+void ParticleSystem::kill()
+{
+  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  {
+    Emitter *e = *it;
+    e->kill();
+  }
+}
+
+bool ParticleSystem::dead()
+{
+  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  {
+    Emitter *e = *it;
+    if (!e->dead())
+      return false;
+  }
+
+  return true;
+}
+
+
 void ParticleSystem::update()
 {
   updateEmitters();
