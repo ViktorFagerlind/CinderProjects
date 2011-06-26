@@ -1,11 +1,9 @@
 #include "Emitter.h"
 
-Emitter::Emitter(const size_t maxNofParticles, std::string particleImageFile, const float particlesPerFrame)
+Emitter::Emitter(const size_t maxNofParticles, const float particlesPerFrame)
 : mMaxNofParticles(maxNofParticles),
   mParticleCount(0)
 {
-  mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
-    
   mParticlesToCreate = 0.0f;
   mParticlesPerFrame = particlesPerFrame;
   mKilled = false;
@@ -36,7 +34,6 @@ Emitter::~Emitter()
   delete [] mTextureCoordinates;
   delete [] mColors;
   delete [] mParticles;
-  delete mParticleTexture;
 }
 
 void Emitter::applyModifierToParticles(Modifier *modifier)
@@ -90,9 +87,6 @@ void Emitter::update()
 
 void Emitter::draw()
 {
-	glEnable( GL_TEXTURE_2D );
-  mParticleTexture->bind();
-
   glBegin(GL_QUADS);
 
   // Draw all particles
@@ -123,9 +117,6 @@ void Emitter::drawArray()
     mColors[pi4+2] = p->mColor;
     mColors[pi4+3] = p->mColor;
   }
-
-	glEnable( GL_TEXTURE_2D );
-  mParticleTexture->bind();
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );

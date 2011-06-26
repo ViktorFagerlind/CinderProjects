@@ -10,7 +10,7 @@ using std::vector;
 class ParticleSystem
 {
 public:
-  ParticleSystem();
+  ParticleSystem(std::string particleImageFile);
 
   virtual ~ParticleSystem();
 
@@ -36,5 +36,7 @@ private:
   vector<Emitter*>  mEmitters;
 
 	vector<Modifier*> mModifiers;
+
+  gl::Texture    *mParticleTexture;
 };
 

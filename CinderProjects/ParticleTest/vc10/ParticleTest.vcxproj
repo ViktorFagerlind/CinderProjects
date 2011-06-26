@@ -127,6 +127,7 @@
     <ClInclude Include="..\src\ParticleSystemManager.h" />
     <ClInclude Include="..\src\PerlinModifier.h" />
     <ClInclude Include="..\src\PointEmitter.h" />
+    <ClInclude Include="..\src\PointGravityModifier.h" />
     <ClInclude Include="..\src\VortexModifier.h" />
   </ItemGroup>
   <ItemGroup>

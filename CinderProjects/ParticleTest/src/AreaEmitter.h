@@ -9,7 +9,6 @@ class AreaEmitter : public Emitter
 public:
 	AreaEmitter (const size_t maxNofParticles,
                Vec3f  position, 
-							 std::string	particleImageFile, 
                const float particlesPerFrame,
   						 const float  width, 
 							 const float 	height,
@@ -17,7 +16,7 @@ public:
 							 const float 	maxParticleSize,
 							 const float 	minParticleVelocity,
 							 const float 	maxParticleVelocity) 
-  : Emitter (maxNofParticles, particleImageFile, particlesPerFrame),
+  : Emitter (maxNofParticles, particlesPerFrame),
     mPosition           (position),
     mWidth              (width),
     mHeight             (height),
@@ -32,7 +31,7 @@ public:
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
-    Vec3f particlePosition = mPosition + Vec3f(Rand::randFloat(mWidth), Rand::randFloat(mHeight), 0);
+    Vec3f particlePosition = mPosition + Vec3f(Rand::randFloat(-mWidth/2.0f, mWidth/2.0f), Rand::randFloat(-mHeight/2.0f, mHeight/2.0f), 0);
 
 	  particle->define(particlePosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
   }
