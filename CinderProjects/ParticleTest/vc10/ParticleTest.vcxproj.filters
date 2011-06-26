@@ -39,6 +39,9 @@
     <ClCompile Include="..\src\ParticleTestApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FluidModifier.cpp">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -87,6 +90,9 @@
       <Filter>Source Files\Emitters</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PointGravityModifier.h">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FluidModifier.h">
       <Filter>Source Files\Modifiers</Filter>
     </ClInclude>
   </ItemGroup>

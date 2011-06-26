@@ -42,6 +42,8 @@ public:
 
   void drawArray();
 
+  virtual void setPosition (const Vec3f& position) {}
+
   virtual void defineParticle (Particle* particle) = 0; 
 
 private:

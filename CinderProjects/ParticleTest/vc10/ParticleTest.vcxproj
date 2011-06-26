@@ -108,6 +108,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Emitter.cpp" />
+    <ClCompile Include="..\src\FluidModifier.cpp" />
     <ClCompile Include="..\src\Particle.cpp" />
     <ClCompile Include="..\src\ParticleSystem.cpp" />
     <ClCompile Include="..\src\ParticleTestApp.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="..\src\ColorModifier.h" />
     <ClInclude Include="..\src\CommonModifier.h" />
     <ClInclude Include="..\src\Emitter.h" />
+    <ClInclude Include="..\src\FluidModifier.h" />
     <ClInclude Include="..\src\GravityModifier.h" />
     <ClInclude Include="..\src\ImageEmitter.h" />
     <ClInclude Include="..\src\Modifier.h" />

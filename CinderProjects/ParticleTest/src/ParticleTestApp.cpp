@@ -10,6 +10,7 @@
 #include "ImageEmitter.h"
 
 #include "CommonModifier.h"
+#include "FluidModifier.h"
 #include "ColorModifier.h"
 #include "GravityModifier.h"
 #include "PointGravityModifier.h"
@@ -61,7 +62,6 @@ void ParticleApp::setup()
     mSystems[i] = NULL;
 
   mFont = Font( "Quicksand Book Regular", 12.0f );
-
 
   mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
 }
@@ -155,6 +155,7 @@ ParticleSystem* ParticleApp::createParticleSystem(size_t index)
   PerlinModifier        *pm;
   ParticleSystem        *ps;
   PointGravityModifier  *pgm;
+  FluidModifier         *fm;
 
   switch(index)
   {
@@ -231,6 +232,8 @@ ParticleSystem* ParticleApp::createParticleSystem(size_t index)
 							                10);     // emitter depth
       ps->addEmitter (ie);
         
+      fm = new FluidModifier(this, ie, 100, Vec3f::zero(), 1800, 1000);
+      ps->addModifier (fm);
 
       cm = new CommonModifier(1,    // lifeChange
                               1,    // relativeStartSize
@@ -319,6 +322,47 @@ ParticleSystem* ParticleApp::createParticleSystem(size_t index)
                                 500,     // radius
                                 -30 * 3.14f / 180.0f); // angle
       ps->addModifier (vm);
+
+      return ps;
+    case 4:
+      ps = new ParticleSystem("../Media/Images/smoke.png");
+
+      te = new AreaEmitter (100000,
+                            Vec3f(0, 0, 0),                //position
+                            20, //particlesPerFrame,
+  						              100, //width
+  						              100, //height 
+							              50, // minParticleSize
+							              50, // maxParticleSize
+							              0.1f, // minParticleVelocity
+							              0.1f);  // maxParticleVelocity
+      ps->addEmitter (te);
+
+      fm = new FluidModifier(this, te, 100, Vec3f::zero(), 1800, 1000);
+      ps->addModifier (fm);
+
+      te = new AreaEmitter (100000,
+                            Vec3f(0, 0, 0),                //position
+                            100, //particlesPerFrame,
+  						              1800, //width
+  						              1000, //height 
+							              3, // minParticleSize
+							              10, // maxParticleSize
+							              0.0f, // minParticleVelocity
+							              0.0f);  // maxParticleVelocity
+      ps->addEmitter (te);
+
+      cm = new CommonModifier(0.3,    // lifeChange
+                              1,    // relativeStartSize
+                              1);   // relativeEndSize
+      ps->addModifier (cm);
+
+      colorModifier = new ColorModifier (ColorAf(0.1, 0.3, 1.0, 1),   // startColor
+                                         ColorAf(0.1, 0.3, 1.0, 1), // middleColor
+                                         ColorAf(0.0, 0.0, 0.0, 1),   // endColor
+                                         0.5f);                     // middleTime
+
+      ps->addModifier (colorModifier);
 
       return ps;
   }
