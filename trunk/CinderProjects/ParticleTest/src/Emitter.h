@@ -14,7 +14,7 @@ using std::list;
 class Emitter
 {
 public:
-  Emitter(const size_t maxNofParticles, std::string particleImageFile, const float particlesPerFrame);
+  Emitter(const size_t maxNofParticles, const float particlesPerFrame);
 
   virtual ~Emitter();
 
@@ -54,8 +54,6 @@ private:
   size_t          mParticleCount;
   
   bool            mKilled;
-
-  gl::Texture    *mParticleTexture;
 
   Vec3f          *mVerticies;
   GLfloat        *mTextureCoordinates;

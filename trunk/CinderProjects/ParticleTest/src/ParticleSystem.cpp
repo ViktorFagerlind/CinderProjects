@@ -2,8 +2,9 @@
 
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem()
+ParticleSystem::ParticleSystem(std::string particleImageFile)
 {
+  mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
 }
 
 ParticleSystem::~ParticleSystem()
@@ -15,6 +16,8 @@ ParticleSystem::~ParticleSystem()
   for (vector<Modifier*>::iterator it = mModifiers.begin(); it != mModifiers.end(); it++)
     delete (*it);
   mModifiers.clear();
+
+  delete mParticleTexture;
 }
 
 void ParticleSystem::addEmitter (Emitter *const emitter)
@@ -101,9 +104,14 @@ void ParticleSystem::update()
 
 void ParticleSystem::draw()
 {
+	glEnable( GL_TEXTURE_2D );
+  mParticleTexture->bind();
+
   for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     //(*it)->draw();
     (*it)->drawArray();
+
+  mParticleTexture->unbind();
 }
 
 
