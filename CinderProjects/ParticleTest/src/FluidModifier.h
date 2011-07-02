@@ -1,4 +1,3 @@
-#include "cinder/app/AppBasic.h"
 #include "Modifier.h"
 #include "Emitter.h"
 
@@ -12,19 +11,17 @@ using namespace ci;
 class FluidModifier : public Modifier 
 {
 public:
-	FluidModifier (app::AppBasic *app, Emitter *emitter, size_t resolution, const Vec3f& position, const float width, const float height);
+	FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const float width, const float height);
 	
 	virtual ~FluidModifier ();
 
-  inline void update();
+  virtual void update();
 
   inline void apply(Particle *const particle);
 
-private:
-  Vec2f mouseToWorld (const Vec2i& mousePosition);
-
   void applyMovement (const Vec2f& position, const Vec2f& speed);
 
+private:
   void vel_step (float *u, float *v, float *u0, float *v0, float visc, float dt);
 
   void dens_step (float *x, float *x0,  float *u, float *v, float diff, float dt);
@@ -62,11 +59,4 @@ private:
   const float mHalfHeight;
   const float mVolumeWidth;
   const float mVolumeHeight;
-
-  Vec2f mMousePosition;
-  Vec2f mPrevMousePosition;
-
-  Emitter *mEmitter;
-
-  app::AppBasic *mApp;
 };
