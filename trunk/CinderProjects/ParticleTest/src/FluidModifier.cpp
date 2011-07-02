@@ -2,17 +2,15 @@
 
 #include "cinder/Rand.h"
 
-FluidModifier::FluidModifier (app::AppBasic *app, Emitter *emitter, size_t resolution, const Vec3f& position, const float width, const float height)
+FluidModifier::FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const float width, const float height)
 : mResolution (resolution),
   mDiffusionConstant(100.0f),
-	mViscosity (0.001f),
+	mViscosity (viscosity),
   mPosition (position),
   mHalfWidth (width/2.0f),
   mHalfHeight (height/2.0f),
   mVolumeWidth (width/mResolution),
-  mVolumeHeight (height/mResolution),
-  mApp (app),
-  mEmitter (emitter)
+  mVolumeHeight (height/mResolution)
 {
   mVelocityX      = new float[(mResolution+2)*(mResolution+2)];
   mVelocityY      = new float[(mResolution+2)*(mResolution+2)];
@@ -34,9 +32,6 @@ FluidModifier::FluidModifier (app::AppBasic *app, Emitter *emitter, size_t resol
 	  mDensity[i]        = 0.0f;
 	  mPrevDensity[i]    = 0.0f;
   }
-
-  mMousePosition      = mouseToWorld (mApp->getMousePos());
-  mPrevMousePosition  = mMousePosition;
 }
 	
 FluidModifier::~FluidModifier ()
@@ -48,13 +43,6 @@ FluidModifier::~FluidModifier ()
 	delete [] mDensity;
 	delete [] mPrevDensity;
 }
-
-Vec2f FluidModifier::mouseToWorld (const Vec2i& mousePosition)
-{
-  return Vec2f ((float)mousePosition.x / (float)mApp->getWindowWidth()  * 2000.0f - 1000.0f,
-                (float)-mousePosition.y / (float)mApp->getWindowHeight() * 1000.0f + 500.0f);
-}
-
 
 void FluidModifier::applyMovement (const Vec2f& position, const Vec2f& speed)
 {
@@ -70,8 +58,11 @@ void FluidModifier::applyMovement (const Vec2f& position, const Vec2f& speed)
   {
     for (int j=-5; j<5; j++)
     {
-      mInputVelocityX[IX(xCenter+i, yCenter+j)] = speed.x * 0.1f;
-      mInputVelocityY[IX(xCenter+i, yCenter+j)] = -speed.y * 0.1f;
+//      mInputVelocityX[IX(xCenter+i, yCenter+j)] = speed.x * 0.1f;
+//      mInputVelocityY[IX(xCenter+i, yCenter+j)] = -speed.y * 0.1f;
+
+      mPrevVelocityX[IX(xCenter+i, yCenter+j)] = speed.x * 0.1f;
+      mPrevVelocityY[IX(xCenter+i, yCenter+j)] = -speed.y * 0.1f;
 
 //      mPrevDensity[IX(mResolution/2+i, mResolution/2+j)] = 10;
     }
@@ -80,16 +71,8 @@ void FluidModifier::applyMovement (const Vec2f& position, const Vec2f& speed)
 
 inline void FluidModifier::update()
 {
-  mMousePosition     = mouseToWorld (mApp->getMousePos());
-  Vec2f mouseSpeed   = mMousePosition - mPrevMousePosition;
-
-  applyMovement (mMousePosition, mouseSpeed);
-  mPrevMousePosition = mMousePosition;
-
-  mEmitter->setPosition (Vec3f (mMousePosition.x, mMousePosition.y, 0.0f));
-
   float dt = 1.0f / 60.0f;
-
+/*
   // Add input
   add_source (mPrevVelocityX, mInputVelocityX, 1);
   add_source (mPrevVelocityY, mInputVelocityY, 1);
@@ -97,7 +80,7 @@ inline void FluidModifier::update()
   // clear input
   memset (mInputVelocityX, 0, sizeof(float) * (mResolution+2)*(mResolution+2));
   memset (mInputVelocityY, 0, sizeof(float) * (mResolution+2)*(mResolution+2));
-
+*/
   // Perform calculations
   vel_step (mVelocityX, mVelocityY, mPrevVelocityX, mPrevVelocityY, mViscosity, dt);
   dens_step (mDensity, mPrevDensity, mVelocityX, mVelocityY, mDiffusionConstant, dt);
