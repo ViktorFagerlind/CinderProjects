@@ -14,21 +14,25 @@ FluidModifier::FluidModifier (app::AppBasic *app, Emitter *emitter, size_t resol
   mApp (app),
   mEmitter (emitter)
 {
-  mVelocityX     = new float[(mResolution+2)*(mResolution+2)];
-  mVelocityY     = new float[(mResolution+2)*(mResolution+2)];
-  mPrevVelocityX = new float[(mResolution+2)*(mResolution+2)];
-  mPrevVelocityY = new float[(mResolution+2)*(mResolution+2)];
-	mDensity       = new float[(mResolution+2)*(mResolution+2)];
-	mPrevDensity   = new float[(mResolution+2)*(mResolution+2)];
+  mVelocityX      = new float[(mResolution+2)*(mResolution+2)];
+  mVelocityY      = new float[(mResolution+2)*(mResolution+2)];
+  mPrevVelocityX  = new float[(mResolution+2)*(mResolution+2)];
+  mPrevVelocityY  = new float[(mResolution+2)*(mResolution+2)];
+  mInputVelocityX = new float[(mResolution+2)*(mResolution+2)];
+  mInputVelocityY = new float[(mResolution+2)*(mResolution+2)];
+	mDensity        = new float[(mResolution+2)*(mResolution+2)];
+	mPrevDensity    = new float[(mResolution+2)*(mResolution+2)];
 
   for (int i=0; i<(mResolution+2)*(mResolution+2); i++)
   {
-    mVelocityX[i]     = 0.0f;
-    mVelocityY[i]     = 0.0f;
-    mPrevVelocityX[i] = 0.0f;
-    mPrevVelocityY[i] = 0.0f;
-	  mDensity[i]       = 0.0f;
-	  mPrevDensity[i]   = 0.0f;
+    mVelocityX[i]      = 0.0f;
+    mVelocityY[i]      = 0.0f;
+    mPrevVelocityX[i]  = 0.0f;
+    mPrevVelocityY[i]  = 0.0f;
+    mInputVelocityX[i] = 0.0f;
+    mInputVelocityY[i] = 0.0f;
+	  mDensity[i]        = 0.0f;
+	  mPrevDensity[i]    = 0.0f;
   }
 
   mMousePosition      = mouseToWorld (mApp->getMousePos());
@@ -66,10 +70,10 @@ void FluidModifier::applyMovement (const Vec2f& position, const Vec2f& speed)
   {
     for (int j=-5; j<5; j++)
     {
-      mPrevVelocityX[IX(xCenter+i, yCenter+j)] = speed.x * 0.1f;
-      mPrevVelocityY[IX(xCenter+i, yCenter+j)] = -speed.y * 0.1f;
+      mInputVelocityX[IX(xCenter+i, yCenter+j)] = speed.x * 0.1f;
+      mInputVelocityY[IX(xCenter+i, yCenter+j)] = -speed.y * 0.1f;
 
-      mPrevDensity[IX(mResolution/2+i, mResolution/2+j)] = 10;
+//      mPrevDensity[IX(mResolution/2+i, mResolution/2+j)] = 10;
     }
   }
 }
@@ -86,9 +90,17 @@ inline void FluidModifier::update()
 
   float dt = 1.0f / 60.0f;
 
+  // Add input
+  add_source (mPrevVelocityX, mInputVelocityX, 1);
+  add_source (mPrevVelocityY, mInputVelocityY, 1);
+
+  // clear input
+  memset (mInputVelocityX, 0, sizeof(float) * (mResolution+2)*(mResolution+2));
+  memset (mInputVelocityY, 0, sizeof(float) * (mResolution+2)*(mResolution+2));
+
+  // Perform calculations
   vel_step (mVelocityX, mVelocityY, mPrevVelocityX, mPrevVelocityY, mViscosity, dt);
   dens_step (mDensity, mPrevDensity, mVelocityX, mVelocityY, mDiffusionConstant, dt);
-//    draw_dens (dens);
 }
 
 inline void FluidModifier::apply(Particle *const particle) 
@@ -102,6 +114,7 @@ inline void FluidModifier::apply(Particle *const particle)
     return;
 
   particle->setVelocity( Vec3f (mVelocityX[IX(x+1, y+1)]*100.0f, mVelocityY[IX(x+1, y+1)]*100.0f, 0.0f));
+
 /*
   particle->setColor (ColorAf(mDensity[IX(x+1, y+1)]/100.0f, 
                               mDensity[IX(x+1, y+1)]/50.0f, 

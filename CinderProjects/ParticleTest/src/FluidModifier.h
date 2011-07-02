@@ -51,6 +51,9 @@ private:
 	float *mPrevVelocityX;
 	float *mPrevVelocityY;
 
+	float *mInputVelocityX;
+	float *mInputVelocityY;
+
 	float *mDensity;
 	float *mPrevDensity;
 
