@@ -10,7 +10,7 @@
 #include "ImageEmitter.h"
 
 #include "CommonModifier.h"
-#include "FluidModifier.h"
+#include "FluidMouseModifier.h"
 #include "ColorModifier.h"
 #include "GravityModifier.h"
 #include "PointGravityModifier.h"
@@ -155,7 +155,7 @@ ParticleSystem* ParticleApp::createParticleSystem(size_t index)
   PerlinModifier        *pm;
   ParticleSystem        *ps;
   PointGravityModifier  *pgm;
-  FluidModifier         *fm;
+  FluidMouseModifier         *fm;
 
   switch(index)
   {
@@ -232,7 +232,7 @@ ParticleSystem* ParticleApp::createParticleSystem(size_t index)
 							                10);     // emitter depth
       ps->addEmitter (ie);
         
-      fm = new FluidModifier(this, ie, 100, Vec3f::zero(), 1800, 1000);
+      fm = new FluidMouseModifier(this, ie, 100, Vec3f::zero(), 1800, 1000);
       ps->addModifier (fm);
 
       cm = new CommonModifier(1,    // lifeChange
@@ -338,7 +338,7 @@ ParticleSystem* ParticleApp::createParticleSystem(size_t index)
 							              0.1f);  // maxParticleVelocity
       ps->addEmitter (te);
 
-      fm = new FluidModifier(this, te, 100, Vec3f::zero(), 1800, 1000);
+      fm = new FluidMouseModifier(this, te, 100, Vec3f::zero(), 1800, 1000);
       ps->addModifier (fm);
 
       te = new AreaEmitter (100000,
