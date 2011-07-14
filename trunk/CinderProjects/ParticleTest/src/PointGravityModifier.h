@@ -29,8 +29,13 @@ public:
     particle->applyForce (distance.normalized() * forceStrength);
   }
 
+  void setPosition (const Vec3f& position) 
+	{
+    mPosition = position;
+  }
+
 private:
-  const Vec3f   mPosition;
+  Vec3f         mPosition;
   const float   mStrength;
   const float   mRadiusSquared;
   const float   mMaxStrength;
