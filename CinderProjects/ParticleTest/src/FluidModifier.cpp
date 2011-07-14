@@ -2,10 +2,11 @@
 
 #include "cinder/Rand.h"
 
-FluidModifier::FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const float width, const float height)
+FluidModifier::FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const bool bounded, const float width, const float height)
 : mResolution (resolution),
   mDiffusionConstant(100.0f),
 	mViscosity (viscosity),
+  mBounded (bounded),
   mPosition (position),
   mHalfWidth (width/2.0f),
   mHalfHeight (height/2.0f),
@@ -246,6 +247,11 @@ void FluidModifier::advect (int b, float *d, float *d0, float *u, float *v, floa
 void FluidModifier::set_bnd (int b, float *x)
 {
   int i;
+
+  // Set no bounds
+  if (!mBounded)
+    return;
+
   for ( i=1 ; i<=mResolution; i++ ) 
   {
     x[IX(0  ,i)]           = b==1 ? -x[IX(1,i)]           : x[IX(1,i)];

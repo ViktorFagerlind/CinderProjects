@@ -1,4 +1,9 @@
 #include "cinder/app/AppBasic.h"
+#include "cinder/gl/gl.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Utilities.h"
+#include "cinder/gl/Fbo.h"
+
 #include "cinder/Camera.h"
 
 #include "MyStrings.h"
@@ -38,7 +43,7 @@ public:
   VortexModifier        *vm;
   PerlinModifier        *pm;
   PointGravityModifier  *pgm;
-  FluidModifier    *fm;
+  FluidModifier         *fm;
 };
 
 class ParticleApp : public AppBasic 
@@ -55,6 +60,8 @@ public:
 
 	void updateAttributes();
 
+	void clearScreen();
+
 	void update();
 	void draw();
 
@@ -69,24 +76,22 @@ private:
   ParticleSystemManager *mManager;
 
   SystemAttributes mSystems[MaxNofSystems_C];
+
+  bool mSavingImages;
+
+  gl::Fbo *mFrameBuffer;
+
+  bool mSmoothFill;
 };
 
 
-void ParticleApp::prepareSettings( Settings *settings )
+void ParticleApp::prepareSettings (Settings *settings )
 {
   settings->setWindowSize (1280, 768);
-}
 
-void ParticleApp::setup()
-{
-  mManager = new ParticleSystemManager();
+  mSavingImages = false;
 
-  for (int i=0; i<MaxNofSystems_C; i++)
-    mSystems[i].ps = NULL;
-
-  mFont = Font( "Quicksand Book Regular", 12.0f );
-
-  mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
+  mSmoothFill = true;
 }
 
 void ParticleApp::updateCamera()
@@ -101,6 +106,7 @@ void ParticleApp::updateCamera()
               Vec3f::yAxis()); // up
 
   gl::setMatrices (mCam);
+
 }
 
 Vec2f ParticleApp::mouseToWorld (const Vec2i& mousePosition, const int windowWidth, const int windowHeight)
@@ -142,6 +148,10 @@ void ParticleApp::updateAttributes ()
       }
       break;
 
+      case 2:
+        sa.vm->setPosition (Vec3f (mMousePosition.x, mMousePosition.y, 0.0f));
+      break;
+
       case 4:
         sa.fm->applyMovement (mMousePosition, mouseSpeed);
         sa.ae1->setPosition (Vec3f (mMousePosition.x, mMousePosition.y, 0.0f));
@@ -154,7 +164,7 @@ void ParticleApp::updateAttributes ()
         {
           r1 = Rand::randFloat(-.8f, .8f);
           r2 = Rand::randFloat(-.8f, .8f);
-          r3 = Rand::randFloat(-10.0f, 10.0f);
+          r3 = Rand::randFloat(-1.0f, 1.0f);
         }
 
         sa.fm->applyMovement (Vec2f (-800.0f, 200), Vec2f (2, r1));
@@ -189,6 +199,25 @@ void ParticleApp::updateAttributes ()
   count++;
 }
 
+void ParticleApp::setup()
+{
+  mManager = new ParticleSystemManager();
+
+  for (int i=0; i<MaxNofSystems_C; i++)
+    mSystems[i].ps = NULL;
+
+  mFont = Font( "Quicksand Book Regular", 12.0f );
+
+  // Create frame buffer
+  mFrameBuffer = new gl::Fbo(getWindowWidth(), getWindowHeight(), true, true, false);
+
+  mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
+
+	glDepthMask (GL_FALSE);
+	glDisable (GL_DEPTH_TEST);
+	glEnable (GL_BLEND);
+}
+
 void ParticleApp::update()
 {
   updateAttributes();
@@ -197,24 +226,42 @@ void ParticleApp::update()
   Sleep(0);
 }
 
+
+void  ParticleApp::clearScreen()
+{
+
+  if (mSmoothFill)
+  {
+	  glBlendFunc (GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f (0, 0, 0, 0.1f);
+    glBegin(GL_QUADS);
+    glVertex3f (0.0f,             0.0f,               0.0f);
+    glVertex3f (getWindowWidth(), 0.0f,               0.0f);
+    glVertex3f (getWindowWidth(), getWindowHeight(),  0.0f);
+    glVertex3f (0.0f,             getWindowHeight(),  0.0f);
+    glEnd();
+  }
+  else
+  {
+    gl::clear (ColorAf(0, 0, 0, 0));
+  }
+}
+
 void ParticleApp::draw()
 {
   static size_t frameCount = 0;
   static size_t particleCount = 0;
 
+  // Draw to frame buffer from now on
+  mFrameBuffer->bindFramebuffer();
+
   gl::pushMatrices();
 
-  updateCamera(); 
+  clearScreen();
 
-	// clear out the window with black
-	glClearColor (0, 0, 0, 0);
-
-	glClear (GL_COLOR_BUFFER_BIT);
-
-	glDepthMask (GL_FALSE);
-	glDisable (GL_DEPTH_TEST);
-	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+
+  updateCamera(); 
 
   mManager->draw();
 
@@ -223,8 +270,20 @@ void ParticleApp::draw()
   if ((frameCount % 10) == 0)
     particleCount = mManager->getCount();
   frameCount++;
-  gl::drawString( "FPS: " + MyString::toString((size_t)getAverageFps()) + "Count: " + MyString::toString(particleCount), Vec2f( 0.0f, 0.0f ), Color::white(), mFont );
+  gl::drawString( "FPS: " + toString((size_t)getAverageFps()) + "Count: " + toString(particleCount), Vec2f( 0.0f, 0.0f ), Color::white(), mFont );
 
+  mFrameBuffer->unbindFramebuffer();
+
+  //gl::draw( myFbo->getTexture() );
+  mFrameBuffer->blitToScreen (mFrameBuffer->getBounds(), getWindowBounds());
+
+  if (mSavingImages)
+  {
+    static int currentImage = 0;
+    if ((currentImage%2) == 0)
+  	  writeImage (MyString::getFrameNumber ("saveImage_", currentImage/2) + ".png", mFrameBuffer->getTexture(), "png");	
+	  currentImage++;
+  }
 }
 
 void ParticleApp::mouseDown( MouseEvent event )
@@ -235,6 +294,19 @@ void ParticleApp::mouseDown( MouseEvent event )
 void ParticleApp::keyDown( KeyEvent event )
 {
   char c = event.getChar();
+
+  if (c == 's')
+  {
+    mSavingImages = !mSavingImages;
+    return;
+  }
+
+  if (c == 'f')
+  {
+    mSmoothFill = !mSmoothFill;
+    return;
+  }
+
   size_t index = (size_t) (c-'1');
 
   if (index > MaxNofSystems_C-1)
@@ -316,7 +388,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 
       break;
     case 1:
-      sa.ps = new ParticleSystem("../Media/Images/fire.png");
+      sa.ps = new ParticleSystem("../Media/Images/fire_alpha.png");
 
       sa.ie = new 	ImageEmitter(300000,
                               80.0f,
@@ -331,7 +403,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 							                10);     // emitter depth
       sa.ps->addEmitter (sa.ie);
         
-      sa.fm = new FluidModifier (100, Vec3f(0, 200, 0), 0.0001f, 2800, 1200);
+      sa.fm = new FluidModifier (100, Vec3f(0, 200, 0), 0.0001f, false, 2800, 1200);
       sa.ps->addModifier (sa.fm);
 
       sa.cm = new CommonModifier(1,    // lifeChange
@@ -339,10 +411,10 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                  0.2);  // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(1, 1, 1, 1), // startColor
-                                            ColorAf(1, 1, 1, 0.7), // middleColor
+      sa.colorModifier = new ColorModifier (ColorAf(1, 1, 1, 0), // startColor
+                                            ColorAf(1, 1, 1, 1), // middleColor
                                             ColorAf(1, 1, 1, 0), // endColor
-                                            0.5f);            // middleTime
+                                            0.1f);            // middleTime
       sa.ps->addModifier (sa.colorModifier);
 
       sa.gm = new GravityModifier(Vec3f(0,0.1f,0));
@@ -352,61 +424,79 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
     case 2:
       sa.ps = new ParticleSystem("../Media/Images/smoke.png");
 
-      sa.ae2 = new AreaEmitter(300000,
-                            Vec3f(0, 0, 0),                //position
-                            800, //particlesPerFrame,
-  						              1800, //width
-  						              1000, //height 
-							              4, // minParticleSize
-							              4, // maxParticleSize
-							              0.0f, // minParticleVelocity
-							              0.0f);  // maxParticleVelocity
+      sa.ae2 = new AreaEmitter (300000,
+                                Vec3f(0, 0, 0),                //position
+                                600, //particlesPerFrame,
+  						                  1800, //width
+  						                  1000, //height 
+							                  2, // minParticleSize
+							                  2, // maxParticleSize
+							                  0.0f, // minParticleVelocity
+							                  0.0f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae2);
 
       sa.gm = new GravityModifier(Vec3f(0,-0.1f,0));
       sa.ps->addModifier (sa.gm);
 
-      sa.cm = new CommonModifier(1,    // lifeChange
-                              1,    // relativeStartSize
-                              2);    // relativeEndSize
+      sa.cm = new CommonModifier (1,    // lifeChange
+                                  1,    // relativeStartSize
+                                  2);    // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(0.9, 0.1, 0.9, 0), // startColor
-                                         ColorAf(0.5, 0.5, 0.1, 1), // middleColor
-                                         ColorAf(0.1, 0.9, 0.9, 0), // endColor
-                                         0.5f);            // middleTime
+    	sa.pgm = new PointGravityModifier (Vec3f(500, -200, 0), // position
+                                      30000.0f,              // strength
+                                      0.5f,                  // max strength
+                                      3000.0f);              // radius
+      sa.ps->addModifier (sa.pgm);
+
+    	sa.pgm = new PointGravityModifier (Vec3f(-400, 300, 0), // position
+                                      30000.0f,              // strength
+                                      0.5f,                  // max strength
+                                      3000.0f);              // radius
+      sa.ps->addModifier (sa.pgm);
+
+    	sa.pgm = new PointGravityModifier (Vec3f(0, 0, 0), // position
+                                      10000.0f,              // strength
+                                      0.5f,                  // max strength
+                                      3000.0f);              // radius
+      sa.ps->addModifier (sa.pgm);
+
+      sa.colorModifier = new ColorModifier(ColorAf(1.0f, 0.1f, 0.1f, 0.0f), // startColor
+                                           ColorAf(1.0f, 0.1f, 1.0f, 1.0f), // middleColor
+                                           ColorAf(0.1f, 0.1f, 1.0f, 1.0f), // endColor
+                                           0.5f);            // middleTime
       sa.ps->addModifier (sa.colorModifier);
 
 //      pm = new PerlinModifier();
 //      ps->addModifier (pm);
 
-      sa.vm = new VortexModifier (Vec3f(300.0f, 100.0f, 0),
-                                1.2f,   // strength
-                                0.01f,    // damping
-                                700,     // radius
-                                -30 * 3.14f / 180.0f); // angle
+      sa.vm = new VortexModifier (Vec3f(-200.0f, -300.0f, 0),
+                                  0.6f,   // strength
+                                  0.01f,    // damping
+                                  700,     // radius
+                                  30 * 3.14f / 180.0f); // angle
       sa.ps->addModifier (sa.vm);
 
-      sa.vm = new VortexModifier (Vec3f(-200.0f, -300.0f, 0),
-                                0.6f,   // strength
-                                0.01f,    // damping
-                                700,     // radius
-                                -30 * 3.14f / 180.0f); // angle
+      sa.vm = new VortexModifier (Vec3f(300.0f, 100.0f, 0),
+                                  1.5f,   // strength
+                                  0.01f,    // damping
+                                  400,     // radius
+                                  30 * 3.14f / 180.0f); // angle
       sa.ps->addModifier (sa.vm);
 
       break;
     case 3:
       sa.ps = new ParticleSystem("../Media/Images/flare.png");
 
-      sa.ae1 = new AreaEmitter(500000,
-                            Vec3f(0, 0, 0),                //position
-                            5000, //particlesPerFrame,
-  						              1800, //width
-  						              1000, //height 
-							              1, // minParticleSize
-							              1, // maxParticleSize
-							              0.0f, // minParticleVelocity
-							              0.0f);  // maxParticleVelocity
+      sa.ae1 = new AreaEmitter (500000,
+                                Vec3f(0, 0, 0),                //position
+                                2000, //particlesPerFrame,
+  						                  1800, //width
+  						                  1000, //height 
+							                  2, // minParticleSize
+							                  2, // maxParticleSize
+							                  0.0f, // minParticleVelocity
+							                  0.0f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae1);
 
       sa.cm = new CommonModifier(1,    // lifeChange
@@ -415,17 +505,17 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
       sa.ps->addModifier (sa.cm);
 
       sa.vm = new VortexModifier (Vec3f(300.0f, 0.0f, 0),
-                                3.0f,   // strength
-                                0.01f,    // damping
-                                1000,     // radius
-                                -30 * 3.14f / 180.0f); // angle
+                                  3.0f,   // strength
+                                  0.01f,    // damping
+                                  1000,     // radius
+                                  -30 * 3.14f / 180.0f); // angle
       sa.ps->addModifier (sa.vm);
 
       sa.vm = new VortexModifier (Vec3f(-300.0f, -300.0f, 0),
-                                4.4f,   // strength
-                                0.01f,    // damping
-                                500,     // radius
-                                -30 * 3.14f / 180.0f); // angle
+                                  4.4f,   // strength
+                                  0.01f,    // damping
+                                  500,     // radius
+                                  -30 * 3.14f / 180.0f); // angle
       sa.ps->addModifier (sa.vm);
 
       break;
@@ -433,28 +523,28 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
       sa.ps = new ParticleSystem("../Media/Images/smoke.png");
 
       sa.ae1 = new AreaEmitter (100000,
-                            Vec3f(0, 0, 0),                //position
-                            20, //particlesPerFrame,
-  						              100, //width
-  						              100, //height 
-							              50, // minParticleSize
-							              50, // maxParticleSize
-							              0.1f, // minParticleVelocity
-							              0.1f);  // maxParticleVelocity
+                                Vec3f(0, 0, 0),                //position
+                                20, //particlesPerFrame,
+  						                  100, //width
+  						                  100, //height 
+							                  50, // minParticleSize
+							                  50, // maxParticleSize
+							                  0.1f, // minParticleVelocity
+							                  0.1f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae1);
 
-      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, 1800, 1000);
+      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, true, 1800, 1000);
       sa.ps->addModifier (sa.fm);
 
       sa.ae2 = new AreaEmitter (100000,
-                            Vec3f(0, 0, 0),                //position
-                            100, //particlesPerFrame,
-  						              1800, //width
-  						              1000, //height 
-							              3, // minParticleSize
-							              10, // maxParticleSize
-							              0.0f, // minParticleVelocity
-							              0.0f);  // maxParticleVelocity
+                                Vec3f(0, 0, 0),                //position
+                                100, //particlesPerFrame,
+  						                  1800, //width
+  						                  1000, //height 
+							                  3, // minParticleSize
+							                  10, // maxParticleSize
+							                  0.0f, // minParticleVelocity
+							                  0.0f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae2);
 
       sa.cm = new CommonModifier(0.3,    // lifeChange
@@ -462,39 +552,53 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               1);   // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(0.1, 0.3, 1.0, 1),   // startColor
-                                         ColorAf(0.1, 0.3, 1.0, 1), // middleColor
-                                         ColorAf(0.0, 0.0, 0.0, 1),   // endColor
-                                         0.5f);                     // middleTime
+      sa.colorModifier = new ColorModifier(ColorAf(0.1, 0.3, 1.0, 1),   // startColor
+                                           ColorAf(0.1, 0.3, 1.0, 1), // middleColor
+                                           ColorAf(0.0, 0.0, 0.0, 1),   // endColor
+                                           0.5f);                     // middleTime
 
       sa.ps->addModifier (sa.colorModifier);
 
       break;
     case 5:
-      sa.ps = new ParticleSystem("../Media/Images/smoke.png");
+      sa.ps = new ParticleSystem("../Media/Images/soapbubble_alpha.png");
 
+
+      sa.ie = new 	ImageEmitter (300000,
+                                  0.05f,
+                                  "../Media/Images/lines.png", 
+                                  Vec3f(0, 0, 0),
+                                  100.0f,   // min size
+                                  400.0f,   // max size
+                                  0,   // min vel
+                                  0,    // max vel
+							                    1500,     // emitter width
+							                    500,     // emitter height
+							                    10);     // emitter depth
+      sa.ps->addEmitter (sa.ie);
+/*
       sa.ae1 = new AreaEmitter (100000,
                             Vec3f(-700, 0, 0),                //position
-                            2, //particlesPerFrame,
+                            0.5f, //particlesPerFrame,
   						              300, //width
   						              1000, //height 
-							              100, // minParticleSize
-							              100, // maxParticleSize
+							              10, // minParticleSize
+							              400, // maxParticleSize
 							              0.1f, // minParticleVelocity
 							              0.1f);  // maxParticleVelocity
-      sa.ps->addEmitter (sa.ae1);
+      sa.ps->addEmitter (sa.ae1);*/
 
-      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, 2000, 1000);
+      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, false, 2000, 1000);
       sa.ps->addModifier (sa.fm);
 
-      sa.cm = new CommonModifier(0.4,    // lifeChange
-                                 1,    // relativeStartSize
-                                 1);   // relativeEndSize
+      sa.cm = new CommonModifier (0.05,    // lifeChange
+                                  1,    // relativeStartSize
+                                  1);   // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(1, 0.2f, 0.1f, 0), // startColor
-                                            ColorAf(1, 0.2f, 0.1f, 1), // middleColor
-                                            ColorAf(1, 0.2f, 0.1f, 0), // endColor
+      sa.colorModifier = new ColorModifier (ColorAf(1.0f, 0.01f, 0.01f, 0), // startColor
+                                            ColorAf(1.0f, 0.01f, 0.01f, 0.4f), // middleColor
+                                            ColorAf(1.0f, 0.01f, 0.01f, 0), // endColor
                                             0.5f);                     // middleTime
 
       sa.ps->addModifier (sa.colorModifier);
@@ -503,23 +607,23 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
     case 6:
       sa.ps = new ParticleSystem("../Media/Images/smoke.png");
 
-      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, 2000, 1000);
+      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, false, 2000, 1000);
       sa.ps->addModifier (sa.fm);
 
       sa.ae2 = new AreaEmitter (100000,
-                            Vec3f(700, 0, 0),                //position
-                            2, //particlesPerFrame,
-  						              300, //width
-  						              1000, //height 
-							              100, // minParticleSize
-							              100, // maxParticleSize
-							              0.1f, // minParticleVelocity
-							              0.1f);  // maxParticleVelocity
+                                Vec3f(700, 0, 0),                //position
+                                2, //particlesPerFrame,
+  						                  300, //width
+  						                  1000, //height 
+							                  100, // minParticleSize
+							                  100, // maxParticleSize
+							                  0.1f, // minParticleVelocity
+							                  0.1f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae2);
 
-      sa.cm = new CommonModifier(0.4,    // lifeChange
-                                 1,    // relativeStartSize
-                                 1);   // relativeEndSize
+      sa.cm = new CommonModifier (0.4,    // lifeChange
+                                  1,    // relativeStartSize
+                                  1);   // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
       sa.colorModifier = new ColorModifier (ColorAf(0.1f, 0.2f, 1, 0), // startColor

@@ -11,7 +11,7 @@ using namespace ci;
 class FluidModifier : public Modifier 
 {
 public:
-	FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const float width, const float height);
+	FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const bool bounded, const float width, const float height);
 	
 	virtual ~FluidModifier ();
 
@@ -59,4 +59,6 @@ private:
   const float mHalfHeight;
   const float mVolumeWidth;
   const float mVolumeHeight;
+
+  const bool  mBounded;
 };

@@ -1,17 +1,23 @@
 #pragma once
 
+#include "cinder/Utilities.h"
 #include <string>
 
 class MyString
 {
 public:
 
-  static std::string toString (size_t number)
+  static std::string getFrameNumber (std::string name, size_t number)
   {
-    char rawNumberString[20];
+    std::string numberString;
+    std::string zeroString;
 
-    sprintf_s(rawNumberString, "%u", number);
+    numberString = ci::toString(number);
 
-    return std::string(rawNumberString);
+    for (size_t i = 0; i < 4 - numberString.length(); i++)
+      zeroString.insert (zeroString.end(), '0');
+
+  	return name + zeroString + numberString;	
   }
+
 };
