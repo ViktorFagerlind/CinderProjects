@@ -1,9 +1,12 @@
 #include "cinder/app/AppBasic.h"
-#include "cinder/gl/gl.h"
+
+#include "cinder/Utilities.h"
 #include "cinder/ImageIo.h"
+#include "cinder/Camera.h"
+
+#include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/gl/GlslProg.h"
-#include "cinder/Camera.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -12,6 +15,7 @@ using namespace std;
 class ShaderTestAppApp : public AppBasic 
 {
   public:
+  void prepareSettings (Settings *settings);
 	void setup();
 	void mouseDown( MouseEvent event );	
 	void update();
@@ -26,6 +30,10 @@ class ShaderTestAppApp : public AppBasic
   CameraPersp mCam;
 };
 
+void ShaderTestAppApp::prepareSettings (Settings *settings)
+{
+  settings->setWindowSize (1280, 768);
+}
 
 void ShaderTestAppApp::setup()
 {
@@ -53,7 +61,7 @@ void ShaderTestAppApp::setup()
   {
 		std::cout << "Unable to load shader" << std::endl;
 	}
-	
+
   mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
   Vec3f cameraPosition = Vec3f (0.0f, 0.0f, 1000.0f);
   mCam.lookAt(cameraPosition,  // camera
@@ -92,23 +100,30 @@ void ShaderTestAppApp::draw()
 	mShader.uniform ("t", mTime);
 
   gl::setMatrices (mCam);
+
   gl::rotate (Vec3f (mAngle, mAngle, mAngle));
 
-//	gl::drawSolidRect( getWindowBounds() );
-
-  gl::translate (Vec3f (-800, -800, 0));
-  for (int y = 0; y < 4; y++)
+  gl::translate (Vec3f (-800, -800, -800));
+  for (int z = 0; z < 5; z++)
   {
-    for (int x = 0; x < 4; x++)
+    for (int y = 0; y < 5; y++)
     {
-	    gl::drawCube (Vec3f(0,0,0), Vec3f(150.0f, 150.0f, 150.0f));
-      gl::drawSphere (Vec3f(0,0,0), 100.0f, 20);
+      for (int x = 0; x < 5; x++)
+      {
+	      gl::drawCube (Vec3f(0,0,0), Vec3f(150.0f, 150.0f, 150.0f));
+        gl::drawSphere (Vec3f(0,0,0), 100.0f, 20);
 
-      gl::translate (Vec3f (400, 0, 0));
-    }
+        gl::translate (Vec3f (400, 0, 0));
+      }
       gl::translate (Vec3f (0, 400, 0));
-      gl::translate (Vec3f (-1600, 0, 0));
+      gl::translate (Vec3f (-2000, 0, 0));
+    }
+    gl::translate (Vec3f (0, 0, 400));
+    gl::translate (Vec3f (0, -2000, 0));
   }
+
+//	gl::drawSolidRect (getWindowBounds());
+
 
 //	mTexture.unbind();
 }

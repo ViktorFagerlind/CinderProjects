@@ -12,7 +12,7 @@ Particle::Particle()
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void Particle::define(const Vec3f& position, float size, float minVelocity, float maxVelocity)
+void Particle::define(const Vec3f& position, float size, Vec3f velocity)
 {
   mLife         = Particle_fullLife_C;
   mOriginalSize = size;
@@ -22,9 +22,18 @@ void Particle::define(const Vec3f& position, float size, float minVelocity, floa
   mColor        = ColorAf(1, 1, 1, 1);
   mIsDead       = false;
 
-  mVelocity = Vec3f(Rand::randFloat (minVelocity, maxVelocity),
-                    Rand::randFloat (minVelocity, maxVelocity),
-                    Rand::randFloat (minVelocity, maxVelocity));
+  mVelocity = velocity;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
+void Particle::define(const Vec3f& position, float size, float minVelocity, float maxVelocity)
+{
+  Vec3f velocity = Vec3f (Rand::randFloat (minVelocity, maxVelocity),
+                          Rand::randFloat (minVelocity, maxVelocity),
+                          Rand::randFloat (minVelocity, maxVelocity));
+
+  define (position, size, velocity);
 }
 
 // --------------------------------------------------------------------------------------------------------------------

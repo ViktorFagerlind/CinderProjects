@@ -14,6 +14,7 @@ public:
 
   Particle();
 
+  void define(const Vec3f& position, float size, Vec3f velocity);
   void define(const Vec3f& position, float size, float minVelocity, float maxVelocity);
 
   const Vec3f& getPosition () 						{return mPosition;};

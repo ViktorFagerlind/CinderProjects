@@ -8,19 +8,18 @@ class PointEmitter : public Emitter
 {
 public:
 	PointEmitter(const size_t maxNofParticles,
-               Vec3f  position, 
-  						 float  particlesPerFrame, 
-							 float 	minParticleSize,
-							 float 	maxParticleSize,
-							 float 	minParticleVelocity,
-							 float 	maxParticleVelocity) 
+               const Vec3f&  position, 
+  						 const float  particlesPerFrame, 
+							 const float 	minParticleSize,
+							 const float 	maxParticleSize,
+							 const Vec3f& baseVelocity,
+							 const Vec3f& randVelocity) 
   : Emitter (maxNofParticles, particlesPerFrame),
     mPosition           (position),
-	  mMinParticleVelocity(minParticleVelocity),
-	  mMaxParticleVelocity(maxParticleVelocity), 
+	  mBaseVelocity       (baseVelocity),
+	  mRandVelocity       (randVelocity), 
 	  mMinParticleSize    (minParticleSize),
 	  mMaxParticleSize    (maxParticleSize)
-
 	{
   }
 
@@ -28,13 +27,17 @@ public:
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
-	  particle->define(mPosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
+    Vec3f particleVelocity = Vec3f (mBaseVelocity.x + Rand::randFloat (-mRandVelocity.x, mRandVelocity.x),
+                                    mBaseVelocity.y + Rand::randFloat (-mRandVelocity.y, mRandVelocity.y),
+                                    mBaseVelocity.z + Rand::randFloat (-mRandVelocity.z, mRandVelocity.z));
+
+	  particle->define(mPosition, particleSize, particleVelocity);
   }
 
 private:
   Vec3f   mPosition;
-	float 	mMinParticleVelocity;
-	float 	mMaxParticleVelocity; 
+	Vec3f   mBaseVelocity;
+	Vec3f   mRandVelocity; 
 	float 	mMinParticleSize;
 	float 	mMaxParticleSize; 
 

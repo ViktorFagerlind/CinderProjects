@@ -9,15 +9,18 @@ using namespace ci;
 class PerlinModifier : public Modifier 
 {
 public:
-	PerlinModifier ()
+	PerlinModifier (const float animationSpeed, const float forceStrength, const float dampStrength)
+  : mAnimationCounter (0.0f),
+    mAnimationSpeed   (animationSpeed),
+    mForceStrength    (forceStrength),
+    mDampStrength     (dampStrength)
 	{
   	mPerlin.setSeed (clock());
-    mAnimationCounter = 0.0f;
 	}
 	
   void update () 
   {
-	  mAnimationCounter += 10.0f; // move ahead in time, which becomes the z-axis of our 3D noise
+	  mAnimationCounter += mAnimationSpeed;
   }
 
   inline void apply(Particle *const particle)
@@ -30,18 +33,20 @@ public:
     force.z = 0;
 
     force.normalize();
-    force = force * 1.0f;
+    force = force * mForceStrength;
 
     particle->applyForce (force);  
 
     // apply damping
-    force -= particleVelocity * particleVelocity.length() * 0.01f;
+    force -= particleVelocity * particleVelocity.length() * mDampStrength;
 
     particle->applyForce(force);
   }
 
 private:
-	const Vec3f mGravity;
 	Perlin			mPerlin;
 	float       mAnimationCounter;
+  float       mForceStrength;
+  float       mDampStrength;
+  float       mAnimationSpeed;
 };

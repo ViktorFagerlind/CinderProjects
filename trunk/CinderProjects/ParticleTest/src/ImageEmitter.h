@@ -66,7 +66,7 @@ private:
 			
       color = mEmitterImage->getPixel(imagePosition);
 		}
-		while((color.r + color.g + color.b) == 0);
+    while((color.r + color.g + color.b) * color.a == 0);
 	}
 
 private:
