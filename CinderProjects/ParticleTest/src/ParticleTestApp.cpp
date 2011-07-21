@@ -210,10 +210,12 @@ void ParticleApp::setup()
 
   // Create frame buffer
   mFrameBuffer = new gl::Fbo (getWindowWidth(), getWindowHeight(), true, true, false);
-//	gl::Fbo::Format format;
-//	format.setSamples( 4 ); // 4x antialiasing
-//  format.enableDepthBuffer (false);
-//	mFrameBuffer = new gl::Fbo (getWindowWidth(), getWindowHeight(), format);
+/*
+  gl::Fbo::Format format;
+	format.setSamples( 4 ); // 4x antialiasing
+  format.enableDepthBuffer (false);
+	mFrameBuffer = new gl::Fbo (getWindowWidth(), getWindowHeight(), format);
+*/
 
   mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
 
@@ -285,7 +287,7 @@ void ParticleApp::draw()
   {
     static int currentImage = 0;
     if ((currentImage%2) == 0)
-  	  writeImage (MyString::getFrameNumber ("saveImage_", currentImage/2) + ".png", mFrameBuffer->getTexture(), "png");	
+  	  writeImage (MyString::getFrameNumber ("saveImage_", currentImage/2) + ".png", mFrameBuffer->getTexture());	
 	  currentImage++;
   }
 }
@@ -342,8 +344,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               7.0f,  // particles per frame
                               30.0f,   // min size
                               30.0f,   // max size
-                              -0.1f,     // min vel
-                              0.01f);    // max vel
+                              Vec3f (0, 0, 0),     // baseVelocity
+                              Vec3f (0.01f, 0.01f, 0));    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.pe = new PointEmitter (10000,
@@ -351,8 +353,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               7.0f,  // particles per frame
                               50.0f,   // min size
                               50.0f,   // max size
-                              -0.1f,     // min vel
-                              0.01f);    // max vel
+                              Vec3f (0, 0, 0),     // baseVelocity
+                              Vec3f (0.01f, 0.01f, 0));    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.pe = new PointEmitter (10000,
@@ -360,8 +362,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               7.0f,  // particles per frame
                               40.0f,   // min size
                               40.0f,   // max size
-                              -0.01f,     // min vel
-                              0.01f);    // max vel
+                              Vec3f (0, 0, 0),     // baseVelocity
+                              Vec3f (0.01f, 0.01f, 0));    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.cm = new CommonModifier(0.2,    // lifeChange
@@ -636,6 +638,74 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                             0.5f);                     // middleTime
 
       sa.ps->addModifier (sa.colorModifier);
+
+      break;
+    case 7:
+      sa.ps = new ParticleSystem("../Media/Images/bacteria.png");
+
+      sa.pe = new PointEmitter (100000,
+                              Vec3f (0, -400, 0), //position
+                              5.0f,  // particles per frame
+                              6.0f,   // min size
+                              6.0f,   // max size
+                              Vec3f (3.5f, 2, 0),     // baseVelocity
+                              Vec3f (1.0f, 1.0f, 0));    // randVelocity
+      sa.ps->addEmitter (sa.pe);
+
+      sa.cm = new CommonModifier (1.0f,    // lifeChange
+                                  1,    // relativeStartSize
+                                  1);  // relativeEndSize
+      sa.ps->addModifier (sa.cm);
+
+      sa.colorModifier = new ColorModifier (ColorAf(1.0f, 1.0f, 1.0f, 1.0f),   // startColor
+                                            ColorAf(1.0f, 1.0f, 1.0f, 1.0f), // middleColor
+                                            ColorAf(1.0f, 1.0f, 1.0f, 0.0f),   // endColor
+                                            0.5f);                     // middleTime
+      sa.ps->addModifier (sa.colorModifier);
+
+      sa.gm = new GravityModifier(Vec3f(0, 0.08f,0));
+      sa.ps->addModifier (sa.gm);
+
+      sa.pm = new PerlinModifier (10.0f, 0.06, 0.001);
+      sa.ps->addModifier (sa.pm);
+
+      break;
+    case 8:
+      sa.ps = new ParticleSystem("../Media/Images/basic particle 1.png");
+
+      sa.ie = new 	ImageEmitter(300000,
+                              500.0f,
+                              "../Media/Images/dark sun.png", 
+                              Vec3f(0, 0, 0),
+                              2.0f,   // min size
+                              4.0f,   // max size
+                              0.0f,   // min vel
+                              0.0f,    // max vel
+							                800,     // emitter width
+							                800,     // emitter height
+							                10);     // emitter depth
+      sa.ps->addEmitter (sa.ie);
+
+      sa.cm = new CommonModifier (3.0f,    // lifeChange
+                                  1,    // relativeStartSize
+                                  0.5);  // relativeEndSize
+      sa.ps->addModifier (sa.cm);
+
+      sa.colorModifier = new ColorModifier (ColorAf(1.0f, 0.0f, 1.0f, 0.0f),   // startColor
+                                            ColorAf(0.0f, 1.0f, 0.0f, 1.0f), // middleColor
+                                            ColorAf(1.0f, 0.0f, 1.0f, 0.0f),   // endColor
+                                            0.5f);                     // middleTime
+      sa.ps->addModifier (sa.colorModifier);
+
+      sa.pm = new PerlinModifier (10.0f, 0.06, 0.001);
+      sa.ps->addModifier (sa.pm);
+
+      sa.vm = new VortexModifier (Vec3f::zero(),
+                                  0.9f,   // strength
+                                  0.01f,    // damping
+                                  200,     // radius
+                                  30 * 3.14f / 180.0f); // angle
+      sa.ps->addModifier (sa.vm);
 
       break;
   }
