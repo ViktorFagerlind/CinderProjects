@@ -1,3 +1,6 @@
+#include <iostream>
+#include <sstream>
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/ImageIo.h"
@@ -222,6 +225,8 @@ void ParticleApp::setup()
 	glDepthMask (GL_FALSE);
 	glDisable (GL_DEPTH_TEST);
 	glEnable (GL_BLEND);
+
+  setFrameRate (1000.0f);
 }
 
 void ParticleApp::update()
@@ -229,7 +234,6 @@ void ParticleApp::update()
   updateAttributes();
 
   mManager->update();
-  Sleep(0);
 }
 
 
@@ -273,10 +277,13 @@ void ParticleApp::draw()
 
   gl::popMatrices();
 
-  if ((frameCount % 10) == 0)
-    particleCount = mManager->getCount();
   frameCount++;
-  gl::drawString( "FPS: " + toString((size_t)getAverageFps()) + "Count: " + toString(particleCount), Vec2f( 0.0f, 0.0f ), Color::white(), mFont );
+  if ((frameCount % 10) == 0)
+  {
+    particleCount = mManager->getCount();
+//  gl::drawString( "FPS: " + toString((size_t)getAverageFps()) + "Count: " + toString(particleCount), Vec2f( 0.0f, 0.0f ), Color::white(), mFont );
+    console() << "FPS: " << getAverageFps() << " Count: " << toString(particleCount) << std::endl;
+  }
 
   mFrameBuffer->unbindFramebuffer();
 
