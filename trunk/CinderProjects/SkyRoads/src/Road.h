@@ -31,16 +31,18 @@ public:
 private:
   list<RoadBlock *> roadBlocks;
   
-  Vec3f  previousCenter;
-  Vec3f  currentCenter;
-  Vec3f  nextCenter;
+  Vec3f  mPreviousCenter;
+  Vec3f  mCurrentCenter;
+  Vec3f  mNextCenter;
   
-  Vec3f  previousNormal;
-  Vec3f  currentNormal;
+  Vec3f  mPreviousNormal;
+  Vec3f  mCurrentNormal;
+
+  Vec3f  mCurrentLeft;
   
-  Vec3f *steerPoints;
+  Vec3f *mSteerPoints;
   
-  float  splineTime;
+  float  mSplineTime;
   
   // Constants
   static const float splineTimeAdd; // how many points per spline section
