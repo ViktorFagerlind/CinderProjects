@@ -35,6 +35,9 @@
     <ClInclude Include="..\src\Road.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SpringCamera.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

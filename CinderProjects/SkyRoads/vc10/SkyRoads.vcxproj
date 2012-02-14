@@ -112,6 +112,7 @@
     <ClInclude Include="..\src\BSpline.h" />
     <ClInclude Include="..\src\Road.h" />
     <ClInclude Include="..\src\RoadBlock.h" />
+    <ClInclude Include="..\src\SpringCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
