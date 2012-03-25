@@ -5,6 +5,8 @@
 ParticleSystem::ParticleSystem(std::string particleImageFile)
 {
   mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
+
+  mKilled = false;
 }
 
 ParticleSystem::~ParticleSystem()
@@ -75,6 +77,8 @@ void ParticleSystem::updateModifiers()
 
 void ParticleSystem::kill()
 {
+  mKilled = true;
+
   for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
   {
     Emitter *e = *it;
@@ -84,12 +88,11 @@ void ParticleSystem::kill()
 
 bool ParticleSystem::dead()
 {
-  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-  {
-    Emitter *e = *it;
-    if (!e->dead())
-      return false;
-  }
+  if (!mKilled)
+    return false;
+
+  if (mEmitters.size () > 0)
+    return false;
 
   return true;
 }

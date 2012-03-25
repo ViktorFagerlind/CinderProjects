@@ -4,6 +4,8 @@
 #include "cinder/ImageIo.h"
 #include "cinder/Utilities.h"
 
+#include "../../ParticleTest/src/MyStrings.h"
+
 using namespace ci;
 using namespace ci::app;
 
@@ -39,6 +41,8 @@ public:
   cairo::Context			mOffscreenContext;
 
   vector<Branch*>	mBranches;
+
+  bool mSavingImages;
 };
 
 VegetationApp::~VegetationApp()
@@ -63,6 +67,8 @@ void VegetationApp::setup()
 
   // Clear screen
   clearVegetation();
+
+  mSavingImages = false;
 }
 
 void VegetationApp::renderScene( cairo::Context &ctx )
@@ -95,6 +101,10 @@ void VegetationApp::keyDown( KeyEvent event )
   {
     case 'p':
       writeImage ("Vegetation.png", copyWindowSurface());
+      break;
+
+    case 's':
+      mSavingImages = !mSavingImages;
       break;
   }
 }
@@ -132,6 +142,14 @@ void VegetationApp::draw()
   cairo::Context ctx( cairo::createWindowSurface() );
   renderScene( mOffscreenContext );
   ctx.copySurface( mOffscreenBuffer, mOffscreenBuffer.getBounds() );
+
+  if (mSavingImages)
+  {
+    static int currentImage = 0;
+    if ((currentImage%2) == 0)
+  	  writeImage (MyString::getFrameNumber ("saveImage_", currentImage/2) + ".png", copyWindowSurface());	
+	  currentImage++;
+  }
 }
 
 CINDER_APP_BASIC( VegetationApp, Renderer2d )

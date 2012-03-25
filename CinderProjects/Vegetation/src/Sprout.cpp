@@ -6,10 +6,12 @@ using std::vector;
 
 int Sprout::sWindowWidth, Sprout::sWindowHeight;
 
-const int    Branch::MAX_BRANCHES  = 250;
-const int    Branch::INITIAL_SPAWN = 20;
-const float  Branch::FLOWER_PROB   = 0.08f;
-const float  Branch::FLOWER_SIZE   = 0.4f;
+const int    Branch::MAX_BRANCHES  = 2500;
+const int    Branch::INITIAL_SPAWN = 7;
+const float  Branch::FLOWER_PROB   = 0.09f;
+const float  Branch::FLOWER_SIZE   = 0.5f;
+const float  Branch::BRANCH_PROB   = 0.1f;
+const float  Branch::BRANCH_LIFE   = 200;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +22,7 @@ Sprout::Sprout (const Vec2f &aOrigin)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Branch::Branch( const Vec2f &aOrigin, float flowerHue)
+Branch::Branch (const Vec2f &aOrigin, float flowerHue)
 : Sprout (aOrigin)
 {
 	mIsRoot = true;
@@ -33,7 +35,7 @@ Branch::Branch( const Vec2f &aOrigin, float flowerHue)
 	ColorA flowerColor( CM_HSV, flowerHue, sat, brightness, opacity );
 
 	for( int i = 0; i < INITIAL_SPAWN; i++ ) {
-		createBranch (mOrigin, baseHue, flowerColor);
+		createInitialBranch (mOrigin, baseHue, flowerColor);
 	}
 }
 
@@ -59,7 +61,7 @@ Sprout::Sprout (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle,
 
 Branch::Branch (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aChangeProb, 
                 float aFlowerProb, float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, 
-                ColorA aEndColor, ColorA aFlowerColor, float aScale)
+                ColorA aEndColor, ColorA aFlowerColor, float aScale, float aBranchProb)
 : Sprout (aOrigin, aLifespan, aSpeed, aAngle, aAngleDelta, aStartEllipseRadius, aEndEllipseRadius, 
           aStartColor, aEndColor, aScale)
 { 
@@ -67,6 +69,7 @@ Branch::Branch (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle,
 	mChangeProb = aChangeProb;
 	mFlowerProb = aFlowerProb;
 	mFlowerColor = aFlowerColor;
+  mBranchProb  = aBranchProb;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -151,13 +154,17 @@ void Branch::update()
 { 
 	if (isGrowing()) 
   {
-		if( Rand::randFloat() < mChangeProb )
+		float ageLerp = getAgeLerp ();
+
+		if (Rand::randFloat() < mChangeProb)
 			mAngleDelta = -mAngleDelta;
 
-		float ageLerp = 1.0 - mLifespan / (float)mTotalLifespan;
-		if( Rand::randFloat() < mFlowerProb * ( 1.0 - ageLerp ) ) 
+		if (Rand::randFloat() < mBranchProb * (1.0f - ageLerp))
+      createBranch ();
+
+		if (Rand::randFloat() < mFlowerProb * (1.0f - ageLerp)) 
     {
-			if( mSproutes.size() < MAX_BRANCHES ) 
+			if (mSproutes.size() < MAX_BRANCHES) 
       {
         int launchDelay = Rand::randInt (40, 70);
         for (int i=0; i<4; i++)
@@ -165,7 +172,7 @@ void Branch::update()
 				  // Create blossom
           Leaf* newLeaf = new Leaf (mPos,                                                   /* aOrigin */
                                     20.0f,                                                  /* aLifespan */ 
-                                    mSpeed * 0.7 * FLOWER_SIZE,                                   /* aSpeed */
+                                    mSpeed * 0.7 * FLOWER_SIZE,                             /* aSpeed */
                                     mAngle + 0.1f + (float)i * 3.14/2,                      /* aAngle */
                                     mAngleDelta*1.2f,                                       /* aAngleDelta */
                                     mEndEllipseRadius,                                      /* start radius */
@@ -206,9 +213,9 @@ void Sprout::draw (cairo::Context ctx)
 	if (!isGrowing())
 	  return;
 
-	float ageLerp = 1.0 - mLifespan / (float)mTotalLifespan;
-	float radius = lerp( mStartEllipseRadius, mEndEllipseRadius, ageLerp );
-	ColorA drawColor = lerp( mStartColor, mEndColor, ageLerp );
+	float ageLerp = getAgeLerp ();
+	float radius = getCurrentRadius ();
+	ColorA drawColor = getCurrentColor ();
 	ctx.setSourceRgba( drawColor.r, drawColor.g, drawColor.b, 0.075f );
 	ctx.circle( mPos, ( 5.0f * mScale + radius * 1.3f ) / 2 );
 	ctx.fill();
@@ -231,13 +238,13 @@ void Branch::draw (cairo::Context ctx)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void Branch::createBranch (const Vec2f &origin, float baseHue, ColorA flowerColor)
+void Branch::createInitialBranch (const Vec2f &origin, float baseHue, ColorA flowerColor)
 {
 	float changeProb = 0.05f + Rand::randFloat( 0.05f );
 	float flowerProb = Rand::randFloat( FLOWER_PROB/4.0f, FLOWER_PROB );
 	float startRadius = 5 + Rand::randFloat( 5 );
 	float endRadius = Rand::randFloat( 1 );
-	int lifespan = 100 + Rand::randInt( 100 );
+	int   lifespan = Rand::randInt (BRANCH_LIFE/2, BRANCH_LIFE);
 	float speed = Rand::randFloat( 0.9f, 1.0f );
 	float hue = baseHue + Rand::randFloat( 0.1f );
 	float sat = 0.5 + Rand::randFloat( 0.5f );
@@ -245,19 +252,31 @@ void Branch::createBranch (const Vec2f &origin, float baseHue, ColorA flowerColo
 	float opacity = 0.5 + Rand::randFloat( 0.5 );
 	ColorA startColor = ColorA( CM_HSV, hue, sat, brightness, opacity );
 	ColorA endColor = ColorA( CM_HSV, hue + 0.1, sat, brightness / 2.0, opacity );
-	float scale = Rand::randFloat( 0.5f, 1.0f );
+	float scale = Rand::randFloat( 0.7f, 0.9f );
+
+	float branchProb = Rand::randFloat( BRANCH_PROB/2.0f, BRANCH_PROB );
 
 	float angleDelta;
 	if (Rand::randBool())
-	  angleDelta = Rand::randFloat (0.02f, 0.15f);
+	  angleDelta = Rand::randFloat (0.02f, 0.10f);
   else
-	  angleDelta = Rand::randFloat (-0.02f, -0.15f);
+	  angleDelta = Rand::randFloat (-0.10f, -0.02f);
 
 
 	mSproutes.push_back (new Branch (origin, lifespan, speed, Rand::randFloat( 6.28f ), angleDelta, changeProb, 
-                                   flowerProb, startRadius, endRadius, startColor, endColor, flowerColor, scale));
+                                   flowerProb, startRadius, endRadius, startColor, endColor, flowerColor, scale, branchProb));
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+void Branch::createBranch ()
+{
+  Branch *newBranch = new Branch (mPos, mLifespan, mSpeed, mAngle, -mAngleDelta, mChangeProb, 
+    mFlowerProb, getCurrentRadius (), mEndEllipseRadius, getCurrentColor (), getCurrentColor (), mFlowerColor, mScale, mBranchProb*0.1f);
+
+
+	mSproutes.push_back (newBranch);
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 

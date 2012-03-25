@@ -1,5 +1,6 @@
-#include "Emitter.h"
+#pragma once
 
+#include "Emitter.h"
 #include "cinder/Rand.h"
 
 using namespace ci;

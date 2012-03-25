@@ -108,6 +108,7 @@
     <ClCompile Include="..\src\VegetationApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\ParticleTest\src\MyStrings.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\Sprout.h" />
   </ItemGroup>
