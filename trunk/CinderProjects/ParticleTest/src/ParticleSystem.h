@@ -33,6 +33,8 @@ private:
   void updateModifiers();
 
 private:
+  bool mKilled;
+
   vector<Emitter*>  mEmitters;
 
 	vector<Modifier*> mModifiers;

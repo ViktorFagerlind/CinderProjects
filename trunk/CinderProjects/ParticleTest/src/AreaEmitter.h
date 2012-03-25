@@ -12,6 +12,7 @@ public:
                const float particlesPerFrame,
   						 const float  width, 
 							 const float 	height,
+							 const float 	depth,
 							 const float 	minParticleSize,
 							 const float 	maxParticleSize,
 							 const float 	minParticleVelocity,
@@ -20,6 +21,7 @@ public:
     mPosition           (position),
     mWidth              (width),
     mHeight             (height),
+    mDepth              (depth),
 	  mMinParticleVelocity(minParticleVelocity),
 	  mMaxParticleVelocity(maxParticleVelocity), 
 	  mMinParticleSize    (minParticleSize),
@@ -31,7 +33,9 @@ public:
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
-    Vec3f particlePosition = mPosition + Vec3f(Rand::randFloat(-mWidth/2.0f, mWidth/2.0f), Rand::randFloat(-mHeight/2.0f, mHeight/2.0f), 0);
+    Vec3f particlePosition = mPosition + Vec3f(Rand::randFloat(-mWidth  / 2.0f, mWidth  / 2.0f), 
+                                               Rand::randFloat(-mHeight / 2.0f, mHeight / 2.0f), 
+                                               Rand::randFloat(-mDepth  / 2.0f, mDepth  / 2.0f));
 
 	  particle->define(particlePosition, particleSize, mMinParticleVelocity, mMaxParticleVelocity);
   }
@@ -49,4 +53,5 @@ private:
 	float 	mMaxParticleSize; 
   float   mWidth; 
 	float 	mHeight;
+	float 	mDepth;
 };

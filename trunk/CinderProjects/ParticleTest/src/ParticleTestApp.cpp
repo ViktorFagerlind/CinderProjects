@@ -442,10 +442,12 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 600, //particlesPerFrame,
   						                  1800, //width
   						                  1000, //height 
+                                10,             // depth,
 							                  2, // minParticleSize
 							                  2, // maxParticleSize
 							                  0.0f, // minParticleVelocity
 							                  0.0f);  // maxParticleVelocity
+
       sa.ps->addEmitter (sa.ae2);
 
       sa.gm = new GravityModifier(Vec3f(0,-0.1f,0));
@@ -506,6 +508,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 2000, //particlesPerFrame,
   						                  1800, //width
   						                  1000, //height 
+                                10,             // depth,
 							                  2, // minParticleSize
 							                  2, // maxParticleSize
 							                  0.0f, // minParticleVelocity
@@ -540,6 +543,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 20, //particlesPerFrame,
   						                  100, //width
   						                  100, //height 
+                                10,             // depth,
 							                  50, // minParticleSize
 							                  50, // maxParticleSize
 							                  0.1f, // minParticleVelocity
@@ -554,6 +558,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 100, //particlesPerFrame,
   						                  1800, //width
   						                  1000, //height 
+                                10,             // depth,
 							                  3, // minParticleSize
 							                  10, // maxParticleSize
 							                  0.0f, // minParticleVelocity
@@ -625,12 +630,13 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 
       sa.ae2 = new AreaEmitter (100000,
                                 Vec3f(700, 0, 0),                //position
-                                2, //particlesPerFrame,
-  						                  300, //width
-  						                  1000, //height 
-							                  100, // minParticleSize
-							                  100, // maxParticleSize
-							                  0.1f, // minParticleVelocity
+                                2,      // particlesPerFrame,
+  						                  300,    // width
+  						                  1000,   // height 
+                                10,     // depth,
+							                  100,    // minParticleSize
+							                  100,    // maxParticleSize
+							                  0.1f,   // minParticleVelocity
 							                  0.1f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae2);
 

@@ -15,6 +15,10 @@ public:
 	Sprout (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
                 float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, float aScale);
 
+  float getAgeLerp () {return 1.0f - mLifespan / (float)mTotalLifespan;}
+  float getCurrentRadius () {return lerp (mStartEllipseRadius, mEndEllipseRadius, getAgeLerp ());}
+  ColorA getCurrentColor () {return lerp (mStartColor, mEndColor, getAgeLerp ());}
+
 	static void		setWindowSize (int aWindowWidth, int aWindowHeight) { sWindowWidth = aWindowWidth; sWindowHeight = aWindowHeight; }
 	static float	randomHue ();
 
@@ -45,14 +49,15 @@ class Branch : public Sprout
 public:
 	Branch (const Vec2f &aOrigin, float flowerHue);
 	Branch (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aChangeProb, float aFlowerProb,
-		  float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, ColorA aFlowerColor, float aScale);
+		  float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, ColorA aFlowerColor, float aScale, float aBranchProb);
   ~Branch ();
 
 	static const int    MAX_BRANCHES;
 	static const int    INITIAL_SPAWN;
 	static const float  FLOWER_PROB;
 	static const float  FLOWER_SIZE;
-
+  static const float  BRANCH_LIFE;
+  static const float  BRANCH_PROB;
 
 	virtual void update();
 	virtual void draw( cairo::Context ctx );
@@ -60,12 +65,14 @@ public:
 	virtual bool isGrowing ();
 	virtual bool isAlive ();
 
-	void createBranch( const Vec2f &aOrigin, float baseHue, ColorA flowerColor);
+	void createInitialBranch (const Vec2f &aOrigin, float baseHue, ColorA flowerColor);
+	void createBranch ();
 	
 protected:
 	bool	mIsRoot;
 	float	mChangeProb;
   float	mFlowerProb;
+  float mBranchProb;
 
   ColorA	mFlowerColor;
 
