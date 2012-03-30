@@ -33,6 +33,7 @@ protected:
   float mA;                 // major radius
   float mE;                 // excentricity
   float mTheta;             // position angle
+  float mAxisAngle;			// rotation angle around local z-axis
 
   Vec3f mColor;
 

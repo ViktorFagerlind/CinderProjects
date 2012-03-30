@@ -25,7 +25,8 @@ Planet::Planet (const float           a,
 
   mA      = a;
   mE      = e;
-  mTheta  = 0.0f;
+  mTheta		= 0.0f;
+  mAxisAngle	= 0.0f;
 
   mColor = color;
 
@@ -48,20 +49,27 @@ void Planet::update()
 
   mTheta    = mTheta + deltaTheta;
   mPosition = mGravityCenter.getPosition () + Vec3f(r * cos(mTheta), r * sin(mTheta), 0.0f);
+
+  mAxisAngle += 0.5f;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void Planet::draw()
 {
-	glEnable (GL_TEXTURE_2D);
+  glEnable (GL_TEXTURE_2D);
   mTexture->bind();
 
   glColor3f (mColor.x, mColor.y, mColor.z);
-  gl::drawSphere (mPosition, mRadius, 20);
-
+  gl::pushModelView();
+  gl::translate(mPosition);
+  gl::rotate(Vec3f(45.0f,  0, 20.0f));
+  gl::rotate(Vec3f(0.0f,  mAxisAngle, 0));
+  gl::drawSphere(Vec3f(0, 0, 0), mRadius, 20);
+  gl::popModelView();
   mTexture->unbind();
-}
+
+  }
 
 
 
