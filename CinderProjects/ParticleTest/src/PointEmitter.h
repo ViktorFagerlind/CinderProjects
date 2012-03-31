@@ -3,6 +3,8 @@
 #include "Emitter.h"
 #include "cinder/Rand.h"
 
+#include "Math.h"
+
 using namespace ci;
 
 class PointEmitter : public Emitter 
@@ -14,23 +16,35 @@ public:
 							 const float 	minParticleSize,
 							 const float 	maxParticleSize,
 							 const Vec3f& baseVelocity,
-							 const Vec3f& randVelocity) 
+               const float  minRandVelocity,
+							 const float  maxRandVelocity) 
   : Emitter (maxNofParticles, particlesPerFrame),
     mPosition           (position),
 	  mBaseVelocity       (baseVelocity),
-	  mRandVelocity       (randVelocity), 
+	  mMinRandVelocity    (minRandVelocity), 
+	  mMaxRandVelocity    (maxRandVelocity), 
 	  mMinParticleSize    (minParticleSize),
 	  mMaxParticleSize    (maxParticleSize)
 	{
   }
 
+  // - Randomly pick z
+  // - Randomly pick angle around z-axis
   void defineParticle (Particle* particle)
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
 
-    Vec3f particleVelocity = Vec3f (mBaseVelocity.x + Rand::randFloat (-mRandVelocity.x, mRandVelocity.x),
-                                    mBaseVelocity.y + Rand::randFloat (-mRandVelocity.y, mRandVelocity.y),
-                                    mBaseVelocity.z + Rand::randFloat (-mRandVelocity.z, mRandVelocity.z));
+    float randomNormedZ = Rand::randFloat (-1, 1);
+    float xyPlaneAngle = asin (randomNormedZ); 
+    float zAxisAngle = Rand::randFloat (0, 2.0f * (float)M_PI);
+
+    float randomVelocity = Rand::randFloat (mMaxRandVelocity, mMaxRandVelocity);
+
+    Vec3f randVelocity (randomVelocity * cos (xyPlaneAngle) * cos (zAxisAngle),
+                        randomVelocity * cos (xyPlaneAngle) * sin (zAxisAngle),
+                        randomVelocity * randomNormedZ);
+
+    Vec3f particleVelocity = mBaseVelocity + randVelocity;
 
 	  particle->define(mPosition, particleSize, particleVelocity);
   }
@@ -38,7 +52,8 @@ public:
 private:
   Vec3f   mPosition;
 	Vec3f   mBaseVelocity;
-	Vec3f   mRandVelocity; 
+	float   mMinRandVelocity; 
+	float   mMaxRandVelocity; 
 	float 	mMinParticleSize;
 	float 	mMaxParticleSize; 
 

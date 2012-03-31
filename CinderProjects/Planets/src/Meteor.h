@@ -37,7 +37,8 @@ public:
 							                                  3,                    //minParticleSize,
 							                                  7,                   //maxParticleSize,
 							                                  mVelocity,            //baseVelocity,
-							                                  Vec3f (0.6f, 0.6f, 0.6f));  //randVelocity
+                                                0.1f,
+							                                  0.6f);  //randVelocity
       emitter->update ();
       emitter->kill ();
       particleSystem->addEmitter (emitter);
