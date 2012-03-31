@@ -1,4 +1,7 @@
 #include "Planet.h"
+
+#include "cinder/ObjLoader.h"
+
 #include "math.h"
 #include "GravityField.h"
 #include "GameWorld.h"
@@ -21,7 +24,7 @@ Planet::Planet (const float           a,
 {
   float trackRadius = a * (1.0f - e);
 
-  mL                = mMass * initialVelocity * trackRadius;
+  mL      = mMass * initialVelocity * trackRadius;
 
   mA      = a;
   mE      = e;
@@ -33,6 +36,9 @@ Planet::Planet (const float           a,
   mTexture = new gl::Texture (loadImage (loadFile (textureFile)));
 
   GameWorld::getGravityField ()->addGravityObject (this);
+
+  ObjLoader loader (loadFile ("../Media/Meshes/Torus.obj"));
+  loader.load (&mMesh);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -57,19 +63,26 @@ void Planet::update()
 
 void Planet::draw()
 {
-  glEnable (GL_TEXTURE_2D);
-  mTexture->bind();
+  mTexture->
+    
+    bind();
 
   glColor3f (mColor.x, mColor.y, mColor.z);
   gl::pushModelView();
   gl::translate(mPosition);
   gl::rotate(Vec3f(45.0f,  0, 20.0f));
   gl::rotate(Vec3f(0.0f,  mAxisAngle, 0));
+
+  //gl::scale (10, 10, 10);
+  //gl::draw (mMesh);
+
   gl::drawSphere(Vec3f(0, 0, 0), mRadius, 20);
+
   gl::popModelView();
   mTexture->unbind();
 
-  }
+  glDisable (GL_TEXTURE_CUBE_MAP);
+}
 
 
 

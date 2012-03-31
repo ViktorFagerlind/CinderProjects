@@ -2,6 +2,7 @@
 
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
+#include "cinder/TriMesh.h"
 
 #include "PhysicsObject.h"
 #include "BasicObject.h"
@@ -37,5 +38,7 @@ protected:
 
   Vec3f mColor;
 
-  gl::Texture    *mTexture;
+  gl::Texture   *mTexture;
+
+  TriMesh       mMesh;
 };

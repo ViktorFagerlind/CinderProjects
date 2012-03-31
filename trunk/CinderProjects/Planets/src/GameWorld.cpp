@@ -124,16 +124,17 @@ void GameWorld::setup ()
   
   PointEmitter   *sunEmitter = new PointEmitter (10000,                 //maxNofParticles,
                                                  mCenterObject->getPosition(),//position, 
-  						                                   10,                   //particlesPerFrame, 
+  						                                   13,                   //particlesPerFrame, 
 							                                   5,                    //minParticleSize,
 							                                   15,                   //maxParticleSize,
 							                                   Vec3f (0, 0, 0),            //baseVelocity,
-							                                   Vec3f (0.6f, 0.6f, 0.6f));  //randVelocity
+                                                 0.5f,
+							                                   0.55f);  //randVelocity
                                                  
-  commonModifier = new CommonModifier (1.2f, 1.0f, 0.5f);
-  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 1), //startColor 
-                                      ColorAf(1, 1, 0.5f, 1), //middleColor
-                                      ColorAf(1, 0.6f, 0.3f, 0), //endColor
+  commonModifier = new CommonModifier (1.2f, 1.0f, 1.0f);
+  colorModifier  = new ColorModifier (ColorAf(1, 1,    0.5f, 1), //startColor 
+                                      ColorAf(1, 0.8f, 0.2f, 0.3f), //middleColor
+                                      ColorAf(1, 0.6f, 0.1f, 0), //endColor
                                       0.8f);//float middleTime)
   sunParticleSystem->addModifier (commonModifier);
   sunParticleSystem->addModifier (colorModifier);
@@ -155,7 +156,7 @@ void GameWorld::setup ()
   float blue[]  = {0.0f, 0.0f, 1.0f , 0.0f};
   float black[] = {0.0f, 0.0f, 0.0f , 0.0f};
 
-	float center[] = {0, 0, 0, 1};
+	float center[] = {100, 0, 0, 1};
 
   glLightfv(GL_LIGHT0, GL_SPECULAR, white);
   glLightfv(GL_LIGHT0, GL_DIFFUSE,  yellow);
@@ -236,12 +237,13 @@ void GameWorld::draw   ()
 	glMaterialfv (GL_FRONT, GL_AMBIENT,	  mat_ambient);
 
   // Setup sun light
-	GLfloat light_position[] = {0, 0, 0, 1};
+	GLfloat light_position[] = {100, 0, 0, 1};
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
   // Setup lighting for planets
 	glDisable (GL_BLEND);
   glEnable  (GL_LIGHTING);
+  glEnable (GL_TEXTURE_2D);
 
   // Draw the basic objects
   for (list<BasicObject *>::iterator it = mObjects.begin(); it != mObjects.end(); it++)
@@ -252,21 +254,22 @@ void GameWorld::draw   ()
 
   // Draw the sun
 	glDisable (GL_LIGHTING);
+  glDisable (GL_TEXTURE_2D);
   glColor3f (1, 1, 1);
-  gl::drawSphere (mCenterObject->getPosition(), mCenterObject->getRadius (), 30);
+//  gl::drawSphere (mCenterObject->getPosition(), mCenterObject->getRadius (), 30);
 
   // Setup blending for particle system
   glDisable (GL_LIGHTING);
 	glEnable  (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-
-//  glDisable (GL_DEPTH_TEST);
   glDepthMask (false);
+  glEnable (GL_TEXTURE_2D);
 
   // Draw particle systems
   mParticleSystemManager->draw ();
   glDepthMask (true);
 
   // Draw gravity field
+  glDisable (GL_TEXTURE_2D);
   mGravityField->draw ();
 }
