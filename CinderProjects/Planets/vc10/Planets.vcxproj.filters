@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{36bcee81-cf20-4961-9f82-25741cb4eaa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{c523871f-6567-417f-8da0-1beea52c764d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\PlanetsApp.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\src\GameWorld.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MiscMath.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,10 +149,33 @@
     <ClInclude Include="..\..\SkyRoads\src\MovingCamera.h">
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MiscMath.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Media\Shaders\BumpMap_Pixel.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\earth_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\earth_vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\test1_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\test1_vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -78,6 +78,7 @@ void GameWorld::setup ()
     }
   }
 
+ 
   // --- Initialise particle system ---------------------------------
   mParticleSystemManager = new ParticleSystemManager ();
 
@@ -144,11 +145,7 @@ void GameWorld::setup ()
 
   // --- Initialise lights ---------------------------------
   
-  glEnable (GL_COLOR_MATERIAL);
-  glColorMaterial (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-
-	glEnable (GL_LIGHTING);
-
+  float darkgrey[] = {0.3f, 0.3f, 0.3f , 0.3f};
   float white[] = {1.0f, 1.0f, 1.0f , 0.0f};
   float red[]   = {1.0f, 0.0f, 0.0f , 0.0f};
   float yellow[]= {1.0f, 1.0f, 0.0f , 0.0f};
@@ -159,23 +156,10 @@ void GameWorld::setup ()
 	float center[] = {100, 0, 0, 1};
 
   glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE,  yellow);
-  glLightfv(GL_LIGHT0, GL_AMBIENT,  black);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE,  white);
+  glLightfv(GL_LIGHT0, GL_AMBIENT,  darkgrey);
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 	glEnable (GL_LIGHT0);
-
-  /*
-  glLightfv(GL_LIGHT1, GL_SPECULAR, white);
-  glLightfv(GL_LIGHT1, GL_DIFFUSE,  blue);
-  glLightfv(GL_LIGHT1, GL_AMBIENT,  black);
-	glLightfv(GL_LIGHT1, GL_POSITION, Vec3f (0, -500,0));
-	glEnable (GL_LIGHT1);
-
-  glLightfv(GL_LIGHT2, GL_SPECULAR, white);
-  glLightfv(GL_LIGHT2, GL_DIFFUSE,  green);
-  glLightfv(GL_LIGHT2, GL_AMBIENT,  black);
-	glLightfv(GL_LIGHT2, GL_POSITION, Vec3f (0, 0,0));
-	glEnable (GL_LIGHT2);*/
 
   // --- Misc OpenGL setup ---------------------------------
   glEnable (GL_DEPTH_TEST);
@@ -228,22 +212,9 @@ void GameWorld::draw   ()
   // Clear the window
 	gl::clear (Color (0, 0, 0));
 
-  // Setup material for planets
-  float mat_ambient[]		 = {0.6f, 0.3f, 0.4f, 1.0f};
-  float mat_diffuse[]		 = {0.3f, 0.5f, 0.8f, 1.0f};
-  float mat_specular[]	 = {1.0f, 1.0f, 1.0f, 1.0f};
-  glMaterialfv (GL_FRONT, GL_SHININESS, mat_ambient);
-  glMaterialfv (GL_FRONT, GL_DIFFUSE,	  mat_diffuse);
-	glMaterialfv (GL_FRONT, GL_AMBIENT,	  mat_ambient);
-
   // Setup sun light
 	GLfloat light_position[] = {100, 0, 0, 1};
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-  // Setup lighting for planets
-	glDisable (GL_BLEND);
-  glEnable  (GL_LIGHTING);
-  glEnable (GL_TEXTURE_2D);
 
   // Draw the basic objects
   for (list<BasicObject *>::iterator it = mObjects.begin(); it != mObjects.end(); it++)
@@ -253,23 +224,21 @@ void GameWorld::draw   ()
   }
 
   // Draw the sun
-	glDisable (GL_LIGHTING);
   glDisable (GL_TEXTURE_2D);
   glColor3f (1, 1, 1);
 //  gl::drawSphere (mCenterObject->getPosition(), mCenterObject->getRadius (), 30);
 
   // Setup blending for particle system
-  glDisable (GL_LIGHTING);
 	glEnable  (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-  glDepthMask (false);
   glEnable (GL_TEXTURE_2D);
 
   // Draw particle systems
+	gl::disableDepthWrite ();
   mParticleSystemManager->draw ();
-  glDepthMask (true);
+	gl::enableDepthWrite ();
 
   // Draw gravity field
   glDisable (GL_TEXTURE_2D);
-  mGravityField->draw ();
+//  mGravityField->draw ();
 }

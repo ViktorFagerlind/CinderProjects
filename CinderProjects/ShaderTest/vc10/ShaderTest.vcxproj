@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Media\Shaders\gaussianBlur_frag.glsl" />
-    <None Include="..\..\Media\Shaders\passThru_vert.glsl" />
     <None Include="..\..\Media\Shaders\test1_frag.glsl" />
     <None Include="..\..\Media\Shaders\test1_vert.glsl" />
   </ItemGroup>

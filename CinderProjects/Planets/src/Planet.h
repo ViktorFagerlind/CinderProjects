@@ -3,6 +3,10 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
 #include "cinder/TriMesh.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
+
+#include <vector>
 
 #include "PhysicsObject.h"
 #include "BasicObject.h"
@@ -41,4 +45,10 @@ protected:
   gl::Texture   *mTexture;
 
   TriMesh       mMesh;
+
+	gl::GlslProg	mPlanetShader;
+	gl::Texture   mEarthColor;
+	gl::Texture   mEarthNormal;
+
+  vector<float> mTangentBuffer;
 };

@@ -112,6 +112,7 @@
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\GameWorld.cpp" />
     <ClCompile Include="..\src\GravityField.cpp" />
+    <ClCompile Include="..\src\MiscMath.cpp" />
     <ClCompile Include="..\src\PhysicsObject.cpp" />
     <ClCompile Include="..\src\Planet.cpp" />
     <ClCompile Include="..\src\PlanetsApp.cpp" />
@@ -140,11 +141,20 @@
     <ClInclude Include="..\src\GameWorld.h" />
     <ClInclude Include="..\src\Meteor.h" />
     <ClInclude Include="..\src\GravityField.h" />
+    <ClInclude Include="..\src\MiscMath.h" />
     <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\Planet.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Media\Shaders\BumpMap_Pixel.glsl" />
+    <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl" />
+    <None Include="..\..\Media\Shaders\earth_frag.glsl" />
+    <None Include="..\..\Media\Shaders\earth_vert.glsl" />
+    <None Include="..\..\Media\Shaders\test1_frag.glsl" />
+    <None Include="..\..\Media\Shaders\test1_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

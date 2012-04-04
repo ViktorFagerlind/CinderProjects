@@ -36,9 +36,6 @@
     <None Include="..\..\Media\Shaders\gaussianBlur_frag.glsl">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="..\..\Media\Shaders\passThru_vert.glsl">
-      <Filter>Source Files\shaders</Filter>
-    </None>
     <None Include="..\..\Media\Shaders\test1_frag.glsl">
       <Filter>Source Files\shaders</Filter>
     </None>

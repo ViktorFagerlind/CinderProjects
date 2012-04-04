@@ -47,12 +47,15 @@ public:
 
   void draw() 
   {
+	  glDisable (GL_BLEND);
+    glDisable (GL_TEXTURE_2D);
+
     gl::pushMatrices ();
 
     gl::translate (mPosition);
     gl::rotate (mRotation);
 
-    glColor3f (0.7f, 0.2f, 0.5f);
+    glColor3f (0.6f, 0.4f, 0.3f);
     gl::drawCube (Vec3f (0, 0, 0), Vec3f (mRadius, mRadius, mRadius));
 
     gl::popMatrices ();
