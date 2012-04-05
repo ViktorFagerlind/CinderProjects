@@ -42,10 +42,10 @@ Planet::Planet (const float           a,
   loader.load (&mMesh);
 
 
-//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/earthDiffuse.png")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/earthNormal.png")));
-	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/brick_color_map.jpg")));
-	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/brick_normal_map.jpg")));
+	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/earthDiffuse.jpg")));
+	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/earthMyNormals.jpg")));
+//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/brick_color_map.jpg")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/brick_normal_map.jpg")));
 //	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_diffuse.png")));
 //	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_normals.png")));
 //	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/own_normals_none.png")));
