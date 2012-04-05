@@ -55,9 +55,9 @@ void GameWorld::setup ()
 
   for (int i=0; i<7; i++)
   {
-    Planet *planet = new Planet(Rand::randFloat(50, 350),    // a
+    Planet *planet = new Planet(Rand::randFloat(100, 350),    // a
                                 Rand::randFloat(0.5f, 0.99f),  // e
-                                Rand::randFloat(5, 20),       // radius
+                                Rand::randFloat(15, 50),       // radius
                                 Rand::randFloat(0.5f, 8),    // initial velocity
                                 Vec3f (1,1,1),// Vec3f (Rand::randFloat(), Rand::randFloat(), Rand::randFloat()),
                                 *mCenterObject,// center 
