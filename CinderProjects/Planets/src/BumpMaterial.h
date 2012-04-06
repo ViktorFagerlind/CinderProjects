@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BaseMaterial.h"
+
 #include "cinder/gl/gl.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
@@ -10,7 +12,7 @@
 using namespace ci;
 using namespace std;
 
-class BumpMaterial
+class BumpMaterial : public BaseMaterial
 {
 public:
   BumpMaterial (      gl::Texture   diffuseTexture,

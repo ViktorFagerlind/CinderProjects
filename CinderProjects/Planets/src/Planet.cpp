@@ -16,7 +16,7 @@ Planet::Planet (const float           a,
                 const float           radius, 
                 const float           initialVelocity, 
                 const PhysicsObject*  gravityCenter,
-                      shared_ptr<BumpMaterial>   material,
+                      shared_ptr<BaseMaterial>   material,
                       gl::VboMesh     vbo)
 : PhysicsObject  (4.0f/3.0f * (float)M_PI * radius * radius * radius * density,
                   Vec3f(0, 0, 0),

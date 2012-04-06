@@ -9,6 +9,7 @@
 #include "BumpMaterial.h"
 #include "PhysicsObject.h"
 #include "GravityField.h"
+#include "Sun.h"
 
 #include "../../ParticleTest/src/ParticleSystemManager.h"
 #include "../../ParticleTest/src/ParticleSystem.h"
@@ -33,6 +34,8 @@ public:
 
   static ParticleSystem *getExplosionSystem ()  {return getSingleton ()->mExposionSystem;}
 
+  static ParticleSystemManager *getParticleSystemManager ()  {return getSingleton ()->mParticleSystemManager;}
+
   static GravityField* getGravityField ()       {return getSingleton ()->mGravityField;}
 
 public:
@@ -45,7 +48,7 @@ private:
                                             const string&  normalTexture);
 
 private:
-  PhysicsObject *mCenterObject;
+  Sun *mSun;
 
   list<BasicObject *> mObjects;
 
