@@ -117,6 +117,7 @@
     <ClCompile Include="..\src\PhysicsObject.cpp" />
     <ClCompile Include="..\src\Planet.cpp" />
     <ClCompile Include="..\src\PlanetsApp.cpp" />
+    <ClCompile Include="..\src\Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ParticleTest\src\AreaEmitter.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\..\ParticleTest\src\VortexModifier.h" />
     <ClInclude Include="..\..\SkyRoads\src\MovingCamera.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\BaseMaterial.h" />
     <ClInclude Include="..\src\BasicObject.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\DynamicObject.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="..\src\MiscMath.h" />
     <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\Planet.h" />
+    <ClInclude Include="..\src\Sun.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
@@ -153,6 +156,8 @@
   <ItemGroup>
     <None Include="..\..\Media\Shaders\BumpMap_Pixel.glsl" />
     <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl" />
+    <None Include="..\..\Media\Shaders\SunSurface_frag.glsl" />
+    <None Include="..\..\Media\Shaders\SunSurface_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
