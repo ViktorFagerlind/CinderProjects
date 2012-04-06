@@ -10,6 +10,7 @@
 
 #include "PhysicsObject.h"
 #include "BasicObject.h"
+#include "BumpMaterial.h"
 
 using namespace ci;
 using namespace std;
@@ -21,9 +22,9 @@ public:
           const float           e, 
           const float           radius, 
           const float           initialVelocity, 
-          const Vec3f&          color, 
-          const PhysicsObject&  gravityCenter, 
-          const string&         textureFile);
+          const PhysicsObject*  gravityCenter,
+                BumpMaterial*   material,
+                TriMesh         mesh);
 
   void update();
   void draw();
@@ -32,23 +33,21 @@ public:
   float getRadius(){return mRadius;}
 
 protected:
-  const PhysicsObject& mGravityCenter;
+  const PhysicsObject* mGravityCenter;
   float mL;                 // angular momentum
 
   float mA;                 // major radius
   float mE;                 // excentricity
   float mTheta;             // position angle
-  float mAxisAngle;			// rotation angle around local z-axis
+  float mAxisAngle;			    // rotation angle around local z-axis
 
-  Vec3f mColor;
+  TriMesh      mMesh;
 
-  gl::Texture   *mTexture;
-
-  TriMesh       mMesh;
-
-	gl::GlslProg	mPlanetShader;
-	gl::Texture   mEarthColor;
-	gl::Texture   mEarthNormal;
+	gl::GlslProg mPlanetShader;
+	gl::Texture  mEarthColor;
+	gl::Texture  mEarthNormal;
 
   vector<float> mTangentBuffer;
+
+  BumpMaterial* mMaterial;
 };
