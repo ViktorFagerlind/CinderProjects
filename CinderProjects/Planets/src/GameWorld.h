@@ -40,6 +40,9 @@ public:
   static unsigned int mScreenHeight;
 
 private:
+  shared_ptr<BumpMaterial> getBumpMaterial (const TriMesh& mPlanetMesh);
+
+private:
   PhysicsObject *mCenterObject;
 
   list<BasicObject *> mObjects;
