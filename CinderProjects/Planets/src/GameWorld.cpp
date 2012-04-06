@@ -258,7 +258,11 @@ void GameWorld::draw   ()
 	glDisable  (GL_BLEND);
 
   // Draw gravity field
-//  mGravityField->draw ();
+  /*
+	glEnable  (GL_BLEND);
+  mGravityField->draw ();
+	glDisable  (GL_BLEND);
+  */
 }
 
 
