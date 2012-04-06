@@ -66,9 +66,6 @@ void Planet::draw()
   gl::rotate(Vec3f(45.0f,  0, 20.0f));
   gl::rotate(Vec3f(0.0f,  mAxisAngle, 0));
 
-	glDisable (GL_BLEND);
-  glEnable (GL_TEXTURE_2D);
-  
   mMaterial->bind ();
 
   glEnable (GL_RESCALE_NORMAL);

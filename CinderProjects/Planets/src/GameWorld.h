@@ -40,7 +40,9 @@ public:
   static unsigned int mScreenHeight;
 
 private:
-  shared_ptr<BumpMaterial> getBumpMaterial (const TriMesh& mPlanetMesh);
+  shared_ptr<BumpMaterial> getBumpMaterial (const TriMesh& mesh,
+                                            const string&  diffuseTexture,
+                                            const string&  normalTexture);
 
 private:
   PhysicsObject *mCenterObject;
@@ -55,10 +57,6 @@ private:
   GravityField    *mGravityField;
 
   static GameWorld* theGameWorld;
-
-  BumpMaterial *mPlanetMaterial;
-  gl::GlslProg mBumpShader;
-  TriMesh      mPlanetMesh;
 };
 
 
