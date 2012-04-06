@@ -93,6 +93,9 @@ void BumpMaterial::calculateTangents (const TriMesh& mesh)
 
 void BumpMaterial::bind ()
 {
+	glDisable (GL_BLEND);
+  glEnable (GL_TEXTURE_2D);
+
   // Setup material for planets
   glMaterialfv (GL_FRONT, GL_AMBIENT,	   mMatAmbient);
   glMaterialfv (GL_FRONT, GL_DIFFUSE,	   mMatDiffuse);

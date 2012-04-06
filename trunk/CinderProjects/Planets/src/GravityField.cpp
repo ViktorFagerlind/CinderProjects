@@ -198,6 +198,8 @@ void GravityField::draw ()
 {
   float cx, cy, cz;
 
+  glDisable (GL_TEXTURE_2D);
+
   for (unsigned int z=mNofElements.z/2-1; z<mNofElements.z/2+2; z++)
 //  for (unsigned int z=0; z<mNofElements.z; z++)
   {

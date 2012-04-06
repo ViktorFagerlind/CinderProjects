@@ -52,9 +52,27 @@ void GameWorld::setup ()
   mGravityField->addGravityObject (mCenterObject);
 
   ObjLoader loader (loadFile ("../Media/Meshes/Sphere.obj"));
-  loader.load (&mPlanetMesh);
+  TriMesh      planetMesh;
+  loader.load (&planetMesh);
 
-  shared_ptr<BumpMaterial> earthMaterial = getBumpMaterial (mPlanetMesh);
+  shared_ptr<BumpMaterial> earthMaterial = getBumpMaterial (planetMesh, 
+                                                            "../Media/Images/earthDiffuse.jpg",
+                                                            "../Media/Images/earthMyNormals.jpg");
+  shared_ptr<BumpMaterial> brickMaterial = getBumpMaterial (planetMesh, 
+                                                            "../Media/Images/brick_color_map.jpg",
+                                                            "../Media/Images/brick_normal_map.jpg");
+  shared_ptr<BumpMaterial> ownMaterial = getBumpMaterial (planetMesh, 
+                                                          "../Media/Images/bump_own_diffuse.png",
+                                                          "../Media/Images/bump_own_normals.png");
+  shared_ptr<BumpMaterial> greenMaterial = getBumpMaterial (planetMesh, 
+                                                            "../Media/Images/green_diffuse.jpg",
+                                                            "../Media/Images/green_normal.png");
+
+  vector<shared_ptr<BumpMaterial>> materials;
+  materials.push_back (brickMaterial);
+  materials.push_back (earthMaterial);
+  materials.push_back (ownMaterial);
+  materials.push_back (greenMaterial);
 
   for (int i=0; i<7; i++)
   {
@@ -63,8 +81,8 @@ void GameWorld::setup ()
                                 Rand::randFloat(15, 50),       // radius
                                 Rand::randFloat(0.5f, 8),    // initial velocity
                                 mCenterObject, // center
-                                earthMaterial,
-                                mPlanetMesh);
+                                materials[Rand::randInt(materials.size())],
+                                planetMesh);
     
     mObjects.push_back (planet);
 
@@ -75,8 +93,8 @@ void GameWorld::setup ()
                                 planet->getRadius() * 0.3f,   // radius
                                 Rand::randFloat(1, 2),       // initial velocity
                                 planet,              // center 
-                                earthMaterial,
-                                mPlanetMesh);
+                                materials[Rand::randInt(materials.size())],
+                                planetMesh);
 
      mObjects.push_back (moon);
     }
@@ -231,28 +249,25 @@ void GameWorld::draw   ()
   // Setup blending for particle system
 	glEnable  (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-  glEnable (GL_TEXTURE_2D);
+	gl::disableDepthWrite ();
 
   // Draw particle systems
-	gl::disableDepthWrite ();
   mParticleSystemManager->draw ();
+
 	gl::enableDepthWrite ();
+	glDisable  (GL_BLEND);
 
   // Draw gravity field
-  glDisable (GL_TEXTURE_2D);
 //  mGravityField->draw ();
 }
 
 
-shared_ptr<BumpMaterial> GameWorld::getBumpMaterial (const TriMesh& mPlanetMesh)
+shared_ptr<BumpMaterial> GameWorld::getBumpMaterial (const TriMesh& mesh,
+                                                     const string&  diffuseTexture,
+                                                     const string&  normalTexture)
 {
-	gl::Texture earthColor	= gl::Texture (loadImage (loadFile ("../Media/Images/earthDiffuse.jpg")));
-	gl::Texture earthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/earthMyNormals.jpg")));
-//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/brick_color_map.jpg")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/brick_normal_map.jpg")));
-//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_diffuse.png")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_normals.png")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/own_normals_none.png")));
+	gl::Texture earthColor	= gl::Texture (loadImage (loadFile (diffuseTexture)));
+	gl::Texture earthNormal	= gl::Texture (loadImage (loadFile (normalTexture)));
 	earthColor.setWrap( GL_REPEAT, GL_REPEAT );
 	earthNormal.setWrap( GL_REPEAT, GL_REPEAT );
 
@@ -269,7 +284,7 @@ shared_ptr<BumpMaterial> GameWorld::getBumpMaterial (const TriMesh& mPlanetMesh)
   BumpMaterial* materialPtr = new BumpMaterial (earthColor, // const gl::Texture&  diffuseTexture,
                                                 earthNormal, // const gl::Texture&  normalTexture,
                                                 bumpShader, // const gl::GlslProg& shader,
-                                                mPlanetMesh, // const TriMesh&      mesh, 
+                                                mesh,       // const TriMesh&      mesh, 
                                                 ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matAmbient,
                                                 ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matDiffuse,
                                                 ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matSpecular,
