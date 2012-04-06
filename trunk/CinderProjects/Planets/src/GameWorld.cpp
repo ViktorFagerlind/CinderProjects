@@ -1,6 +1,7 @@
 #include "GameWorld.h"
 
 #include "cinder/gl/gl.h"
+#include "cinder/ObjLoader.h"
 
 #include "Planet.h"
 #include "Meteor.h"
@@ -50,18 +51,47 @@ void GameWorld::setup ()
 
   mGravityField->addGravityObject (mCenterObject);
 
-  const string planetTextures[4] = {"jupiter.jpg", "mars.jpg", "moon.jpg", "earth.jpg"};
+  ObjLoader loader (loadFile ("../Media/Meshes/Sphere.obj"));
+  loader.load (&mPlanetMesh);
 
+	gl::Texture earthColor	= gl::Texture (loadImage (loadFile ("../Media/Images/earthDiffuse.jpg")));
+	gl::Texture earthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/earthMyNormals.jpg")));
+//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/brick_color_map.jpg")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/brick_normal_map.jpg")));
+//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_diffuse.png")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_normals.png")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/own_normals_none.png")));
+	earthColor.setWrap( GL_REPEAT, GL_REPEAT );
+	earthNormal.setWrap( GL_REPEAT, GL_REPEAT );
 
+  gl::GlslProg bumpShader;
+	try {
+		bumpShader = gl::GlslProg (loadFile ("../Media/Shaders/BumpMap_Vertex.glsl"), loadFile ("../Media/Shaders/BumpMap_Pixel.glsl"));
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
+
+  mPlanetMaterial = new BumpMaterial (earthColor, // const gl::Texture&  diffuseTexture,
+                                      earthNormal, // const gl::Texture&  normalTexture,
+                                      bumpShader, // const gl::GlslProg& shader,
+                                      mPlanetMesh, // const TriMesh&      mesh, 
+                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matAmbient,
+                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matDiffuse,
+                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matSpecular,
+                                      40.0f); // const float         matShininess);
+ 
   for (int i=0; i<7; i++)
   {
     Planet *planet = new Planet(Rand::randFloat(100, 350),    // a
                                 Rand::randFloat(0.5f, 0.99f),  // e
                                 Rand::randFloat(15, 50),       // radius
                                 Rand::randFloat(0.5f, 8),    // initial velocity
-                                Vec3f (1,1,1),// Vec3f (Rand::randFloat(), Rand::randFloat(), Rand::randFloat()),
-                                *mCenterObject,// center 
-                                "../Media/Images/" + planetTextures[Rand::randInt (4)]);              
+                                mCenterObject, // center
+                                mPlanetMaterial,
+                                mPlanetMesh);
     
     mObjects.push_back (planet);
 
@@ -71,9 +101,10 @@ void GameWorld::setup ()
                                 Rand::randFloat(0.0f, 0.5f),  // e
                                 planet->getRadius() * 0.3f,   // radius
                                 Rand::randFloat(1, 2),       // initial velocity
-                                Vec3f (1,1,1),//Vec3f (Rand::randFloat(), Rand::randFloat(), Rand::randFloat()),
-                                *planet,              // center 
-                                "../Media/Images/" + planetTextures[Rand::randInt (4)]);
+                                planet,              // center 
+                                mPlanetMaterial,
+                                mPlanetMesh);
+
      mObjects.push_back (moon);
     }
   }

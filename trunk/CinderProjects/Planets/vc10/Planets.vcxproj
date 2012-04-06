@@ -109,6 +109,7 @@
     <ClCompile Include="..\..\ParticleTest\src\FluidModifier.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\Particle.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\ParticleSystem.cpp" />
+    <ClCompile Include="..\src\BumpMaterial .cpp" />
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\GameWorld.cpp" />
     <ClCompile Include="..\src\GravityField.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\DynamicObject.h" />
     <ClInclude Include="..\src\GameWorld.h" />
+    <ClInclude Include="..\src\BumpMaterial.h" />
     <ClInclude Include="..\src\Meteor.h" />
     <ClInclude Include="..\src\GravityField.h" />
     <ClInclude Include="..\src\MiscMath.h" />
@@ -151,10 +153,6 @@
   <ItemGroup>
     <None Include="..\..\Media\Shaders\BumpMap_Pixel.glsl" />
     <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl" />
-    <None Include="..\..\Media\Shaders\earth_frag.glsl" />
-    <None Include="..\..\Media\Shaders\earth_vert.glsl" />
-    <None Include="..\..\Media\Shaders\test1_frag.glsl" />
-    <None Include="..\..\Media\Shaders\test1_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,9 +4,6 @@ varying vec2 texCoord;
 attribute vec3 vTangent; 
 					 
 
-// TODO: remove
-varying vec3 passedTangent;
-
 void main(void)
 {
 	gl_Position = ftransform();
@@ -16,8 +13,6 @@ void main(void)
 	vec3 t = normalize(gl_NormalMatrix * vTangent);
 	vec3 b = cross(n, t);
 
-	passedTangent = vTangent;
-	
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
 	vec3 tmpVec = normalize( gl_LightSource[0].position.xyz - vVertex );
 

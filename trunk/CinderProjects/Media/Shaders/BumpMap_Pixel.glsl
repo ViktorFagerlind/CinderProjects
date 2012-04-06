@@ -5,9 +5,6 @@ uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 uniform float invRadius;
 
-// TODO: remove
-varying vec3 passedTangent;
-
 void main (void)
 {
 	float distSqr = dot(lightVec, lightVec);
@@ -33,13 +30,5 @@ void main (void)
 	vec4 vSpecular = gl_LightSource[0].specular * gl_FrontMaterial.specular * 
 					 specular;	
 	
-	gl_FragColor = ( vAmbient*base + 
-					 vDiffuse*base + 
-					 vSpecular) * att;
-
-    // To be removed...
-	//gl_FragColor.r = abs (passedTangent.x);
-	//gl_FragColor.g = abs (passedTangent.y);
-	//gl_FragColor.b = abs (passedTangent.z);
-	//gl_FragColor.a = 1;
+	gl_FragColor = ( vAmbient*base + vDiffuse*base + vSpecular) * att;
 }

@@ -2,8 +2,11 @@
 
 #include "cinder/app/KeyEvent.h"
 #include "cinder/Rand.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Texture.h"
 
 #include "BasicObject.h"
+#include "BumpMaterial.h"
 #include "PhysicsObject.h"
 #include "GravityField.h"
 
@@ -26,7 +29,7 @@ public:
   void setup ();
 
   void update ();
-  void draw   ();
+  void draw ();
 
   static ParticleSystem *getExplosionSystem ()  {return getSingleton ()->mExposionSystem;}
 
@@ -49,6 +52,10 @@ private:
   GravityField    *mGravityField;
 
   static GameWorld* theGameWorld;
+
+  BumpMaterial *mPlanetMaterial;
+  gl::GlslProg mBumpShader;
+  TriMesh      mPlanetMesh;
 };
 
 
