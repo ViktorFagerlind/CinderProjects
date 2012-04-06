@@ -23,7 +23,7 @@ public:
           const float           radius, 
           const float           initialVelocity, 
           const PhysicsObject*  gravityCenter,
-                BumpMaterial*   material,
+                shared_ptr<BumpMaterial>   material,
                 TriMesh         mesh);
 
   void update();
@@ -49,5 +49,5 @@ protected:
 
   vector<float> mTangentBuffer;
 
-  BumpMaterial* mMaterial;
+  shared_ptr<BumpMaterial> mMaterial;
 };

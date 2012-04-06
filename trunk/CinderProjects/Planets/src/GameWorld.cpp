@@ -54,35 +54,8 @@ void GameWorld::setup ()
   ObjLoader loader (loadFile ("../Media/Meshes/Sphere.obj"));
   loader.load (&mPlanetMesh);
 
-	gl::Texture earthColor	= gl::Texture (loadImage (loadFile ("../Media/Images/earthDiffuse.jpg")));
-	gl::Texture earthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/earthMyNormals.jpg")));
-//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/brick_color_map.jpg")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/brick_normal_map.jpg")));
-//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_diffuse.png")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_normals.png")));
-//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/own_normals_none.png")));
-	earthColor.setWrap( GL_REPEAT, GL_REPEAT );
-	earthNormal.setWrap( GL_REPEAT, GL_REPEAT );
+  shared_ptr<BumpMaterial> earthMaterial = getBumpMaterial (mPlanetMesh);
 
-  gl::GlslProg bumpShader;
-	try {
-		bumpShader = gl::GlslProg (loadFile ("../Media/Shaders/BumpMap_Vertex.glsl"), loadFile ("../Media/Shaders/BumpMap_Pixel.glsl"));
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}
-
-  mPlanetMaterial = new BumpMaterial (earthColor, // const gl::Texture&  diffuseTexture,
-                                      earthNormal, // const gl::Texture&  normalTexture,
-                                      bumpShader, // const gl::GlslProg& shader,
-                                      mPlanetMesh, // const TriMesh&      mesh, 
-                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matAmbient,
-                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matDiffuse,
-                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matSpecular,
-                                      40.0f); // const float         matShininess);
- 
   for (int i=0; i<7; i++)
   {
     Planet *planet = new Planet(Rand::randFloat(100, 350),    // a
@@ -90,7 +63,7 @@ void GameWorld::setup ()
                                 Rand::randFloat(15, 50),       // radius
                                 Rand::randFloat(0.5f, 8),    // initial velocity
                                 mCenterObject, // center
-                                mPlanetMaterial,
+                                earthMaterial,
                                 mPlanetMesh);
     
     mObjects.push_back (planet);
@@ -102,7 +75,7 @@ void GameWorld::setup ()
                                 planet->getRadius() * 0.3f,   // radius
                                 Rand::randFloat(1, 2),       // initial velocity
                                 planet,              // center 
-                                mPlanetMaterial,
+                                earthMaterial,
                                 mPlanetMesh);
 
      mObjects.push_back (moon);
@@ -131,10 +104,6 @@ void GameWorld::setup ()
 
   particleSystem->addModifier (mGravityField);
 
-//  PerlinModifier *perlinModifier = new PerlinModifier (100, 0.06f, 0.1f);
-//  particleSystem->addModifier (perlinModifier);
-
-  
   commonModifier = new CommonModifier (1, 1.0f, 0.5f);
   particleSystem->addModifier (commonModifier);
     
@@ -272,4 +241,39 @@ void GameWorld::draw   ()
   // Draw gravity field
   glDisable (GL_TEXTURE_2D);
 //  mGravityField->draw ();
+}
+
+
+shared_ptr<BumpMaterial> GameWorld::getBumpMaterial (const TriMesh& mPlanetMesh)
+{
+	gl::Texture earthColor	= gl::Texture (loadImage (loadFile ("../Media/Images/earthDiffuse.jpg")));
+	gl::Texture earthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/earthMyNormals.jpg")));
+//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/brick_color_map.jpg")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/brick_normal_map.jpg")));
+//	mEarthColor	  = gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_diffuse.png")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/bump_own_normals.png")));
+//	mEarthNormal	= gl::Texture (loadImage (loadFile ("../Media/Images/own_normals_none.png")));
+	earthColor.setWrap( GL_REPEAT, GL_REPEAT );
+	earthNormal.setWrap( GL_REPEAT, GL_REPEAT );
+
+  gl::GlslProg bumpShader;
+	try {
+		bumpShader = gl::GlslProg (loadFile ("../Media/Shaders/BumpMap_Vertex.glsl"), loadFile ("../Media/Shaders/BumpMap_Pixel.glsl"));
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
+
+  BumpMaterial* materialPtr = new BumpMaterial (earthColor, // const gl::Texture&  diffuseTexture,
+                                                earthNormal, // const gl::Texture&  normalTexture,
+                                                bumpShader, // const gl::GlslProg& shader,
+                                                mPlanetMesh, // const TriMesh&      mesh, 
+                                                ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matAmbient,
+                                                ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matDiffuse,
+                                                ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // const ColorAf&      matSpecular,
+                                                40.0f); // const float         matShininess);
+
+  return shared_ptr<BumpMaterial> (materialPtr);
 }
