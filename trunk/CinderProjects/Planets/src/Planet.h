@@ -2,7 +2,7 @@
 
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
-#include "cinder/TriMesh.h"
+#include "cinder/gl/Vbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 
@@ -24,7 +24,7 @@ public:
           const float           initialVelocity, 
           const PhysicsObject*  gravityCenter,
                 shared_ptr<BumpMaterial>   material,
-                TriMesh         mesh);
+                gl::VboMesh     vbo);
 
   void update();
   void draw();
@@ -41,7 +41,7 @@ protected:
   float mTheta;             // position angle
   float mAxisAngle;			    // rotation angle around local z-axis
 
-  TriMesh      mMesh;
+  gl::VboMesh  mVbo;
 
 	gl::GlslProg mPlanetShader;
 	gl::Texture  mEarthColor;
