@@ -17,7 +17,7 @@ Planet::Planet (const float           a,
                 const float           initialVelocity, 
                 const PhysicsObject*  gravityCenter,
                       shared_ptr<BumpMaterial>   material,
-                      TriMesh         mesh)
+                      gl::VboMesh     vbo)
 : PhysicsObject  (4.0f/3.0f * (float)M_PI * radius * radius * radius * density,
                   Vec3f(0, 0, 0),
                   radius)
@@ -35,7 +35,7 @@ Planet::Planet (const float           a,
 
   mGravityCenter  = gravityCenter;
   mMaterial       = material;
-  mMesh           = mesh;
+  mVbo            = vbo;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ void Planet::draw()
   glEnable (GL_RESCALE_NORMAL);
   gl::scale (mRadius, mRadius, mRadius);
 
-  gl::draw (mMesh);
+  gl::draw (mVbo);
   glDisable (GL_RESCALE_NORMAL);
 
   mMaterial->unbind ();

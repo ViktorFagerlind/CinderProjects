@@ -1,6 +1,7 @@
 #include "GameWorld.h"
 
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Vbo.h"
 #include "cinder/ObjLoader.h"
 
 #include "Planet.h"
@@ -55,6 +56,7 @@ void GameWorld::setup ()
   TriMesh      planetMesh;
   loader.load (&planetMesh);
 
+
   shared_ptr<BumpMaterial> earthMaterial = getBumpMaterial (planetMesh, 
                                                             "../Media/Images/earthDiffuse.jpg",
                                                             "../Media/Images/earthMyNormals.jpg");
@@ -74,6 +76,8 @@ void GameWorld::setup ()
   materials.push_back (ownMaterial);
   materials.push_back (greenMaterial);
 
+	gl::VboMesh planetVbo = gl::VboMesh (planetMesh);
+
   for (int i=0; i<7; i++)
   {
     Planet *planet = new Planet(Rand::randFloat(100, 350),    // a
@@ -82,7 +86,7 @@ void GameWorld::setup ()
                                 Rand::randFloat(0.5f, 8),    // initial velocity
                                 mCenterObject, // center
                                 materials[Rand::randInt(materials.size())],
-                                planetMesh);
+                                planetVbo);
     
     mObjects.push_back (planet);
 
@@ -94,7 +98,7 @@ void GameWorld::setup ()
                                 Rand::randFloat(1, 2),       // initial velocity
                                 planet,              // center 
                                 materials[Rand::randInt(materials.size())],
-                                planetMesh);
+                                planetVbo);
 
      mObjects.push_back (moon);
     }
