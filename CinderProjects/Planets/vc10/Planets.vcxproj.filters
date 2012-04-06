@@ -75,6 +75,9 @@
     <ClCompile Include="..\src\BumpMaterial .cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Sun.cpp">
+      <Filter>Source Files\Planets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -158,6 +161,12 @@
     <ClInclude Include="..\src\BumpMaterial.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\BaseMaterial.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Sun.h">
+      <Filter>Source Files\Planets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -169,6 +178,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\SunSurface_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\SunSurface_vert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

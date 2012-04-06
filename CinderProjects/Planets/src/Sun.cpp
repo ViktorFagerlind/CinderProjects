@@ -37,7 +37,7 @@ Sun::Sun (const float                    mass,
   mVbo      = vbo;
 
 	try {
-		mShader = gl::GlslProg (loadFile ("../Media/Shaders/BumpMap_Vertex.glsl"), loadFile ("../Media/Shaders/BumpMap_Pixel.glsl"));
+		mShader = gl::GlslProg (loadFile ("../Media/Shaders/SunSurface_vert.glsl"), loadFile ("../Media/Shaders/SunSurface_frag.glsl"));
 	}	catch (gl::GlslProgCompileExc &exc) {
 		std::cout << "Shader compile error: " << std::endl;
 		std::cout << exc.what();
@@ -83,6 +83,10 @@ void Sun::update()
 
 void Sun::draw()
 {
+  static float t=0.0f;
+  
+  t += 0.01f;
+
 	glDisable (GL_BLEND);
   glEnable (GL_TEXTURE_2D);
 
@@ -91,6 +95,8 @@ void Sun::draw()
   gl::translate(mPosition);
 
   mShader.bind ();
+
+	mShader.uniform ("t", t);
 
   glEnable (GL_RESCALE_NORMAL);
   gl::scale (mRadius, mRadius, mRadius);
