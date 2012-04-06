@@ -3,14 +3,13 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
 #include "cinder/gl/Vbo.h"
-#include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
 
 #include <vector>
 
 #include "PhysicsObject.h"
 #include "BasicObject.h"
-#include "BumpMaterial.h"
+#include "BaseMaterial.h"
 
 using namespace ci;
 using namespace std;
@@ -23,7 +22,7 @@ public:
           const float           radius, 
           const float           initialVelocity, 
           const PhysicsObject*  gravityCenter,
-                shared_ptr<BumpMaterial>   material,
+                shared_ptr<BaseMaterial>   material,
                 gl::VboMesh     vbo);
 
   void update();
@@ -43,11 +42,5 @@ protected:
 
   gl::VboMesh  mVbo;
 
-	gl::GlslProg mPlanetShader;
-	gl::Texture  mEarthColor;
-	gl::Texture  mEarthNormal;
-
-  vector<float> mTangentBuffer;
-
-  shared_ptr<BumpMaterial> mMaterial;
+  shared_ptr<BaseMaterial> mMaterial;
 };
