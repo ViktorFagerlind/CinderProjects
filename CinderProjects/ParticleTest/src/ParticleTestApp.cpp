@@ -287,7 +287,7 @@ void ParticleApp::draw()
 
   mFrameBuffer->unbindFramebuffer();
 
-  //gl::draw( myFbo->getTexture() );
+  //gl::draw( mFrameBuffer->getTexture() );
   mFrameBuffer->blitToScreen (mFrameBuffer->getBounds(), getWindowBounds());
 
   if (mSavingImages)
@@ -352,7 +352,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               30.0f,   // min size
                               30.0f,   // max size
                               Vec3f (0, 0, 0),     // baseVelocity
-                              Vec3f (0.01f, 0.01f, 0));    // randVelocity
+                              0.01f, 0.01f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.pe = new PointEmitter (10000,
@@ -361,7 +361,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               50.0f,   // min size
                               50.0f,   // max size
                               Vec3f (0, 0, 0),     // baseVelocity
-                              Vec3f (0.01f, 0.01f, 0));    // randVelocity
+                              0.01f, 0.01f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.pe = new PointEmitter (10000,
@@ -370,7 +370,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               40.0f,   // min size
                               40.0f,   // max size
                               Vec3f (0, 0, 0),     // baseVelocity
-                              Vec3f (0.01f, 0.01f, 0));    // randVelocity
+                              0.01f, 0.01f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.cm = new CommonModifier(0.2,    // lifeChange
@@ -662,7 +662,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               6.0f,   // min size
                               6.0f,   // max size
                               Vec3f (3.5f, 2, 0),     // baseVelocity
-                              Vec3f (1.0f, 1.0f, 0));    // randVelocity
+                              1.0f, 1.0f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.cm = new CommonModifier (1.0f,    // lifeChange
