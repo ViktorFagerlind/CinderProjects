@@ -88,7 +88,7 @@ void GameWorld::setup ()
   // --- Initialise planet system ---------------------------------
 
   // Load mesh
-  ObjLoader loader (loadFile ("../Media/Meshes/Sphere.obj"));
+  ObjLoader loader (loadFile ("../Media/Meshes/Rock.obj"));
   TriMesh      planetMesh;
   loader.load (&planetMesh);
 	gl::VboMesh planetVbo = gl::VboMesh (planetMesh);
@@ -109,12 +109,16 @@ void GameWorld::setup ()
   shared_ptr<BumpMaterial> greenMaterial = getBumpMaterial (planetMesh, 
                                                             "../Media/Images/green_diffuse.jpg",
                                                             "../Media/Images/green_normal.png");
+  shared_ptr<BumpMaterial> moonMaterial = getBumpMaterial (planetMesh, 
+                                                            "../Media/Images/moon.jpg",
+                                                            "../Media/Images/bumps.jpg");
 
   vector<shared_ptr<BumpMaterial>> materials;
   materials.push_back (brickMaterial);
   materials.push_back (earthMaterial);
   materials.push_back (ownMaterial);
   materials.push_back (greenMaterial);
+  materials.push_back (moonMaterial);
 
   for (int i=0; i<6; i++)
   {
