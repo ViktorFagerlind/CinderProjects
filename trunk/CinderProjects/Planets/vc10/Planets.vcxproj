@@ -109,6 +109,7 @@
     <ClCompile Include="..\..\ParticleTest\src\FluidModifier.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\Particle.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\ParticleSystem.cpp" />
+    <ClCompile Include="..\src\BloomEffect.cpp" />
     <ClCompile Include="..\src\BumpMaterial .cpp" />
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\GameWorld.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\BaseMaterial.h" />
     <ClInclude Include="..\src\BasicObject.h" />
+    <ClInclude Include="..\src\BloomEffect.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\DynamicObject.h" />
     <ClInclude Include="..\src\GameWorld.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\Planet.h" />
     <ClInclude Include="..\src\Sun.h" />
+    <ClInclude Include="BloomEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

@@ -20,6 +20,6 @@ void main()
 
 	vec3 color = vec3 (2.0*r-g+0.5*b, r+g+b, -0.5*r+g+2.0*b);
 
-	gl_FragColor.rgb = color;
+	gl_FragColor.rgb = vec3(1, 1, 0.8);
 	gl_FragColor.a = 1.0;
 }
