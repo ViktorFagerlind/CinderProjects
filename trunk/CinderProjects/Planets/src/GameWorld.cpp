@@ -77,9 +77,9 @@ void GameWorld::setup ()
   // --- The explosions -------------------
   mExposionSystem = new ParticleSystem ("../Media/Images/fire.png");
   commonModifier = new CommonModifier (3, 1.0f, 0.5f);
-  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 1), //startColor 
-                                      ColorAf(1, 1, 1, 1), //middleColor
-                                      ColorAf(1, 1, 1, 0), //endColor
+  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 0.1f), //startColor 
+                                      ColorAf(1, 1, 1, 0.1f), //middleColor
+                                      ColorAf(1, 1, 1, 0.0f), //endColor
                                       0.5f);//float middleTime)
 
   mExposionSystem->addModifier (commonModifier);
@@ -90,7 +90,7 @@ void GameWorld::setup ()
   // --- Initialise planet system ---------------------------------
 
   // Load mesh
-  ObjLoader loader (loadFile ("../Media/Meshes/Rock.obj"));
+  ObjLoader loader (loadFile ("../Media/Meshes/Sphere.obj"));
   TriMesh      planetMesh;
   loader.load (&planetMesh);
 	gl::VboMesh planetVbo = gl::VboMesh (planetMesh);
@@ -149,7 +149,13 @@ void GameWorld::setup ()
   }
 
   // Create frame buffer
-  mRenderFbo = gl::Fbo (mScreenWidth, mScreenHeight, true, true, true);
+  gl::Fbo::Format format;
+  format.enableColorBuffer ();
+  format.enableDepthBuffer ();
+  format.enableMipmapping (true);
+  format.setColorInternalFormat (GL_RGBA32F);
+
+  mRenderFbo = gl::Fbo (mScreenWidth, mScreenHeight, format);
 
   // --- Misc OpenGL setup ---------------------------------
   glEnable (GL_DEPTH_TEST);
