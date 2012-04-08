@@ -106,7 +106,7 @@ void BumpMaterial::bind ()
 
 	mShader.uniform ("colorMap",  colorMapIndex);
 	mShader.uniform ("normalMap", normalMapIndex);
-	mShader.uniform ("invRadius", 1.0f/1000.0f); // Inverse of the sun lighting radius
+	mShader.uniform ("invRadius", 1.0f/500.0f); // Inverse of the sun lighting radius
   
   mDiffuseTexture.bind (colorMapIndex);
 	mNormalTexture.bind (normalMapIndex);

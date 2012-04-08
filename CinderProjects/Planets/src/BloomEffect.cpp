@@ -7,9 +7,15 @@ BloomEffect::BloomEffect (unsigned int blurWidth,
                           unsigned int screenHeight)
 : mBlurSize (1.0f)
 {
-  mFinalFbo          = gl::Fbo (screenWidth,  screenHeight, true, true, true);
-  mHorizontalBlurFbo = gl::Fbo (blurWidth,    blurHeight,   true, true, true);
-  mBothBlurFbo       = gl::Fbo (blurWidth,    blurHeight,   true, true, true);
+  gl::Fbo::Format format;
+  format.enableColorBuffer ();
+  format.enableDepthBuffer (false, false);
+  format.enableMipmapping (true);
+  format.setColorInternalFormat (GL_RGBA32F);
+
+  mFinalFbo          = gl::Fbo (screenWidth,  screenHeight, format);
+  mHorizontalBlurFbo = gl::Fbo (blurWidth,    blurHeight,   format);
+  mBothBlurFbo       = gl::Fbo (blurWidth,    blurHeight,   format);
 
   // Load blur shader
 	try {

@@ -18,26 +18,22 @@ Sun::Sun (const float                    mass,
   GameWorld::getGravityField ()->addGravityObject (this);
 
   // Initialise light
-  float darkgrey[] = {0.3f, 0.3f, 0.3f , 0.3f};
-  float white[] = {1.0f, 1.0f, 1.0f , 0.0f};
-  float red[]   = {1.0f, 0.0f, 0.0f , 0.0f};
-  float yellow[]= {1.0f, 1.0f, 0.0f , 0.0f};
-  float green[] = {0.0f, 1.0f, 0.0f , 0.0f};
-  float blue[]  = {0.0f, 0.0f, 1.0f , 0.0f};
-  float black[] = {0.0f, 0.0f, 0.0f , 0.0f};
+  float ambient[]  = {0.3f, 0.3f, 0.3f, 1.0f};
+  float specular[] = {2.0f, 2.0f, 2.0f, 1.0f};
+  float diffuse[]  = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	float center[] = {100, 0, 0, 1};
 
-  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE,  white);
-  glLightfv(GL_LIGHT0, GL_AMBIENT,  darkgrey);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
+  glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 	glEnable (GL_LIGHT0);
 
   mVbo      = vbo;
 
 	try {
-		mShader = gl::GlslProg (loadFile ("../Media/Shaders/SunSurface_vert.glsl"), loadFile ("../Media/Shaders/SunSurface_frag.glsl"));
+		mShader = gl::GlslProg (loadFile ("../Media/Shaders/passThru_vert.glsl"), loadFile ("../Media/Shaders/SunSurface_frag.glsl"));
 	}	catch (gl::GlslProgCompileExc &exc) {
 		std::cout << "Shader compile error: " << std::endl;
 		std::cout << exc.what();
@@ -98,7 +94,7 @@ void Sun::draw()
 	mShader.uniform ("t", t);
 
   glEnable (GL_RESCALE_NORMAL);
-  gl::scale (mRadius/100.0f, mRadius/100.0f, mRadius/100.0f);
+  gl::scale (mRadius, mRadius, mRadius);
 
   gl::draw (mVbo);
 

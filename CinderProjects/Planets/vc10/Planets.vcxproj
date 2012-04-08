@@ -162,7 +162,6 @@
     <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl" />
     <None Include="..\..\Media\Shaders\passThru_vert.glsl" />
     <None Include="..\..\Media\Shaders\SunSurface_frag.glsl" />
-    <None Include="..\..\Media\Shaders\SunSurface_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

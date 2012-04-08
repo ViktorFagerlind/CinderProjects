@@ -69,7 +69,7 @@ void Planet::draw()
   mMaterial->bind ();
 
   glEnable (GL_RESCALE_NORMAL);
-  gl::scale (mRadius/100.0f, mRadius/100.0f, mRadius/100.0f);
+  gl::scale (mRadius, mRadius, mRadius);
 
   gl::draw (mVbo);
   glDisable (GL_RESCALE_NORMAL);
