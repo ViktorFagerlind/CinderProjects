@@ -1,5 +1,5 @@
 uniform sampler2D	tex0;
-uniform vec2		  sampleOffset;
+uniform vec2		pixelOffset;
 
 float weights[21];
 
@@ -28,12 +28,12 @@ void main()
 	weights[20] = 0.009167927656011385;
 
 	vec3 sum = vec3 (0.0, 0.0, 0.0);
-	vec2 offset = -10.0 * sampleOffset;
+	vec2 offset = -10.0 * pixelOffset;
 
 	for( int s = 0; s < 21; s++ ) 
   {
 		sum += texture2D (tex0, gl_TexCoord[0].st + offset).rgb * weights[s];
-		offset += sampleOffset;
+		offset += pixelOffset;
 	}
 
 	gl_FragColor.rgb = sum;

@@ -17,8 +17,8 @@
 
 GameWorld* GameWorld::theGameWorld = NULL;
 
-unsigned int GameWorld::mScreenWidth  = 800;
-unsigned int GameWorld::mScreenHeight = 600;
+unsigned int GameWorld::mScreenWidth  = 1600;
+unsigned int GameWorld::mScreenHeight = 1000;
 
 
 GameWorld* GameWorld::getSingleton ()
@@ -42,6 +42,8 @@ void GameWorld::setup ()
 {
   CommonModifier *commonModifier;
   ColorModifier  *colorModifier;
+
+  mBloomEffect = new BloomEffect (mScreenWidth/8, mScreenHeight/8, mScreenWidth, mScreenHeight);
 
   mMovingCamera = new MovingCamera (GameWorld::mScreenWidth, GameWorld::mScreenHeight);
 
@@ -147,17 +149,7 @@ void GameWorld::setup ()
   }
 
   // Create frame buffer
-  mFrameBuffer = new gl::Fbo (mScreenWidth, mScreenHeight, true, true, true);
-
-  // Load blur shader
-	try {
-		mBlurShader = gl::GlslProg (loadFile ("../Media/Shaders/passThru_vert.glsl"), loadFile ("../Media/Shaders/blur_frag.glsl"));
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}
+  mRenderFbo = gl::Fbo (mScreenWidth, mScreenHeight, true, true, true);
 
   // --- Misc OpenGL setup ---------------------------------
   glEnable (GL_DEPTH_TEST);
@@ -205,10 +197,10 @@ void GameWorld::update ()
 void GameWorld::draw   ()
 {
 	// bind the framebuffer - now everything we draw will go there
-	mFrameBuffer->bindFramebuffer();
+	mRenderFbo.bindFramebuffer();
 
 	// setup the viewport to match the dimensions of the FBO
-	gl::setViewport( mFrameBuffer->getBounds() );
+	gl::setViewport( mRenderFbo.getBounds() );
 
 	// setup our camera to render the torus scene
   mMovingCamera->setViewMatrix ();
@@ -238,26 +230,9 @@ void GameWorld::draw   ()
 	glDisable  (GL_BLEND);
 
 	// unbind the framebuffer, so that drawing goes to the screen again
-	mFrameBuffer->unbindFramebuffer();
+	mRenderFbo.unbindFramebuffer();
 
   ///////////////////////////
-
-  // Do not test for depth when drawing FBO
-  glDisable (GL_DEPTH_TEST);
-
-	// set the viewport to match our window
-	gl::setViewport (getWindowBounds());
-
-	// draw the two textures we've created side-by-side
-	gl::setMatricesWindow (getWindowSize(), false);
-
-
-//  glDisable (GL_BLEND);
-  mBlurShader.bind ();
-	mBlurShader.uniform("tex0", 0); // use texture unit 0
-	mBlurShader.uniform("sampleOffset", Vec2f(1.0f/800.0f, 0.0f));
-	gl::draw (mFrameBuffer->getTexture(), mFrameBuffer->getTexture().getBounds(), getWindowBounds());
-  mBlurShader.unbind ();
 
   // Draw gravity field
   /*
@@ -265,8 +240,25 @@ void GameWorld::draw   ()
   mGravityField->draw ();
 	glDisable  (GL_BLEND);
   */
-}
 
+	gl::clear ();
+
+  // Draw normal scene to screen
+  gl::disableDepthRead ();
+  gl::color (1, 1, 1, 1);
+  gl::setMatricesWindow (getWindowSize (), false);
+	gl::draw (mRenderFbo.getTexture(), mRenderFbo.getTexture().getBounds(), getWindowBounds());
+
+  // Get blooming effect
+  gl::Fbo& bloomedFbo = mBloomEffect->render (mRenderFbo);
+
+  // Add blooming effect to screen
+  gl::setMatricesWindow (getWindowSize (), false);
+	gl::enableAdditiveBlending();
+  gl::color (1, 1, 1, 1);
+	gl::draw (bloomedFbo.getTexture(), bloomedFbo.getTexture().getBounds(), getWindowBounds());
+	gl::disableAlphaBlending();
+}
 
 shared_ptr<BumpMaterial> GameWorld::getBumpMaterial (const TriMesh& mesh,
                                                      const string&  diffuseTexture,

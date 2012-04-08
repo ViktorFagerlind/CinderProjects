@@ -6,6 +6,7 @@
 #include "cinder/gl/Texture.h"
 #include "cinder/gl/Fbo.h"
 
+#include "BloomEffect.h"
 #include "BasicObject.h"
 #include "BumpMaterial.h"
 #include "PhysicsObject.h"
@@ -19,7 +20,6 @@
 
 using namespace ci;
 using namespace std;
-using namespace ci::app;
 
 class GameWorld
 {
@@ -62,9 +62,10 @@ private:
 
   static GameWorld* theGameWorld;
 
-  gl::Fbo *mFrameBuffer;
+  gl::Fbo       mRenderFbo;
 
-  gl::GlslProg  mBlurShader;
+  // Bloom attributes
+  BloomEffect   *mBloomEffect;
 };
 
 
