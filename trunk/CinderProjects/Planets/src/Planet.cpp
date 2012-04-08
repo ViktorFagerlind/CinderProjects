@@ -63,13 +63,13 @@ void Planet::draw()
   // Matrix transforms
   gl::pushModelView();
   gl::translate(mPosition);
-  gl::rotate(Vec3f(45.0f,  0, 20.0f));
-  gl::rotate(Vec3f(0.0f,  mAxisAngle, 0));
+  gl::rotate(Vec3f(45.0f,       0.0f, 20.0f));
+  gl::rotate(Vec3f( 0.0f, mAxisAngle,  0.0f));
 
   mMaterial->bind ();
 
   glEnable (GL_RESCALE_NORMAL);
-  gl::scale (mRadius, mRadius, mRadius);
+  gl::scale (mRadius/100.0f, mRadius/100.0f, mRadius/100.0f);
 
   gl::draw (mVbo);
   glDisable (GL_RESCALE_NORMAL);

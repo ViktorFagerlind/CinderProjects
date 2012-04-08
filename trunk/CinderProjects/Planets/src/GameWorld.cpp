@@ -17,8 +17,8 @@
 
 GameWorld* GameWorld::theGameWorld = NULL;
 
-unsigned int GameWorld::mScreenWidth  = 1600;
-unsigned int GameWorld::mScreenHeight = 1000;
+unsigned int GameWorld::mScreenWidth  = 800;
+unsigned int GameWorld::mScreenHeight = 600;
 
 
 GameWorld* GameWorld::getSingleton ()
@@ -146,6 +146,19 @@ void GameWorld::setup ()
     }
   }
 
+  // Create frame buffer
+  mFrameBuffer = new gl::Fbo (mScreenWidth, mScreenHeight, true, true, true);
+
+  // Load blur shader
+	try {
+		mBlurShader = gl::GlslProg (loadFile ("../Media/Shaders/gaussianBlur_vert.glsl"), loadFile ("../Media/Shaders/gaussianBlurHorizontal_frag.glsl"));
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
+
   // --- Misc OpenGL setup ---------------------------------
   glEnable (GL_DEPTH_TEST);
   glDepthMask (GL_TRUE);
@@ -191,11 +204,17 @@ void GameWorld::update ()
 
 void GameWorld::draw   ()
 {
-  // Update camera
+	// bind the framebuffer - now everything we draw will go there
+	mFrameBuffer->bindFramebuffer();
+
+	// setup the viewport to match the dimensions of the FBO
+	gl::setViewport( mFrameBuffer->getBounds() );
+
+	// setup our camera to render the torus scene
   mMovingCamera->setViewMatrix ();
 
-  // Clear the window
-	gl::clear (Color (0, 0, 0));
+	// clear the FBO
+	gl::clear();
 
   mSun->setLightPosition ();
 
@@ -206,7 +225,7 @@ void GameWorld::draw   ()
     object->draw();
   }
 
-  // Setup blending for particle system
+    // Setup blending for particle system
 	glEnable  (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 	gl::disableDepthWrite ();
@@ -216,6 +235,27 @@ void GameWorld::draw   ()
 
 	gl::enableDepthWrite ();
 	glDisable  (GL_BLEND);
+
+	// unbind the framebuffer, so that drawing goes to the screen again
+	mFrameBuffer->unbindFramebuffer();
+
+  ///////////////////////////
+
+  // clear the window
+	gl::clear (Color (0, 0, 0));
+
+	// set the viewport to match our window
+	gl::setViewport (getWindowBounds());
+
+	// draw the two textures we've created side-by-side
+	gl::setMatricesWindow (getWindowSize(), false);
+
+//  glDisable (GL_BLEND);
+//	mBlurShader.uniform ("RTScene", 0 );
+//	mBlurShader.uniform ("blurSize", 1.0f);//1.0f / 512.0f);
+//  mBlurShader.bind ();
+	gl::draw (mFrameBuffer->getTexture(), mFrameBuffer->getTexture().getBounds(), getWindowBounds());
+//  mBlurShader.unbind ();
 
   // Draw gravity field
   /*
