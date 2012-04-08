@@ -186,5 +186,14 @@
     <None Include="..\..\Media\Shaders\SunSurface_vert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\..\Media\Shaders\gaussianBlur_vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\gaussianBlurHorizontal_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\gaussianBlurVertical_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

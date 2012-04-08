@@ -4,6 +4,7 @@
 #include "cinder/Rand.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/Fbo.h"
 
 #include "BasicObject.h"
 #include "BumpMaterial.h"
@@ -60,6 +61,10 @@ private:
   GravityField    *mGravityField;
 
   static GameWorld* theGameWorld;
+
+  gl::Fbo *mFrameBuffer;
+
+  gl::GlslProg  mBlurShader;
 };
 
 

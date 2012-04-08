@@ -58,16 +58,16 @@ Sun::Sun (const float                    mass,
 							                                   0.55f);  //randVelocity
                                                  
   CommonModifier* commonModifier = new CommonModifier (1.2f, 1.0f, 1.0f);
-  ColorModifier*  colorModifier  = new ColorModifier (ColorAf(1, 1,    0.5f, 1), //startColor 
-                                       ColorAf(1, 0.8f, 0.2f, 0.3f), //middleColor
-                                       ColorAf(1, 0.6f, 0.1f, 0), //endColor
-                                       0.8f);//float middleTime)
+  ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 1), //startColor 
+                                                       ColorAf(1, 0.8f, 0.2f, 0.3f), //middleColor
+                                                       ColorAf(1, 0.6f, 0.1f, 0), //endColor
+                                                       0.8f);//float middleTime)
   sunParticleSystem->addModifier (commonModifier);
   sunParticleSystem->addModifier (colorModifier);
 
   sunParticleSystem->addEmitter (sunEmitter);
 
-  GameWorld::getParticleSystemManager()->addParticleSystem (sunParticleSystem);
+  // GameWorld::getParticleSystemManager()->addParticleSystem (sunParticleSystem);
 }
 
 void Sun::setLightPosition ()
@@ -95,11 +95,10 @@ void Sun::draw()
   gl::translate(mPosition);
 
   mShader.bind ();
-
 	mShader.uniform ("t", t);
 
   glEnable (GL_RESCALE_NORMAL);
-  gl::scale (mRadius, mRadius, mRadius);
+  gl::scale (mRadius/100.0f, mRadius/100.0f, mRadius/100.0f);
 
   gl::draw (mVbo);
 
