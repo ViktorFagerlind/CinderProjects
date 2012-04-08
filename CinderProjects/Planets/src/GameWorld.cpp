@@ -43,7 +43,7 @@ void GameWorld::setup ()
   CommonModifier *commonModifier;
   ColorModifier  *colorModifier;
 
-  mBloomEffect = new BloomEffect (mScreenWidth/8, mScreenHeight/8, mScreenWidth, mScreenHeight);
+  mBloomEffect = new BloomEffect (mScreenWidth/4, mScreenHeight/4, mScreenWidth, mScreenHeight);
 
   mMovingCamera = new MovingCamera (GameWorld::mScreenWidth, GameWorld::mScreenHeight);
 
@@ -235,11 +235,6 @@ void GameWorld::draw   ()
 	gl::enableDepthWrite ();
 	glDisable  (GL_BLEND);
 
-	// unbind the framebuffer, so that drawing goes to the screen again
-	mRenderFbo.unbindFramebuffer();
-
-  ///////////////////////////
-
   // Draw gravity field
   /*
 	glEnable  (GL_BLEND);
@@ -247,6 +242,11 @@ void GameWorld::draw   ()
 	glDisable  (GL_BLEND);
   */
 
+	// unbind the framebuffer, so that drawing goes to the screen again
+	mRenderFbo.unbindFramebuffer();
+
+  ///////////////////////////
+ 
 	gl::clear ();
 
   // Draw normal scene to screen

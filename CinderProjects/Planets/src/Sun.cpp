@@ -19,7 +19,7 @@ Sun::Sun (const float                    mass,
 
   // Initialise light
   float ambient[]  = {0.3f, 0.3f, 0.3f, 1.0f};
-  float specular[] = {2.0f, 2.0f, 2.0f, 1.0f};
+  float specular[] = {1.5f, 1.5f, 1.5f, 1.0f};
   float diffuse[]  = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	float center[] = {100, 0, 0, 1};
@@ -51,11 +51,11 @@ Sun::Sun (const float                    mass,
 							                                   15,                   //maxParticleSize,
 							                                   Vec3f (0, 0, 0),      //baseVelocity,
                                                  0.5f,
-							                                   0.55f);  //randVelocity
+							                                   0.6f);  //randVelocity
                                                  
   CommonModifier* commonModifier = new CommonModifier (1.2f, 1.0f, 1.0f);
-  ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 1), //startColor 
-                                                       ColorAf(1, 0.8f, 0.2f, 0.3f), //middleColor
+  ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.05f), //startColor 
+                                                       ColorAf(1, 0.8f, 0.2f, 0.05f), //middleColor
                                                        ColorAf(1, 0.6f, 0.1f, 0), //endColor
                                                        0.8f);//float middleTime)
   sunParticleSystem->addModifier (commonModifier);
@@ -63,7 +63,7 @@ Sun::Sun (const float                    mass,
 
   sunParticleSystem->addEmitter (sunEmitter);
 
-  // GameWorld::getParticleSystemManager()->addParticleSystem (sunParticleSystem);
+  GameWorld::getParticleSystemManager()->addParticleSystem (sunParticleSystem);
 }
 
 void Sun::setLightPosition ()
