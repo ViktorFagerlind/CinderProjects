@@ -215,6 +215,7 @@ void GameWorld::draw   ()
 
 	// clear the FBO
 	gl::clear();
+  glEnable (GL_DEPTH_TEST);
 
   mSun->setLightPosition ();
 
@@ -241,8 +242,8 @@ void GameWorld::draw   ()
 
   ///////////////////////////
 
-  // clear the window
-	gl::clear (Color (0, 0, 0));
+  // Do not test for depth when drawing FBO
+  glDisable (GL_DEPTH_TEST);
 
 	// set the viewport to match our window
 	gl::setViewport (getWindowBounds());
