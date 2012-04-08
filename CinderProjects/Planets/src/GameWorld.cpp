@@ -151,7 +151,7 @@ void GameWorld::setup ()
 
   // Load blur shader
 	try {
-		mBlurShader = gl::GlslProg (loadFile ("../Media/Shaders/gaussianBlur_vert.glsl"), loadFile ("../Media/Shaders/gaussianBlurHorizontal_frag.glsl"));
+		mBlurShader = gl::GlslProg (loadFile ("../Media/Shaders/passThru_vert.glsl"), loadFile ("../Media/Shaders/blur_frag.glsl"));
 	}	catch (gl::GlslProgCompileExc &exc) {
 		std::cout << "Shader compile error: " << std::endl;
 		std::cout << exc.what();
@@ -251,12 +251,13 @@ void GameWorld::draw   ()
 	// draw the two textures we've created side-by-side
 	gl::setMatricesWindow (getWindowSize(), false);
 
+
 //  glDisable (GL_BLEND);
-//	mBlurShader.uniform ("RTScene", 0 );
-//	mBlurShader.uniform ("blurSize", 1.0f);//1.0f / 512.0f);
-//  mBlurShader.bind ();
+  mBlurShader.bind ();
+	mBlurShader.uniform("tex0", 0); // use texture unit 0
+	mBlurShader.uniform("sampleOffset", Vec2f(1.0f/800.0f, 0.0f));
 	gl::draw (mFrameBuffer->getTexture(), mFrameBuffer->getTexture().getBounds(), getWindowBounds());
-//  mBlurShader.unbind ();
+  mBlurShader.unbind ();
 
   // Draw gravity field
   /*

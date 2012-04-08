@@ -7,8 +7,6 @@ void main(void)
 {
    vec4 sum = vec4(0.0);
  
-   blurSize = 100.0;
-
    // blur in y (vertical)
    // take nine samples, with the distance blurSize between them
    sum += texture2D(RTScene, vec2(vTexCoord.x - 4.0*blurSize, vTexCoord.y)) * 0.05;

@@ -154,11 +154,10 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Media\Shaders\blur_frag.glsl" />
     <None Include="..\..\Media\Shaders\BumpMap_Pixel.glsl" />
     <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl" />
-    <None Include="..\..\Media\Shaders\gaussianBlurHorizontal_frag.glsl" />
-    <None Include="..\..\Media\Shaders\gaussianBlurVertical_frag.glsl" />
-    <None Include="..\..\Media\Shaders\gaussianBlur_vert.glsl" />
+    <None Include="..\..\Media\Shaders\passThru_vert.glsl" />
     <None Include="..\..\Media\Shaders\SunSurface_frag.glsl" />
     <None Include="..\..\Media\Shaders\SunSurface_vert.glsl" />
   </ItemGroup>
