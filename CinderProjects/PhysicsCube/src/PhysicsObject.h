@@ -17,7 +17,7 @@ class PhysicsObject
   float     EulerForward(float f, float fPrim, float dt);
   Vec3f     EulerForward(Vec3f f, Vec3f fPrim, float dt);
   Matrix44f EulerForward(Matrix44f f, Matrix44f fPrim, float dt);
-  Matrix44f Orthogonalize(Matrix44f matrix);
+  void Orthogonalize(Matrix44f& matrix);
   Matrix44f getSkewMatrix(Vec3f vector);
 
   Vec3f getPosition();

@@ -258,6 +258,13 @@ void GameWorld::draw   ()
   // Get blooming effect
   gl::Fbo& bloomedFbo = mBloomEffect->render (mRenderFbo);
 
+  // Draw particle systems
+  /*
+  gl::setViewport (getWindowBounds ());
+  mMovingCamera->setViewMatrix ();
+  mParticleSystemManager->draw ();
+  */
+
   // Add blooming effect to screen
   gl::setMatricesWindow (getWindowSize (), false);
 	gl::enableAdditiveBlending();

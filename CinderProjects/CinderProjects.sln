@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleTest", "ParticleTest\vc10\ParticleTest.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderTest", "ShaderTest\vc10\ShaderTest.vcxproj", "{F6ACC654-B782-4705-912D-706E7C8E711A}"
@@ -9,6 +9,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkyRoads", "SkyRoads\vc10\SkyRoads.vcxproj", "{F96F2FFC-F448-4EC6-82D7-86CEF5AE49BA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planets", "Planets\vc10\Planets.vcxproj", "{0DC0D091-6C3A-4F9C-981C-A0547ED6AC7E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsCube", "PhysicsCube\vc10\PhysicsCube.vcxproj", "{6DBA9374-A390-406F-AD21-690906B4B757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{0DC0D091-6C3A-4F9C-981C-A0547ED6AC7E}.Debug|Win32.Build.0 = Debug|Win32
 		{0DC0D091-6C3A-4F9C-981C-A0547ED6AC7E}.Release|Win32.ActiveCfg = Release|Win32
 		{0DC0D091-6C3A-4F9C-981C-A0547ED6AC7E}.Release|Win32.Build.0 = Release|Win32
+		{6DBA9374-A390-406F-AD21-690906B4B757}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6DBA9374-A390-406F-AD21-690906B4B757}.Debug|Win32.Build.0 = Debug|Win32
+		{6DBA9374-A390-406F-AD21-690906B4B757}.Release|Win32.ActiveCfg = Release|Win32
+		{6DBA9374-A390-406F-AD21-690906B4B757}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
