@@ -18,7 +18,6 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog)
   mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);  
   mOrientation        = Matrix44f::identity();
   mOrientationSpeed   = Matrix44f::identity();
-
 };
 
 void PhysicsObject::update()
@@ -68,7 +67,9 @@ void PhysicsObject::update()
   orientationAccel  = tempSkewMatrix * mOrientationSpeed;
   mOrientationSpeed = tempSkewMatrix * mOrientation;
   mOrientation      = EulerForward(mOrientation, mOrientationSpeed, dt);
-  mOrientation      = Orthogonalize(mOrientation);
+
+  Orthogonalize (mOrientation);
+
   mOrientation.setColumn(3, Vec4f(0,        0,          0, 1));
 
   //float angle = 0.0f;
@@ -88,15 +89,39 @@ void PhysicsObject::draw()
   //glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
   gl::multModelView(mOrientation);
 
-  glBegin(GL_QUADS);
-  float halfSize = 100/2;
-  glVertex3f (-halfSize, -halfSize, 0);
-  glVertex3f (halfSize, -halfSize, 0);
-  glVertex3f (halfSize, halfSize, 0);
-  glVertex3f (-halfSize, halfSize, 0);
+  // Draw cube
+  float halfSize = 100.0f/2.0f;
+  glBegin(GL_LINE_STRIP);
+  glVertex3f (-halfSize, -halfSize, -halfSize);
+  glVertex3f ( halfSize, -halfSize, -halfSize);
+  glVertex3f ( halfSize,  halfSize, -halfSize);
+  glVertex3f (-halfSize,  halfSize, -halfSize);
+  glVertex3f (-halfSize, -halfSize, -halfSize);
   glEnd();
+
+  glBegin(GL_LINE_STRIP);
+  glVertex3f (-halfSize, -halfSize,  halfSize);
+  glVertex3f ( halfSize, -halfSize,  halfSize);
+  glVertex3f ( halfSize,  halfSize,  halfSize);
+  glVertex3f (-halfSize,  halfSize,  halfSize);
+  glVertex3f (-halfSize, -halfSize,  halfSize);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f (-halfSize, -halfSize, -halfSize);
+  glVertex3f (-halfSize, -halfSize,  halfSize);
+
+  glVertex3f ( halfSize, -halfSize, -halfSize);
+  glVertex3f ( halfSize, -halfSize,  halfSize);
+
+  glVertex3f ( halfSize,  halfSize, -halfSize);
+  glVertex3f ( halfSize,  halfSize,  halfSize);
+
+  glVertex3f (-halfSize,  halfSize, -halfSize);
+  glVertex3f (-halfSize,  halfSize,  halfSize);
+  glEnd();
+
   glPopMatrix();
-  
 }
 
 void PhysicsObject::setPosition(Vec3f position)
@@ -132,25 +157,35 @@ Matrix44f PhysicsObject::getSkewMatrix(Vec3f vector)
   return skewMatrix;
 }
 
-Matrix44f PhysicsObject::Orthogonalize(Matrix44f matrix)
+void PhysicsObject::Orthogonalize(Matrix44f& matrix)
 {
-  Matrix44f tempMatrix = matrix;
+  const float treshold = 0.000001;
+
+  Matrix44f matrixClone;
   Vec4f     tempColumn;
   float determinant;
   
-  for(int i=0; i<100; i++)
-  {
+  determinant = matrix.determinant ();
 
-  }
-  
-  for(int i=0; i<4; i++)
+  for (int i=0; i<1000 && abs(determinant - 1.0f) > treshold; i++)
   {
-    tempColumn = matrix.getColumn(i);
-    tempColumn.normalize();
-    tempMatrix.setColumn(i, tempColumn);
-  }
+    matrixClone = matrix;
 
-  return tempMatrix;
+    matrix.transpose ();
+    matrix.invert ();
+
+    matrix = (matrix + matrixClone) / 2.0f;
+
+    // normalize
+    for(int j=0; j<4; j++)
+    {
+      tempColumn = matrix.getColumn(j);
+      tempColumn.normalize();
+      matrix.setColumn(j, tempColumn);
+    }
+
+    determinant = matrix.determinant ();
+  }
 }
 
 float PhysicsObject::EulerForward(float f, float fPrim, float dt)

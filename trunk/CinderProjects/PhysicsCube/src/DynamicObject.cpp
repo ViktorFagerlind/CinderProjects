@@ -25,10 +25,15 @@ void DynamicObject::update()
 void DynamicObject::draw()
 {
   PhysicsObject::draw();
+
   gl::color(0.3f, 0.3f, 1.0f);
   gl::drawVector(mPosition, mPosition + mVelocity, 10.0f, 5.0f);
+
   gl::color(0.3f, 1.0f, 0.3f);
   gl::drawVector(mPosition + mVelocity, mPosition + mVelocity + mAcceleration, 10.0f, 5.0f);
+
+  gl::color(1.0f, 0.3f, 0.3f);
+  gl::drawVector(mPosition, mPosition + 5.0f * mRotationSpeedVect, 10.0f, 5.0f);
 }
 
 

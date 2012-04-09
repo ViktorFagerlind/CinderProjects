@@ -29,7 +29,7 @@ void PhysicsCubeApp::mouseDown( MouseEvent event )
 
 void PhysicsCubeApp::update()
 {
-  if (cube->getPosition().y > 200)
+  if (cube->getPosition().y > 300)
   {
     cube->applyForce(Vec3f(0, -50, 0));
     cube->applyTorque(Vec3f(1, 0, 0), Vec3f(0.0, 5.1, 0.0));
@@ -37,11 +37,10 @@ void PhysicsCubeApp::update()
   }
   else
   {
-    cube->applyForce(Vec3f(0, 20, 0));
+    cube->applyForce(Vec3f(0, 30, 0));
     cube->applyTorque(Vec3f(1, 0, 0), Vec3f(0.0, 10.1, 10.0));
     cube->update();
   }
-
 }
 
 void PhysicsCubeApp::draw()
