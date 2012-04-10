@@ -32,10 +32,14 @@ GameWorld* GameWorld::getSingleton ()
     return theGameWorld;
 }
 
-
 void GameWorld::keyDown (KeyEvent event)
 {
   mMovingCamera->keyDown (event);
+}
+
+void GameWorld::mouseMove (MouseEvent event)
+{
+  mMovingCamera->mouseMove (event);
 }
 
 void GameWorld::setup ()
@@ -45,7 +49,7 @@ void GameWorld::setup ()
 
   mBloomEffect = new BloomEffect (mScreenWidth/4, mScreenHeight/4, mScreenWidth, mScreenHeight);
 
-  mMovingCamera = new MovingCamera (GameWorld::mScreenWidth, GameWorld::mScreenHeight);
+  mMovingCamera = new MovingCamera (Vec3f(1000,0,0), Vec3f(0,0,0));
 
   // Setup gravity field
   mGravityField = new GravityField (Vec3f (-300, -300, -300), Vec3f (600, 600, 600), Vec3i (30, 30, 9));
@@ -94,7 +98,6 @@ void GameWorld::setup ()
   TriMesh      planetMesh;
   loader.load (&planetMesh);
 	gl::VboMesh planetVbo = gl::VboMesh (planetMesh);
-
 
   mSun = new Sun (100.0f*1000.0f*1000.0f, Vec3f (100, 0, 0), 30, planetVbo);
   mObjects.push_back (mSun);
