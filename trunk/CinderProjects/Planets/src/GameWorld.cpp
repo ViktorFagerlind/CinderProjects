@@ -47,9 +47,9 @@ void GameWorld::setup ()
   CommonModifier *commonModifier;
   ColorModifier  *colorModifier;
 
-  mBloomEffect = new BloomEffect (mScreenWidth/4, mScreenHeight/4, mScreenWidth, mScreenHeight);
+  mBloomEffect = new BloomEffect (mScreenWidth/8, mScreenHeight/8, mScreenWidth, mScreenHeight);
 
-  mMovingCamera = new MovingCamera (Vec3f(1000,0,0), Vec3f(0,0,0));
+  mMovingCamera = new MovingCamera (500.0f);
 
   // Setup gravity field
   mGravityField = new GravityField (Vec3f (-300, -300, -300), Vec3f (600, 600, 600), Vec3i (30, 30, 9));
@@ -227,23 +227,16 @@ void GameWorld::draw   ()
     object->draw();
   }
 
-    // Setup blending for particle system
-	glEnable  (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+  // Setup blending for particle system
 	gl::disableDepthWrite ();
-
-  // Draw particle systems
+	gl::enableAdditiveBlending();
   mParticleSystemManager->draw ();
-
-	gl::enableDepthWrite ();
-	glDisable  (GL_BLEND);
+	gl::disableAlphaBlending();
 
   // Draw gravity field
-  /*
 	glEnable  (GL_BLEND);
   mGravityField->draw ();
 	glDisable  (GL_BLEND);
-  */
 
 	// unbind the framebuffer, so that drawing goes to the screen again
 	mRenderFbo.unbindFramebuffer();
@@ -252,7 +245,7 @@ void GameWorld::draw   ()
  
 	gl::clear ();
 
-  // Draw normal scene to screen
+  // Draw scene to screen
   gl::disableDepthRead ();
   gl::color (1, 1, 1, 1);
   gl::setMatricesWindow (getWindowSize (), false);
@@ -261,17 +254,13 @@ void GameWorld::draw   ()
   // Get blooming effect
   gl::Fbo& bloomedFbo = mBloomEffect->render (mRenderFbo);
 
-  // Draw particle systems
-  /*
+  // Draw things not to bloom 
   gl::setViewport (getWindowBounds ());
-  mMovingCamera->setViewMatrix ();
-  mParticleSystemManager->draw ();
-  */
 
   // Add blooming effect to screen
   gl::setMatricesWindow (getWindowSize (), false);
 	gl::enableAdditiveBlending();
-  gl::color (1, 1, 1, 1);
+  gl::color (1, 1, 1, 0.9f);
 	gl::draw (bloomedFbo.getTexture(), bloomedFbo.getTexture().getBounds(), getWindowBounds());
 	gl::disableAlphaBlending();
 }

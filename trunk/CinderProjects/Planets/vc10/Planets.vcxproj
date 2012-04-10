@@ -109,6 +109,7 @@
     <ClCompile Include="..\..\ParticleTest\src\FluidModifier.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\Particle.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp" />
     <ClCompile Include="..\src\BloomEffect.cpp" />
     <ClCompile Include="..\src\BumpMaterial .cpp" />
     <ClCompile Include="..\src\DynamicObject.cpp" />
