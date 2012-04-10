@@ -10,10 +10,10 @@ class PlanetsApp : public AppBasic {
   void prepareSettings (Settings *settings);
 	void setup ();
 	void mouseDown (MouseEvent event);	
+  void mouseMove (MouseEvent event);
 	void keyDown (KeyEvent event);
 	void update ();
 	void draw ();
-
 };
 
 void PlanetsApp::prepareSettings (Settings *settings)
@@ -33,6 +33,11 @@ void PlanetsApp::mouseDown (MouseEvent event)
 void PlanetsApp::keyDown (KeyEvent event)
 {
   GameWorld::getSingleton ()->keyDown (event);
+}
+
+void PlanetsApp::mouseMove (MouseEvent event)
+{
+  GameWorld::getSingleton ()->mouseMove (event);
 }
 
 void PlanetsApp::update()

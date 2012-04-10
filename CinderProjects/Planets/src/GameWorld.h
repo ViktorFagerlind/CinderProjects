@@ -27,6 +27,7 @@ public:
   static GameWorld *getSingleton ();
 
   void keyDown (KeyEvent event);
+  void mouseMove (MouseEvent event);
 
   void setup ();
 
