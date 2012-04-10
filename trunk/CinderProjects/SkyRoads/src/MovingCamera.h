@@ -36,6 +36,7 @@ private:
 
   Vec3f mEye;
   Vec3f mTargetVec;
+  Vec3f mUpVector;
 
   float mDist;
 };
