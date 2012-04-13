@@ -49,6 +49,6 @@ private:
   static const float speed;
   static const float width;
   static const float gravity;       // 1 = no gravity, 0 = infinite
-  static const unsigned int maxLength;     // how many points per spline section
+  static const uint32_t maxLength;     // how many points per spline section
 };
 

@@ -21,14 +21,14 @@ public:
 
 private:
   Road *mSkyRoads;
-  unsigned int mFrameCount;
+  uint32_t mFrameCount;
 
   SpringCamera *mSpringCamera;
 
-  static const unsigned int mRoadCount;
+  static const uint32_t mRoadCount;
 };
 
-const unsigned int SkyRoadsApp::mRoadCount = 200;
+const uint32_t SkyRoadsApp::mRoadCount = 200;
 
 
 void SkyRoadsApp::prepareSettings (Settings *settings)

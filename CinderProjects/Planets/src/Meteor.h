@@ -71,7 +71,7 @@ public:
 
 protected:
   bool          mHasCollided;
-  unsigned int  mCollideCounter;
+  uint32_t  mCollideCounter;
 };
 
 

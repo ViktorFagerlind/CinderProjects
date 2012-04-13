@@ -44,12 +44,12 @@ void BumpMaterial::calculateTangents (const TriMesh& mesh)
   const std::vector<Vec2f>&			meshTexCoords = mesh.getTexCoords();
 	const std::vector<uint32_t>&  meshIndices   = mesh.getIndices();
 
-  const unsigned int nofVertices  = meshVertices.size ();
+  const uint32_t nofVertices  = meshVertices.size ();
 
   vector<Vec3f>         addedTangents;
   addedTangents.resize (nofVertices); // One tangent (3 floats) for each vertex
 
-  vector<unsigned int>  nofAdditions;
+  vector<uint32_t>  nofAdditions;
   nofAdditions.resize  (nofVertices);
 
   // Go through the triangles and sum the tangents for the different faces

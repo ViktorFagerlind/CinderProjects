@@ -41,8 +41,8 @@ public:
   static GravityField* getGravityField ()       {return getSingleton ()->mGravityField;}
 
 public:
-  static unsigned int mScreenWidth;
-  static unsigned int mScreenHeight;
+  static uint32_t mScreenWidth;
+  static uint32_t mScreenHeight;
 
 private:
   shared_ptr<BumpMaterial> getBumpMaterial (const TriMesh& mesh,

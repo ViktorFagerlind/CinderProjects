@@ -1,10 +1,10 @@
 #include "BloomEffect.h"
 
 
-BloomEffect::BloomEffect (unsigned int blurWidth, 
-                          unsigned int blurHeight, 
-                          unsigned int screenWidth, 
-                          unsigned int screenHeight)
+BloomEffect::BloomEffect (uint32_t blurWidth, 
+                          uint32_t blurHeight, 
+                          uint32_t screenWidth, 
+                          uint32_t screenHeight)
 : mBlurSize (1.0f)
 {
   gl::Fbo::Format format;
