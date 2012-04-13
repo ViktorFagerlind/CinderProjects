@@ -5,6 +5,8 @@
 #include "../../ParticleTest/src/Modifier.h"
 
 #include "cinder/Vector.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Vbo.h"
 
 #include <set>
 #include <list>
@@ -16,7 +18,7 @@ typedef std::vector<Vec3f>   Field1D;
 typedef std::vector<Field1D> Field2D;
 typedef std::vector<Field2D> Field3D;
 
-typedef const Vec3<unsigned int> Vec3i;
+typedef const Vec3<uint32_t> Vec3i;
 
 
 class GravityField : public Modifier
@@ -66,6 +68,19 @@ private:
   const Vec3f mSize;
   const Vec3f mElementSize;
   const Vec3i mNofElements;
+
+  float mElementsSize;
+  int   mNofElementsPerSide;
+
+	// Shader
+	gl::GlslProg mShader;
+
+	std::vector<uint32_t> mVboIndices;
+	gl::VboMesh::Layout   mVboLayout;
+	std::vector<Vec2f>    mVboTexCoords;
+	std::vector<Vec3f>    mVboVertices;
+	gl::VboMesh	          mVboMesh;
+
 };
 
 

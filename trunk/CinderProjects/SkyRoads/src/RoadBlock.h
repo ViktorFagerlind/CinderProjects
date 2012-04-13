@@ -15,9 +15,9 @@ public:
 		mLeft   = left;
 	}
 
-  static unsigned int getIterations () {return 4;}
+  static uint32_t getIterations () {return 4;}
 
-  void draw (unsigned int i, float whereWeight)
+  void draw (uint32_t i, float whereWeight)
   {
     const Vec3f upAdd   = 7.0f  * mNormal * (whereWeight + 0.3f);
     const Vec3f leftAdd = 10.0f * mLeft * (whereWeight + 0.3f);

@@ -14,25 +14,43 @@ GravityField::GravityField (const Vec3f& position, const Vec3f& size, const Vec3
   mElementSize(Vec3f (size.x/(float)nofElements.x, size.y/(float)nofElements.y, size.z/(float)nofElements.z))
 {
   mGravityPotential.resize (mNofElements.x);
-  for (unsigned int x=0; x<mNofElements.x; x++)
+  for (uint32_t x=0; x<mNofElements.x; x++)
   {
     mGravityPotential[x].resize (mNofElements.y);
-    for (unsigned int y=0; y<mNofElements.y; y++)
+    for (uint32_t y=0; y<mNofElements.y; y++)
     {
       mGravityPotential[x][y].resize (mNofElements.z);
     }
   }
 
   resetField ();
+
+
+  mElementsSize         = 50;
+  mNofElementsPerSide   = 10;
+
+	try {
+	  mShader = gl::GlslProg (loadFile ("../Media/Shaders/gravity_vert.glsl"), 
+                            loadFile ("../Media/Shaders/gravity_frag.glsl"),  
+                            loadFile ("../Media/Shaders/gravity_geom.glsl"), 
+                            GL_POINTS, 
+                            GL_LINE_STRIP, 
+                            2*(mNofElementsPerSide + 1)*(mNofElementsPerSide + 1));
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
 }
 
 void GravityField::resetField ()
 {
-  for (unsigned int x=0; x<mNofElements.x; x++)
+  for (uint32_t x=0; x<mNofElements.x; x++)
   {
-    for (unsigned int y=0; y<mNofElements.y; y++)
+    for (uint32_t y=0; y<mNofElements.y; y++)
     {
-      for (unsigned int z=0; z<mNofElements.z; z++)
+      for (uint32_t z=0; z<mNofElements.z; z++)
       {
         mGravityPotential[x][y][z] = Vec3f (0, 0, 0);
       }
@@ -119,9 +137,9 @@ const Vec3f GravityField::getGravityPotentialForObject (const Vec3f& objectPosit
     return Vec3f (0, 0, 0);
 
   // Calculate which gravity slot the object belongs to
-  unsigned int x = (unsigned int)((objectPositon.x - mPosition.x) / mElementSize.x);
-  unsigned int y = (unsigned int)((objectPositon.y - mPosition.y) / mElementSize.y);
-  unsigned int z = (unsigned int)((objectPositon.z - mPosition.z) / mElementSize.z);
+  uint32_t x = (uint32_t)((objectPositon.x - mPosition.x) / mElementSize.x);
+  uint32_t y = (uint32_t)((objectPositon.y - mPosition.y) / mElementSize.y);
+  uint32_t z = (uint32_t)((objectPositon.z - mPosition.z) / mElementSize.z);
 
   return mGravityPotential[x][y][z];
 }
@@ -160,11 +178,11 @@ void GravityField::update ()
 {
   resetField ();
 
-  for (unsigned int x=0; x<mNofElements.x; x++)
+  for (uint32_t x=0; x<mNofElements.x; x++)
   {
-    for (unsigned int y=0; y<mNofElements.y; y++)
+    for (uint32_t y=0; y<mNofElements.y; y++)
     {
-      for (unsigned int z=0; z<mNofElements.z; z++)
+      for (uint32_t z=0; z<mNofElements.z; z++)
       {
         const Vec3f center = Vec3f ((float)x * mElementSize.x,
                                     (float)y * mElementSize.y,
@@ -198,20 +216,39 @@ void GravityField::draw ()
 {
   float cx, cy, cz;
 
+  mShader.bind ();
+  mShader.uniform ("elementSize",         mElementsSize);
+  mShader.uniform ("nofElementsPerSide",  mNofElementsPerSide);
+
+  /*
+  glBegin (GL_POINTS);
+    glVertex3f (0,0,0);
+  glEnd ();*/
+
+  mShader.unbind ();
+
+  glBegin (GL_TRIANGLE_STRIP);
+    glVertex3f (0,0,0);
+    glVertex3f (1000,0,0);
+    glVertex3f (1000,1000,0);
+  glEnd ();
+
+
+#if 0
   glDisable (GL_TEXTURE_2D);
 
-  for (unsigned int z=mNofElements.z/2-1; z<mNofElements.z/2+2; z++)
-//  for (unsigned int z=0; z<mNofElements.z; z++)
+  for (uint32_t z=mNofElements.z/2-1; z<mNofElements.z/2+2; z++)
+//  for (uint32_t z=0; z<mNofElements.z; z++)
   {
     cz = (float)z * mElementSize.z;
 
-    for (unsigned int x=0; x<mNofElements.x; x++)
+    for (uint32_t x=0; x<mNofElements.x; x++)
     {
       cx = (float)x * mElementSize.x;
 
       glBegin(GL_LINE_STRIP);
 
-      for (unsigned int y=0; y<mNofElements.y; y++)
+      for (uint32_t y=0; y<mNofElements.y; y++)
       {
         cy = (float)y * mElementSize.y;
 
@@ -233,13 +270,13 @@ void GravityField::draw ()
     }
 
     // XXXXXXXXXX REMOVE XXXXXXXXXXXXX
-    for (unsigned int y=0; y<mNofElements.y; y++)
+    for (uint32_t y=0; y<mNofElements.y; y++)
     {
       cy = (float)y * mElementSize.y;
 
       glBegin(GL_LINE_STRIP);
 
-      for (unsigned int x=0; x<mNofElements.x; x++)
+      for (uint32_t x=0; x<mNofElements.x; x++)
       {
         cx = (float)x * mElementSize.x;
 
@@ -260,8 +297,6 @@ void GravityField::draw ()
       glEnd();
     }
     // XXXXXXXXXXXXXXXXXXXXXXX
-
-
-
   }
+#endif
 }

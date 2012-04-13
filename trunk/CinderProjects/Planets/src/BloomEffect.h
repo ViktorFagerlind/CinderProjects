@@ -9,10 +9,10 @@ using namespace std;
 class BloomEffect
 {
 public:
-  BloomEffect (unsigned int blurWidth, 
-               unsigned int blurHeight, 
-               unsigned int screenWidth, 
-               unsigned int screenHeight);
+  BloomEffect (uint32_t blurWidth, 
+               uint32_t blurHeight, 
+               uint32_t screenWidth, 
+               uint32_t screenHeight);
 
   ~BloomEffect ();
 

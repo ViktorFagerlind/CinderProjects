@@ -17,8 +17,8 @@
 
 GameWorld* GameWorld::theGameWorld = NULL;
 
-unsigned int GameWorld::mScreenWidth  = 1600;
-unsigned int GameWorld::mScreenHeight = 1000;
+uint32_t GameWorld::mScreenWidth  = 1600;
+uint32_t GameWorld::mScreenHeight = 1000;
 
 
 GameWorld* GameWorld::getSingleton ()
@@ -234,9 +234,9 @@ void GameWorld::draw   ()
 	gl::disableAlphaBlending();
 
   // Draw gravity field
-	glEnable  (GL_BLEND);
+	gl::enableAdditiveBlending();
   mGravityField->draw ();
-	glDisable  (GL_BLEND);
+	gl::disableAlphaBlending();
 
 	// unbind the framebuffer, so that drawing goes to the screen again
 	mRenderFbo.unbindFramebuffer();

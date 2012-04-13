@@ -8,7 +8,7 @@
 const float Road::splineTimeAdd     = 0.1f;     // how many points per spline section
 const float Road::speed             = 230.0f;
 const float Road::gravity           = 0.98f;     // 1 = no gravity, 0 = infinite
-const unsigned int Road::maxLength  = 100;      // how many points per spline section
+const uint32_t Road::maxLength  = 100;      // how many points per spline section
 
 
 Road::Road ()
@@ -116,14 +116,14 @@ void Road::update()
 	
 void Road::draw ()
 {
-  unsigned int nofRoadBlocks = roadBlocks.size();
+  uint32_t nofRoadBlocks = roadBlocks.size();
 
   if (nofRoadBlocks < 3)
     return;
   
-  for (unsigned int i=0; i<RoadBlock::getIterations (); i++)
+  for (uint32_t i=0; i<RoadBlock::getIterations (); i++)
   {
-    unsigned int currentRoadBlockIndex = 0;
+    uint32_t currentRoadBlockIndex = 0;
 
     glBegin (GL_QUAD_STRIP);
     for (list<RoadBlock *>::iterator it = roadBlocks.begin(); it != roadBlocks.end(); it++)
