@@ -7,12 +7,14 @@ using namespace ci;
 
 static const float G = 0.000002f;
 
-GravityField::GravityField (const Vec3f& position, const Vec3f& size, const Vec3i& nofElements)
-: mPosition (position),
-  mSize(size),
+GravityField::GravityField (const Vec3f& size, const Vec3i& nofElements)
+: mSize(size),
   mNofElements (nofElements),
-  mElementSize(Vec3f (size.x/(float)nofElements.x, size.y/(float)nofElements.y, size.z/(float)nofElements.z))
+  mElementSize(Vec3f (size.x/(float)(nofElements.x-1), 
+                      size.y/(float)(nofElements.y-1), 
+                      size.z/(float)(nofElements.z-1)))
 {
+  /*
   mGravityPotential.resize (mNofElements.x);
   for (uint32_t x=0; x<mNofElements.x; x++)
   {
@@ -22,28 +24,28 @@ GravityField::GravityField (const Vec3f& position, const Vec3f& size, const Vec3
       mGravityPotential[x][y].resize (mNofElements.z);
     }
   }
+  */
 
-  resetField ();
-
-
-  mElementsSize         = 50;
-  mNofElementsPerSide   = 10;
+//  resetField ();
 
 	try {
 	  mShader = gl::GlslProg (loadFile ("../Media/Shaders/gravity_vert.glsl"), 
-                            loadFile ("../Media/Shaders/gravity_frag.glsl"),  
+                            loadFile ("../Media/Shaders/gravity_frag.glsl"));/*,  
                             loadFile ("../Media/Shaders/gravity_geom.glsl"), 
                             GL_POINTS, 
                             GL_LINE_STRIP, 
-                            2*(mNofElementsPerSide + 1)*(mNofElementsPerSide + 1));
+                            2*(10 + 1)*(10 + 1));*/
 	}	catch (gl::GlslProgCompileExc &exc) {
 		std::cout << "Shader compile error: " << std::endl;
 		std::cout << exc.what();
 	}	catch (...) {
 		std::cout << "Unable to load shader" << std::endl;
 	}
+
+  initMesh();
 }
 
+/*
 void GravityField::resetField ()
 {
   for (uint32_t x=0; x<mNofElements.x; x++)
@@ -57,6 +59,7 @@ void GravityField::resetField ()
     }
   }
 }
+*/
 
 void GravityField::addGravityObject (PhysicsObject *object)  
 {
@@ -131,6 +134,7 @@ Vec3f GravityField::calculateGravityForce  (const Vec3f& subjectPosition,
   return forceSize * distance.normalized ();
 }
 
+/*
 const Vec3f GravityField::getGravityPotentialForObject (const Vec3f& objectPositon)
 {
   if (!Collisions::isPointWithinCube (objectPositon, mPosition, mSize))
@@ -143,10 +147,10 @@ const Vec3f GravityField::getGravityPotentialForObject (const Vec3f& objectPosit
 
   return mGravityPotential[x][y][z];
 }
+*/
 
 void GravityField::applyGravity ()
 {
-  /*
   for (set<DynamicObject *>::iterator it = mDynamicObjects.begin(); it != mDynamicObjects.end(); it++)
   {
     DynamicObject *dynamicObject = *it;
@@ -161,8 +165,8 @@ void GravityField::applyGravity ()
       dynamicObject->applyForce (force);
     }
   }
-  */
 
+/*
   for (set<DynamicObject *>::iterator it = mDynamicObjects.begin(); it != mDynamicObjects.end(); it++)
   {
     DynamicObject *dynamicObject = *it;
@@ -171,9 +175,10 @@ void GravityField::applyGravity ()
 
     dynamicObject->applyForce (force);
   }
+*/
 }
 
-
+/*
 void GravityField::update ()
 {
   resetField ();
@@ -200,7 +205,9 @@ void GravityField::update ()
     }
   }
 }
+*/
 
+/*
 float getMinMax (float f, float min, float max)
 {
   if (f > max)
@@ -211,30 +218,136 @@ float getMinMax (float f, float min, float max)
 
   return f;
 }
+*/
 
 void GravityField::draw ()
 {
-  float cx, cy, cz;
-
   mShader.bind ();
-  mShader.uniform ("elementSize",         mElementsSize);
-  mShader.uniform ("nofElementsPerSide",  mNofElementsPerSide);
 
+  const uint32_t nofMasses = mGravityObjects.size ();
+
+  float *masses    = new float[nofMasses];
+  float *radius    = new float[nofMasses];
+  Vec3f *positions = new Vec3f[nofMasses];
+
+  list <PhysicsObject *>::iterator it = mGravityObjects.begin ();
+  for (uint32_t i=0; i < nofMasses; i++)
+  {
+    PhysicsObject *po = *it;
+
+    masses[i]     = po->getMass ();
+    radius[i]     = po->getRadius ();
+    positions[i]  = po->getPosition ();
+
+    it++;
+  }
+
+  mShader.uniform ("massPositions", positions,  nofMasses);
+  mShader.uniform ("masses",        masses,     nofMasses);
+  mShader.uniform ("radius",        radius,     nofMasses);
+  mShader.uniform ("elementSize",   mElementSize);
+  mShader.uniform ("nofMasses",(int)nofMasses);
+  
   /*
   glBegin (GL_POINTS);
     glVertex3f (0,0,0);
   glEnd ();*/
 
+  gl::draw (mVboMesh);
+
   mShader.unbind ();
 
+  /*
   glBegin (GL_TRIANGLE_STRIP);
     glVertex3f (0,0,0);
     glVertex3f (1000,0,0);
     glVertex3f (1000,1000,0);
   glEnd ();
+  */
+}
+
+uint32_t GravityField::getIndexForMeshPosition (uint32_t x, uint32_t y, uint32_t z)
+{
+  return z * mNofElements.y * mNofElements.x + y * mNofElements.x + x;
+}
+
+void GravityField::initMesh()
+{
+	std::vector<uint32_t> vboIndices;
+	gl::VboMesh::Layout   vboLayout;
+	std::vector<Vec3f>    vboVertices;
+
+  float halfX = ((float)(mNofElements.x-1) * mElementSize.x)/2.0f;
+  float halfY = ((float)(mNofElements.y-1) * mElementSize.y)/2.0f;
+  float halfZ = ((float)(mNofElements.z-1) * mElementSize.z)/2.0f;
+
+  // Create positions
+  for (uint32_t z=0; z<mNofElements.z; z++)
+  {
+    for (uint32_t y=0; y<mNofElements.y; y++)
+    {
+      for (uint32_t x=0; x<mNofElements.x; x++)
+      {
+        Vec3f position = Vec3f ((float)x * mElementSize.x - halfX, 
+                                (float)y * mElementSize.y - halfY, 
+                                (float)z * mElementSize.z - halfZ);
+  			vboVertices.push_back (position);
+      }
+    }
+  }
+
+  // Create indices
+  bool xReveresed = false;
+  bool yReveresed = false;
+
+  for (uint32_t z=0; z<mNofElements.z; z++)
+  {
+    for (uint32_t y=0; y<mNofElements.y; y++)
+    {
+      uint32_t yPos = yReveresed ? mNofElements.y-1-y : y;
+      for (uint32_t x=0; x<mNofElements.x; x++)
+      {
+        uint32_t xPos = xReveresed ? mNofElements.x-1-x : x;
+	      vboIndices.push_back (getIndexForMeshPosition (xPos, yPos, z));
+      }
+      xReveresed = !xReveresed;
+    }
+    yReveresed = !yReveresed;
+  }
+
+  for (uint32_t z=0; z<mNofElements.z; z++)
+  {
+    for (uint32_t x=0; x<mNofElements.x; x++)
+    {
+      uint32_t xPos = xReveresed ? mNofElements.x-1-x : x;
+      for (uint32_t y=0; y<mNofElements.y; y++)
+      {
+        uint32_t yPos = yReveresed ? mNofElements.y-1-y : y;
+	      vboIndices.push_back (getIndexForMeshPosition (xPos, yPos, z));
+      }
+      yReveresed = !yReveresed;
+    }
+    xReveresed = !xReveresed;
+  }
+
+  // Vbo settings
+	vboLayout.setStaticIndices ();
+	vboLayout.setStaticPositions ();
+
+  // Create Vbo
+  mVboMesh = gl::VboMesh (vboVertices.size(), vboIndices.size(), vboLayout, GL_LINE_STRIP);
+	mVboMesh.bufferIndices (vboIndices);
+	mVboMesh.bufferPositions (vboVertices);
+	mVboMesh.unbindBuffers ();
+
+	// Clean up
+	vboIndices.clear ();
+	vboVertices.clear ();
+}
 
 
-#if 0
+
+/*
   glDisable (GL_TEXTURE_2D);
 
   for (uint32_t z=mNofElements.z/2-1; z<mNofElements.z/2+2; z++)
@@ -298,5 +411,4 @@ void GravityField::draw ()
     }
     // XXXXXXXXXXXXXXXXXXXXXXX
   }
-#endif
-}
+*/

@@ -201,5 +201,14 @@
     <None Include="..\..\Media\Shaders\blur_frag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\..\Media\Shaders\gravity_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\gravity_geom.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\gravity_vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
