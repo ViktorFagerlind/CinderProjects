@@ -80,9 +80,9 @@ void GameWorld::setup ()
     
   // --- The explosions -------------------
   mExposionSystem = new ParticleSystem ("../Media/Images/fire.png");
-  commonModifier = new CommonModifier (3, 40.0f, 1.0f);
-  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 1.0f), //startColor 
-                                      ColorAf(1, 1, 1, 1.0f), //middleColor
+  commonModifier = new CommonModifier (3, 2.0f, 1.0f);
+  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 0.05f), //startColor 
+                                      ColorAf(1, 1, 1, 0.1f), //middleColor
                                       ColorAf(1, 1, 1, 0.0f), //endColor
                                       0.5f);//float middleTime)
 
@@ -99,7 +99,7 @@ void GameWorld::setup ()
   loader.load (&planetMesh);
 	gl::VboMesh planetVbo = gl::VboMesh (planetMesh);
 
-  mSun = new Sun (100.0f*1000.0f*1000.0f, Vec3f (100, 0, 0), 30, planetVbo);
+  mSun = new Sun (100.0f*1000.0f*1000.0f, Vec3f (100, 0, 0), 40, planetVbo);
   mObjects.push_back (mSun);
 
   shared_ptr<BumpMaterial> earthMaterial = getBumpMaterial (planetMesh, 
@@ -224,7 +224,7 @@ void GameWorld::draw   ()
   for (list<BasicObject *>::iterator it = mObjects.begin(); it != mObjects.end(); it++)
   {
     BasicObject *object = *it;
-//    object->draw();
+    object->draw();
   }
 
   // Setup blending for particle system
@@ -255,7 +255,7 @@ void GameWorld::draw   ()
   gl::Fbo& bloomedFbo = mBloomEffect->render (mRenderFbo);
 
   // Draw things not to bloom 
-  // gl::setViewport (getWindowBounds ());
+  // TODO
 
   // Add blooming effect to screen
   gl::setMatricesWindow (getWindowSize (), false);
