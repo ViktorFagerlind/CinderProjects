@@ -161,6 +161,9 @@
     <None Include="..\..\Media\Shaders\blur_frag.glsl" />
     <None Include="..\..\Media\Shaders\BumpMap_Pixel.glsl" />
     <None Include="..\..\Media\Shaders\BumpMap_Vertex.glsl" />
+    <None Include="..\..\Media\Shaders\gravity_frag.glsl" />
+    <None Include="..\..\Media\Shaders\gravity_geom.glsl" />
+    <None Include="..\..\Media\Shaders\gravity_vert.glsl" />
     <None Include="..\..\Media\Shaders\passThru_vert.glsl" />
     <None Include="..\..\Media\Shaders\SunSurface_frag.glsl" />
   </ItemGroup>

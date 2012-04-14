@@ -52,7 +52,7 @@ void GameWorld::setup ()
   mMovingCamera = new MovingCamera (500.0f);
 
   // Setup gravity field
-  mGravityField = new GravityField (Vec3f (-300, -300, -300), Vec3f (600, 600, 600), Vec3i (30, 30, 9));
+  mGravityField = new GravityField (Vec3f (1000, 600, 300), Vec3i (31, 21, 11));
 
   // --- Initialise particle system ---------------------------------
   mParticleSystemManager = new ParticleSystemManager ();
@@ -255,7 +255,7 @@ void GameWorld::draw   ()
   gl::Fbo& bloomedFbo = mBloomEffect->render (mRenderFbo);
 
   // Draw things not to bloom 
-  gl::setViewport (getWindowBounds ());
+  // gl::setViewport (getWindowBounds ());
 
   // Add blooming effect to screen
   gl::setMatricesWindow (getWindowSize (), false);

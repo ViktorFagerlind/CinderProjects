@@ -24,7 +24,7 @@ typedef const Vec3<uint32_t> Vec3i;
 class GravityField : public Modifier
 {
 public:
-  GravityField (const Vec3f& position, const Vec3f& size, const Vec3i& nofElements);
+  GravityField (const Vec3f& size, const Vec3i& nofElements);
 
   void addGravityObject (PhysicsObject *object);
   void removeGravityObject (PhysicsObject *object);
@@ -38,47 +38,46 @@ public:
   bool isStaticCollision (PhysicsObject *object);
   bool isDynamicCollision (PhysicsObject *object);
 
-  void resetField ();
+  // void resetField ();
 
   static Vec3f calculateGravityForce (const Vec3f& subjectPosition, 
                                       float subjectMass, 
                                       const Vec3f& objectPosition, 
                                       float objectMass);
 
-  void update ();
+//  void update ();
+
   void draw ();
 
   // Modifier 
   inline void apply (Particle *const particle)
   {
-    particle->applyForce (3.0f * getGravityPotentialForObject (particle->getPosition ()));
+    //particle->applyForce (3.0f * getGravityPotentialForObject (particle->getPosition ()));
   }    
 
 private:
   const Vec3f getGravityPotentialForObject (const Vec3f& objectPositon);
+
+  void initMesh();
+
+  uint32_t getIndexForMeshPosition (uint32_t x, uint32_t y, uint32_t z);
 
 private:
   set <DynamicObject *> mDynamicObjects;
 
   list <PhysicsObject *> mGravityObjects;
 
-  Field3D mGravityPotential;
+  // Field3D mGravityPotential;
 
   const Vec3f mPosition;
   const Vec3f mSize;
   const Vec3f mElementSize;
   const Vec3i mNofElements;
 
-  float mElementsSize;
-  int   mNofElementsPerSide;
-
 	// Shader
-	gl::GlslProg mShader;
+	gl::GlslProg          mShader;
 
-	std::vector<uint32_t> mVboIndices;
-	gl::VboMesh::Layout   mVboLayout;
-	std::vector<Vec2f>    mVboTexCoords;
-	std::vector<Vec3f>    mVboVertices;
+  // Vbo
 	gl::VboMesh	          mVboMesh;
 
 };
