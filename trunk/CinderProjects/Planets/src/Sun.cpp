@@ -46,16 +46,16 @@ Sun::Sun (const float                    mass,
   
   PointEmitter   *sunEmitter = new PointEmitter (10000,                //maxNofParticles,
                                                  mPosition,            //position, 
-  						                                   13,                   //particlesPerFrame, 
+  						                                   50,                   //particlesPerFrame, 
 							                                   5,                    //minParticleSize,
 							                                   15,                   //maxParticleSize,
 							                                   Vec3f (0, 0, 0),      //baseVelocity,
-                                                 0.5f,
-							                                   0.6f);  //randVelocity
+                                                 0.8f,
+							                                   0.9f);  //randVelocity
                                                  
-  CommonModifier* commonModifier = new CommonModifier (1.2f, 10.0f, 1.0f);
-  ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.05f), //startColor 
-                                                       ColorAf(1, 0.8f, 0.2f, 0.05f), //middleColor
+  CommonModifier* commonModifier = new CommonModifier (1.2f, 2.0f, 0.1f);
+  ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.0f), //startColor 
+                                                       ColorAf(1, 0.8f, 0.2f, 0.1f), //middleColor
                                                        ColorAf(1, 0.6f, 0.1f, 0), //endColor
                                                        0.8f);//float middleTime)
   sunParticleSystem->addModifier (commonModifier);
