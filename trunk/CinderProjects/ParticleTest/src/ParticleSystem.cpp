@@ -111,8 +111,8 @@ void ParticleSystem::draw()
   mParticleTexture->bind();
 
   for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-    //(*it)->draw();
-    (*it)->drawArray();
+    (*it)->draw();
+    //(*it)->drawArray();
 
   mParticleTexture->unbind();
 }

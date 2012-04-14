@@ -53,7 +53,7 @@ Sun::Sun (const float                    mass,
                                                  0.5f,
 							                                   0.6f);  //randVelocity
                                                  
-  CommonModifier* commonModifier = new CommonModifier (1.2f, 1.0f, 1.0f);
+  CommonModifier* commonModifier = new CommonModifier (1.2f, 10.0f, 1.0f);
   ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.05f), //startColor 
                                                        ColorAf(1, 0.8f, 0.2f, 0.05f), //middleColor
                                                        ColorAf(1, 0.6f, 0.1f, 0), //endColor

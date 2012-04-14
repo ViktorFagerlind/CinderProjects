@@ -210,5 +210,11 @@
     <None Include="..\..\Media\Shaders\gravity_vert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\..\Media\Shaders\pointSprite_vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\colorAndTextureBlend_frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -36,9 +36,9 @@ void main(void)
   intensity = clamp (colorFactor * length (positionChange), 0.0, 1.0);
 
   // Clamp and affect position
-  vert.x += clamp (positionChange.x, -elementSize.x/2, elementSize.x/2);
-  vert.y += clamp (positionChange.y, -elementSize.y/2, elementSize.y/2);
-  vert.z += clamp (positionChange.z, -elementSize.z/2, elementSize.z/2);
+  vert.x += clamp (positionChange.x, -elementSize.x, elementSize.x);
+  vert.y += clamp (positionChange.y, -elementSize.y, elementSize.y);
+  vert.z += clamp (positionChange.z, -elementSize.z, elementSize.z);
 
   // Transform position
 	gl_Position = gl_ModelViewProjectionMatrix * vert;

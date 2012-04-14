@@ -52,7 +52,7 @@ void GameWorld::setup ()
   mMovingCamera = new MovingCamera (500.0f);
 
   // Setup gravity field
-  mGravityField = new GravityField (Vec3f (1000, 600, 300), Vec3i (31, 21, 11));
+  mGravityField = new GravityField (Vec3f (1000, 600, 200), Vec3i (51, 31, 13));
 
   // --- Initialise particle system ---------------------------------
   mParticleSystemManager = new ParticleSystemManager ();
@@ -80,9 +80,9 @@ void GameWorld::setup ()
     
   // --- The explosions -------------------
   mExposionSystem = new ParticleSystem ("../Media/Images/fire.png");
-  commonModifier = new CommonModifier (3, 1.0f, 0.5f);
-  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 0.1f), //startColor 
-                                      ColorAf(1, 1, 1, 0.1f), //middleColor
+  commonModifier = new CommonModifier (3, 40.0f, 1.0f);
+  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 1.0f), //startColor 
+                                      ColorAf(1, 1, 1, 1.0f), //middleColor
                                       ColorAf(1, 1, 1, 0.0f), //endColor
                                       0.5f);//float middleTime)
 
@@ -224,7 +224,7 @@ void GameWorld::draw   ()
   for (list<BasicObject *>::iterator it = mObjects.begin(); it != mObjects.end(); it++)
   {
     BasicObject *object = *it;
-    object->draw();
+//    object->draw();
   }
 
   // Setup blending for particle system

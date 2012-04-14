@@ -5,6 +5,7 @@
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/GlslProg.h"
 
 #include <list>
 
@@ -40,8 +41,6 @@ public:
 
   void draw();
 
-  void drawArray();
-
   virtual void setPosition (const Vec3f& position) {}
 
   virtual void defineParticle (Particle* particle) = 0; 
@@ -57,8 +56,11 @@ private:
   
   bool            mKilled;
 
+  float          *mSizes;
   Vec3f          *mVerticies;
   GLfloat        *mTextureCoordinates;
   ColorAf        *mColors;
+
+  gl::GlslProg    mShader;
 };
 
