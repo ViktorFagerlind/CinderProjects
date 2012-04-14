@@ -48,11 +48,11 @@ public:
   }
 
 
-
+  /*
   inline void draw()
   {
-    /* for profiling...
-	  glVertex3f(mPosition.x, mPosition.y, mPosition.z); */
+    // for profiling...
+	  // glVertex3f(mPosition.x, mPosition.y, mPosition.z); 
 
 	  glColor4f( mColor.r, mColor.g, mColor.b, mColor.a);
 
@@ -68,6 +68,7 @@ public:
     glTexCoord2f(0, 1);
 	  glVertex3f(mPosition.x-mCurrentSize, mPosition.y+mCurrentSize, mPosition.z);
   }
+  */
 
 // --------------------------------------------------------------------------------------------------------------------
 
