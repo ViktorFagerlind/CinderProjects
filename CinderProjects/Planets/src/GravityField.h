@@ -80,6 +80,9 @@ private:
   // Vbo
 	gl::VboMesh	          mVboMesh;
 
+  vector<float> mMasses;
+  vector<float> mRadius;
+  vector<Vec3f> mPositions;
 };
 
 
