@@ -1,11 +1,64 @@
 #include "cinder/gl/gl.h"
 #include "PhysicsObject.h"
+#include "BoundingBox.h"
+#include "BoundingPlane.h"
+#include "BoundingSphere.h"
 #include "math.h"
 
 using namespace ci;
 using namespace std;
 
-PhysicsObject::PhysicsObject(float mass, Vec3f& cog)
+//Physics object using bounding box
+PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
+{
+  init(mass, cog);
+
+  BoundingBox *boundingBox = new BoundingBox(boundingBoxWidth, boundingBoxHeight, boundingBoxLength, mPosition, mOrientation);
+  mBoundingGeometry = (BoundingGeometry*) boundingBox;
+};
+
+//Physics object using bounding plane (init plane using 3 vertecies)
+PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, float boundingPlaneHeight, Vec3f vertex1, Vec3f vertex2, Vec3f vertex3)
+{
+  init(mass, cog);
+
+
+  //calc local coordinate basis vectors:
+  Vec3f e1 = vertex2-vertex1;
+  e1.normalize();
+  Vec3f e2 = vertex3-vertex1;
+  e2.normalize();
+  Vec3f normal = e1.cross(e2);
+
+  float offset = normal.dot(vertex1);
+  mPosition = normal*offset;
+  mOrientation.setColumn(0, e1);
+  mOrientation.setColumn(1, e2);
+  mOrientation.setColumn(2, normal);
+
+  BoundingPlane *boundingPlane = new BoundingPlane(boundingPlaneWidth, boundingPlaneHeight, mPosition, mOrientation);
+  mBoundingGeometry = (BoundingGeometry*) boundingPlane;
+};
+
+//Physics object using bounding plane (init plane using position of centre of plane and orientation matrix)
+PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, float boundingPlaneHeight)
+{
+  init(mass, cog);
+
+  BoundingPlane *boundingPlane = new BoundingPlane(boundingPlaneWidth, boundingPlaneHeight, mPosition, mOrientation);
+  mBoundingGeometry = (BoundingGeometry*) boundingPlane;
+};
+
+//Physics object using bounding sphere
+PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingSphereRadius)
+{
+  init(mass, cog);
+
+  BoundingSphere *boundingSphere = new BoundingSphere(boundingSphereRadius, mPosition, mOrientation);
+  mBoundingGeometry = (BoundingGeometry*) boundingSphere;
+};
+
+void PhysicsObject::init(float mass, Vec3f& cog)
 {
   mMass     = mass;
   mCoG      = cog;
@@ -15,10 +68,16 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog)
   mAcceleration = Vec3f(0.0f, 0.0f, 0.0f);
 
   mRotationVect       = Vec3f(0.0f, 0.0f, 0.0f);
-  mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);  
+  mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);
   mOrientation        = Matrix44f::identity();
   mOrientationSpeed   = Matrix44f::identity();
 };
+
+
+PhysicsObject::~PhysicsObject()
+{
+  delete mBoundingGeometry;
+}
 
 void PhysicsObject::update()
 {
@@ -72,56 +131,13 @@ void PhysicsObject::update()
 
   mOrientation.setColumn(3, Vec4f(0,        0,          0, 1));
 
-  //float angle = 0.0f;
-  //float cosAlpha = cos(angle);
-  //float sinAlpha = sin(angle);
-  //mOrientation.setColumn(0, Vec4f(cosAlpha, sinAlpha,  0, 0));
-  //mOrientation.setColumn(1, Vec4f(-sinAlpha, cosAlpha,   0, 0));
-  //mOrientation.setColumn(2, Vec4f(0,        0,          1, 0));
+  mBoundingGeometry->setPosition(mPosition);
+  mBoundingGeometry->setOrientation(mOrientation);
 }
 
 void PhysicsObject::draw()
 {
-  gl::color(0.7f, 0.7f, 0.9f);
-
-  glPushMatrix();
-  glTranslatef(mPosition.x, mPosition.y, mPosition.z);
-  //glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
-  gl::multModelView(mOrientation);
-
-  // Draw cube
-  float halfSize = 100.0f/2.0f;
-  glBegin(GL_LINE_STRIP);
-  glVertex3f (-halfSize, -halfSize, -halfSize);
-  glVertex3f ( halfSize, -halfSize, -halfSize);
-  glVertex3f ( halfSize,  halfSize, -halfSize);
-  glVertex3f (-halfSize,  halfSize, -halfSize);
-  glVertex3f (-halfSize, -halfSize, -halfSize);
-  glEnd();
-
-  glBegin(GL_LINE_STRIP);
-  glVertex3f (-halfSize, -halfSize,  halfSize);
-  glVertex3f ( halfSize, -halfSize,  halfSize);
-  glVertex3f ( halfSize,  halfSize,  halfSize);
-  glVertex3f (-halfSize,  halfSize,  halfSize);
-  glVertex3f (-halfSize, -halfSize,  halfSize);
-  glEnd();
-
-  glBegin(GL_LINES);
-  glVertex3f (-halfSize, -halfSize, -halfSize);
-  glVertex3f (-halfSize, -halfSize,  halfSize);
-
-  glVertex3f ( halfSize, -halfSize, -halfSize);
-  glVertex3f ( halfSize, -halfSize,  halfSize);
-
-  glVertex3f ( halfSize,  halfSize, -halfSize);
-  glVertex3f ( halfSize,  halfSize,  halfSize);
-
-  glVertex3f (-halfSize,  halfSize, -halfSize);
-  glVertex3f (-halfSize,  halfSize,  halfSize);
-  glEnd();
-
-  glPopMatrix();
+  mBoundingGeometry->draw();
 }
 
 void PhysicsObject::setPosition(Vec3f position)
@@ -144,9 +160,13 @@ Vec3f PhysicsObject:: getPosition()
   return mPosition;
 }
 
-Matrix44f PhysicsObject::getSkewMatrix(Vec3f vector)
+const Matrix44f& PhysicsObject::getOrientation()
 {
+  return mOrientation;
+}
 
+Matrix44f PhysicsObject::getSkewMatrix(Vec4f vector)
+{
   Matrix44f skewMatrix;
   skewMatrix = Matrix44f::identity();
 
@@ -159,7 +179,7 @@ Matrix44f PhysicsObject::getSkewMatrix(Vec3f vector)
 
 void PhysicsObject::Orthogonalize(Matrix44f& matrix)
 {
-  const float treshold = 0.000001;
+  const float treshold = 0.000001f;
 
   Matrix44f matrixClone;
   Vec4f     tempColumn;
@@ -201,6 +221,19 @@ Vec3f PhysicsObject::EulerForward(Vec3f f, Vec3f fPrim, float dt)
   ans.x = f.x + fPrim.x * dt;
   ans.y = f.y + fPrim.y * dt;
   ans.z = f.z + fPrim.z * dt;
+
+  return ans;
+}
+
+Vec4f PhysicsObject::EulerForward(Vec4f f, Vec4f fPrim, float dt)
+{
+  Vec4f ans;
+  ans = Vec3f(0, 0, 0);
+
+  ans.x = f.x + fPrim.x * dt;
+  ans.y = f.y + fPrim.y * dt;
+  ans.z = f.z + fPrim.z * dt;
+  ans.w = f.w + fPrim.w * dt;
 
   return ans;
 }
