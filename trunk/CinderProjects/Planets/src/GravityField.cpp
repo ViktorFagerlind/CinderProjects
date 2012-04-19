@@ -226,44 +226,31 @@ void GravityField::draw ()
 
   const uint32_t nofMasses = mGravityObjects.size ();
 
-  float *masses    = new float[nofMasses];
-  float *radius    = new float[nofMasses];
-  Vec3f *positions = new Vec3f[nofMasses];
+  mMasses.resize (nofMasses);
+  mRadius.resize (nofMasses);
+  mPositions.resize (nofMasses);
 
   list <PhysicsObject *>::iterator it = mGravityObjects.begin ();
   for (uint32_t i=0; i < nofMasses; i++)
   {
     PhysicsObject *po = *it;
 
-    masses[i]     = po->getMass ();
-    radius[i]     = po->getRadius ();
-    positions[i]  = po->getPosition ();
+    mMasses[i]     = po->getMass ();
+    mRadius[i]     = po->getRadius ();
+    mPositions[i]  = po->getPosition ();
 
     it++;
   }
 
-  mShader.uniform ("massPositions", positions,  nofMasses);
-  mShader.uniform ("masses",        masses,     nofMasses);
-  mShader.uniform ("radius",        radius,     nofMasses);
+  mShader.uniform ("massPositions", mPositions.data (),  nofMasses);
+  mShader.uniform ("masses",        mMasses.data (),     nofMasses);
+  mShader.uniform ("radius",        mRadius.data (),     nofMasses);
   mShader.uniform ("elementSize",   mElementSize);
   mShader.uniform ("nofMasses",(int)nofMasses);
-  
-  /*
-  glBegin (GL_POINTS);
-    glVertex3f (0,0,0);
-  glEnd ();*/
 
   gl::draw (mVboMesh);
 
   mShader.unbind ();
-
-  /*
-  glBegin (GL_TRIANGLE_STRIP);
-    glVertex3f (0,0,0);
-    glVertex3f (1000,0,0);
-    glVertex3f (1000,1000,0);
-  glEnd ();
-  */
 }
 
 uint32_t GravityField::getIndexForMeshPosition (uint32_t x, uint32_t y, uint32_t z)

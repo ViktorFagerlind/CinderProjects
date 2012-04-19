@@ -117,6 +117,9 @@ void GameWorld::setup ()
   shared_ptr<BumpMaterial> moonMaterial = getBumpMaterial (planetMesh, 
                                                             "../Media/Images/moon.jpg",
                                                             "../Media/Images/bumps.jpg");
+  shared_ptr<BumpMaterial> fireMaterial = getBumpMaterial (planetMesh, 
+                                                            "../Media/Images/fire_planet_diffuse.jpg",
+                                                            "../Media/Images/fire_planet_normal.jpg");
 
   vector<shared_ptr<BumpMaterial>> materials;
   materials.push_back (brickMaterial);
@@ -124,6 +127,7 @@ void GameWorld::setup ()
   materials.push_back (ownMaterial);
   materials.push_back (greenMaterial);
   materials.push_back (moonMaterial);
+  materials.push_back (fireMaterial);
 
   for (int i=0; i<6; i++)
   {
@@ -209,10 +213,16 @@ void GameWorld::draw   ()
 	mRenderFbo.bindFramebuffer();
 
 	// setup the viewport to match the dimensions of the FBO
-	gl::setViewport( mRenderFbo.getBounds() );
+//	gl::setViewport( mRenderFbo.getBounds() );
 
 	// setup our camera to render the torus scene
   mMovingCamera->setViewMatrix ();
+  /*
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho (-500, 500, -500, 500, -500, 500);
+  glMatrixMode(GL_MODELVIEW);
+  */
 
 	// clear the FBO
 	gl::clear();
