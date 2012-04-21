@@ -104,14 +104,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp" />
+    <ClCompile Include="..\src\BoundingBox.cpp" />
+    <ClCompile Include="..\src\BoundingGeometry.cpp" />
+    <ClCompile Include="..\src\BoundingPlane.cpp" />
+    <ClCompile Include="..\src\BoundingSphere.cpp" />
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\PhysicsCubeApp.cpp" />
     <ClCompile Include="..\src\PhysicsObject.cpp" />
+    <ClCompile Include="..\src\StaticObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\SkyRoads\src\MovingCamera.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\BoundingBox.h" />
+    <ClInclude Include="..\src\BoundingGeometry.h" />
+    <ClInclude Include="..\src\BoundingPlane.h" />
+    <ClInclude Include="..\src\BoundingSphere.h" />
     <ClInclude Include="..\src\DynamicObject.h" />
     <ClInclude Include="..\src\PhysicsObject.h" />
+    <ClInclude Include="..\src\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

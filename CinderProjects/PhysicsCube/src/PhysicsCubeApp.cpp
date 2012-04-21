@@ -4,6 +4,7 @@
 #include "StaticObject.h"
 #include "BoundingBox.h"
 #include "../../SkyRoads/src/MovingCamera.h"
+#include "cinder/Timer.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -23,6 +24,9 @@ class PhysicsCubeApp : public AppBasic {
   StaticObject *plane;
   DynamicObject *sphere;
   MovingCamera *camera;
+
+  Timer mTimer;
+  float mLastTimeStamp;
 };
 
 void PhysicsCubeApp::setup()
@@ -38,6 +42,9 @@ void PhysicsCubeApp::setup()
 
   sphere = new DynamicObject(1.0f, Vec3f(0, 0, 0), 35.0f);
   sphere->setPosition(Vec3f(100, 0, 0));
+
+  mTimer.start ();
+  mLastTimeStamp = (float)mTimer.getSeconds ();
 }
 
 void PhysicsCubeApp::prepareSettings (Settings *settings)
@@ -57,6 +64,12 @@ void PhysicsCubeApp::mouseMove (MouseEvent event)
 
 void PhysicsCubeApp::update()
 {
+  // Calculate time
+  float newTime = (float)mTimer.getSeconds ();
+  float deltaTime = newTime - mLastTimeStamp;
+  mLastTimeStamp = newTime;
+
+
   if (cube->getPosition().y > 300)
   {
     cube->applyForce(Vec3f(0, -50, 0));
@@ -68,9 +81,9 @@ void PhysicsCubeApp::update()
     cube->applyTorque(Vec3f(0, 1, 0), Vec3f(100.0, 0.0, 0.0));
   }
 
-  cube->update();
-  plane->update();
-  sphere->update();
+  cube->update(deltaTime);
+  plane->update(deltaTime);
+  sphere->update(deltaTime);
 
 }
 
