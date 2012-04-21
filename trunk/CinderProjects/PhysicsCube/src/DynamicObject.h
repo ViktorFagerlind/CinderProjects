@@ -17,7 +17,7 @@ public:
   DynamicObject(float mass, Vec3f& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength);
   DynamicObject(float mass, Vec3f& cog,  float boundingPlaneWidth, float boundingPlaneHeight);
   DynamicObject(float mass, Vec3f& cog,  float boundingSphereRadius);
-  void update();
+  void update(float dt);
 	void draw();
   void applyForce(Vec3f force);
   void resetForce();

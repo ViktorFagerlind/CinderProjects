@@ -17,12 +17,12 @@ public:
   PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, float boundingPlaneHeight); //Init plane using position of centre of plane and orientation matrix
   PhysicsObject(float mass, Vec3f& cog, float boundingSphereRadius);
   ~PhysicsObject();
-	void update();
+	void update (float dt);
 	void draw();
-  virtual void applyForce(Vec3f force)=0;
-  virtual void resetForce()=0;
-  virtual void applyTorque(Vec3f pointOfAttack, Vec3f force)=0;
-  virtual void resetTorque()=0;
+  virtual void applyForce(Vec3f force){}
+  virtual void resetForce(){}
+  virtual void applyTorque(Vec3f pointOfAttack, Vec3f force){}
+  virtual void resetTorque(){}
 
   void setPosition(Vec3f position);
   void setVelocity(Vec3f velocity);

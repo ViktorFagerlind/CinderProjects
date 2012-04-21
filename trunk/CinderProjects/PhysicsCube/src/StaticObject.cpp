@@ -38,18 +38,13 @@ StaticObject::StaticObject(float mass, Vec3f& cog,  float sphereRadius)
 void StaticObject::init(float mass, Vec3f& cog)
 {
   Vec4f tempRot = mRotationSpeedVect; 
-  mForceSum   = Vec3f(0.0f, 0.0f, 0.0f);
-  mTorqueSum  = Vec3f(0.0f, 0.0f, 0.0f);
 };
 
 
-
-void StaticObject::update()
+  
+void StaticObject::update(float dt)
 {
-  float dt = 0.0167f;
-  PhysicsObject::update();
-  resetForce();
-  resetTorque();
+  PhysicsObject::update(dt);
 }
 
 void StaticObject::draw()
@@ -64,25 +59,4 @@ void StaticObject::draw()
 
   gl::color(1.0f, 0.3f, 0.3f);
   gl::drawVector(mPosition, mPosition + (50.0f * mRotationSpeedVect), 10.0f, 5.0f);
-}
-
-
-void StaticObject::applyForce(Vec3f force)
-{
-  mForceSum += force;
-}
-
-void StaticObject::resetForce()
-{
-  mForceSum = Vec3f(0, 0, 0);
-}
-
-void StaticObject::applyTorque(Vec3f pointOfAttack, Vec3f force)
-{
-  mTorqueSum += cross(pointOfAttack, force);
-}
-
-void StaticObject::resetTorque()
-{
-  mTorqueSum = Vec3f(0, 0, 0);
 }

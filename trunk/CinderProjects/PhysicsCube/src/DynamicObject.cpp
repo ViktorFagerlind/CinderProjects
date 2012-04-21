@@ -47,9 +47,8 @@ void DynamicObject::init(float mass, Vec3f& cog)
 
 
 
-void DynamicObject::update()
+void DynamicObject::update(float dt)
 {
-  float dt = 0.0167f;
   mAcceleration   = mForceSum/mMass;
   
   mAngularMomentum = EulerForward(mAngularMomentum, mTorqueSum, dt);
@@ -60,9 +59,7 @@ void DynamicObject::update()
   mRotationSpeedVect.y = tempRotationSpeedVect.y;
   mRotationSpeedVect.z = tempRotationSpeedVect.z;
 
-  PhysicsObject::update();
-  resetForce();
-  resetTorque();
+  PhysicsObject::update(dt);
 }
 
 void DynamicObject::draw()
