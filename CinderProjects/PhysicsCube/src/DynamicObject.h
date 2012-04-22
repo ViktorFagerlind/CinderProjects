@@ -29,7 +29,6 @@ protected:
   Matrix44f mLocalInertiaInverted;
   Matrix44f mInertia;
   Matrix44f mInertiaInverted;
-  Vec4f mAngularMomentum; //Ev. ändra alla Vec3f till Vec4f. Verkar inte fungera så bra att muliplicera Matrix44f med Vect3f..
   Vec3f mForceSum;
   Vec3f mTorqueSum;
 };

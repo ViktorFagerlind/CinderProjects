@@ -6,6 +6,21 @@
 using namespace ci;
 using namespace std;
 
+class State
+{
+public:
+  State();
+
+  Vec3f     mPosition;
+  Vec3f     mVelocity;
+  Vec3f     mAcceleration;
+  Vec3f     mRotationVect;
+  Vec3f     mRotationSpeedVect;
+  Vec4f     mAngularMomentum;
+  Matrix44f mOrientation;
+  Matrix44f mOrientationSpeed;
+};
+
 class PhysicsObject
 {
 private:
@@ -37,17 +52,10 @@ public:
   Vec3f getPosition();
   Matrix44f getSkewMatrix(Vec4f vector);
 
+  BoundingGeometry *mBoundingGeometry;
+  State     mState;
+
 protected:
   float     mMass;
   Vec3f     mCoG;
-  
-  Vec3f     mPosition;
-  Vec3f     mVelocity;
-  Vec3f     mAcceleration;
-  Vec3f     mRotationVect;
-  Vec3f     mRotationSpeedVect;
-  Matrix44f mOrientation;
-  Matrix44f mOrientationSpeed;
-
-  BoundingGeometry *mBoundingGeometry;
 };

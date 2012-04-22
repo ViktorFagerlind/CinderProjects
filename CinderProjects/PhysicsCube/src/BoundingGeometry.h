@@ -20,9 +20,10 @@ public:
   Vec3f getPosition();
   void setOrientation(Matrix44f orientation);
   Matrix44f getOrientation();
+  
+  Type      mShape;
 
 protected:
-  Type      mShape;
   Vec3f     mPosition;
   Matrix44f mOrientation;
 };
