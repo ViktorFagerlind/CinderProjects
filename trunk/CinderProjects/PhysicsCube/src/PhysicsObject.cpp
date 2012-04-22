@@ -8,12 +8,25 @@
 using namespace ci;
 using namespace std;
 
+
+State::State()
+{
+  mPosition     = Vec3f(0.0f, 0.0f, 0.0f);
+  mVelocity     = Vec3f(0.0f, 0.0f, 0.0f);
+  mAcceleration = Vec3f(0.0f, 0.0f, 0.0f);
+
+  mRotationVect       = Vec3f(0.0f, 0.0f, 0.0f);
+  mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);
+  mOrientation        = Matrix44f::identity();
+  mOrientationSpeed   = Matrix44f::identity();
+};
+
 //Physics object using bounding box
 PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
 {
   init(mass, cog);
 
-  BoundingBox *boundingBox = new BoundingBox(boundingBoxWidth, boundingBoxHeight, boundingBoxLength, mPosition, mOrientation);
+  BoundingBox *boundingBox = new BoundingBox(boundingBoxWidth, boundingBoxHeight, boundingBoxLength, mState.mPosition, mState.mOrientation);
   mBoundingGeometry = (BoundingGeometry*) boundingBox;
 };
 
@@ -31,12 +44,12 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, f
   Vec3f normal = e1.cross(e2);
 
   float offset = normal.dot(vertex1);
-  mPosition = normal*offset;
-  mOrientation.setColumn(0, e1);
-  mOrientation.setColumn(1, e2);
-  mOrientation.setColumn(2, normal);
+  mState.mPosition = normal*offset;
+  mState.mOrientation.setColumn(0, e1);
+  mState.mOrientation.setColumn(1, e2);
+  mState.mOrientation.setColumn(2, normal);
 
-  BoundingPlane *boundingPlane = new BoundingPlane(boundingPlaneWidth, boundingPlaneHeight, mPosition, mOrientation);
+  BoundingPlane *boundingPlane = new BoundingPlane(boundingPlaneWidth, boundingPlaneHeight, mState.mPosition, mState.mOrientation);
   mBoundingGeometry = (BoundingGeometry*) boundingPlane;
 };
 
@@ -45,7 +58,7 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, f
 {
   init(mass, cog);
 
-  BoundingPlane *boundingPlane = new BoundingPlane(boundingPlaneWidth, boundingPlaneHeight, mPosition, mOrientation);
+  BoundingPlane *boundingPlane = new BoundingPlane(boundingPlaneWidth, boundingPlaneHeight, mState.mPosition, mState.mOrientation);
   mBoundingGeometry = (BoundingGeometry*) boundingPlane;
 };
 
@@ -54,7 +67,7 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingSphereRadius)
 {
   init(mass, cog);
 
-  BoundingSphere *boundingSphere = new BoundingSphere(boundingSphereRadius, mPosition, mOrientation);
+  BoundingSphere *boundingSphere = new BoundingSphere(boundingSphereRadius, mState.mPosition, mState.mOrientation);
   mBoundingGeometry = (BoundingGeometry*) boundingSphere;
 };
 
@@ -62,15 +75,6 @@ void PhysicsObject::init(float mass, Vec3f& cog)
 {
   mMass     = mass;
   mCoG      = cog;
-
-  mPosition     = Vec3f(0.0f, 0.0f, 0.0f);
-  mVelocity     = Vec3f(0.0f, 0.0f, 0.0f);
-  mAcceleration = Vec3f(0.0f, 0.0f, 0.0f);
-
-  mRotationVect       = Vec3f(0.0f, 0.0f, 0.0f);
-  mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);
-  mOrientation        = Matrix44f::identity();
-  mOrientationSpeed   = Matrix44f::identity();
 };
 
 
@@ -81,23 +85,23 @@ PhysicsObject::~PhysicsObject()
 
 void PhysicsObject::update(float dt)
 {
-  mVelocity = EulerForward(mVelocity, mAcceleration, dt);
-  mPosition = EulerForward(mPosition, mVelocity, dt);
+  mState.mVelocity = EulerForward(mState.mVelocity, mState.mAcceleration, dt);
+  mState.mPosition = EulerForward(mState.mPosition, mState.mVelocity, dt);
 
   Matrix44f tempSkewMatrix;
-  tempSkewMatrix = getSkewMatrix(mRotationSpeedVect);
+  tempSkewMatrix = getSkewMatrix(mState.mRotationSpeedVect);
 
-  mOrientationSpeed = tempSkewMatrix * mOrientation;
+  mState.mOrientationSpeed = tempSkewMatrix * mState.mOrientation;
 
-  Matrix44f orientationAccel = tempSkewMatrix * mOrientationSpeed;
-  mOrientationSpeed = EulerForward(mOrientationSpeed, orientationAccel, dt);
-  mOrientation      = EulerForward(mOrientation, mOrientationSpeed, dt);
+  Matrix44f orientationAccel = tempSkewMatrix * mState.mOrientationSpeed;
+  mState.mOrientationSpeed = EulerForward(mState.mOrientationSpeed, orientationAccel, dt);
+  mState.mOrientation      = EulerForward(mState.mOrientation, mState.mOrientationSpeed, dt);
 
-  Orthogonalize (mOrientation);
+  Orthogonalize (mState.mOrientation);
   
   // update collision geometry
-  mBoundingGeometry->setPosition(mPosition);
-  mBoundingGeometry->setOrientation(mOrientation);
+  mBoundingGeometry->setPosition(mState.mPosition);
+  mBoundingGeometry->setOrientation(mState.mOrientation);
 
   resetForce();
   resetTorque();
@@ -110,27 +114,27 @@ void PhysicsObject::draw()
 
 void PhysicsObject::setPosition(Vec3f position)
 {
-  mPosition = position;
+  mState.mPosition = position;
 }
 
 void PhysicsObject::setVelocity(Vec3f velocity)
 {
-  mVelocity = velocity;
+  mState.mVelocity = velocity;
 }
 
 void PhysicsObject::setRotationVect(Vec3f rotationVect)
 {
-  mRotationVect = rotationVect;
+  mState.mRotationVect = rotationVect;
 }
 
 Vec3f PhysicsObject:: getPosition()
 {
-  return mPosition;
+  return mState.mPosition;
 }
 
 const Matrix44f& PhysicsObject::getOrientation()
 {
-  return mOrientation;
+  return mState.mOrientation;
 }
 
 Matrix44f PhysicsObject::getSkewMatrix(Vec4f vector)
@@ -196,4 +200,6 @@ Matrix44f PhysicsObject::EulerForward(Matrix44f f, Matrix44f fPrim, float dt)
 {
   return f + fPrim * dt;
 }
+
+
 

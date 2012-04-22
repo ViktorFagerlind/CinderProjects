@@ -1,10 +1,10 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
+#include "PhysicsEngine.h"
 #include "DynamicObject.h"
 #include "StaticObject.h"
 #include "BoundingBox.h"
 #include "../../SkyRoads/src/MovingCamera.h"
-#include "cinder/Timer.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,32 +19,14 @@ class PhysicsCubeApp : public AppBasic {
   void keyDown (KeyEvent event);
   void mouseMove (MouseEvent event);
 
-  DynamicObject *cube;
-  //DynamicObject *plane;
-  StaticObject *plane;
-  DynamicObject *sphere;
+  PhysicsEngine *physicsEngine;
   MovingCamera *camera;
-
-  Timer mTimer;
-  float mLastTimeStamp;
 };
 
 void PhysicsCubeApp::setup()
 {
   camera = new MovingCamera(300.0f);
-  cube = new DynamicObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, 70.0f);
-  cube->setPosition(Vec3f(300, 0, 0));
-
-  //plane = new DynamicObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f);
-  //plane->setPosition(Vec3f(250, 100, 10));
-
-  plane = new StaticObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, Vec3f(0, 0, 100), Vec3f(100, 0, 0), Vec3f(0, 100, 0));
-
-  sphere = new DynamicObject(1.0f, Vec3f(0, 0, 0), 35.0f);
-  sphere->setPosition(Vec3f(100, 0, 0));
-
-  mTimer.start ();
-  mLastTimeStamp = (float)mTimer.getSeconds ();
+  physicsEngine = new PhysicsEngine();
 }
 
 void PhysicsCubeApp::prepareSettings (Settings *settings)
@@ -64,27 +46,7 @@ void PhysicsCubeApp::mouseMove (MouseEvent event)
 
 void PhysicsCubeApp::update()
 {
-  // Calculate time
-  float newTime = (float)mTimer.getSeconds ();
-  float deltaTime = newTime - mLastTimeStamp;
-  mLastTimeStamp = newTime;
-
-
-  if (cube->getPosition().y > 300)
-  {
-    cube->applyForce(Vec3f(0, -50, 0));
-    cube->applyTorque(Vec3f(0, 0, 0), Vec3f(0.0, 0.0, 0.0));
-  }
-  else
-  {
-    cube->applyForce(Vec3f(0, 30, 0));
-    cube->applyTorque(Vec3f(0, 1, 0), Vec3f(100.0, 0.0, 0.0));
-  }
-
-  cube->update(deltaTime);
-  plane->update(deltaTime);
-  sphere->update(deltaTime);
-
+  physicsEngine->update();
 }
 
 void PhysicsCubeApp::draw()
@@ -93,10 +55,7 @@ void PhysicsCubeApp::draw()
 
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-  cube->draw();
-  plane->draw();
-  sphere->draw();
-
+  
   //x-axis
   gl::color(1.0f, 0.1f, 0.1f);
   gl::drawVector(Vec3f(0, 0, 0), Vec3f(50, 0, 0), 10.0f, 5.0f);
@@ -110,6 +69,8 @@ void PhysicsCubeApp::draw()
   gl::drawVector(Vec3f(0, 0, 0), Vec3f(0, 0, 50), 10.0f, 5.0f);
   
   //gl::drawCoordinateFrame(100.0f, 20.0f, 10.0f);
+
+  physicsEngine->draw();
 }
 
 

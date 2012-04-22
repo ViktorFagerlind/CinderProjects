@@ -37,9 +37,10 @@ void DynamicObject::init(float mass, Vec3f& cog)
   mLocalInertia.m22 = (mMass / 6.0f)*tempSideLength*tempSideLength; 
    
   mLocalInertiaInverted = mLocalInertia.inverted();
-  mInertiaInverted = mOrientation*mLocalInertiaInverted*mOrientation.transposed();
+  mInertiaInverted = mState.mOrientation*mLocalInertiaInverted*mState.mOrientation.transposed();
 
-  Vec4f tempRot = mRotationSpeedVect; 
+  Vec4f tempRot = mState.mRotationSpeedVect;
+  mInertia = mState.mOrientation*mLocalInertia;
   Vec4f mAngularMomentum = mInertia*tempRot;
   mForceSum   = Vec3f(0.0f, 0.0f, 0.0f);
   mTorqueSum  = Vec3f(0.0f, 0.0f, 0.0f);
@@ -49,15 +50,15 @@ void DynamicObject::init(float mass, Vec3f& cog)
 
 void DynamicObject::update(float dt)
 {
-  mAcceleration   = mForceSum/mMass;
+  mState.mAcceleration   = mForceSum/mMass;
   
-  mAngularMomentum = EulerForward(mAngularMomentum, mTorqueSum, dt);
-  mInertiaInverted = mOrientation*mLocalInertiaInverted*mOrientation.transposed();
+  mState.mAngularMomentum = EulerForward(mState.mAngularMomentum, mTorqueSum, dt);
+  mInertiaInverted = mState.mOrientation*mLocalInertiaInverted*mState.mOrientation.transposed();
   
-  Vec4f tempRotationSpeedVect = mInertiaInverted * mAngularMomentum;
-  mRotationSpeedVect.x = tempRotationSpeedVect.x;
-  mRotationSpeedVect.y = tempRotationSpeedVect.y;
-  mRotationSpeedVect.z = tempRotationSpeedVect.z;
+  Vec4f tempRotationSpeedVect = mInertiaInverted * mState.mAngularMomentum;
+  mState.mRotationSpeedVect.x = tempRotationSpeedVect.x;
+  mState.mRotationSpeedVect.y = tempRotationSpeedVect.y;
+  mState.mRotationSpeedVect.z = tempRotationSpeedVect.z;
 
   PhysicsObject::update(dt);
 }
@@ -67,13 +68,13 @@ void DynamicObject::draw()
   PhysicsObject::draw();
 
   gl::color(0.3f, 0.3f, 1.0f);
-  gl::drawVector(mPosition, mPosition + mVelocity, 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition, mState.mPosition + mState.mVelocity, 10.0f, 5.0f);
 
   gl::color(0.3f, 1.0f, 0.3f);
-  gl::drawVector(mPosition + mVelocity, mPosition + mVelocity + mAcceleration, 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition + mState.mVelocity, mState.mPosition + mState.mVelocity + mState.mAcceleration, 10.0f, 5.0f);
 
   gl::color(1.0f, 0.3f, 0.3f);
-  gl::drawVector(mPosition, mPosition + (50.0f * mRotationSpeedVect), 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition, mState.mPosition + (50.0f * mState.mRotationSpeedVect), 10.0f, 5.0f);
 }
 
 
