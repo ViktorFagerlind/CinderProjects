@@ -22,7 +22,7 @@ public:
   void applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack, Vec3f force);
 
   //Collision detection methods
-  Vec3f getCollisionPoint(PhysicsObject physicsObject1, PhysicsObject physicsObject2);
+  Vec3f getCollisionPoint();
 
   DynamicObject *cube;
   StaticObject *plane;
