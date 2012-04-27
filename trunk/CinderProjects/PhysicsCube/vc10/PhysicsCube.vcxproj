@@ -111,6 +111,7 @@
     <ClCompile Include="..\src\BoundingSphere.cpp" />
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\PhysicsCubeApp.cpp" />
+    <ClCompile Include="..\src\PhysicsEngine.cpp" />
     <ClCompile Include="..\src\PhysicsObject.cpp" />
     <ClCompile Include="..\src\StaticObject.cpp" />
   </ItemGroup>
@@ -122,6 +123,7 @@
     <ClInclude Include="..\src\BoundingPlane.h" />
     <ClInclude Include="..\src\BoundingSphere.h" />
     <ClInclude Include="..\src\DynamicObject.h" />
+    <ClInclude Include="..\src\PhysicsEngine.h" />
     <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\StaticObject.h" />
   </ItemGroup>

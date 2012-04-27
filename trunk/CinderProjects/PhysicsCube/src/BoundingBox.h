@@ -12,6 +12,7 @@ public:
   BoundingBox(float width, float height, float length, Vec3f position, Matrix44f orientation);
 	void update();
 	void draw();
+  Vec3f *getVertecies();
 
 protected:
   float mWidth;

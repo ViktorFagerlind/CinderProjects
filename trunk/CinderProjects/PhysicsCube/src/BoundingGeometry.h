@@ -18,6 +18,7 @@ public:
 	virtual void draw()=0;
   void setPosition(Vec3f position);
   Vec3f getPosition();
+  virtual Vec3f getVertecies();
   void setOrientation(Matrix44f orientation);
   Matrix44f getOrientation();
   

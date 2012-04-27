@@ -38,7 +38,7 @@ void PhysicsEngine::update()
           4) update position and do 1)-3) until no collision.
   */
 
-  //Vec3f collisionPoint = getCollisionPoint((PhysicsObject) *cube, (PhysicsObject) *plane);
+  Vec3f collisionPoint = getCollisionPoint();
 
 
   if (cube->getPosition().y > 300)
@@ -80,28 +80,13 @@ void PhysicsEngine::applyForce(PhysicsObject physicsObject, Vec3f force)
   
 void PhysicsEngine::applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack, Vec3f force)
 {
-
+  
 }
 
-
-//Collision detection methods
-Vec3f PhysicsEngine::getCollisionPoint(PhysicsObject physicsObject1, PhysicsObject physicsObject2)
+Vec3f PhysicsEngine::getCollisionPoint()
 {
-
- /* BoundingGeometry::Type type1 = physicsObject1.mBoundingGeometry->mShape;
-  BoundingGeometry::Type type2 = physicsObject2.mBoundingGeometry->mShape;
-
-  if (type1  == BoundingGeometry::Type::eBox && type2 == BoundingGeometry::Type::ePlane)
-  {
-
-
-
-
-    return Vec3f(1, 0, 0);
-  }
-  */
-
-
-  return Vec3f(0, 0, 0);
-  
+  Vec3f *collisionPoints;
+  collisionPoints = new Vec3f[8];
+  collisionPoints = cube->mBoundingGeometry->getVertecies();
+  return collisionPoints[1];
 }
