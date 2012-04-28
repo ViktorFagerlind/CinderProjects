@@ -109,6 +109,7 @@
     <ClCompile Include="..\src\BoundingGeometry.cpp" />
     <ClCompile Include="..\src\BoundingPlane.cpp" />
     <ClCompile Include="..\src\BoundingSphere.cpp" />
+    <ClCompile Include="..\src\CollisionDetection.cpp" />
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\PhysicsCubeApp.cpp" />
     <ClCompile Include="..\src\PhysicsEngine.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="..\src\BoundingGeometry.h" />
     <ClInclude Include="..\src\BoundingPlane.h" />
     <ClInclude Include="..\src\BoundingSphere.h" />
+    <ClInclude Include="..\src\CollisionDetection.h" />
     <ClInclude Include="..\src\DynamicObject.h" />
     <ClInclude Include="..\src\PhysicsEngine.h" />
     <ClInclude Include="..\src\PhysicsObject.h" />

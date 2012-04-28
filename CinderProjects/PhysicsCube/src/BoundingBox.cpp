@@ -63,14 +63,9 @@ void BoundingBox::draw()
   glPopMatrix();
 }
 
-Vec3f *BoundingBox::getVertecies()
+void BoundingBox::getVertecies (Vec3f *vertices) const
 {
-  Vec3f *localVertecies;
-  localVertecies = new Vec3f[8];
-
-  Vec3f *globalVertecies;
-  globalVertecies = new Vec3f[8];
-
+  Vec3f localVertecies[8];
 
   float halfWidth = mWidth/2.0f;
   float halfHeight = mHeight/2.0f;
@@ -87,7 +82,6 @@ Vec3f *BoundingBox::getVertecies()
 
   for(int i=0; i<8; i++)
   {
-    globalVertecies[i] = mPosition + mOrientation*localVertecies[1]; 
+    vertices[i] = mPosition + mOrientation*localVertecies[1]; 
   }
-  return globalVertecies;
 }

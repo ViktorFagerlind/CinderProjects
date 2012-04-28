@@ -21,11 +21,14 @@ public:
   void applyForce(PhysicsObject physicsObject, Vec3f force);
   void applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack, Vec3f force);
 
+	void resolveCollisions ();
+
+
   //Collision detection methods
   Vec3f getCollisionPoint();
 
   DynamicObject *cube;
-  StaticObject *plane;
+  StaticObject  *plane;
   DynamicObject *sphere;
   Timer mTimer;
   float mLastTimeStamp;
