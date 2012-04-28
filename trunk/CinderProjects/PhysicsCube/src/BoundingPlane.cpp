@@ -17,7 +17,7 @@ void BoundingPlane::update()
 
 }
 
-Vec3f BoundingPlane::getNormal()
+Vec3f BoundingPlane::getNormal() const
 {
   Vec3f tempNormal;
   Vec4f tempOrientationZAxis =  mOrientation.getColumn(2);
@@ -29,7 +29,7 @@ Vec3f BoundingPlane::getNormal()
   return tempNormal;
 }
 
-float BoundingPlane::getOffset()
+float BoundingPlane::getOffset() const
 {
   Vec3f normal = getNormal();
   float offset = normal.dot(mPosition);

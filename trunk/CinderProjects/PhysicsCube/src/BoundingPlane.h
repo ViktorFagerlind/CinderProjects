@@ -12,8 +12,8 @@ public:
   BoundingPlane(float width, float heigth, Vec3f position, Matrix44f orientation);
 	void update();
 	void draw();
-  Vec3f getNormal();
-  float getOffset();
+  Vec3f getNormal() const;
+  float getOffset() const;
 
 protected:
   //plane equation: normal.*vector + offset = 0

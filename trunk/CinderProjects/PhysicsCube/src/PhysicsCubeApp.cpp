@@ -51,7 +51,7 @@ void PhysicsCubeApp::update()
 
 void PhysicsCubeApp::draw()
 {
-  camera->setViewMatrix();
+  camera->setMatrices ();
 
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );

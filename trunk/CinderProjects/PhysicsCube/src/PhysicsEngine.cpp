@@ -1,6 +1,7 @@
 #include "cinder/gl/gl.h"
 #include "PhysicsEngine.h"
 #include "BoundingGeometry.h"
+#include "CollisionDetection.h"
 #include "math.h"
 
 using namespace ci;
@@ -38,7 +39,9 @@ void PhysicsEngine::update()
           4) update position and do 1)-3) until no collision.
   */
 
-  Vec3f collisionPoint = getCollisionPoint();
+  //Vec3f collisionPoint = getCollisionPoint();
+
+
 
 
   if (cube->getPosition().y > 300)
@@ -83,10 +86,29 @@ void PhysicsEngine::applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack
   
 }
 
-Vec3f PhysicsEngine::getCollisionPoint()
+void PhysicsEngine::resolveCollisions ()
 {
-  Vec3f *collisionPoints;
-  collisionPoints = new Vec3f[8];
-  collisionPoints = cube->mBoundingGeometry->getVertecies();
-  return collisionPoints[1];
+  PhysicsObject *objects[] = {cube, plane, sphere};
+
+
+  for (int i=0; i<3; i++)
+  {
+    for (int j=0; j<3; j++)
+    {
+      if (i != j)
+      {
+        if (CollisionDetection::isCollision (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry))
+        {
+          Vec3f normal, point;
+
+          CollisionDetection::getCollision (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry, point, normal);
+
+          // handle collision...
+        }
+      }
+    }
+  }
+
+
+
 }
