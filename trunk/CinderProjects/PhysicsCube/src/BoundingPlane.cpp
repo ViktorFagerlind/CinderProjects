@@ -25,6 +25,7 @@ Vec3f BoundingPlane::getNormal() const
   tempNormal.x = tempOrientationZAxis.x;
   tempNormal.y = tempOrientationZAxis.y;
   tempNormal.z = tempOrientationZAxis.z;
+  tempNormal.normalize();
 
   return tempNormal;
 }

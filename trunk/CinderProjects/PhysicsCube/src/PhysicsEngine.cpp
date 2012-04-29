@@ -10,9 +10,9 @@ using namespace std;
 PhysicsEngine::PhysicsEngine()
 {
   cube = new DynamicObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, 70.0f);
-  cube->setPosition(Vec3f(300, 0, 0));
+  cube->setPosition(Vec3f(300, 500, 0));
 
-  plane = new StaticObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, Vec3f(0, 0, 100), Vec3f(100, 0, 0), Vec3f(0, 100, 0));
+  plane = new StaticObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, Vec3f(0, 0, 100), Vec3f(100, 0, 0), Vec3f(0, 0, 0));
 
   sphere = new DynamicObject(1.0f, Vec3f(0, 0, 0), 35.0f);
   sphere->setPosition(Vec3f(100, 0, 0));
@@ -30,6 +30,8 @@ void PhysicsEngine::update()
 
 
   // 1) Check if next position is valid:
+ resolveCollisions();
+
 
   // 2) If valid, update positions and orientations
 
@@ -41,19 +43,8 @@ void PhysicsEngine::update()
 
   //Vec3f collisionPoint = getCollisionPoint();
 
-
-
-
-  if (cube->getPosition().y > 300)
-  {
-    cube->applyForce(Vec3f(0, -50, 0));
-    cube->applyTorque(Vec3f(1, 0, 0), Vec3f(0.0, 10.0, 0.0));
-  }
-  else
-  {
-    cube->applyForce(Vec3f(0, 50, 0));
-  }
-
+ cube->applyForce(Vec3f(0, -50, 0));
+ 
   cube->update(deltaTime);
   plane->update(deltaTime);
   sphere->update(deltaTime);
@@ -89,22 +80,23 @@ void PhysicsEngine::applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack
 void PhysicsEngine::resolveCollisions ()
 {
   PhysicsObject *objects[] = {cube, plane, sphere};
+  uint32_t nofObjets = 3;
 
 
-  for (int i=0; i<3; i++)
+  for (int i=0; i<nofObjets-1; i++)
   {
-    for (int j=0; j<3; j++)
+    for (int j=i+1; j<nofObjets; j++)
     {
-      if (i != j)
+      if (CollisionDetection::isCollision (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry))
       {
-        if (CollisionDetection::isCollision (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry))
-        {
-          Vec3f normal, point;
+        Vec3f normal, point;
 
-          CollisionDetection::getCollision (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry, point, normal);
+        CollisionDetection::getCollisionPoint (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry, point, normal);
 
-          // handle collision...
-        }
+        cube->applyForce(Vec3f(0, 500, 0));
+        cube->applyTorque(point, Vec3f(0, 500, 0));
+        
+        // handle collision...
       }
     }
   }

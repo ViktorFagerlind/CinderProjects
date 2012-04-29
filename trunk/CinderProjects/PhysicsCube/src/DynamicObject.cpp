@@ -90,7 +90,8 @@ void DynamicObject::resetForce()
 
 void DynamicObject::applyTorque(Vec3f pointOfAttack, Vec3f force)
 {
-  mTorqueSum += cross(pointOfAttack, force);
+  Vec3f lever = pointOfAttack - mState.mPosition;
+  mTorqueSum += cross(lever, force);
 }
 
 void DynamicObject::resetTorque()
