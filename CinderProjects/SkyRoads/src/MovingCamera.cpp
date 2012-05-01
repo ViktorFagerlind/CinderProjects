@@ -70,17 +70,24 @@ void MovingCamera::keyDown (KeyEvent event)
   mEye += move;
 }
   
-void MovingCamera::setViewMatrix ()
+void MovingCamera::setMatrices ()
 {
-  /*
-  mAngle -= (mAngle - mAngleDest) * 0.1f;
-  mDist  -= (mDist - mDistDest) * 0.1f;
-  
-  mEye.x = sin (mAngle) * mDist;
-  mEye.z = cos (mAngle) * mDist;
-  */
-  
   mCam.lookAt (mEye, mEye + mTargetVec, mUpVector);
   mCam.setPerspective  (60.0f, mApp->getWindowAspectRatio(), 1, 20000);
   gl::setMatrices (mCam);
 }
+
+void MovingCamera::setModelMatrix ()
+{
+  mCam.lookAt (mEye, mEye + mTargetVec, mUpVector);
+  mCam.setPerspective  (60.0f, mApp->getWindowAspectRatio(), 1, 20000);
+  gl::setModelView (mCam);
+}
+
+void MovingCamera::setProjectionMatrix ()
+{
+  mCam.lookAt (mEye, mEye + mTargetVec, mUpVector);
+  mCam.setPerspective  (60.0f, mApp->getWindowAspectRatio(), 1, 20000);
+  gl::setProjection (mCam);
+}
+

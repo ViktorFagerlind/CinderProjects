@@ -42,7 +42,7 @@ Sun::Sun (const float                    mass,
 	}
 
   // Particle system
-  ParticleSystem *sunParticleSystem  = new ParticleSystem("../Media/Images/flare.png");
+  mSunParticleSystem  = new ParticleSystem("../Media/Images/flare.png");
   
   PointEmitter   *sunEmitter = new PointEmitter (10000,                //maxNofParticles,
                                                  mPosition,            //position, 
@@ -55,16 +55,19 @@ Sun::Sun (const float                    mass,
                                                  
   CommonModifier* commonModifier = new CommonModifier (1.2f, 2.0f, 0.1f);
   ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.0f), //startColor 
-                                                       ColorAf(1, 0.8f, 0.2f, 0.1f), //middleColor
+                                                       ColorAf(1, 0.8f, 0.2f, 0.2f), //middleColor
                                                        ColorAf(1, 0.6f, 0.1f, 0), //endColor
                                                        0.8f);//float middleTime)
-  sunParticleSystem->addModifier (commonModifier);
-  sunParticleSystem->addModifier (colorModifier);
-
-  sunParticleSystem->addEmitter (sunEmitter);
-
-  GameWorld::getParticleSystemManager()->addParticleSystem (sunParticleSystem);
+  mSunParticleSystem->addModifier (commonModifier);
+  mSunParticleSystem->addModifier (colorModifier);
+  mSunParticleSystem->addEmitter (sunEmitter);
 }
+
+Sun::~Sun()
+{
+  delete mSunParticleSystem;
+}
+
 
 void Sun::setLightPosition ()
 {
@@ -75,6 +78,7 @@ void Sun::setLightPosition ()
 
 void Sun::update()
 {
+  mSunParticleSystem->update ();
 }
 
 void Sun::draw()
@@ -103,4 +107,14 @@ void Sun::draw()
   mShader.unbind ();
 
   gl::popModelView();
+
+
+  // Draw particles
+	gl::disableDepthWrite ();
+	gl::enableAdditiveBlending();
+
+  mSunParticleSystem->draw ();
+
+	gl::disableAlphaBlending();
+	gl::enableDepthWrite ();
 }

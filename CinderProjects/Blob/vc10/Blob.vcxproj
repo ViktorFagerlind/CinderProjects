@@ -104,13 +104,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp" />
     <ClCompile Include="..\src\BlobApp.cpp" />
+    <ClCompile Include="..\src\March.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Macros.h" />
+    <ClInclude Include="..\src\March.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Media\Shaders\blob_frag.glsl" />
+    <None Include="..\..\Media\Shaders\blob_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

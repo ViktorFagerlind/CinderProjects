@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planets", "Planets\vc10\Pla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsCube", "PhysicsCube\vc10\PhysicsCube.vcxproj", "{6DBA9374-A390-406F-AD21-690906B4B757}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Blob", "Blob\vc10\Blob.vcxproj", "{9D454CCD-CC22-4E10-B772-3D9E969265D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -42,6 +44,10 @@ Global
 		{6DBA9374-A390-406F-AD21-690906B4B757}.Debug|Win32.Build.0 = Debug|Win32
 		{6DBA9374-A390-406F-AD21-690906B4B757}.Release|Win32.ActiveCfg = Release|Win32
 		{6DBA9374-A390-406F-AD21-690906B4B757}.Release|Win32.Build.0 = Release|Win32
+		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Debug|Win32.Build.0 = Debug|Win32
+		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Release|Win32.ActiveCfg = Release|Win32
+		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,16 +1,13 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
-#include "cinder/Vector.h"
 #include "cinder/gl/Vbo.h"
 #include "cinder/gl/GlslProg.h"
-#include "cinder/gl/Texture.h"
 
-#include <vector>
-
-#include "PhysicsObject.h"
 #include "BasicObject.h"
-#include "BaseMaterial.h"
+#include "PhysicsObject.h"
+
+class ParticleSystem;
 
 using namespace ci;
 using namespace std;
@@ -22,6 +19,8 @@ public:
        const Vec3f&                   position, 
        const float                    radius,   
              gl::VboMesh              vbo);
+
+  ~Sun ();
 
   void setLightPosition ();
 
@@ -35,4 +34,7 @@ protected:
   gl::VboMesh  mVbo;
 
   gl::GlslProg  mShader;
+
+  // Keep track of own particle system to bloom it
+  ParticleSystem *mSunParticleSystem;
 };

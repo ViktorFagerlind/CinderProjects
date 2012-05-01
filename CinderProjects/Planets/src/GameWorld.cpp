@@ -81,8 +81,8 @@ void GameWorld::setup ()
   // --- The explosions -------------------
   mExposionSystem = new ParticleSystem ("../Media/Images/fire.png");
   commonModifier = new CommonModifier (3, 2.0f, 1.0f);
-  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 0.05f), //startColor 
-                                      ColorAf(1, 1, 1, 0.1f), //middleColor
+  colorModifier  = new ColorModifier (ColorAf(1, 1, 1, 0.5f), //startColor 
+                                      ColorAf(1, 1, 1, 0.9f), //middleColor
                                       ColorAf(1, 1, 1, 0.0f), //endColor
                                       0.5f);//float middleTime)
 
@@ -162,7 +162,7 @@ void GameWorld::setup ()
   format.enableMipmapping (true);
   format.setColorInternalFormat (GL_RGBA32F);
 
-  mRenderFbo = gl::Fbo (mScreenWidth, mScreenHeight, format);
+  mBloomFbo = gl::Fbo (mScreenWidth, mScreenHeight, format);
 
   // --- Misc OpenGL setup ---------------------------------
   glEnable (GL_DEPTH_TEST);
@@ -207,22 +207,19 @@ void GameWorld::update ()
   mParticleSystemManager->update();
 }
 
+void GameWorld::setOrthoProjection ()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-500, 500, -300, 300, -1000.0, 1000.0);
+}
+
 void GameWorld::draw   ()
 {
-	// bind the framebuffer - now everything we draw will go there
-	mRenderFbo.bindFramebuffer();
-
-	// setup the viewport to match the dimensions of the FBO
-//	gl::setViewport( mRenderFbo.getBounds() );
-
 	// setup our camera to render the torus scene
-  mMovingCamera->setViewMatrix ();
-  /*
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glOrtho (-500, 500, -500, 500, -500, 500);
-  glMatrixMode(GL_MODELVIEW);
-  */
+  mMovingCamera->setProjectionMatrix ();
+  mMovingCamera->setModelMatrix ();
+
 
 	// clear the FBO
 	gl::clear();
@@ -248,26 +245,27 @@ void GameWorld::draw   ()
   mGravityField->draw ();
 	gl::disableAlphaBlending();
 
+	gl::enableDepthWrite ();
+
+  // Add blooming effect /////////////////////////
+
+	// bind the framebuffer - now everything we draw will go there
+	mBloomFbo.bindFramebuffer();
+  	gl::clear ();
+
+    // Draw the basic objects
+    for (list<BasicObject *>::iterator it = mObjects.begin(); it != mObjects.end(); it++)
+    {
+      BasicObject *object = *it;
+      object->draw();
+    }
 	// unbind the framebuffer, so that drawing goes to the screen again
-	mRenderFbo.unbindFramebuffer();
-
-  ///////////////////////////
- 
-	gl::clear ();
-
-  // Draw scene to screen
-  gl::disableDepthRead ();
-  gl::color (1, 1, 1, 1);
-  gl::setMatricesWindow (getWindowSize (), false);
-	gl::draw (mRenderFbo.getTexture(), mRenderFbo.getTexture().getBounds(), getWindowBounds());
+	mBloomFbo.unbindFramebuffer();
 
   // Get blooming effect
-  gl::Fbo& bloomedFbo = mBloomEffect->render (mRenderFbo);
+  gl::Fbo& bloomedFbo = mBloomEffect->render (mBloomFbo);
 
-  // Draw things not to bloom 
-  // TODO
-
-  // Add blooming effect to screen
+  // Draw blooming effect to screen
   gl::setMatricesWindow (getWindowSize (), false);
 	gl::enableAdditiveBlending();
   gl::color (1, 1, 1, 0.9f);

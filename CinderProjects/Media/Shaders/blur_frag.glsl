@@ -34,8 +34,11 @@ void main()
 	vec2 offset = -10.0 * pixelOffset;
 
 	for( int s = 0; s < 21; s++ ) 
-    {
-		sum += texture2D (tex0, gl_TexCoord[0].st + offset).rgb * weights[s];
+  {
+    vec3 color = texture2D (tex0, gl_TexCoord[0].st + offset).rgb;
+
+		sum += color * weights[s];
+
 		offset += pixelOffset;
 	}
 

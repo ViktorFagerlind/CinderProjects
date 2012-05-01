@@ -22,7 +22,9 @@ public:
 
   void keyDown (KeyEvent event);
   
-  void setViewMatrix ();
+  void setMatrices ();
+  void setModelMatrix ();
+  void setProjectionMatrix ();
 
 private:
   CameraPersp mCam;
