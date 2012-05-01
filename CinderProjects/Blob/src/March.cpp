@@ -3,9 +3,9 @@
 #include "Macros.h"
 #include "cinder/CinderMath.h"
 
-const uint32_t grid_nof_x = 100;
-const uint32_t grid_nof_y = 100;
-const uint32_t grid_nof_z = 100;
+const uint32_t grid_nof_x = 60;
+const uint32_t grid_nof_y = 60;
+const uint32_t grid_nof_z = 60;
 
 const float grid_width  = 500.0f;
 const float grid_height = 500.0f;
@@ -16,10 +16,10 @@ const float isoLimit = 0.00015f;
 // Funciton declarations ///////////////////////////////////////////////////////////////////////////////////
 void drawTetraCube (const Vec3f& pos, const float s);
 
-void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices, const ColorAf& color);
+void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices);
 
 void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* indices, 
-                          Triangle* outTriangles, uint32_t& nofTriangles);
+                      Vec3f* outVerts, uint32_t& nofVerts);
 
 float f (const Vec3f& p);
 
@@ -57,13 +57,17 @@ void March::draw ()
   float zs = grid_depth  / (float)grid_nof_z;
 
   for (int x=0; x<grid_nof_x; x++)
+  {
     for (int y=0; y<grid_nof_y; y++)
+    {
       for (int z=0; z<grid_nof_z; z++)
       {
         Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
 
         drawTetraCube (p, xs);
       }
+    }
+  }
 }
 
 void drawTetraCube (const Vec3f& pos, const float s)
@@ -92,16 +96,6 @@ void drawTetraCube (const Vec3f& pos, const float s)
     {6, 2, 1, 0}
   };
 
-  const ColorAf colors[6] = 
-  {
-    ColorAf (1, 0, 0),
-    ColorAf (0, 1, 0),
-    ColorAf (0, 0, 1),
-    ColorAf (1, 1, 0),
-    ColorAf (0, 1, 1),
-    ColorAf (1, 0, 1)
-  };
-
   Vec3f verts[8];
   float evals[8];
 
@@ -112,35 +106,27 @@ void drawTetraCube (const Vec3f& pos, const float s)
     evals[i] = f (verts[i]);
 
   for (uint32_t i=0; i<6; i++)
-    drawTetrahedron (verts, evals, tetraIndices[i], colors[i]);
+    drawTetrahedron (verts, evals, tetraIndices[i]);
 }
 
-void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices, const ColorAf& color)
+void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices)
 
 {
   gl::enableDepthRead ();
 
-  Triangle triangles[2];
-  uint32_t nofTriangles;
+  Vec3f vertices[4];
+  uint32_t nofVertices;
    
-  getIntersection (verts, evals, indices, triangles, nofTriangles);
+  getIntersection (verts, evals, indices, vertices, nofVertices);
 
-  glBegin (GL_TRIANGLES);
-    for (uint32_t i=0; i < nofTriangles; i++)
+  glBegin (GL_TRIANGLE_STRIP);
+    for (uint32_t i=0; i < nofVertices; i++)
     {
-      for (uint32_t j=0; j < 3UL; j++)
-      {
-        Vec3f& p = triangles[i].p[j];
-
-        glColor4fv (color);
-
-        Vec3f n = fNormal (p);
-        glNormal3fv (n);
-        glVertex3fv (p);
-      }
+      Vec3f n = fNormal (vertices[i]);
+      glNormal3fv (n);
+      glVertex3fv (vertices[i]);
     }
   glEnd ();
-
 }
 
 
@@ -164,9 +150,8 @@ Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2
   return(p);
 }
 
-
 void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* indices, 
-                          Triangle* outTriangles, uint32_t& nofTriangles)
+                      Vec3f* outVerts, uint32_t& nofVerts)
 {
    const uint8_t i0 = indices[0];
    const uint8_t i1 = indices[1];
@@ -197,74 +182,64 @@ void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* ind
      triIndex |= 8;
 
 
-   nofTriangles = 0UL;
-
    // Form the vertices of the triangles for each case
    switch (triIndex) 
    {
      case 0x00:
      case 0x0F:
+        nofVerts = 0;
         break;
      case 0x0E:
      case 0x01:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p0, p1, e0, e1);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p0, p3, e0, e3);
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p0, p1, e0, e1);
+        outVerts[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
+        outVerts[2] = VertexInterp (isoLimit, p0, p3, e0, e3);
+        nofVerts = 3;
         break;
      case 0x0D:
      case 0x02:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p1, p0, e1, e0);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p1, p3, e1, e3);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p1, p2, e1, e2);
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p1, p0, e1, e0);
+        outVerts[1] = VertexInterp (isoLimit, p1, p3, e1, e3);
+        outVerts[2] = VertexInterp (isoLimit, p1, p2, e1, e2);
+        nofVerts = 3;
         break;
      case 0x0C:
      case 0x03:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p1, p3, e1, e3);
-        nofTriangles++;
-        outTriangles[1].p[0] = outTriangles[0].p[2];
-        outTriangles[1].p[1] = VertexInterp (isoLimit, p1, p2, e1, e2);
-        outTriangles[1].p[2] = outTriangles[0].p[1];
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
+        outVerts[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
+        outVerts[2] = VertexInterp (isoLimit, p1, p3, e1, e3);
+        outVerts[3] = VertexInterp (isoLimit, p1, p2, e1, e2);
+        nofVerts = 4;
         break;
      case 0x0B:
      case 0x04:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p2,  p0, e2, e0);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p2,  p1, e2, e1);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p2,  p3, e2, e3);
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p2,  p0, e2, e0);
+        outVerts[1] = VertexInterp (isoLimit, p2,  p1, e2, e1);
+        outVerts[2] = VertexInterp (isoLimit, p2,  p3, e2, e3);
+        nofVerts = 3;
         break;
      case 0x0A:
      case 0x05:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p0, p1, e0, e1);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p2, p3, e2, e3);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p0, p3, e0, e3);
-        nofTriangles++;
-        outTriangles[1].p[0] = outTriangles[0].p[0];
-        outTriangles[1].p[1] = VertexInterp (isoLimit, p1, p2, e1, e2);
-        outTriangles[1].p[2] = outTriangles[0].p[1];
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
+        outVerts[1] = VertexInterp (isoLimit, p0, p1, e0, e1);
+        outVerts[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
+        outVerts[3] = VertexInterp (isoLimit, p1, p2, e1, e2);
+        nofVerts = 4;
         break;
      case 0x09:
      case 0x06:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p0, p1, e0, e1);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p1, p3, e1, e3);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
-        nofTriangles++;
-        outTriangles[1].p[0] = outTriangles[0].p[0];
-        outTriangles[1].p[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
-        outTriangles[1].p[2] = outTriangles[0].p[2];
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p1, p3, e1, e3);
+        outVerts[1] = VertexInterp (isoLimit, p0, p1, e0, e1);
+        outVerts[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
+        outVerts[3] = VertexInterp (isoLimit, p0, p2, e0, e2);
+        nofVerts = 4;
         break;
      case 0x07:
      case 0x08:
-        outTriangles[0].p[0] = VertexInterp (isoLimit, p3, p0, e3, e0);
-        outTriangles[0].p[1] = VertexInterp (isoLimit, p3, p2, e3, e2);
-        outTriangles[0].p[2] = VertexInterp (isoLimit, p3, p1, e3, e1);
-        nofTriangles++;
+        outVerts[0] = VertexInterp (isoLimit, p3, p0, e3, e0);
+        outVerts[1] = VertexInterp (isoLimit, p3, p2, e3, e2);
+        outVerts[2] = VertexInterp (isoLimit, p3, p1, e3, e1);
+        nofVerts = 3;
         break;
    }
 }

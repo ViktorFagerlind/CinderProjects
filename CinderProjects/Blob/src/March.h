@@ -6,12 +6,6 @@
 using namespace ci;
 using namespace std;
 
-class Triangle
-{
-public:
-  Vec3f p[3];
-};
-
 class March
 {
 public:
