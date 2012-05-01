@@ -13,7 +13,7 @@ const float grid_depth  = 500.0f;
 
 const float isoLimit = 0.00015f;
 
-// Funciton declarations ///////////////////////////////////////////////////////////////////////////////////
+// Function declarations ///////////////////////////////////////////////////////////////////////////////////
 void drawTetraCube (const Vec3f& pos, const float s);
 
 void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices);
