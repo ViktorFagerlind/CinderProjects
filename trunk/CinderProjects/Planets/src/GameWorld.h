@@ -40,6 +40,8 @@ public:
 
   static GravityField* getGravityField ()       {return getSingleton ()->mGravityField;}
 
+  static void setOrthoProjection ();
+
 public:
   static uint32_t mScreenWidth;
   static uint32_t mScreenHeight;
@@ -63,7 +65,7 @@ private:
 
   static GameWorld* theGameWorld;
 
-  gl::Fbo       mRenderFbo;
+  gl::Fbo       mBloomFbo;
 
   // Bloom attributes
   BloomEffect   *mBloomEffect;
