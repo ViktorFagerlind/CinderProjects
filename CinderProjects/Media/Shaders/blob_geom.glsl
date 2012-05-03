@@ -1,7 +1,7 @@
 #version 120
 #extension GL_EXT_geometry_shader4 : enable
 
-const float isoLimit = 0.00055;
+const float isoLimit = 1.0;
 
 varying in vec4 vPotential[4];
 varying in vec3 vLightDir[4];

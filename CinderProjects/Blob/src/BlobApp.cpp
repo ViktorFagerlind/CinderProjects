@@ -31,6 +31,7 @@ class BlobApp : public AppBasic {
 
   March *mMarch;
 
+  float         mBallRadius;
   vector<Vec3f> mBallPositions;
   vector<Vec3f> mBallVelocities;
 };
@@ -87,12 +88,14 @@ void BlobApp::setup()
 
   mMarch = new March ();
 
+  mBallRadius = 35.0f;
+
   for (int i=0; i<20; i++)
   {
     mBallPositions.push_back (Vec3f (0,0,0));
-    mBallVelocities.push_back (Vec3f (Rand::randFloat(-2.0f, 2.0f),
-                                      Rand::randFloat(-2.0f, 2.0f),
-                                      Rand::randFloat(-2.0f, 2.0f)));
+    mBallVelocities.push_back (Vec3f (Rand::randFloat(-3.0f, 3.0f),
+                                      Rand::randFloat(-3.0f, 3.0f),
+                                      Rand::randFloat(-3.0f, 3.0f)));
   }
 
 }
@@ -113,11 +116,13 @@ void BlobApp::update()
 {
   for (int i=0; i<mBallPositions.size (); i++)
   {
-    if (mBallPositions[i].x > 250.0f || mBallPositions[i].x < -250.0f)
+    float centerEndgeDist = 250.0f-mBallRadius*2.0f;
+
+    if (mBallPositions[i].x > centerEndgeDist || mBallPositions[i].x < -centerEndgeDist)
       mBallVelocities[i].x = -mBallVelocities[i].x;
-    if (mBallPositions[i].y > 250.0f || mBallPositions[i].y < -250.0f)
+    if (mBallPositions[i].y > centerEndgeDist || mBallPositions[i].y < -centerEndgeDist)
       mBallVelocities[i].y = -mBallVelocities[i].y;
-    if (mBallPositions[i].z > 250.0f || mBallPositions[i].z < -250.0f)
+    if (mBallPositions[i].z > centerEndgeDist || mBallPositions[i].z < -centerEndgeDist)
       mBallVelocities[i].z = -mBallVelocities[i].z;
 
     mBallPositions[i] += mBallVelocities[i];
@@ -148,6 +153,8 @@ void BlobApp::draw()
   int nofBalls = mBallPositions.size ();
   blobShader.uniform ("ballPositions", mBallPositions.data (), nofBalls);
   blobShader.uniform ("nofBalls",      nofBalls);
+  blobShader.uniform ("radiusSquared", mBallRadius*mBallRadius);
+  
 
   mMarch->draw ();
 
