@@ -1,5 +1,6 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Rand.h"
 #include "cinder/gl/GlslProg.h"
 
 #include "../../SkyRoads/src/MovingCamera.h"
@@ -27,6 +28,11 @@ class BlobApp : public AppBasic {
   shared_ptr<MovingCamera> mCamera;
 
   gl::GlslProg blobShader;
+
+  March *mMarch;
+
+  vector<Vec3f> mBallPositions;
+  vector<Vec3f> mBallVelocities;
 };
 
 void BlobApp::keyDown (KeyEvent event)
@@ -41,10 +47,16 @@ void BlobApp::mouseMove (MouseEvent event)
 
 void BlobApp::setup()
 {
-  mCamera.reset (new MovingCamera(300.0f));
+  mCamera.reset (new MovingCamera(700.0f));
+
+	int32_t maxGeomOutputVertices;
+	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
 
 	try {
-		blobShader = gl::GlslProg (loadFile ("../Media/Shaders/blob_vert.glsl"), loadFile ("../Media/Shaders/blob_frag.glsl"));
+		blobShader = gl::GlslProg (loadFile ("../Media/Shaders/blob_vert.glsl"), 
+                               loadFile ("../Media/Shaders/blob_frag.glsl"),
+                               loadFile ("../Media/Shaders/blob_geom.glsl"),
+                               GL_LINES_ADJACENCY_EXT, GL_TRIANGLE_STRIP, maxGeomOutputVertices);
 	}	catch (gl::GlslProgCompileExc &exc) {
 		std::cout << "Shader compile error: " << std::endl;
 		std::cout << exc.what();
@@ -72,6 +84,17 @@ void BlobApp::setup()
   glMaterialfv (GL_FRONT, GL_DIFFUSE,	   mMatDiffuse);
   glMaterialfv (GL_FRONT, GL_SPECULAR,   mMatSpecular);
   glMaterialfv (GL_FRONT, GL_SHININESS, &mMatShininess);
+
+  mMarch = new March ();
+
+  for (int i=0; i<20; i++)
+  {
+    mBallPositions.push_back (Vec3f (0,0,0));
+    mBallVelocities.push_back (Vec3f (Rand::randFloat(-2.0f, 2.0f),
+                                      Rand::randFloat(-2.0f, 2.0f),
+                                      Rand::randFloat(-2.0f, 2.0f)));
+  }
+
 }
 
 void BlobApp::prepareSettings (Settings *settings)
@@ -88,6 +111,18 @@ void BlobApp::setOrthoProjection ()
 
 void BlobApp::update()
 {
+  for (int i=0; i<mBallPositions.size (); i++)
+  {
+    if (mBallPositions[i].x > 250.0f || mBallPositions[i].x < -250.0f)
+      mBallVelocities[i].x = -mBallVelocities[i].x;
+    if (mBallPositions[i].y > 250.0f || mBallPositions[i].y < -250.0f)
+      mBallVelocities[i].y = -mBallVelocities[i].y;
+    if (mBallPositions[i].z > 250.0f || mBallPositions[i].z < -250.0f)
+      mBallVelocities[i].z = -mBallVelocities[i].z;
+
+    mBallPositions[i] += mBallVelocities[i];
+  }
+
 }
 
 void BlobApp::draw()
@@ -106,9 +141,16 @@ void BlobApp::draw()
 	float center[] = {-200, 1000, 400, 1};
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 
-
   blobShader.bind ();
-  March::draw ();
+
+  //uniform vec3 ballPositions[100];
+  //uniform int  nofBalls;
+  int nofBalls = mBallPositions.size ();
+  blobShader.uniform ("ballPositions", mBallPositions.data (), nofBalls);
+  blobShader.uniform ("nofBalls",      nofBalls);
+
+  mMarch->draw ();
+
   blobShader.unbind ();
 }
 
