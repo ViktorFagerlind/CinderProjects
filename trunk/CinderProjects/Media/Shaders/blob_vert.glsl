@@ -1,7 +1,8 @@
 #version 120
 
-uniform vec3 ballPositions[100];
-uniform int  nofBalls;
+uniform vec3  ballPositions[100];
+uniform int   nofBalls;
+uniform float radiusSquared;
 
 varying vec3 vLightDir;
 varying vec3 vEyeVec;
@@ -9,14 +10,19 @@ varying vec4 vPotential;
 
 vec4 potentialFunction ()
 {
-  vec4 pot = vec4(0,0,0,0);
+  vec3  normalSum = vec3(0,0,0);
+  float potSum;
   for (int i=0; i<nofBalls; i++)
   {
     vec3 dist           = ballPositions[i] - gl_Vertex.xyz;
     vec3 ballPotential  = -normalize (dist) / dot (dist, dist);
-    pot.xyz     += ballPotential;
-    pot.w       += length (ballPotential);
+    normalSum          += ballPotential;
+    potSum             += length (ballPotential);
   }
+
+  vec4 pot;
+  pot.xyz = normalize (normalSum);
+  pot.w   = radiusSquared*potSum;
 
   return pot;
 }
