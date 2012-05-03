@@ -2,10 +2,11 @@
 
 #include "Macros.h"
 #include "cinder/CinderMath.h"
+#include "cinder/gl/Vbo.h"
 
-const uint32_t grid_nof_x = 60;
-const uint32_t grid_nof_y = 60;
-const uint32_t grid_nof_z = 60;
+const uint32_t grid_nof_x = 90;
+const uint32_t grid_nof_y = 90;
+const uint32_t grid_nof_z = 90;
 
 const float grid_width  = 500.0f;
 const float grid_height = 500.0f;
@@ -14,6 +15,8 @@ const float grid_depth  = 500.0f;
 const float isoLimit = 0.00015f;
 
 // Function declarations ///////////////////////////////////////////////////////////////////////////////////
+void drawAllCubes ();
+
 void drawTetraCube (const Vec3f& pos, const float s);
 
 void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices);
@@ -22,6 +25,10 @@ void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* ind
                       Vec3f* outVerts, uint32_t& nofVerts);
 
 float f (const Vec3f& p);
+
+void getTetraCubeMesh (const Vec3f& pos, const float s,
+                       std::vector<uint32_t>& vboIndices,
+	                     std::vector<Vec3f>&    vboVertices);
 
 // Funciton implementations ////////////////////////////////////////////////////////////////////////////////
 Vec3f fNormal (const Vec3f& p)
@@ -46,7 +53,22 @@ float f (const Vec3f& p)
   return potential;
 }
 
+
+March::March ()
+{
+  setupTetraVbo ();
+}
+
 void March::draw ()
+{
+  gl::enableDepthRead ();
+
+  gl::draw (mVboMesh);
+
+//  drawAllCubes ();
+}
+
+void drawAllCubes ()
 {
   Vec3f startPoint = Vec3f (-grid_width  / 2.0f, 
                             -grid_height / 2.0f, 
@@ -69,6 +91,87 @@ void March::draw ()
     }
   }
 }
+
+void March::setupTetraVbo ()
+{
+	gl::VboMesh::Layout   vboLayout;
+	std::vector<uint32_t> vboIndices;
+	std::vector<Vec3f>    vboVertices;
+
+  Vec3f startPoint = Vec3f (-grid_width  / 2.0f, 
+                            -grid_height / 2.0f, 
+                            -grid_depth  / 2.0f);
+
+  float xs = grid_width  / (float)grid_nof_x;
+  float ys = grid_height / (float)grid_nof_y;
+  float zs = grid_depth  / (float)grid_nof_z;
+
+  for (int x=0; x<grid_nof_x; x++)
+  {
+    for (int y=0; y<grid_nof_y; y++)
+    {
+      for (int z=0; z<grid_nof_z; z++)
+      {
+        Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
+
+        getTetraCubeMesh (p, xs, vboIndices, vboVertices);
+      }
+    }
+  }
+
+  // Vbo settings
+	vboLayout.setStaticIndices ();
+	vboLayout.setStaticPositions ();
+
+  // Create Vbo
+  mVboMesh = gl::VboMesh (vboVertices.size(), vboIndices.size(), vboLayout, GL_LINES_ADJACENCY_EXT);
+	mVboMesh.bufferIndices (vboIndices);
+	mVboMesh.bufferPositions (vboVertices);
+	mVboMesh.unbindBuffers ();
+
+	// Clean up
+	vboIndices.clear ();
+	vboVertices.clear ();
+}
+
+void getTetraCubeMesh (const Vec3f& pos, const float s,
+                       std::vector<uint32_t>& vboIndices,
+	                     std::vector<Vec3f>&    vboVertices)
+{
+  // cube corners
+  const Vec3f cubeCorners[8] = 
+  {
+    Vec3f (0, 0, 0), // 0
+    Vec3f (s, 0, 0), // 1
+    Vec3f (s, s, 0), // 2
+    Vec3f (0, s, 0), // 3
+    Vec3f (0, 0, s), // 4
+    Vec3f (s, 0, s), // 5
+    Vec3f (s, s, s), // 6
+    Vec3f (0, s, s)  // 7
+  };
+
+  // The 6 tetrahedrons that make up a cube
+  static const uint8_t tetraIndices[6][4] =
+  {
+    {6, 4, 7, 0},
+    {6, 0, 7, 3},
+    {6, 0, 3, 2},
+    {6, 5, 4, 0},
+    {6, 5, 0, 1},
+    {6, 2, 1, 0}
+  };
+
+  uint32_t startIndex = vboVertices.size ();
+
+  for (uint32_t i=0; i<8; i++)
+    vboVertices.push_back (cubeCorners[i] + pos);
+
+  for (uint32_t i=0; i<6; i++)
+    for (uint32_t j=0; j<4; j++)
+      vboIndices.push_back (startIndex + tetraIndices[i][j]);
+}
+
 
 void drawTetraCube (const Vec3f& pos, const float s)
 {
@@ -112,8 +215,6 @@ void drawTetraCube (const Vec3f& pos, const float s)
 void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices)
 
 {
-  gl::enableDepthRead ();
-
   Vec3f vertices[4];
   uint32_t nofVertices;
    

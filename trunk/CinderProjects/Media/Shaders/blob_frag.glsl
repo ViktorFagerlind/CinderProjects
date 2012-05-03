@@ -1,4 +1,8 @@
-varying vec3 normal, lightDir, eyeVec;
+#version 120
+
+varying vec3 gNormal;
+varying vec3 gLightDir;
+varying vec3 gEyeVec;
 
 void main (void)
 {
@@ -6,8 +10,8 @@ void main (void)
 	(gl_FrontLightModelProduct.sceneColor * gl_FrontMaterial.ambient) + 
 	(gl_LightSource[0].ambient * gl_FrontMaterial.ambient);
 							
-	vec3 N = normalize(normal);
-	vec3 L = normalize(lightDir);
+	vec3 N = normalize(gNormal);
+	vec3 L = normalize(gLightDir);
 	
 	float lambertTerm = dot(N,L);
 	
@@ -17,7 +21,7 @@ void main (void)
 		               gl_FrontMaterial.diffuse * 
 					   lambertTerm;	
 		
-		vec3 E = normalize(eyeVec);
+		vec3 E = normalize(gEyeVec);
 		vec3 R = reflect(-L, N);
 		float specular = pow( max(dot(R, E), 0.0), 
 		                 gl_FrontMaterial.shininess );
@@ -27,4 +31,5 @@ void main (void)
 	}
 
 	gl_FragColor = final_color;			
+//	gl_FragColor = vec4(1,1,0,1);			
 }
