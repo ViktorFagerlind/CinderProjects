@@ -88,9 +88,9 @@ void BlobApp::setup()
 
   mMarch = new March ();
 
-  mBallRadius = 35.0f;
+  mBallRadius = 22.0f;
 
-  for (int i=0; i<20; i++)
+  for (int i=0; i<60; i++)
   {
     mBallPositions.push_back (Vec3f (0,0,0));
     mBallVelocities.push_back (Vec3f (Rand::randFloat(-3.0f, 3.0f),

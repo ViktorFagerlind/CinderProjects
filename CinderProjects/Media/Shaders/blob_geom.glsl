@@ -30,29 +30,20 @@ void VertexInterp (int i1, int i2)
 
 void main()
 {
-   float e0 = vPotential[0].w;
-   float e1 = vPotential[1].w;
-   float e2 = vPotential[2].w;
-   float e3 = vPotential[3].w;
-
-   vec4 p0 = gl_PositionIn[0];
-   vec4 p1 = gl_PositionIn[1];
-   vec4 p2 = gl_PositionIn[2];
-   vec4 p3 = gl_PositionIn[3];
-
    int triIndex;
 
    // Determine which of the 16 cases we have given which vertices are above or below the isosurface
    triIndex = 0;
-   if (e0 < isoLimit) 
+   if (vPotential[0].w < isoLimit) 
      triIndex |= 1;
-   if (e1 < isoLimit) 
+   if (vPotential[1].w < isoLimit) 
      triIndex |= 2;
-   if (e2 < isoLimit) 
+   if (vPotential[2].w < isoLimit) 
      triIndex |= 4;
-   if (e3 < isoLimit) 
+   if (vPotential[3].w < isoLimit) 
      triIndex |= 8;
 
+   // TODO: Use lookup table instead
    // Form the vertices of the triangles for each case
    switch (triIndex) 
    {
