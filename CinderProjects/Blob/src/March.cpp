@@ -4,9 +4,9 @@
 #include "cinder/CinderMath.h"
 #include "cinder/gl/Vbo.h"
 
-const uint32_t grid_nof_x = 50;
-const uint32_t grid_nof_y = 50;
-const uint32_t grid_nof_z = 50;
+const uint32_t grid_nof_x = 60;
+const uint32_t grid_nof_y = 60;
+const uint32_t grid_nof_z = 60;
 
 const float grid_width  = 500.0f;
 const float grid_height = 500.0f;
@@ -243,27 +243,38 @@ void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* ind
 }
 
 //   Linjärinterpolera för att hitta punkt på en linje där iso-värdet har sin gräns
-Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+Vec3f VertexInterp2 (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
 {
-  Vec3f p;
+  float mu = (isolevel - valp1) / (valp2 - valp1);
+
+  return lerp (p1, p2, mu);
+}
+
+//  Paraboltesta
+Vec3f VertexInterp3 (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+{
+  Vec3f d1 = -fNormal (p1);
+  Vec3f d2 = -fNormal (p2);
+  Vec3f b  = 0.5f * (d2-d1);
 
   float mu = (isolevel - valp1) / (valp2 - valp1);
 
-  p = p1 + mu * (p2 - p1);
+  Vec3f p = p1 + (p2 - p1 - b)*mu + b*mu*mu;
 
-  return(p);
+  return p;
 }
 
-
-//   
-Vec3f VertexInterpSeek (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+// Använd extra punkt i mitten
+Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
 {
+  if (abs (valp1-valp2) < 0.0001f)
+    return VertexInterp2 (isolevel, p1, p2, valp1, valp2);
+
   Vec3f p;
 
-  Vec3f pm = (p1 + p2) / 2.0;
+  Vec3f pm = (p1 + p2) / 2.0f;
 
   bool b1 = valp1 > isolevel;
-  bool b2 = valp2 > isolevel;
   float valm = f (pm);
   bool bm = valm > isolevel;
 
@@ -305,7 +316,7 @@ void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* ind
    if (e3 < isoLimit) 
      triIndex |= 8;
 
-
+   Vec3f tmp;
    // Form the vertices of the triangles for each case
    switch (triIndex) 
    {
@@ -315,54 +326,55 @@ void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* ind
         break;
      case 0x0E:
      case 0x01:
-        outVerts[0] = VertexInterpSeek (isoLimit, p0, p1, e0, e1);
-        outVerts[1] = VertexInterpSeek (isoLimit, p0, p2, e0, e2);
-        outVerts[2] = VertexInterpSeek (isoLimit, p0, p3, e0, e3);
+        tmp = VertexInterp (isoLimit, p0, p1, e0, e1);;
+        outVerts[0] = VertexInterp (isoLimit, p0, p1, e0, e1);
+        outVerts[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
+        outVerts[2] = VertexInterp (isoLimit, p0, p3, e0, e3);
         nofVerts = 3;
         break;
      case 0x0D:
      case 0x02:
-        outVerts[0] = VertexInterpSeek (isoLimit, p1, p0, e1, e0);
-        outVerts[1] = VertexInterpSeek (isoLimit, p1, p3, e1, e3);
-        outVerts[2] = VertexInterpSeek (isoLimit, p1, p2, e1, e2);
+        outVerts[0] = VertexInterp (isoLimit, p1, p0, e1, e0);
+        outVerts[1] = VertexInterp (isoLimit, p1, p3, e1, e3);
+        outVerts[2] = VertexInterp (isoLimit, p1, p2, e1, e2);
         nofVerts = 3;
         break;
      case 0x0C:
      case 0x03:
-        outVerts[0] = VertexInterpSeek (isoLimit, p0, p3, e0, e3);
-        outVerts[1] = VertexInterpSeek (isoLimit, p0, p2, e0, e2);
-        outVerts[2] = VertexInterpSeek (isoLimit, p1, p3, e1, e3);
-        outVerts[3] = VertexInterpSeek (isoLimit, p1, p2, e1, e2);
+        outVerts[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
+        outVerts[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
+        outVerts[2] = VertexInterp (isoLimit, p1, p3, e1, e3);
+        outVerts[3] = VertexInterp (isoLimit, p1, p2, e1, e2);
         nofVerts = 4;
         break;
      case 0x0B:
      case 0x04:
-        outVerts[0] = VertexInterpSeek (isoLimit, p2,  p0, e2, e0);
-        outVerts[1] = VertexInterpSeek (isoLimit, p2,  p1, e2, e1);
-        outVerts[2] = VertexInterpSeek (isoLimit, p2,  p3, e2, e3);
+        outVerts[0] = VertexInterp (isoLimit, p2,  p0, e2, e0);
+        outVerts[1] = VertexInterp (isoLimit, p2,  p1, e2, e1);
+        outVerts[2] = VertexInterp (isoLimit, p2,  p3, e2, e3);
         nofVerts = 3;
         break;
      case 0x0A:
      case 0x05:
-        outVerts[0] = VertexInterpSeek (isoLimit, p0, p3, e0, e3);
-        outVerts[1] = VertexInterpSeek (isoLimit, p0, p1, e0, e1);
-        outVerts[2] = VertexInterpSeek (isoLimit, p2, p3, e2, e3);
-        outVerts[3] = VertexInterpSeek (isoLimit, p1, p2, e1, e2);
+        outVerts[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
+        outVerts[1] = VertexInterp (isoLimit, p0, p1, e0, e1);
+        outVerts[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
+        outVerts[3] = VertexInterp (isoLimit, p1, p2, e1, e2);
         nofVerts = 4;
         break;
      case 0x09:
      case 0x06:
-        outVerts[0] = VertexInterpSeek (isoLimit, p1, p3, e1, e3);
-        outVerts[1] = VertexInterpSeek (isoLimit, p0, p1, e0, e1);
-        outVerts[2] = VertexInterpSeek (isoLimit, p2, p3, e2, e3);
-        outVerts[3] = VertexInterpSeek (isoLimit, p0, p2, e0, e2);
+        outVerts[0] = VertexInterp (isoLimit, p1, p3, e1, e3);
+        outVerts[1] = VertexInterp (isoLimit, p0, p1, e0, e1);
+        outVerts[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
+        outVerts[3] = VertexInterp (isoLimit, p0, p2, e0, e2);
         nofVerts = 4;
         break;
      case 0x07:
      case 0x08:
-        outVerts[0] = VertexInterpSeek (isoLimit, p3, p0, e3, e0);
-        outVerts[1] = VertexInterpSeek (isoLimit, p3, p2, e3, e2);
-        outVerts[2] = VertexInterpSeek (isoLimit, p3, p1, e3, e1);
+        outVerts[0] = VertexInterp (isoLimit, p3, p0, e3, e0);
+        outVerts[1] = VertexInterp (isoLimit, p3, p2, e3, e2);
+        outVerts[2] = VertexInterp (isoLimit, p3, p1, e3, e1);
         nofVerts = 3;
         break;
    }
