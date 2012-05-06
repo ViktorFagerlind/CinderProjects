@@ -1,0 +1,13 @@
+*** rev 215 ***
+1. All fält-beräkning i vertex shader
+  - 80^3 grid
+  - 40 metaballs, radius 22
+  - 26 FPS
+
+2. Flytta alla fält-beräkningar till geometry shader
+  - 80^3 grid
+  - 40 metaballs, radius 22
+  - 8 FPS (ev 4ggr så många beräkningar?)
+
+
+  

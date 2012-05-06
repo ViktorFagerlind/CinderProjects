@@ -31,6 +31,8 @@ class BlobApp : public AppBasic {
 
   March *mMarch;
 
+  uint32_t      frameCount;
+
   bool          mPaused;
   bool          mWireFrameMode;
   float         mBallRadius;
@@ -104,15 +106,16 @@ void BlobApp::setup()
   glMaterialfv (GL_FRONT, GL_SPECULAR,   mMatSpecular);
   glMaterialfv (GL_FRONT, GL_SHININESS, &mMatShininess);
 
+  frameCount = 0;
 
   mPaused        = false;
   mWireFrameMode = false;
 
   mMarch = new March ();
 
-  mBallRadius = 40.0f;
+  mBallRadius = 30.0f;
 
-  for (int i=0; i<10; i++)
+  for (int i=0; i<15; i++)
   {
     mBallPositions.push_back (Vec3f (0,0,0));
     mBallVelocities.push_back (Vec3f (Rand::randFloat(-3.0f, 3.0f),
@@ -180,10 +183,16 @@ void BlobApp::draw()
   blobShader.uniform ("nofBalls",      nofBalls);
   blobShader.uniform ("radiusSquared", mBallRadius*mBallRadius);
   
-
   mMarch->draw ();
 
   blobShader.unbind ();
+
+  frameCount++;
+  if ((frameCount % 10) == 0)
+  {
+    console() << "FPS: " << getAverageFps() << std::endl;
+  }
+
 }
 
 CINDER_APP_BASIC( BlobApp, RendererGl )
