@@ -13,24 +13,8 @@ BumpMaterial::BumpMaterial (      gl::Texture   diffuseTexture,
                             const ColorAf&      matDiffuse,
                             const ColorAf&      matSpecular,
                             const float         matShininess)
+: PhongMaterial (shader, matAmbient, matDiffuse, matSpecular, matShininess)
 {
-  mMatAmbient[0] = matAmbient.r;
-  mMatAmbient[1] = matAmbient.g;
-  mMatAmbient[2] = matAmbient.b;
-  mMatAmbient[3] = matAmbient.a;
-
-  mMatDiffuse[0] = matDiffuse.r;
-  mMatDiffuse[1] = matDiffuse.g;
-  mMatDiffuse[2] = matDiffuse.b;
-  mMatDiffuse[3] = matDiffuse.a;
-
-  mMatSpecular[0] = matSpecular.r;
-  mMatSpecular[1] = matSpecular.g;
-  mMatSpecular[2] = matSpecular.b;
-  mMatSpecular[3] = matSpecular.a;
-
-  mMatShininess = matShininess;
-
   mDiffuseTexture = diffuseTexture;
 	mNormalTexture  = normalTexture;
   mShader         = shader;
@@ -93,16 +77,7 @@ void BumpMaterial::calculateTangents (const TriMesh& mesh)
 
 void BumpMaterial::bind ()
 {
-	glDisable (GL_BLEND);
-  glEnable (GL_TEXTURE_2D);
-
-  // Setup material for planets
-  glMaterialfv (GL_FRONT, GL_AMBIENT,	   mMatAmbient);
-  glMaterialfv (GL_FRONT, GL_DIFFUSE,	   mMatDiffuse);
-  glMaterialfv (GL_FRONT, GL_SPECULAR,   mMatSpecular);
-  glMaterialfv (GL_FRONT, GL_SHININESS, &mMatShininess);
-
-	mShader.bind();
+  PhongMaterial::bind ();
 
 	mShader.uniform ("colorMap",  colorMapIndex);
 	mShader.uniform ("normalMap", normalMapIndex);
@@ -119,9 +94,9 @@ void BumpMaterial::bind ()
 
 void BumpMaterial::unbind ()
 {
-  glDisableVertexAttribArrayARB (mTangentUniformLoc);
+  PhongMaterial::unbind ();
 
-	mShader.unbind();
+  glDisableVertexAttribArrayARB (mTangentUniformLoc);
   mDiffuseTexture.unbind (colorMapIndex);
 	mNormalTexture.unbind (normalMapIndex);
 }
