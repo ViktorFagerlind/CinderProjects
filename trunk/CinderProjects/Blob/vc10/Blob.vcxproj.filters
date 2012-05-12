@@ -27,8 +27,11 @@
     <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp">
       <Filter>Source Files\External</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\March.cpp">
+    <ClCompile Include="..\src\IsoSurface.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Planets\src\PhongMaterial.cpp">
+      <Filter>Source Files\External</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -38,8 +41,14 @@
     <ClInclude Include="..\src\Macros.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\March.h">
+    <ClInclude Include="..\src\IsoSurface.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Planets\src\PhongMaterial.h">
+      <Filter>Source Files\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Planets\src\BaseMaterial.h">
+      <Filter>Source Files\External</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -104,14 +104,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Planets\src\PhongMaterial.cpp" />
     <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp" />
     <ClCompile Include="..\src\BlobApp.cpp" />
-    <ClCompile Include="..\src\March.cpp" />
+    <ClCompile Include="..\src\IsoSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Planets\src\BaseMaterial.h" />
+    <ClInclude Include="..\..\Planets\src\PhongMaterial.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\Macros.h" />
-    <ClInclude Include="..\src\March.h" />
+    <ClInclude Include="..\src\IsoSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

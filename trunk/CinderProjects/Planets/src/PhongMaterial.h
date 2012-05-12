@@ -24,6 +24,8 @@ public:
   void bind ();
   void unbind ();
 
+  gl::GlslProg& getShader () {return mShader;}
+
 private:
 	gl::GlslProg mShader;
 	gl::Texture  mDiffuseTexture;

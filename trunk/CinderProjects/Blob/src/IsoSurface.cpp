@@ -1,33 +1,14 @@
-#include "March.h"
+#include "IsoSurface.h"
 
 #include "Macros.h"
 #include "cinder/CinderMath.h"
 #include "cinder/gl/Vbo.h"
 
-const uint32_t grid_nof_x = 60;
-const uint32_t grid_nof_y = 60;
-const uint32_t grid_nof_z = 60;
-
-const float grid_width  = 500.0f;
-const float grid_height = 500.0f;
-const float grid_depth  = 500.0f;
-
 const float isoLimit = 1.0f;
 
 // Function declarations ///////////////////////////////////////////////////////////////////////////////////
-void drawAllCubes ();
-
-void drawTetraCube (const Vec3f& pos, const float s);
-
-void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices);
-
-void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* indices, 
-                      Vec3f* outVerts, uint32_t& nofVerts);
 
 float f (const Vec3f& p);
-
-void getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, 
-                          std::vector<uint32_t>& vboIndices);
 
 // Funciton implementations ////////////////////////////////////////////////////////////////////////////////
 Vec3f fNormal (const Vec3f& p)
@@ -54,45 +35,60 @@ float f (const Vec3f& p)
 }
 
 
-March::March ()
+IsoSurface::IsoSurface (const uint32_t  gridNofX,
+                        const uint32_t  gridNofY,
+                        const uint32_t  gridNofZ,
+                        const float     gridWidth,
+                        const float     gridHeight,
+                        const float     gridDepth)
+: mGridNofX   (gridNofX),
+  mGridNofY   (gridNofY),
+  mGridNofZ   (gridNofZ),
+  mGridWidth  (gridWidth),
+  mGridHeight (gridHeight),
+  mGridDepth  (gridDepth)
 {
   setupTetraVbo ();
 }
 
-void March::draw ()
+void IsoSurface::draw ()
 {
   gl::enableDepthRead ();
 
-//  glColor3f (1,1,0);
-//  gl::drawSphere (Vec3f (-100, 0, 0), tmpRadius);
+  gl::draw (mVboMesh);
+
+/*
+  glColor3f (1,1,0);
+  gl::drawSphere (Vec3f (-100, 0, 0), tmpRadius);
 
   glColor3f (1,0,0);
   gl::draw (mVboMesh);
 
-//  glColor3f (0,0,1);
-//  drawAllCubes ();
+  glColor3f (0,0,1);
+  drawAllCubes ();
+*/
 }
 
-void March::setupTetraVbo ()
+void IsoSurface::setupTetraVbo ()
 {
 	gl::VboMesh::Layout   vboLayout;
 	std::vector<uint32_t> vboIndices;
 	std::vector<Vec3f>    vboVertices;
 
-  Vec3f startPoint = Vec3f (-grid_width  / 2.0f, 
-                            -grid_height / 2.0f, 
-                            -grid_depth  / 2.0f);
+  Vec3f startPoint = Vec3f (-mGridWidth  / 2.0f, 
+                            -mGridHeight / 2.0f, 
+                            -mGridDepth  / 2.0f);
 
-  float xs = grid_width  / (float)grid_nof_x;
-  float ys = grid_height / (float)grid_nof_y;
-  float zs = grid_depth  / (float)grid_nof_z;
+  float xs = mGridWidth  / (float)mGridNofX;
+  float ys = mGridHeight / (float)mGridNofY;
+  float zs = mGridDepth  / (float)mGridNofZ;
 
   // Create vertices
-  for (int x=0; x<grid_nof_x+1; x++)
+  for (uint32_t z=0; z<mGridNofZ+1; z++)
   {
-    for (int y=0; y<grid_nof_y+1; y++)
+    for (uint32_t y=0; y<mGridNofY+1; y++)
     {
-      for (int z=0; z<grid_nof_z+1; z++)
+      for (uint32_t x=0; x<mGridNofX+1; x++)
       {
         Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
         vboVertices.push_back (p);
@@ -101,11 +97,11 @@ void March::setupTetraVbo ()
   }
 
   // Create indicies
-  for (int x=0; x<grid_nof_x; x++)
+  for (uint32_t z=0; z<mGridNofZ; z++)
   {
-    for (int y=0; y<grid_nof_y; y++)
+    for (uint32_t y=0; y<mGridNofY; y++)
     {
-      for (int z=0; z<grid_nof_z; z++)
+      for (uint32_t x=0; x<mGridNofX; x++)
       {
         getTetraCubeIndices (x, y, z, vboIndices);
       }
@@ -129,11 +125,11 @@ void March::setupTetraVbo ()
 }
 
 
-void getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, 
-                          std::vector<uint32_t>& vboIndices)
+void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, 
+                                      std::vector<uint32_t>& vboIndices)
 {
-  const uint32_t z_move = (grid_nof_x+1) * (grid_nof_y+1);
-  const uint32_t y_move = (grid_nof_x+1);
+  const uint32_t z_move = (mGridNofX+1) * (mGridNofY+1);
+  const uint32_t y_move = (mGridNofX+1);
 
   const uint32_t far_down_left    = z*z_move + y*y_move + x; // 0
   const uint32_t far_down_right   = far_down_left  + 1;      // 1
@@ -161,21 +157,21 @@ void getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z,
 }
 
 
-void drawAllCubes ()
+void IsoSurface::drawAllCubes ()
 {
-  Vec3f startPoint = Vec3f (-grid_width  / 2.0f, 
-                            -grid_height / 2.0f, 
-                            -grid_depth  / 2.0f);
+  Vec3f startPoint = Vec3f (-mGridWidth  / 2.0f, 
+                            -mGridHeight / 2.0f, 
+                            -mGridDepth  / 2.0f);
 
-  float xs = grid_width  / (float)grid_nof_x;
-  float ys = grid_height / (float)grid_nof_y;
-  float zs = grid_depth  / (float)grid_nof_z;
+  float xs = mGridWidth  / (float)mGridNofX;
+  float ys = mGridHeight / (float)mGridNofY;
+  float zs = mGridDepth  / (float)mGridNofZ;
 
-  for (int x=0; x<grid_nof_x; x++)
+  for (uint32_t x=0; x<mGridNofX; x++)
   {
-    for (int y=0; y<grid_nof_y; y++)
+    for (uint32_t y=0; y<mGridNofY; y++)
     {
-      for (int z=0; z<grid_nof_z; z++)
+      for (uint32_t z=0; z<mGridNofZ; z++)
       {
         Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
 
@@ -185,7 +181,7 @@ void drawAllCubes ()
   }
 }
 
-void drawTetraCube (const Vec3f& pos, const float s)
+void IsoSurface::drawTetraCube (const Vec3f& pos, const float s)
 {
   // cube corners
   const Vec3f cubeCorners[8] = 
@@ -224,7 +220,7 @@ void drawTetraCube (const Vec3f& pos, const float s)
     drawTetrahedron (verts, evals, tetraIndices[i]);
 }
 
-void drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices)
+void IsoSurface::drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices)
 
 {
   Vec3f vertices[4];
@@ -285,7 +281,7 @@ Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2
 }
 
 
-void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* indices, 
+void IsoSurface::getIntersection (const Vec3f* verts, const float* evals, const uint8_t* indices, 
                       Vec3f* outVerts, uint32_t& nofVerts)
 {
    const uint8_t i0 = indices[0];
@@ -379,3 +375,4 @@ void getIntersection (const Vec3f* verts, const float* evals, const uint8_t* ind
         break;
    }
 }
+
