@@ -5,7 +5,8 @@
 
 #include "../../SkyRoads/src/MovingCamera.h"
 #include "Macros.h"
-#include "March.h"
+#include "../../Planets/src/PhongMaterial.h"
+#include "IsoSurface.h"
 
 
 using namespace ci;
@@ -27,9 +28,8 @@ class BlobApp : public AppBasic {
 
   shared_ptr<MovingCamera> mCamera;
 
-  gl::GlslProg blobShader;
-
-  March *mMarch;
+  IsoSurface    *mSurface;
+  PhongMaterial *mMaterial;
 
   uint32_t      frameCount;
 
@@ -70,21 +70,6 @@ void BlobApp::setup()
 {
   mCamera.reset (new MovingCamera(700.0f));
 
-//	int32_t maxGeomOutputVertices;
-//	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
-
-	try {
-		blobShader = gl::GlslProg (loadFile ("../Media/Shaders/blob_vert.glsl"), 
-                               loadFile ("../Media/Shaders/blob_frag.glsl"),
-                               loadFile ("../Media/Shaders/blob_geom.glsl"),
-                               GL_LINES_ADJACENCY_EXT, GL_TRIANGLE_STRIP, 4/*maxGeomOutputVertices*/);
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}
-
   // Initialise light
   float ambient[]  = {0.3f, 0.3f, 0.3f, 1.0f};
   float diffuse[]  = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -96,22 +81,40 @@ void BlobApp::setup()
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 	glEnable (GL_LIGHT0);
 
-  // Setup material for planets
-  float mMatAmbient[4]  = {0.3, 0.1, 0.1, 1};
-  float mMatDiffuse[4]  = {1, 0, 0, 1};
-  float mMatSpecular[4] = {1, 1, 1, 1};
-  float mMatShininess   = 30.0f;
-  glMaterialfv (GL_FRONT, GL_AMBIENT,	   mMatAmbient);
-  glMaterialfv (GL_FRONT, GL_DIFFUSE,	   mMatDiffuse);
-  glMaterialfv (GL_FRONT, GL_SPECULAR,   mMatSpecular);
-  glMaterialfv (GL_FRONT, GL_SHININESS, &mMatShininess);
+  // Load shaders
+  gl::GlslProg blobShader;
+	try {
+    //	int32_t maxGeomOutputVertices;
+    //	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
+		blobShader = gl::GlslProg (loadFile ("../Media/Shaders/blob_vert.glsl"), 
+                               loadFile ("../Media/Shaders/blob_frag.glsl"),
+                               loadFile ("../Media/Shaders/blob_geom.glsl"),
+                               GL_LINES_ADJACENCY_EXT, GL_TRIANGLE_STRIP, 4/*maxGeomOutputVertices*/);
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
+
+  // Setup material
+  mMaterial = new PhongMaterial (blobShader,                       // Shader
+                                 ColorAf (0.3f, 0.2f, 0.3f, 1.0f), // matAmbient,
+                                 ColorAf (0.5f, 0.2f, 0.7f, 1.0f), // matDiffuse,
+                                 ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
+                                 50.0f);                           // matShininess
+
+  mSurface = new IsoSurface (60, 
+                             40, 
+                             20, 
+                             800, 
+                             500, 
+                             200);
 
   frameCount = 0;
 
   mPaused        = false;
   mWireFrameMode = false;
-
-  mMarch = new March ();
 
   mBallRadius = 30.0f;
 
@@ -142,15 +145,17 @@ void BlobApp::update()
   if (mPaused)
     return;
 
-  for (int i=0; i<mBallPositions.size (); i++)
+  for (uint32_t i=0; i<mBallPositions.size (); i++)
   {
-    float centerEndgeDist = 250.0f-mBallRadius*2.0f;
+    float centerEndgeDistX = mSurface->getWidth ()  / 2.0f - mBallRadius*2.0f;
+    float centerEndgeDistY = mSurface->getHeight () / 2.0f - mBallRadius*2.0f;
+    float centerEndgeDistZ = mSurface->getDepth ()  / 2.0f - mBallRadius*2.0f;
 
-    if (mBallPositions[i].x > centerEndgeDist || mBallPositions[i].x < -centerEndgeDist)
+    if (mBallPositions[i].x > centerEndgeDistX || mBallPositions[i].x < -centerEndgeDistX)
       mBallVelocities[i].x = -mBallVelocities[i].x;
-    if (mBallPositions[i].y > centerEndgeDist || mBallPositions[i].y < -centerEndgeDist)
+    if (mBallPositions[i].y > centerEndgeDistY || mBallPositions[i].y < -centerEndgeDistY)
       mBallVelocities[i].y = -mBallVelocities[i].y;
-    if (mBallPositions[i].z > centerEndgeDist || mBallPositions[i].z < -centerEndgeDist)
+    if (mBallPositions[i].z > centerEndgeDistZ || mBallPositions[i].z < -centerEndgeDistZ)
       mBallVelocities[i].z = -mBallVelocities[i].z;
 
     mBallPositions[i] += mBallVelocities[i];
@@ -174,18 +179,17 @@ void BlobApp::draw()
 	float center[] = {-200, 1000, 400, 1};
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 
-  blobShader.bind ();
+  mMaterial->bind ();
 
-  //uniform vec3 ballPositions[100];
-  //uniform int  nofBalls;
   int nofBalls = mBallPositions.size ();
-  blobShader.uniform ("ballPositions", mBallPositions.data (), nofBalls);
-  blobShader.uniform ("nofBalls",      nofBalls);
-  blobShader.uniform ("radiusSquared", mBallRadius*mBallRadius);
+  mMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
+  mMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
+  mMaterial->getShader ().uniform ("nofBalls",      nofBalls);
+  mMaterial->getShader ().uniform ("radiusSquared", mBallRadius*mBallRadius);
   
-  mMarch->draw ();
+  mSurface->draw ();
 
-  blobShader.unbind ();
+  mMaterial->unbind ();
 
   frameCount++;
   if ((frameCount % 10) == 0)

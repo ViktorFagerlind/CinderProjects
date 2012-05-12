@@ -116,6 +116,7 @@
     <ClCompile Include="..\src\GameWorld.cpp" />
     <ClCompile Include="..\src\GravityField.cpp" />
     <ClCompile Include="..\src\MiscMath.cpp" />
+    <ClCompile Include="..\src\PhongMaterial.cpp" />
     <ClCompile Include="..\src\PhysicsObject.cpp" />
     <ClCompile Include="..\src\Planet.cpp" />
     <ClCompile Include="..\src\PlanetsApp.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="..\src\Meteor.h" />
     <ClInclude Include="..\src\GravityField.h" />
     <ClInclude Include="..\src\MiscMath.h" />
+    <ClInclude Include="..\src\PhongMaterial.h" />
     <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\Planet.h" />
     <ClInclude Include="..\src\Sun.h" />
