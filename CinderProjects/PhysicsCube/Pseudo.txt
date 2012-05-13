@@ -1,0 +1,52 @@
+PhysicsEngine::update (dt)
+{
+  for all objects
+    object.update (dt)
+}
+
+PhysicsObject::update (dt)
+{
+  update (now, dt)
+}
+
+PhysicsObject::update (tStart, dt)
+{
+  save state
+
+  move
+
+  check for collision
+
+  if in collision
+  {
+    restore state
+
+    collTime = findCollisionTime (tStart, tStart+dt, 0)
+
+    update (tStart,      collTime-tStart)
+
+    apply impulse
+
+    update (collTime-tStart, tStop - collTime)
+  }
+}
+
+
+PhysicsObject::findCollisionTime (tStart, tStop, nofIter)
+{
+  time = (tStart + tStop)/2;
+
+  save state
+
+  move to time (dt = time - tStart)
+
+  get least distance for 
+
+  if distance within threshold OR nofIter > maxNofIter
+    return tStart;
+
+  if in collision
+    return findCollisionTime (tStart, time, nofIter+1);
+  else
+    return findCollisionTime (time, tStop, nofIter+1);
+}
