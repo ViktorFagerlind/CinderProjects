@@ -13,6 +13,22 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+class PerlinDensity : public DensityInterface
+{
+  float f (const Vec3f& p)
+  {
+    return p.y + 5.0f + 40.0f * cos (p.x / 20.0f);
+//    return p.x/10.0f+5;
+  }
+
+  Vec3f n (const Vec3f& p)
+  {
+    return Vec3f (0, 1, 0);
+//    return Vec3f (-1, 10, 0).normalized ();
+  }
+
+};
+
 class BlobApp : public AppBasic {
   public:
 	void setup();
@@ -28,8 +44,10 @@ class BlobApp : public AppBasic {
 
   shared_ptr<MovingCamera> mCamera;
 
-  IsoSurface    *mSurface;
-  PhongMaterial *mMaterial;
+  IsoSurface    *mIsoMesh;
+  PhongMaterial *mBlobMaterial;
+
+  PhongMaterial *mSurfaceMaterial;
 
   uint32_t      frameCount;
 
@@ -38,6 +56,8 @@ class BlobApp : public AppBasic {
   float         mBallRadius;
   vector<Vec3f> mBallPositions;
   vector<Vec3f> mBallVelocities;
+
+  gl::VboMesh   mFunSurface;
 };
 
 void BlobApp::keyDown (KeyEvent event)
@@ -81,7 +101,21 @@ void BlobApp::setup()
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 	glEnable (GL_LIGHT0);
 
+
   // Load shaders
+  gl::GlslProg surfaceShader;
+	try {
+    //	int32_t maxGeomOutputVertices;
+    //	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
+		surfaceShader = gl::GlslProg (loadFile ("../Media/Shaders/phong_vert.glsl"), 
+                                  loadFile ("../Media/Shaders/phong_frag.glsl"));
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
+
   gl::GlslProg blobShader;
 	try {
     //	int32_t maxGeomOutputVertices;
@@ -98,27 +132,34 @@ void BlobApp::setup()
 	}
 
   // Setup material
-  mMaterial = new PhongMaterial (blobShader,                       // Shader
-                                 ColorAf (0.3f, 0.2f, 0.3f, 1.0f), // matAmbient,
-                                 ColorAf (0.5f, 0.2f, 0.7f, 1.0f), // matDiffuse,
-                                 ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
-                                 50.0f);                           // matShininess
+  mBlobMaterial = new PhongMaterial (blobShader,                       // Shader
+                                     ColorAf (0.3f, 0.2f, 0.3f, 1.0f), // matAmbient,
+                                     ColorAf (0.5f, 0.2f, 0.7f, 1.0f), // matDiffuse,
+                                     ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
+                                     50.0f);                           // matShininess
 
-  mSurface = new IsoSurface (60, 
-                             40, 
-                             20, 
+  mSurfaceMaterial = new PhongMaterial (surfaceShader,                    // Shader
+                                        ColorAf (0.3f, 0.2f, 0.3f, 1.0f), // matAmbient,
+                                        ColorAf (0.5f, 0.2f, 0.7f, 1.0f), // matDiffuse,
+                                        ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
+                                        50.0f);                           // matShininess
+
+
+  mIsoMesh = new IsoSurface (100, 
+                             100, 
+                             100, 
                              800, 
-                             500, 
-                             200);
+                             800, 
+                             800);
 
   frameCount = 0;
 
   mPaused        = false;
   mWireFrameMode = false;
 
-  mBallRadius = 30.0f;
+  mBallRadius = 70.0f;
 
-  for (int i=0; i<15; i++)
+  for (int i=0; i<8; i++)
   {
     mBallPositions.push_back (Vec3f (0,0,0));
     mBallVelocities.push_back (Vec3f (Rand::randFloat(-3.0f, 3.0f),
@@ -126,6 +167,9 @@ void BlobApp::setup()
                                       Rand::randFloat(-3.0f, 3.0f)));
   }
 
+  // Create function surface
+  PerlinDensity pd;
+  mIsoMesh->getSurfaceMesh (pd, mFunSurface);
 }
 
 void BlobApp::prepareSettings (Settings *settings)
@@ -147,9 +191,9 @@ void BlobApp::update()
 
   for (uint32_t i=0; i<mBallPositions.size (); i++)
   {
-    float centerEndgeDistX = mSurface->getWidth ()  / 2.0f - mBallRadius*2.0f;
-    float centerEndgeDistY = mSurface->getHeight () / 2.0f - mBallRadius*2.0f;
-    float centerEndgeDistZ = mSurface->getDepth ()  / 2.0f - mBallRadius*2.0f;
+    float centerEndgeDistX = mIsoMesh->getWidth ()  / 2.0f - mBallRadius*2.0f;
+    float centerEndgeDistY = mIsoMesh->getHeight () / 2.0f - mBallRadius*2.0f;
+    float centerEndgeDistZ = mIsoMesh->getDepth ()  / 2.0f - mBallRadius*2.0f;
 
     if (mBallPositions[i].x > centerEndgeDistX || mBallPositions[i].x < -centerEndgeDistX)
       mBallVelocities[i].x = -mBallVelocities[i].x;
@@ -170,6 +214,9 @@ void BlobApp::draw()
   // Setup camera
   mCamera->setModelMatrix ();
 
+  gl::enableDepthRead ();
+
+
   //setOrthoProjection ();
   mCamera->setProjectionMatrix ();
 
@@ -179,17 +226,21 @@ void BlobApp::draw()
 	float center[] = {-200, 1000, 400, 1};
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 
-  mMaterial->bind ();
+//  mMaterial->bind ();
 
   int nofBalls = mBallPositions.size ();
-  mMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
-  mMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
-  mMaterial->getShader ().uniform ("nofBalls",      nofBalls);
-  mMaterial->getShader ().uniform ("radiusSquared", mBallRadius*mBallRadius);
+  mBlobMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
+  mBlobMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
+  mBlobMaterial->getShader ().uniform ("nofBalls",      nofBalls);
+  mBlobMaterial->getShader ().uniform ("radiusSquared", mBallRadius*mBallRadius);
   
-  mSurface->draw ();
+//  mIsoMesh->draw ();
 
-  mMaterial->unbind ();
+//  mMaterial->unbind ();
+
+  mSurfaceMaterial->bind ();
+  gl::draw (mFunSurface);
+  mSurfaceMaterial->unbind ();
 
   frameCount++;
   if ((frameCount % 10) == 0)

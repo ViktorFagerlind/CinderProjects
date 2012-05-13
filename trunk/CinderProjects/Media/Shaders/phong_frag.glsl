@@ -1,31 +1,36 @@
-#version 110
+#version 120
 
 uniform sampler2D tex0;
 
-varying vec3 v;
-varying vec3 N;
+varying vec3 normal;
+varying vec3 lightDir;
+varying vec3 eyeVec;
 
 void main()
 {	
-	float shinyness = 25.0;
+	vec4 final_color = 
+	(gl_FrontLightModelProduct.sceneColor * gl_FrontMaterial.ambient) + 
+	(gl_LightSource[0].ambient * gl_FrontMaterial.ambient);
+							
+	vec3 N = normalize(normal);
+	vec3 L = normalize(lightDir);
 	
-	vec3 L = normalize(gl_LightSource[0].position.xyz - v);   
-	vec3 E = normalize(-v); 
-	vec3 R = normalize(-reflect(L,N));  
+	float lambertTerm = dot(N,L);
+	
+	if(lambertTerm > 0.0)
+	{
+		final_color += gl_LightSource[0].diffuse * 
+		               gl_FrontMaterial.diffuse * 
+					   lambertTerm;	
+		
+		vec3 E = normalize(eyeVec);
+		vec3 R = reflect(-L, N);
+		float specular = pow( max(dot(R, E), 0.0), 
+		                 gl_FrontMaterial.shininess );
+		final_color += gl_LightSource[0].specular * 
+		               gl_FrontMaterial.specular * 
+					   specular;	
+	}
 
-	// ambient term 
-	vec4 Iamb = gl_FrontLightProduct[0].ambient;    
-
-	// diffuse term
-	vec4 Idiff = texture2D( tex0, gl_TexCoord[0].st) * gl_FrontLightProduct[0].diffuse; 
-	Idiff *= max(dot(N,L), 0.0);
-	Idiff = clamp(Idiff, 0.0, 1.0);     
-
-	// specular term
-	vec4 Ispec = vec4(0.5, 0.5, 0.5, 1); // gl_FrontLightProduct[0].specular; 
-	Ispec *= pow(max(dot(R,E),0.0), shinyness);
-	Ispec = clamp(Ispec, 0.0, 1.0); 
-
-	// final color 
-	gl_FragColor = Iamb + Idiff + Ispec;	
+	gl_FragColor = final_color;			
 }

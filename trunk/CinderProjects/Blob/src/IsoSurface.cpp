@@ -4,35 +4,7 @@
 #include "cinder/CinderMath.h"
 #include "cinder/gl/Vbo.h"
 
-const float isoLimit = 1.0f;
-
-// Function declarations ///////////////////////////////////////////////////////////////////////////////////
-
-float f (const Vec3f& p);
-
-// Funciton implementations ////////////////////////////////////////////////////////////////////////////////
-Vec3f fNormal (const Vec3f& p)
-{
-  Vec3f d1 = Vec3f (-100, 0, 0) - p;
-//  Vec3f d2 = Vec3f ( 100, 0, 0) - p;
-
-  Vec3f force = d1.normalized() / d1.lengthSquared () /*+ d2.normalized () / d2.lengthSquared ()*/;
-
-  Vec3f ret = -force.normalized ();
-  return ret;
-}
-
-const float tmpRadius = 80.0f;
-
-float f (const Vec3f& p)
-{
-  Vec3f d1 = Vec3f (-100, 0, 0) - p;
-//  Vec3f d2 = Vec3f ( 100, 0, 0) - p;
-
-  float potential = 1.0f / d1.length () /*+ 1.0f / d2.lengthSquared ()*/;
-
-  return tmpRadius*potential;
-}
+const float isoLimit = 0.0f;
 
 
 IsoSurface::IsoSurface (const uint32_t  gridNofX,
@@ -51,10 +23,81 @@ IsoSurface::IsoSurface (const uint32_t  gridNofX,
   setupTetraVbo ();
 }
 
+
+void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh)
+{
+  float *evals = new float[vboVertices.size ()];
+
+  std::vector<uint32_t> indices;
+  std::vector<Vec3f>    vertices;
+  std::vector<Vec3f>    normals;
+
+  Vec3f     intersectVerts[4];
+  uint32_t  nofIntersectVerts;
+
+  indices.clear ();
+  vertices.clear ();
+
+  // gl::VboMesh::VertexIter iter = mVboMesh.mapVertexBuffer(); Varför krashar detta !?!?!?!?!?!?
+
+  for( uint32_t i = 0; i < vboVertices.size (); i++)
+  {
+    evals[i] = densityFunction.f (vboVertices[i]);
+  }
+
+  for( uint32_t i = 0; i < vboIndices.size (); i+=4)
+  {
+    getIntersection (densityFunction, vboVertices.data(), evals, &vboIndices.data()[i], 
+                     intersectVerts, nofIntersectVerts);
+
+    uint32_t startIndex = vertices.size ();
+
+    if (nofIntersectVerts >= 3)
+    {
+      vertices.push_back (intersectVerts[0]);
+      vertices.push_back (intersectVerts[1]);
+      vertices.push_back (intersectVerts[2]);
+
+      normals.push_back (densityFunction.n (intersectVerts[0]));
+      normals.push_back (densityFunction.n (intersectVerts[1]));
+      normals.push_back (densityFunction.n (intersectVerts[2]));
+
+      indices.push_back (startIndex);
+      indices.push_back (startIndex+1);
+      indices.push_back (startIndex+2);
+
+      if (nofIntersectVerts == 4)
+      {
+        vertices.push_back (intersectVerts[3]);
+        normals.push_back (densityFunction.n (intersectVerts[3]));
+
+        indices.push_back (startIndex+1);
+        indices.push_back (startIndex+2);
+        indices.push_back (startIndex+3);
+      }
+    }
+  }
+
+	gl::VboMesh::Layout layout;
+
+  // Vbo settings
+	layout.setStaticIndices ();
+	layout.setStaticPositions ();
+	layout.setStaticNormals ();
+
+  // Create Vbo
+  vboMesh = gl::VboMesh (vertices.size(), indices.size(), layout, GL_TRIANGLES);
+	vboMesh.bufferIndices (indices);
+	vboMesh.bufferPositions (vertices);
+	vboMesh.bufferNormals (normals);
+	vboMesh.unbindBuffers ();
+
+  delete [] evals;
+}
+
+
 void IsoSurface::draw ()
 {
-  gl::enableDepthRead ();
-
   gl::draw (mVboMesh);
 
 /*
@@ -71,9 +114,6 @@ void IsoSurface::draw ()
 
 void IsoSurface::setupTetraVbo ()
 {
-	gl::VboMesh::Layout   vboLayout;
-	std::vector<uint32_t> vboIndices;
-	std::vector<Vec3f>    vboVertices;
 
   Vec3f startPoint = Vec3f (-mGridWidth  / 2.0f, 
                             -mGridHeight / 2.0f, 
@@ -108,20 +148,20 @@ void IsoSurface::setupTetraVbo ()
     }
   }
 
-
+	gl::VboMesh::Layout layout;
   // Vbo settings
-	vboLayout.setStaticIndices ();
-	vboLayout.setStaticPositions ();
-
+	layout.setStaticIndices ();
+	layout.setStaticPositions ();
   // Create Vbo
-  mVboMesh = gl::VboMesh (vboVertices.size(), vboIndices.size(), vboLayout, GL_LINES_ADJACENCY_EXT);
+  mVboMesh = gl::VboMesh (vboVertices.size(), vboIndices.size(), layout, GL_LINES_ADJACENCY_EXT);
 	mVboMesh.bufferIndices (vboIndices);
 	mVboMesh.bufferPositions (vboVertices);
-	mVboMesh.unbindBuffers ();
+	mVboMesh.unbindBuffers ();	// Clean up
 
-	// Clean up
+  /*
 	vboIndices.clear ();
 	vboVertices.clear ();
+  */
 }
 
 
@@ -156,7 +196,156 @@ void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const 
       vboIndices.push_back (tetraIndices[i][j]);
 }
 
+//   Linjärinterpolera för att hitta punkt på en linje där iso-värdet har sin gräns
+Vec3f IsoSurface::VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+{
+  float mu = (isolevel - valp1) / (valp2 - valp1);
 
+  return lerp (p1, p2, mu);
+}
+
+// Använd extra punkt i mitten
+Vec3f IsoSurface::VertexInterp (DensityInterface& densityFunction, float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+{
+  return VertexInterp (isolevel, p1, p2, valp1, valp2);
+
+  Vec3f pm = (p1 + p2) / 2.0f;
+
+  bool b1 = valp1 > isolevel;
+  float valm = densityFunction.f (pm);
+  bool bm = valm > isolevel;
+
+  if (b1 != bm)
+    return VertexInterp (isolevel, p1, pm, valp1, valm);
+  else
+    return VertexInterp (isolevel, p2, pm, valp2, valm);
+}
+
+
+void IsoSurface::getIntersection (DensityInterface& densityFunction, const Vec3f* verts, const float* evals, const uint32_t* indices, 
+                      Vec3f* outVerts, uint32_t& nofVerts)
+{
+   const uint32_t i0 = indices[0];
+   const uint32_t i1 = indices[1];
+   const uint32_t i2 = indices[2];
+   const uint32_t i3 = indices[3];
+
+   const float e0 = evals[i0];
+   const float e1 = evals[i1];
+   const float e2 = evals[i2];
+   const float e3 = evals[i3];
+
+   const Vec3f p0 = verts[i0];
+   const Vec3f p1 = verts[i1];
+   const Vec3f p2 = verts[i2];
+   const Vec3f p3 = verts[i3];
+
+   uint32_t triIndex;
+
+   // Determine which of the 16 cases we have given which vertices are above or below the isosurface
+   triIndex = 0UL;
+   if (e0 < isoLimit) 
+     triIndex |= 1;
+   if (e1 < isoLimit) 
+     triIndex |= 2;
+   if (e2 < isoLimit) 
+     triIndex |= 4;
+   if (e3 < isoLimit) 
+     triIndex |= 8;
+
+   // Form the vertices of the triangles for each case
+   switch (triIndex) 
+   {
+     case 0x00:
+     case 0x0F:
+        nofVerts = 0;
+        break;
+     case 0x0E:
+     case 0x01:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p0, p1, e0, e1);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p0, p2, e0, e2);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p0, p3, e0, e3);
+        nofVerts = 3;
+        break;
+     case 0x0D:
+     case 0x02:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p1, p0, e1, e0);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p1, p3, e1, e3);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p1, p2, e1, e2);
+        nofVerts = 3;
+        break;
+     case 0x0C:
+     case 0x03:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p0, p3, e0, e3);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p0, p2, e0, e2);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p1, p3, e1, e3);
+        outVerts[3] = VertexInterp (densityFunction, isoLimit, p1, p2, e1, e2);
+        nofVerts = 4;
+        break;
+     case 0x0B:
+     case 0x04:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p2,  p0, e2, e0);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p2,  p1, e2, e1);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p2,  p3, e2, e3);
+        nofVerts = 3;
+        break;
+     case 0x0A:
+     case 0x05:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p0, p3, e0, e3);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p0, p1, e0, e1);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p2, p3, e2, e3);
+        outVerts[3] = VertexInterp (densityFunction, isoLimit, p1, p2, e1, e2);
+        nofVerts = 4;
+        break;
+     case 0x09:
+     case 0x06:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p1, p3, e1, e3);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p0, p1, e0, e1);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p2, p3, e2, e3);
+        outVerts[3] = VertexInterp (densityFunction, isoLimit, p0, p2, e0, e2);
+        nofVerts = 4;
+        break;
+     case 0x07:
+     case 0x08:
+        outVerts[0] = VertexInterp (densityFunction, isoLimit, p3, p0, e3, e0);
+        outVerts[1] = VertexInterp (densityFunction, isoLimit, p3, p2, e3, e2);
+        outVerts[2] = VertexInterp (densityFunction, isoLimit, p3, p1, e3, e1);
+        nofVerts = 3;
+        break;
+   }
+}
+
+#if 0
+// Function declarations ///////////////////////////////////////////////////////////////////////////////////
+
+float f (const Vec3f& p);
+
+// Funciton implementations ////////////////////////////////////////////////////////////////////////////////
+Vec3f fNormal (const Vec3f& p)
+{
+  Vec3f d1 = Vec3f (-100, 0, 0) - p;
+//  Vec3f d2 = Vec3f ( 100, 0, 0) - p;
+
+  Vec3f force = d1.normalized() / d1.lengthSquared () /*+ d2.normalized () / d2.lengthSquared ()*/;
+
+  Vec3f ret = -force.normalized ();
+  return ret;
+}
+
+const float tmpRadius = 80.0f;
+
+float f (const Vec3f& p)
+{
+  Vec3f d1 = Vec3f (-100, 0, 0) - p;
+//  Vec3f d2 = Vec3f ( 100, 0, 0) - p;
+
+  float potential = 1.0f / d1.length () /*+ 1.0f / d2.lengthSquared ()*/;
+
+  return tmpRadius*potential;
+}
+#endif
+
+#if 0
 void IsoSurface::drawAllCubes ()
 {
   Vec3f startPoint = Vec3f (-mGridWidth  / 2.0f, 
@@ -197,7 +386,7 @@ void IsoSurface::drawTetraCube (const Vec3f& pos, const float s)
   };
 
   // The 6 tetrahedrons that make up a cube
-  static const uint8_t tetraIndices[6][4] =
+  static const uint32_t tetraIndices[6][4] =
   {
     {6, 4, 7, 0},
     {6, 0, 7, 3},
@@ -220,7 +409,7 @@ void IsoSurface::drawTetraCube (const Vec3f& pos, const float s)
     drawTetrahedron (verts, evals, tetraIndices[i]);
 }
 
-void IsoSurface::drawTetrahedron (const Vec3f* verts, const float* evals, const uint8_t* indices)
+void IsoSurface::drawTetrahedron (const Vec3f* verts, const float* evals, const uint32_t* indices)
 
 {
   Vec3f vertices[4];
@@ -237,142 +426,4 @@ void IsoSurface::drawTetrahedron (const Vec3f* verts, const float* evals, const 
     }
   glEnd ();
 }
-
-//   Linjärinterpolera för att hitta punkt på en linje där iso-värdet har sin gräns
-Vec3f VertexInterp2 (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
-{
-  float mu = (isolevel - valp1) / (valp2 - valp1);
-
-  return lerp (p1, p2, mu);
-}
-
-//  Paraboltesta
-Vec3f VertexInterp3 (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
-{
-  Vec3f d1 = -fNormal (p1);
-  Vec3f d2 = -fNormal (p2);
-  Vec3f b  = 0.5f * (d2-d1);
-
-  float mu = (isolevel - valp1) / (valp2 - valp1);
-
-  Vec3f p = p1 + (p2 - p1 - b)*mu + b*mu*mu;
-
-  return p;
-}
-
-// Använd extra punkt i mitten
-Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
-{
-  if (abs (valp1-valp2) < 0.0001f)
-    return VertexInterp2 (isolevel, p1, p2, valp1, valp2);
-
-  Vec3f p;
-
-  Vec3f pm = (p1 + p2) / 2.0f;
-
-  bool b1 = valp1 > isolevel;
-  float valm = f (pm);
-  bool bm = valm > isolevel;
-
-  if (b1 != bm)
-    return VertexInterp (isolevel, p1, pm, valp1, valm);
-  else
-    return VertexInterp (isolevel, p2, pm, valp2, valm);
-}
-
-
-void IsoSurface::getIntersection (const Vec3f* verts, const float* evals, const uint8_t* indices, 
-                      Vec3f* outVerts, uint32_t& nofVerts)
-{
-   const uint8_t i0 = indices[0];
-   const uint8_t i1 = indices[1];
-   const uint8_t i2 = indices[2];
-   const uint8_t i3 = indices[3];
-
-   const float e0 = evals[i0];
-   const float e1 = evals[i1];
-   const float e2 = evals[i2];
-   const float e3 = evals[i3];
-
-   const Vec3f p0 = verts[i0];
-   const Vec3f p1 = verts[i1];
-   const Vec3f p2 = verts[i2];
-   const Vec3f p3 = verts[i3];
-
-   uint32_t triIndex;
-
-   // Determine which of the 16 cases we have given which vertices are above or below the isosurface
-   triIndex = 0UL;
-   if (e0 < isoLimit) 
-     triIndex |= 1;
-   if (e1 < isoLimit) 
-     triIndex |= 2;
-   if (e2 < isoLimit) 
-     triIndex |= 4;
-   if (e3 < isoLimit) 
-     triIndex |= 8;
-
-   Vec3f tmp;
-   // Form the vertices of the triangles for each case
-   switch (triIndex) 
-   {
-     case 0x00:
-     case 0x0F:
-        nofVerts = 0;
-        break;
-     case 0x0E:
-     case 0x01:
-        tmp = VertexInterp (isoLimit, p0, p1, e0, e1);;
-        outVerts[0] = VertexInterp (isoLimit, p0, p1, e0, e1);
-        outVerts[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
-        outVerts[2] = VertexInterp (isoLimit, p0, p3, e0, e3);
-        nofVerts = 3;
-        break;
-     case 0x0D:
-     case 0x02:
-        outVerts[0] = VertexInterp (isoLimit, p1, p0, e1, e0);
-        outVerts[1] = VertexInterp (isoLimit, p1, p3, e1, e3);
-        outVerts[2] = VertexInterp (isoLimit, p1, p2, e1, e2);
-        nofVerts = 3;
-        break;
-     case 0x0C:
-     case 0x03:
-        outVerts[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
-        outVerts[1] = VertexInterp (isoLimit, p0, p2, e0, e2);
-        outVerts[2] = VertexInterp (isoLimit, p1, p3, e1, e3);
-        outVerts[3] = VertexInterp (isoLimit, p1, p2, e1, e2);
-        nofVerts = 4;
-        break;
-     case 0x0B:
-     case 0x04:
-        outVerts[0] = VertexInterp (isoLimit, p2,  p0, e2, e0);
-        outVerts[1] = VertexInterp (isoLimit, p2,  p1, e2, e1);
-        outVerts[2] = VertexInterp (isoLimit, p2,  p3, e2, e3);
-        nofVerts = 3;
-        break;
-     case 0x0A:
-     case 0x05:
-        outVerts[0] = VertexInterp (isoLimit, p0, p3, e0, e3);
-        outVerts[1] = VertexInterp (isoLimit, p0, p1, e0, e1);
-        outVerts[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
-        outVerts[3] = VertexInterp (isoLimit, p1, p2, e1, e2);
-        nofVerts = 4;
-        break;
-     case 0x09:
-     case 0x06:
-        outVerts[0] = VertexInterp (isoLimit, p1, p3, e1, e3);
-        outVerts[1] = VertexInterp (isoLimit, p0, p1, e0, e1);
-        outVerts[2] = VertexInterp (isoLimit, p2, p3, e2, e3);
-        outVerts[3] = VertexInterp (isoLimit, p0, p2, e0, e2);
-        nofVerts = 4;
-        break;
-     case 0x07:
-     case 0x08:
-        outVerts[0] = VertexInterp (isoLimit, p3, p0, e3, e0);
-        outVerts[1] = VertexInterp (isoLimit, p3, p2, e3, e2);
-        outVerts[2] = VertexInterp (isoLimit, p3, p1, e3, e1);
-        nofVerts = 3;
-        break;
-   }
-}
-
+#endif
