@@ -66,5 +66,11 @@
     <None Include="..\..\Media\Shaders\blob_geom.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="..\..\Media\Shaders\phong_frag.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\phong_vert.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -509,8 +509,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
   						                  1800, //width
   						                  1000, //height 
                                 10,             // depth,
-							                  2, // minParticleSize
-							                  2, // maxParticleSize
+							                  3, // minParticleSize
+							                  3, // maxParticleSize
 							                  0.0f, // minParticleVelocity
 							                  0.0f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae1);

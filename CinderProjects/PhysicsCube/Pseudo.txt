@@ -15,7 +15,7 @@ PhysicsObject::update (tStart, dt)
 
   move
 
-  check for collision
+  check for collision (call PhysicsEngine)
 
   if in collision
   {

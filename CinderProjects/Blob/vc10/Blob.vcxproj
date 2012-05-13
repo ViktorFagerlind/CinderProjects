@@ -123,6 +123,8 @@
     <None Include="..\..\Media\Shaders\blob_frag.glsl" />
     <None Include="..\..\Media\Shaders\blob_geom.glsl" />
     <None Include="..\..\Media\Shaders\blob_vert.glsl" />
+    <None Include="..\..\Media\Shaders\phong_frag.glsl" />
+    <None Include="..\..\Media\Shaders\phong_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
