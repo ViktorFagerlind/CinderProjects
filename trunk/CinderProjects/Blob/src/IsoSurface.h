@@ -13,7 +13,15 @@ class DensityInterface
 public:
   virtual float f (const Vec3f& p) = 0;
 
-  virtual Vec3f n (const Vec3f& p) = 0;
+  Vec3f n (const Vec3f& p, float d)
+  {
+    Vec3f grad;  
+    grad.x = f (p + Vec3f (d, 0, 0)) - f (p + Vec3f (-d, 0, 0));  
+    grad.y = f (p + Vec3f (0, d, 0)) - f (p + Vec3f (0,-d, 0));  
+    grad.z = f (p + Vec3f (0, 0, d)) - f (p + Vec3f (0, 0,-d));  
+
+    return grad.normalized ();
+  }
 };
 
 

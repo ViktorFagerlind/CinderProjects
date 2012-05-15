@@ -52,15 +52,17 @@ void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh&
 
     uint32_t startIndex = vertices.size ();
 
+    float d = min (min ((float)mGridNofX/(2.0f*mGridWidth), (float)mGridNofY/(2.0f*mGridWidth)), (float)mGridNofZ/(2.0f*mGridDepth));
+
     if (nofIntersectVerts >= 3)
     {
       vertices.push_back (intersectVerts[0]);
       vertices.push_back (intersectVerts[1]);
       vertices.push_back (intersectVerts[2]);
 
-      normals.push_back (densityFunction.n (intersectVerts[0]));
-      normals.push_back (densityFunction.n (intersectVerts[1]));
-      normals.push_back (densityFunction.n (intersectVerts[2]));
+      normals.push_back (densityFunction.n (intersectVerts[0], d));
+      normals.push_back (densityFunction.n (intersectVerts[1], d));
+      normals.push_back (densityFunction.n (intersectVerts[2], d));
 
       indices.push_back (startIndex);
       indices.push_back (startIndex+1);
@@ -69,7 +71,7 @@ void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh&
       if (nofIntersectVerts == 4)
       {
         vertices.push_back (intersectVerts[3]);
-        normals.push_back (densityFunction.n (intersectVerts[3]));
+        normals.push_back (densityFunction.n (intersectVerts[3], d));
 
         indices.push_back (startIndex+1);
         indices.push_back (startIndex+2);
