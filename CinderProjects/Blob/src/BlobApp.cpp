@@ -17,14 +17,9 @@ class PerlinDensity : public DensityInterface
 {
   float f (const Vec3f& p)
   {
-    return p.y + 5.0f + 40.0f * cos (p.x / 20.0f);
-//    return p.x/10.0f+5;
-  }
+    Vec2f xz = Vec2f (p.x, p.z);
 
-  Vec3f n (const Vec3f& p)
-  {
-    return Vec3f (0, 1, 0);
-//    return Vec3f (-1, 10, 0).normalized ();
+    return p.y + 5.0f + 40.0f * cos (xz.length () / 20.0f);
   }
 
 };
