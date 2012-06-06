@@ -11,7 +11,7 @@ using namespace std;
 class DynamicObject : public PhysicsObject
 {
 private:
-  	void init(float mass, Vec3f& cog);
+  	void init(Vec3f& cog);
 
 public:
   DynamicObject(float mass, Vec3f& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength);
@@ -24,11 +24,6 @@ public:
   void applyTorque(Vec3f pointOfAttack, Vec3f force); //point of attack and force in global reference frame
   void resetTorque();
 
-protected:
-  Matrix44f mLocalInertia;
-  Matrix44f mLocalInertiaInverted;
-  Matrix44f mInertia;
-  Matrix44f mInertiaInverted;
   Vec3f mForceSum;
   Vec3f mTorqueSum;
 };

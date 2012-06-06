@@ -9,39 +9,31 @@ using namespace std;
 DynamicObject::DynamicObject(float mass, Vec3f& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
   : PhysicsObject(mass, cog, boundingBoxWidth, boundingBoxHeight, boundingBoxLength)
 {
-  DynamicObject::init(mass, cog);
+  DynamicObject::init(cog);
 };
 
 //Dynamic object using bounding plane
 DynamicObject::DynamicObject(float mass, Vec3f& cog,  float boundingPlaneWidth, float boundingPlaneHeight)
   : PhysicsObject(mass, cog, boundingPlaneWidth, boundingPlaneHeight)
 {
-  DynamicObject::init(mass, cog);
+  DynamicObject::init(cog);
 };
 
 //Dynamic object using bounding sphere
 DynamicObject::DynamicObject(float mass, Vec3f& cog,  float sphereRadius)
   : PhysicsObject(mass, cog, sphereRadius)
 {
-  DynamicObject::init(mass, cog);
+  DynamicObject::init(cog);
 };
 
 
-void DynamicObject::init(float mass, Vec3f& cog)
+void DynamicObject::init(Vec3f& cog)
 {
-  // Inertia definition for a cube.
-  float tempSideLength = 70.0f;
-  mLocalInertia = Matrix44f::identity();
-  mLocalInertia.m00 = (mMass / 6.0f)*tempSideLength*tempSideLength;
-  mLocalInertia.m11 = (mMass / 6.0f)*tempSideLength*tempSideLength;  
-  mLocalInertia.m22 = (mMass / 6.0f)*tempSideLength*tempSideLength; 
-   
-  mLocalInertiaInverted = mLocalInertia.inverted();
-  mInertiaInverted = mState.mOrientation*mLocalInertiaInverted*mState.mOrientation.transposed();
+  mState.mLinearMomentum = Vec3f(0, 0, 0);
 
-  Vec4f tempRot = mState.mRotationSpeedVect;
-  mInertia = mState.mOrientation*mLocalInertia;
-  Vec4f mAngularMomentum = mInertia*tempRot;
+  Matrix44f globalInertia = mState.mOrientation*mLocalInertia*mState.mOrientation.transposed();
+  Vec4f tempRot = Vec4f(0, 0, 0, 0);
+  Vec4f mAngularMomentum = globalInertia*tempRot;
   mForceSum   = Vec3f(0.0f, 0.0f, 0.0f);
   mTorqueSum  = Vec3f(0.0f, 0.0f, 0.0f);
 };
@@ -50,15 +42,8 @@ void DynamicObject::init(float mass, Vec3f& cog)
 
 void DynamicObject::update(float dt)
 {
-  mState.mAcceleration   = mForceSum/mMass;
-  
+  mState.mLinearMomentum  = EulerForward(mState.mLinearMomentum, mForceSum, dt);
   mState.mAngularMomentum = EulerForward(mState.mAngularMomentum, mTorqueSum, dt);
-  mInertiaInverted = mState.mOrientation*mLocalInertiaInverted*mState.mOrientation.transposed();
-  
-  Vec4f tempRotationSpeedVect = mInertiaInverted * mState.mAngularMomentum;
-  mState.mRotationSpeedVect.x = tempRotationSpeedVect.x;
-  mState.mRotationSpeedVect.y = tempRotationSpeedVect.y;
-  mState.mRotationSpeedVect.z = tempRotationSpeedVect.z;
 
   PhysicsObject::update(dt);
 }
@@ -68,13 +53,13 @@ void DynamicObject::draw()
   PhysicsObject::draw();
 
   gl::color(0.3f, 0.3f, 1.0f);
-  gl::drawVector(mState.mPosition, mState.mPosition + mState.mVelocity, 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition, mState.mPosition + getVelocity(), 10.0f, 5.0f);
 
   gl::color(0.3f, 1.0f, 0.3f);
-  gl::drawVector(mState.mPosition + mState.mVelocity, mState.mPosition + mState.mVelocity + mState.mAcceleration, 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition + getVelocity(), mState.mPosition + getVelocity() + mForceSum/mMass, 10.0f, 5.0f);
 
   gl::color(1.0f, 0.3f, 0.3f);
-  gl::drawVector(mState.mPosition, mState.mPosition + (50.0f * mState.mRotationSpeedVect), 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition, mState.mPosition + (50.0f * getRotationVelocity()), 10.0f, 5.0f);
 }
 
 
