@@ -10,7 +10,7 @@ using namespace std;
 PhysicsEngine::PhysicsEngine()
 {
   cube = new DynamicObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, 70.0f);
-  cube->setPosition(Vec3f(300, 500, 0));
+  cube->setPosition(Vec3f(0, 500, 0));
 
   plane = new StaticObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, Vec3f(0, 0, 100), Vec3f(100, 0, 0), Vec3f(0, 0, 0));
 
@@ -30,7 +30,7 @@ void PhysicsEngine::update()
 
 
   // 1) Check if next position is valid:
- resolveCollisions();
+  resolveCollisions();
 
 
   // 2) If valid, update positions and orientations
@@ -44,10 +44,14 @@ void PhysicsEngine::update()
   //Vec3f collisionPoint = getCollisionPoint();
 
  cube->applyForce(Vec3f(0, -50, 0));
- 
+ cube->applyTorque(Vec3f(1, 0, 0), Vec3f(0, -50, 0));
+
+
   cube->update(deltaTime);
   plane->update(deltaTime);
   sphere->update(deltaTime);
+
+   
 }
 
 void PhysicsEngine::draw()
@@ -93,8 +97,45 @@ void PhysicsEngine::resolveCollisions ()
 
         CollisionDetection::getCollisionPoint (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry, point, normal);
 
-        cube->applyForce(Vec3f(0, 500, 0));
-        cube->applyTorque(point, Vec3f(0, 500, 0));
+        
+        Vec3f bodyAVelocity = objects[i]->getPointVelocity(point);
+        Vec3f bodyBVelocity = objects[j]->getPointVelocity(point);
+
+        Vec3f APvector =  point - objects[i]->mState.mPosition;
+        Vec3f BPvector =  point - objects[j]->mState.mPosition;
+
+        Vec3f relativeVelocity = bodyAVelocity - bodyBVelocity;
+
+        float bounceCoeff = 0.5;
+        float nominator = -(1+bounceCoeff)*(relativeVelocity).dot(normal);
+        float denominator1 = (1/objects[i]->mMass + 1/objects[j]->mMass)*normal.dot(normal);
+        
+        Vec3f APnAP = APvector;
+        APnAP       = APnAP.cross(normal);
+        APnAP       = APnAP.cross(APvector);
+        
+        Vec3f BPnBP = BPvector;
+        BPnBP       = BPvector.cross(normal);
+        BPnBP       = BPnBP.cross(BPvector);
+
+        //float denominator2 = (objects[i]->getGlobalInertiaInverted()*APnAP + objects[j]->getGlobalInertiaInverted()*BPnBP).dot(normal);
+        float denominator2 = (objects[j]->getGlobalInertiaInverted()*BPnBP).dot(normal);
+
+
+        float collisionImpulse = nominator/(denominator1 + denominator2);
+        
+        objects[i]->setLinearMomentum(objects[i]->mState.mLinearMomentum + collisionImpulse*normal);
+        
+        Vec3f AngularImpulse3D = APvector.cross(collisionImpulse*normal);
+        Vec4f AngularImpulse4D;
+        AngularImpulse4D[0] = AngularImpulse3D[0]; 
+        AngularImpulse4D[1] = AngularImpulse3D[1];
+        AngularImpulse4D[2] = AngularImpulse3D[2];
+        AngularImpulse4D[3] = 0.0f;
+
+        Vec4f tempAngularMomentum = objects[i]->mState.mAngularMomentum+AngularImpulse4D;
+        objects[i]->setAngularMomentum(tempAngularMomentum);
+
         
         // handle collision...
       }

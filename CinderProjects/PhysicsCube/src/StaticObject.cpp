@@ -37,7 +37,8 @@ StaticObject::StaticObject(float mass, Vec3f& cog,  float sphereRadius)
 
 void StaticObject::init(float mass, Vec3f& cog)
 {
-  Vec4f tempRot = mState.mRotationSpeedVect; 
+  mState.mLinearMomentum = Vec3f(0, 0, 0);
+  mState.mAngularMomentum = Vec4f(0, 0, 0, 0);
 };
 
 
@@ -52,11 +53,11 @@ void StaticObject::draw()
   PhysicsObject::draw();
 
   gl::color(0.3f, 0.3f, 1.0f);
-  gl::drawVector(mState.mPosition, mState.mPosition + mState.mVelocity, 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition, mState.mPosition + getVelocity(), 10.0f, 5.0f);
 
-  gl::color(0.3f, 1.0f, 0.3f);
-  gl::drawVector(mState.mPosition + mState.mVelocity, mState.mPosition + mState.mVelocity + mState.mAcceleration, 10.0f, 5.0f);
+ // gl::color(0.3f, 1.0f, 0.3f);
+ // gl::drawVector(mState.mPosition + getVelocity(), mState.mPosition + getVelocity() + mState.mAcceleration, 10.0f, 5.0f);
 
   gl::color(1.0f, 0.3f, 0.3f);
-  gl::drawVector(mState.mPosition, mState.mPosition + (50.0f * mState.mRotationSpeedVect), 10.0f, 5.0f);
+  gl::drawVector(mState.mPosition, mState.mPosition + (50.0f * getVelocity()), 10.0f, 5.0f);
 }

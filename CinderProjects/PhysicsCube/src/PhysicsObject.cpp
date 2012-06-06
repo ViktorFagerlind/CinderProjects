@@ -12,11 +12,12 @@ using namespace std;
 State::State()
 {
   mPosition     = Vec3f(0.0f, 0.0f, 0.0f);
-  mVelocity     = Vec3f(0.0f, 0.0f, 0.0f);
-  mAcceleration = Vec3f(0.0f, 0.0f, 0.0f);
+  //mVelocity     = Vec3f(0.0f, 0.0f, 0.0f);
+  mAngularMomentum = Vec4f(0.0f, 0.0f, 0.0f, 0.0f);
+  //mAcceleration = Vec3f(0.0f, 0.0f, 0.0f);
 
-  mRotationVect       = Vec3f(0.0f, 0.0f, 0.0f);
-  mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);
+  //mRotationVect       = Vec3f(0.0f, 0.0f, 0.0f);
+  //mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);
   mOrientation        = Matrix44f::identity();
   mOrientationSpeed   = Matrix44f::identity();
 };
@@ -75,6 +76,18 @@ void PhysicsObject::init(float mass, Vec3f& cog)
 {
   mMass     = mass;
   mCoG      = cog;
+
+  // Inertia definition for a cube.
+  float tempSideLength = 70.0f;
+  mLocalInertia = Matrix44f::identity();
+  mLocalInertia.m00 = (mMass / 6.0f)*tempSideLength*tempSideLength;
+  mLocalInertia.m11 = (mMass / 6.0f)*tempSideLength*tempSideLength;  
+  mLocalInertia.m22 = (mMass / 6.0f)*tempSideLength*tempSideLength; 
+  
+  mLocalInertiaInverted = mLocalInertia.inverted();
+
+  mInertia = mState.mOrientation*mLocalInertia*mState.mOrientation.transposed();
+  mInertiaInverted = mState.mOrientation*mLocalInertiaInverted*mState.mOrientation.transposed();
 };
 
 
@@ -85,11 +98,11 @@ PhysicsObject::~PhysicsObject()
 
 void PhysicsObject::update(float dt)
 {
-  mState.mVelocity = EulerForward(mState.mVelocity, mState.mAcceleration, dt);
-  mState.mPosition = EulerForward(mState.mPosition, mState.mVelocity, dt);
+ // mState.mVelocity = EulerForward(mState.mVelocity, mState.mAcceleration, dt);
+  mState.mPosition = EulerForward(mState.mPosition, mState.mLinearMomentum/mMass, dt);
 
   Matrix44f tempSkewMatrix;
-  tempSkewMatrix = getSkewMatrix(mState.mRotationSpeedVect);
+  tempSkewMatrix = getSkewMatrix(getRotationVelocity());
 
   mState.mOrientationSpeed = tempSkewMatrix * mState.mOrientation;
 
@@ -115,26 +128,60 @@ void PhysicsObject::draw()
 void PhysicsObject::setPosition(Vec3f position)
 {
   mState.mPosition = position;
+  mBoundingGeometry->setPosition(position); //Endast för testning.
 }
 
 void PhysicsObject::setVelocity(Vec3f velocity)
 {
-  mState.mVelocity = velocity;
+  setLinearMomentum(mMass * velocity);
 }
 
-void PhysicsObject::setRotationVect(Vec3f rotationVect)
+void PhysicsObject::setLinearMomentum(Vec3f linearMomentum)
 {
-  mState.mRotationVect = rotationVect;
+  mState.mLinearMomentum = linearMomentum;
 }
 
-Vec3f PhysicsObject:: getPosition()
+void PhysicsObject::setAngularMomentum(Vec4f angularMomentum)
+{
+  mState.mAngularMomentum = angularMomentum;
+}
+
+Vec3f PhysicsObject::getPosition()
 {
   return mState.mPosition;
+}
+
+Vec3f PhysicsObject::getVelocity()
+{
+  return mState.mLinearMomentum / mMass;
+}
+
+Vec3f PhysicsObject::getRotationVelocity()
+{
+  Vec3f rotationVelolcity3D = Vec3f(0, 0, 0);
+  Vec4f rotationVelolcity4D;
+  rotationVelolcity4D = mState.mOrientation * mLocalInertiaInverted * mState.mOrientation.transposed() * mState.mAngularMomentum;
+  rotationVelolcity3D[0] = rotationVelolcity4D[0];
+  rotationVelolcity3D[1] = rotationVelolcity4D[1]; 
+  rotationVelolcity3D[2] = rotationVelolcity4D[2];
+
+  return rotationVelolcity3D;
+}
+
+Vec3f PhysicsObject::getPointVelocity(Vec3f point)
+{
+  Vec3f lever = point - mState.mPosition;
+  return getVelocity() + getRotationVelocity().cross(lever);
 }
 
 const Matrix44f& PhysicsObject::getOrientation()
 {
   return mState.mOrientation;
+}
+
+Matrix44f PhysicsObject::getGlobalInertiaInverted()
+{
+  return mState.mOrientation*mLocalInertiaInverted*mState.mOrientation.transposed();
 }
 
 Matrix44f PhysicsObject::getSkewMatrix(Vec4f vector)
