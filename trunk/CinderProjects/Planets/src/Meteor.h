@@ -41,7 +41,7 @@ public:
 
   float f (const Vec3f& p)
   {
-    float baseFreq = 1.0f/20.0f;
+    float baseFreq = 0.07f;
 
     float x = p.x * baseFreq;
     float y = p.y * baseFreq;
@@ -53,7 +53,7 @@ public:
                                                    y * mOctaves[i].freq,
                                                    z * mOctaves[i].freq);
 
-    return 13.0f * noise + p.length ()*0.8f - 10;
+    return 4.0f * noise + p.length ()*0.5f - 4;
   }
 
 private:
@@ -136,7 +136,7 @@ public:
       return meshes[index];
 
     gl::VboMesh *mesh = new gl::VboMesh ();
-    IsoSurface::getSurfaceMesh (densityFunction, *mesh, Vec3f (30, 30, 30), Vec3i (20, 20, 20));
+    IsoSurface::getSurfaceMesh (densityFunction, *mesh, Vec3f (20, 20, 20), Vec3i (20, 20, 20));
     meshes.push_back (mesh);
 
     return meshes.back ();
