@@ -16,6 +16,7 @@
 #include "AreaEmitter.h"
 #include "PointEmitter.h"
 #include "ImageEmitter.h"
+#include "VideoEmitter.h"
 
 #include "CommonModifier.h"
 #include "FluidModifier.h"
@@ -24,6 +25,8 @@
 #include "PointGravityModifier.h"
 #include "VortexModifier.h"
 #include "PerlinModifier.h"
+#include "cinder/qtime/MovieWriter.h"
+#include "cinder/ip/Flip.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -39,6 +42,7 @@ public:
   AreaEmitter           *ae1;
   AreaEmitter           *ae2;
   ImageEmitter          *ie;
+  VideoEmitter          *ve;
 
   CommonModifier        *cm;
   ColorModifier         *colorModifier;
@@ -85,6 +89,9 @@ private:
   gl::Fbo *mFrameBuffer;
 
   bool mSmoothFill;
+
+  bool mSavingVideo;
+	qtime::MovieWriter	mMovieWriter;
 };
 
 
@@ -93,8 +100,9 @@ void ParticleApp::prepareSettings (Settings *settings )
   settings->setWindowSize (1280, 768);
 
   mSavingImages = false;
+  mSavingVideo  = false;
 
-  mSmoothFill = true;
+  mSmoothFill = false;
 }
 
 void ParticleApp::updateCamera()
@@ -288,14 +296,28 @@ void ParticleApp::draw()
   mFrameBuffer->unbindFramebuffer();
 
   //gl::draw( mFrameBuffer->getTexture() );
-  mFrameBuffer->blitToScreen (mFrameBuffer->getBounds(), getWindowBounds());
+//  mFrameBuffer->blitToScreen (mFrameBuffer->getBounds(), getWindowBounds());
+	gl::disableAlphaBlending ();
+  gl::setMatricesWindow (getWindowSize (), false);
+	gl::draw (mFrameBuffer->getTexture(), mFrameBuffer->getTexture().getBounds(), getWindowBounds());
+	gl::enableAlphaBlending ();
 
-  if (mSavingImages)
+  // Save images or video and handle the flipping issue...
+  if (mSavingImages || mSavingVideo)
   {
     static int currentImage = 0;
     if ((currentImage%2) == 0)
-  	  writeImage (MyString::getFrameNumber ("saveImage_", currentImage/2) + ".png", mFrameBuffer->getTexture());	
-	  currentImage++;
+    {
+      Surface surface (mFrameBuffer->getTexture());
+      ip::flipVertical (&surface);
+
+      if (mSavingImages)
+ 	      writeImage (MyString::getFrameNumber ("saveImage_", currentImage/2) + ".png", surface);	
+
+      if (mSavingVideo)
+        mMovieWriter.addFrame (surface);
+    }
+    currentImage++;
   }
 }
 
@@ -308,11 +330,33 @@ void ParticleApp::keyDown( KeyEvent event )
 {
   char c = event.getChar();
 
+  if (c == 'a')
+  {
+  	gl::enableVerticalSync (!gl::isVerticalSyncEnabled ());
+    return;
+  }
+
   if (c == 's')
   {
     mSavingImages = !mSavingImages;
     return;
   }
+
+
+  if (c == 'v')
+  {
+    mSavingVideo = true;
+
+	  qtime::MovieWriter::Format format;
+
+    std::string dir = "D:\\Libraries\\Documents\\Programming\\CppGraphics\\Cinder\\CinderProjects\\Release\\";
+
+	  if (qtime::MovieWriter::getUserCompressionSettings (&format, loadImage ("../Media/Images/flare.png"))) {
+		  mMovieWriter = qtime::MovieWriter (dir + "saveVideo.mov", 1280, 768, format);
+	  }
+    return;
+  }
+
 
   if (c == 'f')
   {
@@ -565,9 +609,9 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 							                  0.0f);  // maxParticleVelocity
       sa.ps->addEmitter (sa.ae2);
 
-      sa.cm = new CommonModifier(0.3,    // lifeChange
-                              1,    // relativeStartSize
-                              1);   // relativeEndSize
+      sa.cm = new CommonModifier (0.3f,    // lifeChange
+                                  1,    // relativeStartSize
+                                  1);   // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
       sa.colorModifier = new ColorModifier(ColorAf(0.1, 0.3, 1.0, 1),   // startColor
@@ -686,39 +730,35 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
     case 8:
       sa.ps = new ParticleSystem("../Media/Images/basic particle 1.png");
 
-      sa.ie = new 	ImageEmitter(300000,
-                              500.0f,
-                              "../Media/Images/dark sun.png", 
-                              Vec3f(0, 0, 0),
-                              2.0f,   // min size
-                              4.0f,   // max size
-                              0.0f,   // min vel
-                              0.0f,    // max vel
-							                800,     // emitter width
-							                800,     // emitter height
-							                10);     // emitter depth
-      sa.ps->addEmitter (sa.ie);
-
-      sa.cm = new CommonModifier (3.0f,    // lifeChange
-                                  1,    // relativeStartSize
-                                  0.5);  // relativeEndSize
+      sa.ve = new 	VideoEmitter (300000,
+                                  2600.0f,
+                                  Vec3f(0, 0, 0),
+                                  4.0f,   // min size
+                                  4.0f,   // max size
+                                  0.0f,   // min vel
+                                  0.0f,    // max vel
+							                    1600,     // emitter width
+							                    1000,     // emitter height
+							                    10);     // emitter depth
+      sa.ps->addEmitter (sa.ve);
+        
+      sa.cm = new CommonModifier(2.0f,    // lifeChange
+                                 1.0f,    // relativeStartSize
+                                 1.0f);  // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(1.0f, 0.0f, 1.0f, 0.0f),   // startColor
-                                            ColorAf(0.0f, 1.0f, 0.0f, 1.0f), // middleColor
-                                            ColorAf(1.0f, 0.0f, 1.0f, 0.0f),   // endColor
-                                            0.5f);                     // middleTime
-      sa.ps->addModifier (sa.colorModifier);
+      sa.ps->addModifier (sa.ve);
 
-      sa.pm = new PerlinModifier (10.0f, 0.06, 0.001);
+      sa.pm = new PerlinModifier (10.0f, 0.01, 0.001);
       sa.ps->addModifier (sa.pm);
 
-      sa.vm = new VortexModifier (Vec3f::zero(),
-                                  0.9f,   // strength
-                                  0.01f,    // damping
-                                  200,     // radius
-                                  30 * 3.14f / 180.0f); // angle
-      sa.ps->addModifier (sa.vm);
+/*
+      sa.colorModifier = new ColorModifier (ColorAf(1, 1, 1, 0), // startColor
+                                            ColorAf(1, 1, 1, 1), // middleColor
+                                            ColorAf(1, 1, 1, 0), // endColor
+                                            0.1f);            // middleTime
+      sa.ps->addModifier (sa.colorModifier);
+*/
 
       break;
   }

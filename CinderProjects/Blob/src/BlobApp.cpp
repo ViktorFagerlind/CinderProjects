@@ -7,7 +7,9 @@
 #include "Macros.h"
 #include "../../Planets/src/PhongMaterial.h"
 #include "IsoSurface.h"
+#include "../../Planets/src/BumpMaterial.h"
 
+#include "cinder/Perlin.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -15,13 +17,56 @@ using namespace std;
 
 class PerlinDensity : public DensityInterface
 {
-  float f (const Vec3f& p)
+public:
+  class Octave
   {
-    Vec2f xz = Vec2f (p.x, p.z);
+  public:
+    Octave (float w, float f) 
+    {
+      weight = w; 
+      freq = f;
+    }
 
-    return p.y + 5.0f + 40.0f * cos (xz.length () / 20.0f);
+    float weight, freq;
+  };
+
+  PerlinDensity ()
+  {
+    mPerlin.setSeed (clock());
+
+    mOctaves.push_back (Octave (1.0f/2.0f,    1.5f));
+    mOctaves.push_back (Octave (1.0f/4.0f,    2.0f));
+    mOctaves.push_back (Octave (1.0f/8.0f,    4.0f));
+    mOctaves.push_back (Octave (1.0f/16.0f,   8.0f));
+//    mOctaves.push_back (Octave (1.0f/32.0f,  16.0f));
+//    mOctaves.push_back (Octave (1.0f/64.0f,  32.0f));
+//    mOctaves.push_back (Octave (1.0f/128.0f, 64.0f));
+//    mOctaves.push_back (Octave (1.0f/256.0f,128.0f));
   }
 
+  float f (const Vec3f& p)
+  {
+//    float noise = mPerlin.fBm (p/200.0f);
+
+    float baseFreq = 1.0f/200.0f;
+
+    float x = p.x * baseFreq;
+    float y = p.y * baseFreq;
+    float z = p.z * baseFreq;
+
+    float noise = 0.0f;
+    for (uint32_t i = 0; i < mOctaves.size (); i++)
+      noise += mOctaves[i].weight * mPerlin.noise (x * mOctaves[i].freq, 
+                                                   y * mOctaves[i].freq,
+                                                   z * mOctaves[i].freq);
+
+    return 200.0f * noise + p.length ()/1.5f - 100;
+  }
+
+private:
+  Perlin mPerlin;
+
+  vector<Octave> mOctaves;
 };
 
 class BlobApp : public AppBasic {
@@ -84,6 +129,7 @@ void BlobApp::mouseMove (MouseEvent event)
 void BlobApp::setup()
 {
   mCamera.reset (new MovingCamera(700.0f));
+  mCamera.get ()->setEyePos (Vec3f (0, 200.0f, 700.0f));
 
   // Initialise light
   float ambient[]  = {0.3f, 0.3f, 0.3f, 1.0f};
@@ -133,19 +179,30 @@ void BlobApp::setup()
                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
                                      50.0f);                           // matShininess
 
+  /*
+  BumpMaterial (      gl::Texture   diffuseTexture,
+                      gl::Texture   normalTexture,
+                      gl::GlslProg  shader,
+                const TriMesh&      mesh, 
+                const ColorAf&      matAmbient,
+                const ColorAf&      matDiffuse,
+                const ColorAf&      matSpecular,
+                const float         matShininess);
+  */
+
   mSurfaceMaterial = new PhongMaterial (surfaceShader,                    // Shader
-                                        ColorAf (0.3f, 0.2f, 0.3f, 1.0f), // matAmbient,
-                                        ColorAf (0.5f, 0.2f, 0.7f, 1.0f), // matDiffuse,
-                                        ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
-                                        50.0f);                           // matShininess
+                                        ColorAf (0.2f, 0.2f, 0.1f, 1.0f), // matAmbient,
+                                        ColorAf (0.5f, 0.3f, 0.2f, 1.0f), // matDiffuse,
+                                        ColorAf (0.2f, 0.12f, 0.08f, 1.0f), // matSpecular,
+                                        1.0f);                          // matShininess
 
 
   mIsoMesh = new IsoSurface (100, 
                              100, 
                              100, 
-                             800, 
-                             800, 
-                             800);
+                             500, 
+                             500, 
+                             500);
 
   frameCount = 0;
 

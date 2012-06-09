@@ -39,7 +39,7 @@ public:
 							                                  mVelocity,            //baseVelocity,
                                                 0.1f,
 							                                  0.6f);  //randVelocity
-      emitter->update ();
+      emitter->updateEmitter ();
       emitter->kill ();
       particleSystem->addEmitter (emitter);
     }

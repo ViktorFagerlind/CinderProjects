@@ -18,7 +18,7 @@ public:
   	mPerlin.setSeed (clock());
 	}
 	
-  void update () 
+  void updateModifier () 
   {
 	  mAnimationCounter += mAnimationSpeed;
   }
@@ -28,7 +28,7 @@ public:
     Vec3f partlicePosition = particle->getPosition();
     Vec3f particleVelocity = particle->getVelocity();
 
-		Vec3f force = mPerlin.dfBm( Vec3f( partlicePosition.x, partlicePosition.y, mAnimationCounter) * 0.0005f );
+		Vec3f force = mPerlin.dfBm( Vec3f(partlicePosition.x, partlicePosition.y, mAnimationCounter) * 0.0005f );
 
     force.z = 0;
 

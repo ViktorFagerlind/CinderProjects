@@ -26,7 +26,7 @@ IsoSurface::IsoSurface (const uint32_t  gridNofX,
 
 void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh)
 {
-  float *evals = new float[vboVertices.size ()];
+  float *evals = new float[mVboVertices.size ()];
 
   std::vector<uint32_t> indices;
   std::vector<Vec3f>    vertices;
@@ -40,19 +40,19 @@ void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh&
 
   // gl::VboMesh::VertexIter iter = mVboMesh.mapVertexBuffer(); Varför krashar detta !?!?!?!?!?!?
 
-  for( uint32_t i = 0; i < vboVertices.size (); i++)
+  for( uint32_t i = 0; i < mVboVertices.size (); i++)
   {
-    evals[i] = densityFunction.f (vboVertices[i]);
+    evals[i] = densityFunction.f (mVboVertices[i]);
   }
 
-  for( uint32_t i = 0; i < vboIndices.size (); i+=4)
+  for( uint32_t i = 0; i < mVboIndices.size (); i+=4)
   {
-    getIntersection (densityFunction, vboVertices.data(), evals, &vboIndices.data()[i], 
+    getIntersection (densityFunction, mVboVertices.data(), evals, &mVboIndices.data()[i], 
                      intersectVerts, nofIntersectVerts);
 
     uint32_t startIndex = vertices.size ();
 
-    float d = min (min ((float)mGridNofX/(2.0f*mGridWidth), (float)mGridNofY/(2.0f*mGridWidth)), (float)mGridNofZ/(2.0f*mGridDepth));
+    float d = min (min ((float)mGridNofX/mGridWidth, (float)mGridNofY/mGridHeight), (float)mGridNofZ/mGridDepth);
 
     if (nofIntersectVerts >= 3)
     {
@@ -114,6 +114,40 @@ void IsoSurface::draw ()
 */
 }
 
+void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<Vec3f>& vboVertices, const Vec3f& GridSize, const Vec3i& GridResolution)
+{
+  Vec3f startPoint = GridSize / 2.0f;
+
+  float xs = GridSize.x  / (float)GridResolution.x;
+  float ys = GridSize.y  / (float)GridResolution.y;
+  float zs = GridSize.z  / (float)GridResolution.z;
+
+  // Create vertices
+  for (uint32_t z=0; z<(uint32_t)GridResolution.z+1; z++)
+  {
+    for (uint32_t y=0; y<(uint32_t)GridResolution.y+1; y++)
+    {
+      for (uint32_t x=0; x<(uint32_t)GridResolution.x+1; x++)
+      {
+        Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
+        vboVertices.push_back (p);
+      }
+    }
+  }
+
+  // Create indicies
+  for (uint32_t z=0; z<(uint32_t)GridResolution.z; z++)
+  {
+    for (uint32_t y=0; y<(uint32_t)GridResolution.y; y++)
+    {
+      for (uint32_t x=0; x<(uint32_t)GridResolution.x; x++)
+      {
+        getTetraCubeIndices (x, y, z, GridResolution.x, GridResolution.y, vboIndices);
+      }
+    }
+  }
+}
+
 void IsoSurface::setupTetraVbo ()
 {
 
@@ -133,7 +167,7 @@ void IsoSurface::setupTetraVbo ()
       for (uint32_t x=0; x<mGridNofX+1; x++)
       {
         Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
-        vboVertices.push_back (p);
+        mVboVertices.push_back (p);
       }
     }
   }
@@ -145,7 +179,7 @@ void IsoSurface::setupTetraVbo ()
     {
       for (uint32_t x=0; x<mGridNofX; x++)
       {
-        getTetraCubeIndices (x, y, z, vboIndices);
+        getTetraCubeIndices (x, y, z, mGridNofX, mGridNofY, mVboIndices);
       }
     }
   }
@@ -155,23 +189,23 @@ void IsoSurface::setupTetraVbo ()
 	layout.setStaticIndices ();
 	layout.setStaticPositions ();
   // Create Vbo
-  mVboMesh = gl::VboMesh (vboVertices.size(), vboIndices.size(), layout, GL_LINES_ADJACENCY_EXT);
-	mVboMesh.bufferIndices (vboIndices);
-	mVboMesh.bufferPositions (vboVertices);
+  mVboMesh = gl::VboMesh (mVboVertices.size(), mVboIndices.size(), layout, GL_LINES_ADJACENCY_EXT);
+	mVboMesh.bufferIndices (mVboIndices);
+	mVboMesh.bufferPositions (mVboVertices);
 	mVboMesh.unbindBuffers ();	// Clean up
 
   /*
-	vboIndices.clear ();
-	vboVertices.clear ();
+	mVboIndices.clear ();
+	mVboVertices.clear ();
   */
 }
 
 
-void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, 
-                                      std::vector<uint32_t>& vboIndices)
+void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t gridNofX, const uint32_t gridNofY,
+                                               std::vector<uint32_t>& vboIndices)
 {
-  const uint32_t z_move = (mGridNofX+1) * (mGridNofY+1);
-  const uint32_t y_move = (mGridNofX+1);
+  const uint32_t z_move = (gridNofX+1) * (gridNofY+1);
+  const uint32_t y_move = (gridNofX+1);
 
   const uint32_t far_down_left    = z*z_move + y*y_move + x; // 0
   const uint32_t far_down_right   = far_down_left  + 1;      // 1
@@ -201,6 +235,8 @@ void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const 
 //   Linjärinterpolera för att hitta punkt på en linje där iso-värdet har sin gräns
 Vec3f IsoSurface::VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
 {
+  float dist = abs (valp2-valp1);
+
   float mu = (isolevel - valp1) / (valp2 - valp1);
 
   return lerp (p1, p2, mu);
@@ -211,6 +247,9 @@ Vec3f IsoSurface::VertexInterp (DensityInterface& densityFunction, float isoleve
 {
   return VertexInterp (isolevel, p1, p2, valp1, valp2);
 
+//  if (abs (valp2-valp1) < 10.0f)
+//    return VertexInterp (isolevel, p1, p2, valp1, valp2);
+
   Vec3f pm = (p1 + p2) / 2.0f;
 
   bool b1 = valp1 > isolevel;
@@ -220,7 +259,7 @@ Vec3f IsoSurface::VertexInterp (DensityInterface& densityFunction, float isoleve
   if (b1 != bm)
     return VertexInterp (isolevel, p1, pm, valp1, valm);
   else
-    return VertexInterp (isolevel, p2, pm, valp2, valm);
+    return VertexInterp (isolevel, pm, p2, valm, valp2);
 }
 
 

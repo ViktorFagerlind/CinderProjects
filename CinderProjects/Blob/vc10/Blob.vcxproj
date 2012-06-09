@@ -125,6 +125,7 @@
     <None Include="..\..\Media\Shaders\blob_vert.glsl" />
     <None Include="..\..\Media\Shaders\phong_frag.glsl" />
     <None Include="..\..\Media\Shaders\phong_vert.glsl" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

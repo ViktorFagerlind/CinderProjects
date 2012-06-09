@@ -171,7 +171,7 @@ void GameWorld::setup ()
 
 void GameWorld::update ()
 {
-  mGravityField->update ();
+  mGravityField->updateModifier ();
 
   mGravityField->applyGravity ();
 

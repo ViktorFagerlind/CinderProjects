@@ -18,6 +18,8 @@ public:
 
   void reset ();
 
+  void setEyePos (const Vec3f& pos) {mEye = pos;}
+
   void mouseMove (MouseEvent event);
 
   void keyDown (KeyEvent event);

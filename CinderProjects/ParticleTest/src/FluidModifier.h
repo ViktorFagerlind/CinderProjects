@@ -15,7 +15,7 @@ public:
 	
 	virtual ~FluidModifier ();
 
-  virtual void update();
+  virtual void updateModifier ();
 
   inline void apply(Particle *const particle);
 

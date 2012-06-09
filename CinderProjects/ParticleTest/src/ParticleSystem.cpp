@@ -47,7 +47,7 @@ void ParticleSystem::updateEmitters()
   for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end();)
   {
     Emitter *e = *it;
-    e->update();
+    e->updateEmitter();
 
   	if (e->dead())
     {
@@ -65,7 +65,7 @@ void ParticleSystem::updateModifiers()
   for (vector<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
   {
     Modifier *m = *mit;
-    m->update();
+    m->updateModifier();
 
     for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     {

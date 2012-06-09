@@ -55,7 +55,7 @@ void Emitter::applyModifierToParticles(Modifier *modifier)
   }
 }
 
-void Emitter::update()
+void Emitter::updateEmitter ()
 {
   // Update how many particles to create
   mParticlesToCreate += mParticlesPerFrame;
