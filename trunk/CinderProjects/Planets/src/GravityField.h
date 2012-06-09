@@ -18,9 +18,6 @@ typedef std::vector<Vec3f>   Field1D;
 typedef std::vector<Field1D> Field2D;
 typedef std::vector<Field2D> Field3D;
 
-typedef const Vec3<uint32_t> Vec3i;
-
-
 class GravityField : public Modifier
 {
 public:

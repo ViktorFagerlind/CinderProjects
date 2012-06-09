@@ -70,7 +70,7 @@ void FluidModifier::applyMovement (const Vec2f& position, const Vec2f& speed)
   }
 }
 
-inline void FluidModifier::update()
+inline void FluidModifier::updateModifier()
 {
   float dt = 1.0f / 60.0f;
 /*

@@ -37,7 +37,7 @@ public:
 
   void applyModifierToParticles(Modifier *modifier);
   
-  void update();
+  virtual void updateEmitter();
 
   void draw();
 

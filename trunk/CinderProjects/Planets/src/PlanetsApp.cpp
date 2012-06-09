@@ -32,6 +32,13 @@ void PlanetsApp::mouseDown (MouseEvent event)
 
 void PlanetsApp::keyDown (KeyEvent event)
 {
+  if (event.getChar () == 'v')
+  {
+  	gl::enableVerticalSync (!gl::isVerticalSyncEnabled ());
+    return;
+  }
+
+
   GameWorld::getSingleton ()->keyDown (event);
 }
 
