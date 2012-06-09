@@ -39,7 +39,7 @@ public:
 
   void draw ();
 
-  void getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh);
+  static void getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh, const Vec3f& GridSize, const Vec3i& GridResolution);
 
   float getWidth ()  {return mGridWidth;}
   float getHeight () {return mGridHeight;}
@@ -49,14 +49,14 @@ private:
   static void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t gridNofX, const uint32_t gridNofY,
                                                std::vector<uint32_t>& vboIndices);
 
-  Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2);
+  static Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2);
 
-  Vec3f VertexInterp (DensityInterface& densityFunction, 
-                      float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2);
+  static Vec3f VertexInterp (DensityInterface& densityFunction, 
+                             float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2);
 
-  void getIntersection (DensityInterface& densityFunction, 
-                        const Vec3f* verts, const float* evals, const uint32_t* indices, 
-                        Vec3f* outVerts, uint32_t& nofVerts);
+  static void getIntersection (DensityInterface& densityFunction, 
+                               const Vec3f* verts, const float* evals, const uint32_t* indices, 
+                               Vec3f* outVerts, uint32_t& nofVerts);
 
   void drawAllCubes ();
 

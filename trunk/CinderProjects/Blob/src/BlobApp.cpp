@@ -37,7 +37,7 @@ public:
     mOctaves.push_back (Octave (1.0f/2.0f,    1.5f));
     mOctaves.push_back (Octave (1.0f/4.0f,    2.0f));
     mOctaves.push_back (Octave (1.0f/8.0f,    4.0f));
-    mOctaves.push_back (Octave (1.0f/16.0f,   8.0f));
+//    mOctaves.push_back (Octave (1.0f/16.0f,   8.0f));
 //    mOctaves.push_back (Octave (1.0f/32.0f,  16.0f));
 //    mOctaves.push_back (Octave (1.0f/64.0f,  32.0f));
 //    mOctaves.push_back (Octave (1.0f/128.0f, 64.0f));
@@ -48,7 +48,7 @@ public:
   {
 //    float noise = mPerlin.fBm (p/200.0f);
 
-    float baseFreq = 1.0f/200.0f;
+    float baseFreq = 1.0f/20.0f;
 
     float x = p.x * baseFreq;
     float y = p.y * baseFreq;
@@ -60,7 +60,7 @@ public:
                                                    y * mOctaves[i].freq,
                                                    z * mOctaves[i].freq);
 
-    return 200.0f * noise + p.length ()/1.5f - 100;
+    return 13.0f * noise + p.length ()*0.8f - 10;
   }
 
 private:
@@ -198,18 +198,18 @@ void BlobApp::setup()
 
 
   mIsoMesh = new IsoSurface (100, 
-                             100, 
-                             100, 
-                             500, 
-                             500, 
-                             500);
+                             70, 
+                             20, 
+                             1000, 
+                             700, 
+                             200);
 
   frameCount = 0;
 
   mPaused        = false;
   mWireFrameMode = false;
 
-  mBallRadius = 70.0f;
+  mBallRadius = 50.0f;
 
   for (int i=0; i<8; i++)
   {
@@ -221,7 +221,7 @@ void BlobApp::setup()
 
   // Create function surface
   PerlinDensity pd;
-  mIsoMesh->getSurfaceMesh (pd, mFunSurface);
+  mIsoMesh->getSurfaceMesh (pd, mFunSurface, Vec3f (50, 50, 50), Vec3i (20, 20, 20));
 }
 
 void BlobApp::prepareSettings (Settings *settings)
@@ -278,7 +278,7 @@ void BlobApp::draw()
 	float center[] = {-200, 1000, 400, 1};
 	glLightfv(GL_LIGHT0, GL_POSITION, center);
 
-//  mMaterial->bind ();
+  mBlobMaterial->bind ();
 
   int nofBalls = mBallPositions.size ();
   mBlobMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
@@ -286,9 +286,9 @@ void BlobApp::draw()
   mBlobMaterial->getShader ().uniform ("nofBalls",      nofBalls);
   mBlobMaterial->getShader ().uniform ("radiusSquared", mBallRadius*mBallRadius);
   
-//  mIsoMesh->draw ();
+  mIsoMesh->draw ();
 
-//  mMaterial->unbind ();
+  mBlobMaterial->unbind ();
 
   mSurfaceMaterial->bind ();
   gl::draw (mFunSurface);

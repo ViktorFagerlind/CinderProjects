@@ -9,6 +9,7 @@
 #include "BloomEffect.h"
 #include "BasicObject.h"
 #include "BumpMaterial.h"
+#include "PhongMaterial.h"
 #include "PhysicsObject.h"
 #include "GravityField.h"
 #include "Sun.h"
@@ -69,6 +70,8 @@ private:
 
   // Bloom attributes
   BloomEffect   *mBloomEffect;
+
+  shared_ptr<PhongMaterial> mMeteorMaterial;
 };
 
 

@@ -155,6 +155,29 @@ void GameWorld::setup ()
     }
   }
 
+
+
+
+  gl::GlslProg phongShader;
+	try {
+    //	int32_t maxGeomOutputVertices;
+    //	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
+		phongShader = gl::GlslProg (loadFile ("../Media/Shaders/phong_vert.glsl"), 
+                                loadFile ("../Media/Shaders/phong_frag.glsl"));
+	}	catch (gl::GlslProgCompileExc &exc) {
+		std::cout << "Shader compile error: " << std::endl;
+		std::cout << exc.what();
+	}	catch (...) {
+		std::cout << "Unable to load shader" << std::endl;
+	}
+
+  mMeteorMaterial.reset (new PhongMaterial (phongShader,                        // Shader
+                                       ColorAf (0.2f, 0.2f, 0.1f, 1.0f),   // matAmbient,
+                                       ColorAf (0.5f, 0.3f, 0.2f, 1.0f),   // matDiffuse,
+                                       ColorAf (0.2f, 0.12f, 0.08f, 1.0f), // matSpecular,
+                                       1.0f));                              // matShininess
+
+
   // Create frame buffer
   gl::Fbo::Format format;
   format.enableColorBuffer ();
@@ -181,7 +204,8 @@ void GameWorld::update ()
   {
     Meteor *meteor = new Meteor(10000.0f, 
                                 Vec3f(Rand::randFloat(-300, 300), 300, 0),
-                                Rand::randFloat(1, 7));
+                                Rand::randFloat(1, 7),
+                                mMeteorMaterial);
     meteor->setVelocity(Vec3f(0, -1, 0));
     meteor->setRotationVelocity (Vec3f(Rand::randFloat(3), Rand::randFloat(3), Rand::randFloat(3)));
     mObjects.push_back (meteor);

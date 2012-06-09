@@ -105,6 +105,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Blob\src\IsoSurface.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\Emitter.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\FluidModifier.cpp" />
     <ClCompile Include="..\..\ParticleTest\src\Particle.cpp" />

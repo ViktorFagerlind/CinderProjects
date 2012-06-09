@@ -24,9 +24,15 @@ IsoSurface::IsoSurface (const uint32_t  gridNofX,
 }
 
 
-void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh)
+void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh, const Vec3f& GridSize, const Vec3i& GridResolution)
 {
-  float *evals = new float[mVboVertices.size ()];
+  std::vector<uint32_t> vboIndices;
+  std::vector<Vec3f>    vboVertices;
+
+  setupTetraGrid (vboIndices, vboVertices, GridSize, GridResolution);
+
+
+  float *evals = new float[vboVertices.size ()];
 
   std::vector<uint32_t> indices;
   std::vector<Vec3f>    vertices;
@@ -40,19 +46,19 @@ void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh&
 
   // gl::VboMesh::VertexIter iter = mVboMesh.mapVertexBuffer(); Varför krashar detta !?!?!?!?!?!?
 
-  for( uint32_t i = 0; i < mVboVertices.size (); i++)
+  for( uint32_t i = 0; i < vboVertices.size (); i++)
   {
-    evals[i] = densityFunction.f (mVboVertices[i]);
+    evals[i] = densityFunction.f (vboVertices[i]);
   }
 
-  for( uint32_t i = 0; i < mVboIndices.size (); i+=4)
+  for( uint32_t i = 0; i < vboIndices.size (); i+=4)
   {
-    getIntersection (densityFunction, mVboVertices.data(), evals, &mVboIndices.data()[i], 
+    getIntersection (densityFunction, vboVertices.data(), evals, &vboIndices.data()[i], 
                      intersectVerts, nofIntersectVerts);
 
     uint32_t startIndex = vertices.size ();
 
-    float d = min (min ((float)mGridNofX/mGridWidth, (float)mGridNofY/mGridHeight), (float)mGridNofZ/mGridDepth);
+    float d = min (min ((float)GridResolution.x/GridSize.x, (float)GridResolution.y/GridSize.y), (float)GridResolution.z/GridSize.z);
 
     if (nofIntersectVerts >= 3)
     {
@@ -116,7 +122,7 @@ void IsoSurface::draw ()
 
 void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<Vec3f>& vboVertices, const Vec3f& GridSize, const Vec3i& GridResolution)
 {
-  Vec3f startPoint = GridSize / 2.0f;
+  Vec3f startPoint = -GridSize / 2.0f;
 
   float xs = GridSize.x  / (float)GridResolution.x;
   float ys = GridSize.y  / (float)GridResolution.y;
@@ -150,39 +156,7 @@ void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<
 
 void IsoSurface::setupTetraVbo ()
 {
-
-  Vec3f startPoint = Vec3f (-mGridWidth  / 2.0f, 
-                            -mGridHeight / 2.0f, 
-                            -mGridDepth  / 2.0f);
-
-  float xs = mGridWidth  / (float)mGridNofX;
-  float ys = mGridHeight / (float)mGridNofY;
-  float zs = mGridDepth  / (float)mGridNofZ;
-
-  // Create vertices
-  for (uint32_t z=0; z<mGridNofZ+1; z++)
-  {
-    for (uint32_t y=0; y<mGridNofY+1; y++)
-    {
-      for (uint32_t x=0; x<mGridNofX+1; x++)
-      {
-        Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
-        mVboVertices.push_back (p);
-      }
-    }
-  }
-
-  // Create indicies
-  for (uint32_t z=0; z<mGridNofZ; z++)
-  {
-    for (uint32_t y=0; y<mGridNofY; y++)
-    {
-      for (uint32_t x=0; x<mGridNofX; x++)
-      {
-        getTetraCubeIndices (x, y, z, mGridNofX, mGridNofY, mVboIndices);
-      }
-    }
-  }
+  setupTetraGrid (mVboIndices, mVboVertices, Vec3f (mGridWidth, mGridHeight, mGridDepth), Vec3i (mGridNofX, mGridNofY, mGridNofZ));
 
 	gl::VboMesh::Layout layout;
   // Vbo settings
