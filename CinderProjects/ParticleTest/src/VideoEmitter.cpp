@@ -105,7 +105,8 @@ void VideoEmitter::apply (Particle *const particle)
 	
 void VideoEmitter::getImagePos (Vec2i& imagePosition)
 {
-  const uint32_t add = Rand::randInt (3,5);
+#if 1
+  const uint32_t add = 13;//Rand::randInt (10,13);
 
   static uint32_t x=0;
   static uint32_t y=0;
@@ -136,13 +137,12 @@ void VideoEmitter::getImagePos (Vec2i& imagePosition)
 
       loopCount++;
     }
-    x=0;
+    x -= mMovieWidth;
 
     if (y>=mMovieHeight)
-      y=add;
+      y -= mMovieHeight;
   }
-
-/*
+#else
   ColorAf color;
 
   if (!mSurface)
@@ -161,7 +161,7 @@ void VideoEmitter::getImagePos (Vec2i& imagePosition)
 	}
   while(loopCount < 1000 && 
         (color.r + color.g + color.b) * color.a < Rand::randFloat ());
-*/
+#endif
 }
 
 void VideoEmitter::loadMovieFile (const std::string &moviePath )
@@ -183,7 +183,7 @@ void VideoEmitter::loadMovieFile (const std::string &moviePath )
 
 		mMovie.setLoop( true, true );
 		mMovie.seekToStart();
-//		mMovie.seekToTime( mMovie.getDuration() / 2 );
+		mMovie.seekToTime( mMovie.getDuration() / 2 );
 
     mMovie.setVolume (0);
 		mMovie.play ();
