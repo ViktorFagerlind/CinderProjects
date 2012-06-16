@@ -116,6 +116,7 @@
     <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\GameWorld.cpp" />
     <ClCompile Include="..\src\GravityField.cpp" />
+    <ClCompile Include="..\src\Meteor.cpp" />
     <ClCompile Include="..\src\MiscMath.cpp" />
     <ClCompile Include="..\src\PhongMaterial.cpp" />
     <ClCompile Include="..\src\PhysicsObject.cpp" />
