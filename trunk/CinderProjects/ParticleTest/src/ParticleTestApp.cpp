@@ -730,13 +730,13 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
     case 8:
       sa.ps = new ParticleSystem("../Media/Images/basic particle 1.png");
 
-      sa.ve = new 	VideoEmitter (300000,
-                                  2600.0f,
+      sa.ve = new 	VideoEmitter (500000,
+                                  3600.0f,
                                   Vec3f(0, 0, 0),
-                                  4.0f,   // min size
-                                  4.0f,   // max size
-                                  0.0f,   // min vel
-                                  0.0f,    // max vel
+                                  2.0f,   // min size
+                                  2.0f,   // max size
+                                  -0.1f,   // min vel
+                                  0.1f,    // max vel
 							                    1600,     // emitter width
 							                    1000,     // emitter height
 							                    10);     // emitter depth
@@ -749,8 +749,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 
       sa.ps->addModifier (sa.ve);
 
-      sa.pm = new PerlinModifier (10.0f, 0.01, 0.001);
-      sa.ps->addModifier (sa.pm);
+//      sa.pm = new PerlinModifier (10.0f, 0.01, 0.001);
+//      sa.ps->addModifier (sa.pm);
 
 /*
       sa.colorModifier = new ColorModifier (ColorAf(1, 1, 1, 0), // startColor
