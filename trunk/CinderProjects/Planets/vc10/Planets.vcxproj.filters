@@ -93,6 +93,9 @@
     <ClCompile Include="..\..\Blob\src\IsoSurface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Meteor.cpp">
+      <Filter>Source Files\Planets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
