@@ -14,10 +14,10 @@
 #include "GravityField.h"
 #include "Sun.h"
 
-#include "../../ParticleTest/src/ParticleSystemManager.h"
-#include "../../ParticleTest/src/ParticleSystem.h"
+#include "ParticleSystemManager.h"
+#include "ParticleSystem.h"
 
-#include "../../SkyRoads/src/MovingCamera.h"
+#include "MovingCamera.h"
 
 using namespace ci;
 using namespace std;

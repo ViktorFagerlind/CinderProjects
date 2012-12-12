@@ -4,7 +4,7 @@
 #include "cinder/ImageIo.h"
 #include "cinder/Utilities.h"
 
-#include "../../ParticleTest/src/MyStrings.h"
+#include "MyStrings.h"
 
 using namespace ci;
 using namespace ci::app;

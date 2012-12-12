@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{c523871f-6567-417f-8da0-1beea52c764d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{c18cbd86-5604-41ce-a6be-b20c779ce316}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\PlanetsApp.cpp">
@@ -33,19 +36,22 @@
     <ClCompile Include="..\src\Sun.cpp">
       <Filter>Source Files\Planets</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Blob\src\IsoSurface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Meteor.cpp">
       <Filter>Source Files\Planets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GravityField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DynamicObject.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PhysicsObject.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BasicObject.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Meteor.h">
       <Filter>Source Files\Planets</Filter>
@@ -61,6 +67,21 @@
     </ClInclude>
     <ClInclude Include="BloomEffect.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GravityField.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CollisionManager.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DynamicObject.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PhysicsObject.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BasicObject.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

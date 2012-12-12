@@ -2,7 +2,7 @@
 
 #include "DynamicObject.h"
 
-#include "../../ParticleTest/src/Modifier.h"
+#include "Modifier.h"
 
 #include "cinder/Vector.h"
 #include "cinder/gl/GlslProg.h"

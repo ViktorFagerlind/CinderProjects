@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost;;..\..\CinderGraphicsLib\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -74,7 +74,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost;;..\..\CinderGraphicsLib\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -104,17 +104,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Planets\src\PhongMaterial.cpp" />
-    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp" />
     <ClCompile Include="..\src\BlobApp.cpp" />
-    <ClCompile Include="..\src\IsoSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Planets\src\BaseMaterial.h" />
-    <ClInclude Include="..\..\Planets\src\PhongMaterial.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\Macros.h" />
-    <ClInclude Include="..\src\IsoSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

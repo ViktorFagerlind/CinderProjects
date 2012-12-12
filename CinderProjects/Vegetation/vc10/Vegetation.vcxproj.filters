@@ -29,9 +29,6 @@
     <ClInclude Include="..\src\Sprout.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\MyStrings.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
