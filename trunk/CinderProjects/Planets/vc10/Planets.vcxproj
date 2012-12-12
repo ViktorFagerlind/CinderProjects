@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost;..\..\CinderGraphicsLib\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -74,7 +74,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost;..\..\CinderGraphicsLib\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -105,9 +105,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Blob\src\IsoSurface.cpp" />
+    <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\GameWorld.cpp" />
+    <ClCompile Include="..\src\GravityField.cpp" />
     <ClCompile Include="..\src\Meteor.cpp" />
+    <ClCompile Include="..\src\PhysicsObject.cpp" />
     <ClCompile Include="..\src\Planet.cpp" />
     <ClCompile Include="..\src\PlanetsApp.cpp" />
     <ClCompile Include="..\src\Sun.cpp" />
@@ -115,8 +117,12 @@
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\BasicObject.h" />
+    <ClInclude Include="..\src\CollisionManager.h" />
+    <ClInclude Include="..\src\DynamicObject.h" />
     <ClInclude Include="..\src\GameWorld.h" />
+    <ClInclude Include="..\src\GravityField.h" />
     <ClInclude Include="..\src\Meteor.h" />
+    <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\Planet.h" />
     <ClInclude Include="..\src\Sun.h" />
     <ClInclude Include="BloomEffect.h" />

@@ -1,11 +1,11 @@
 #include "Sun.h"
 
 #include "GameWorld.h"
-#include "../../ParticleTest/src/ParticleSystemManager.h"
-#include "../../ParticleTest/src/ParticleSystem.h"
-#include "../../ParticleTest/src/CommonModifier.h"
-#include "../../ParticleTest/src/ColorModifier.h"
-#include "../../ParticleTest/src/PointEmitter.h"
+#include "ParticleSystemManager.h"
+#include "ParticleSystem.h"
+#include "CommonModifier.h"
+#include "ColorModifier.h"
+#include "PointEmitter.h"
 
 Sun::Sun (const float                    mass, 
           const Vec3f&                   position, 

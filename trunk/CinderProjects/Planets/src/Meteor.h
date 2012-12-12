@@ -8,8 +8,8 @@
 #include "GravityField.h"
 #include "cinder/Perlin.h"
 
-#include "../../Blob/src/IsoSurface.h"
-#include "../../ParticleTest/src/PointEmitter.h"
+#include "IsoSurface.h"
+#include "PointEmitter.h"
 
 using namespace ci;
 using namespace std;

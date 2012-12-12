@@ -7,11 +7,11 @@
 #include "Planet.h"
 #include "Meteor.h"
 
-#include "../../ParticleTest/src/AreaEmitter.h"
-#include "../../ParticleTest/src/CommonModifier.h"
-#include "../../ParticleTest/src/ColorModifier.h"
-#include "../../ParticleTest/src/PerlinModifier.h"
-#include "../../ParticleTest/src/PointEmitter.h"
+#include "AreaEmitter.h"
+#include "CommonModifier.h"
+#include "ColorModifier.h"
+#include "PerlinModifier.h"
+#include "PointEmitter.h"
 
 #include <list>
 

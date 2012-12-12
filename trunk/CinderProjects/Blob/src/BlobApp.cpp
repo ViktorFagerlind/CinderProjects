@@ -3,11 +3,11 @@
 #include "cinder/Rand.h"
 #include "cinder/gl/GlslProg.h"
 
-#include "../../SkyRoads/src/MovingCamera.h"
+#include "MovingCamera.h"
 #include "Macros.h"
-#include "../../Planets/src/PhongMaterial.h"
+#include "PhongMaterial.h"
 #include "IsoSurface.h"
-#include "../../Planets/src/BumpMaterial.h"
+#include "BumpMaterial.h"
 
 #include "cinder/Perlin.h"
 

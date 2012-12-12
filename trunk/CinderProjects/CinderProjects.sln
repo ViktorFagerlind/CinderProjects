@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleTest", "ParticleTest\vc10\ParticleTest.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
 	ProjectSection(ProjectDependencies) = postProject
-		{9D454CCD-CC22-4E10-B772-3D9E969265D8} = {9D454CCD-CC22-4E10-B772-3D9E969265D8}
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderTest", "ShaderTest\vc10\ShaderTest.vcxproj", "{F6ACC654-B782-4705-912D-706E7C8E711A}"

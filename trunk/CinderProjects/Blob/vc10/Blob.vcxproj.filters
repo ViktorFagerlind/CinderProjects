@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\External">
-      <UniqueIdentifier>{b37b83d3-b38d-4aaf-868f-f1d1cc0fef5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{1e7fd3d9-9308-4fec-af38-fe0b139ba898}</UniqueIdentifier>
     </Filter>
@@ -24,31 +21,10 @@
     <ClCompile Include="..\src\BlobApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp">
-      <Filter>Source Files\External</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IsoSurface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Planets\src\PhongMaterial.cpp">
-      <Filter>Source Files\External</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Macros.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\IsoSurface.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Planets\src\PhongMaterial.h">
-      <Filter>Source Files\External</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Planets\src\BaseMaterial.h">
-      <Filter>Source Files\External</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

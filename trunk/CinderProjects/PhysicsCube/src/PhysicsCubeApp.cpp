@@ -4,7 +4,7 @@
 #include "DynamicObject.h"
 #include "StaticObject.h"
 #include "BoundingBox.h"
-#include "../../SkyRoads/src/MovingCamera.h"
+#include "MovingCamera.h"
 
 using namespace ci;
 using namespace ci::app;
