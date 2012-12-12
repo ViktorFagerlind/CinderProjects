@@ -63,7 +63,6 @@ void Meteor::update ()
 							                                3,                    //minParticleSize,
 							                                7,                    //maxParticleSize,
 							                                mVelocity,            //baseVelocity,
-                                              0.1f,
 							                                0.6f);  //randVelocity
     emitter->updateEmitter ();
     emitter->kill ();

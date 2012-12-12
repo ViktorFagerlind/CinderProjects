@@ -69,8 +69,8 @@ void GameWorld::setup ()
 							                                     200,             // depth,
 							                                     0.7f,               // minParticleSize,
 							                                     0.7f,               // maxParticleSize,
-							                                     0,           // minParticleVelocity,
-							                                     0);           // maxParticleVelocity
+                                                   Vec3f (0, 0, 0),     // baseVelocity
+                                                   0.0f);    // randVelocity
   particleSystem->addEmitter (areaEmitter); 
 
   particleSystem->addModifier (mGravityField);

@@ -41,11 +41,9 @@ void Road::updateVectors (const Vec3f& center)
   Vec3f nextToCurrent;
   Vec3f tmp;
 
-  tmp              = mPreviousCenter; 
   mPreviousCenter  = mCurrentCenter;
   mCurrentCenter   = mNextCenter;
-  mNextCenter      = tmp;
-  mNextCenter.set(center);
+  mNextCenter      = center;
 
   previousToCurrent = mCurrentCenter - mPreviousCenter;
   nextToCurrent     = mCurrentCenter - mNextCenter;

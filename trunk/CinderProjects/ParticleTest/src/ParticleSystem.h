@@ -28,6 +28,9 @@ public:
 
   void draw();
 
+  gl::Texture *getTexture () {return mParticleTexture;}
+
+
 private:
   void updateEmitters();
   void updateModifiers();
@@ -39,6 +42,6 @@ private:
 
 	vector<Modifier*> mModifiers;
 
-  gl::Texture    *mParticleTexture;
+  gl::Texture      *mParticleTexture;
 };
 

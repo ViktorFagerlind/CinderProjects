@@ -396,7 +396,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               30.0f,   // min size
                               30.0f,   // max size
                               Vec3f (0, 0, 0),     // baseVelocity
-                              0.01f, 0.01f);    // randVelocity
+                              0.01f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.pe = new PointEmitter (10000,
@@ -405,7 +405,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               50.0f,   // min size
                               50.0f,   // max size
                               Vec3f (0, 0, 0),     // baseVelocity
-                              0.01f, 0.01f);    // randVelocity
+                              0.01f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.pe = new PointEmitter (10000,
@@ -414,7 +414,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                               40.0f,   // min size
                               40.0f,   // max size
                               Vec3f (0, 0, 0),     // baseVelocity
-                              0.01f, 0.01f);    // randVelocity
+                              0.01f);    // randVelocity
       sa.ps->addEmitter (sa.pe);
 
       sa.cm = new CommonModifier(0.2,    // lifeChange
@@ -489,8 +489,9 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 10,             // depth,
 							                  2, // minParticleSize
 							                  2, // maxParticleSize
-							                  0.0f, // minParticleVelocity
-							                  0.0f);  // maxParticleVelocity
+                                Vec3f (0, 0, 0),     // baseVelocity
+                                0.0f);    // randVelocity
+
 
       sa.ps->addEmitter (sa.ae2);
 
@@ -555,8 +556,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 10,             // depth,
 							                  3, // minParticleSize
 							                  3, // maxParticleSize
-							                  0.0f, // minParticleVelocity
-							                  0.0f);  // maxParticleVelocity
+                                Vec3f (0, 0, 0),     // baseVelocity
+                                0.0f);    // randVelocity
       sa.ps->addEmitter (sa.ae1);
 
       sa.cm = new CommonModifier(1,    // lifeChange
@@ -590,8 +591,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 10,             // depth,
 							                  50, // minParticleSize
 							                  50, // maxParticleSize
-							                  0.1f, // minParticleVelocity
-							                  0.1f);  // maxParticleVelocity
+                                Vec3f (0, 0, 0),     // baseVelocity
+                                0.1f);    // randVelocity
       sa.ps->addEmitter (sa.ae1);
 
       sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, true, 1800, 1000);
@@ -605,8 +606,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 10,             // depth,
 							                  3, // minParticleSize
 							                  10, // maxParticleSize
-							                  0.0f, // minParticleVelocity
-							                  0.0f);  // maxParticleVelocity
+                                Vec3f (0, 0, 0),     // baseVelocity
+                                0.0f);    // randVelocity
       sa.ps->addEmitter (sa.ae2);
 
       sa.cm = new CommonModifier (0.3f,    // lifeChange
@@ -680,8 +681,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 10,     // depth,
 							                  100,    // minParticleSize
 							                  100,    // maxParticleSize
-							                  0.1f,   // minParticleVelocity
-							                  0.1f);  // maxParticleVelocity
+                                Vec3f (0, 0, 0),     // baseVelocity
+                                0.1f);    // randVelocity
       sa.ps->addEmitter (sa.ae2);
 
       sa.cm = new CommonModifier (0.4,    // lifeChange
@@ -698,33 +699,36 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 
       break;
     case 7:
-      sa.ps = new ParticleSystem("../Media/Images/bacteria.png");
+      sa.ps = new ParticleSystem ("../Media/Movies/InkParticle/InkParticle.png");
 
-      sa.pe = new PointEmitter (100000,
-                              Vec3f (0, -400, 0), //position
-                              5.0f,  // particles per frame
-                              6.0f,   // min size
-                              6.0f,   // max size
-                              Vec3f (3.5f, 2, 0),     // baseVelocity
-                              1.0f, 1.0f);    // randVelocity
-      sa.ps->addEmitter (sa.pe);
+      sa.ae1  = new AreaEmitter (1000,
+                                Vec3f(0, 0, 0),                //position
+                                0.2, // particlesPerFrame,
+  						                  60,      // width
+  						                  60,      // height 
+                                60,      // depth,
+                                100.0f,   // min size
+                                150.0f,   // max size
+                                Vec3f (0, 5, 0),     // baseVelocity
+                                2.0f);    // randVelocity
+
+      sa.ae1->makeAnimated ("../Media/Movies/InkParticle/InkParticle.xml");
+
+      sa.ps->addEmitter (sa.ae1);
 
       sa.cm = new CommonModifier (1.0f,    // lifeChange
                                   1,    // relativeStartSize
                                   1);  // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(1.0f, 1.0f, 1.0f, 1.0f),   // startColor
-                                            ColorAf(1.0f, 1.0f, 1.0f, 1.0f), // middleColor
+      sa.colorModifier = new ColorModifier (ColorAf(1.0f, 1.0f, 1.0f, 0.5f),   // startColor
+                                            ColorAf(1.0f, 1.0f, 1.0f, 0.5f), // middleColor
                                             ColorAf(1.0f, 1.0f, 1.0f, 0.0f),   // endColor
                                             0.5f);                     // middleTime
       sa.ps->addModifier (sa.colorModifier);
 
-      sa.gm = new GravityModifier(Vec3f(0, 0.08f,0));
+      sa.gm = new GravityModifier(Vec3f(0,-0.1f,0));
       sa.ps->addModifier (sa.gm);
-
-      sa.pm = new PerlinModifier (10.0f, 0.06, 0.001);
-      sa.ps->addModifier (sa.pm);
 
       break;
     case 8:

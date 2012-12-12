@@ -1,18 +1,46 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleTest", "ParticleTest\vc10\ParticleTest.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D454CCD-CC22-4E10-B772-3D9E969265D8} = {9D454CCD-CC22-4E10-B772-3D9E969265D8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderTest", "ShaderTest\vc10\ShaderTest.vcxproj", "{F6ACC654-B782-4705-912D-706E7C8E711A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vegetation", "Vegetation\vc10\Vegetation.vcxproj", "{2369EC02-C606-48D5-BC9D-DBB0E94A7C0A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkyRoads", "SkyRoads\vc10\SkyRoads.vcxproj", "{F96F2FFC-F448-4EC6-82D7-86CEF5AE49BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planets", "Planets\vc10\Planets.vcxproj", "{0DC0D091-6C3A-4F9C-981C-A0547ED6AC7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsCube", "PhysicsCube\vc10\PhysicsCube.vcxproj", "{6DBA9374-A390-406F-AD21-690906B4B757}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Blob", "Blob\vc10\Blob.vcxproj", "{9D454CCD-CC22-4E10-B772-3D9E969265D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureAnimation", "TextureAnimation\vc10\TextureAnimation.vcxproj", "{61851AD1-6E8F-4D32-8454-52299159F8D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CinderGraphicsLib", "CinderGraphicsLib\CinderGraphicsLib.vcxproj", "{D1206F27-AA25-4012-A280-18A76F197F46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +76,14 @@ Global
 		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Debug|Win32.Build.0 = Debug|Win32
 		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Release|Win32.ActiveCfg = Release|Win32
 		{9D454CCD-CC22-4E10-B772-3D9E969265D8}.Release|Win32.Build.0 = Release|Win32
+		{61851AD1-6E8F-4D32-8454-52299159F8D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{61851AD1-6E8F-4D32-8454-52299159F8D8}.Debug|Win32.Build.0 = Debug|Win32
+		{61851AD1-6E8F-4D32-8454-52299159F8D8}.Release|Win32.ActiveCfg = Release|Win32
+		{61851AD1-6E8F-4D32-8454-52299159F8D8}.Release|Win32.Build.0 = Release|Win32
+		{D1206F27-AA25-4012-A280-18A76F197F46}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D1206F27-AA25-4012-A280-18A76F197F46}.Debug|Win32.Build.0 = Debug|Win32
+		{D1206F27-AA25-4012-A280-18A76F197F46}.Release|Win32.ActiveCfg = Release|Win32
+		{D1206F27-AA25-4012-A280-18A76F197F46}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

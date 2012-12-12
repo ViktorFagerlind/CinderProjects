@@ -61,8 +61,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;QTMLClient.lib;CVClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\..\QuickTimeSDK-7.3\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder_d.lib;QTMLClient.lib;CVClient.lib;CinderGraphicsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\..\QuickTimeSDK-7.3\Libraries;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -92,8 +92,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;QTMLClient.lib;CVClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\..\QuickTimeSDK-7.3\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;QTMLClient.lib;CVClient.lib;CinderGraphicsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\..\QuickTimeSDK-7.3\Libraries;..\..\$(Configuration)%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -107,35 +107,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Emitter.cpp" />
-    <ClCompile Include="..\src\FluidModifier.cpp" />
-    <ClCompile Include="..\src\Particle.cpp" />
-    <ClCompile Include="..\src\ParticleSystem.cpp" />
     <ClCompile Include="..\src\ParticleTestApp.cpp" />
-    <ClCompile Include="..\src\VideoEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\AreaEmitter.h" />
-    <ClInclude Include="..\src\ColorModifier.h" />
-    <ClInclude Include="..\src\CommonModifier.h" />
-    <ClInclude Include="..\src\Emitter.h" />
-    <ClInclude Include="..\src\FluidModifier.h" />
-    <ClInclude Include="..\src\GravityModifier.h" />
-    <ClInclude Include="..\src\ImageEmitter.h" />
-    <ClInclude Include="..\src\Modifier.h" />
-    <ClInclude Include="..\src\MyStrings.h" />
-    <ClInclude Include="..\src\Particle.h" />
-    <ClInclude Include="..\src\ParticleSystem.h" />
-    <ClInclude Include="..\src\ParticleSystemManager.h" />
-    <ClInclude Include="..\src\PerlinModifier.h" />
-    <ClInclude Include="..\src\PointEmitter.h" />
-    <ClInclude Include="..\src\PointGravityModifier.h" />
-    <ClInclude Include="..\src\VideoEmitter.h" />
-    <ClInclude Include="..\src\VortexModifier.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Media\Shaders\pointSprite_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
