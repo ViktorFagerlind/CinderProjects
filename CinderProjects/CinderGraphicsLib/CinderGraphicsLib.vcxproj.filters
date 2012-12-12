@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Particles">
+      <UniqueIdentifier>{a29b341c-23fe-4877-baac-2262f2ad1270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Particles\Emitters">
+      <UniqueIdentifier>{7a6c87b9-91fb-4fa9-8b7f-744059ad21d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Particles\Modifiers">
+      <UniqueIdentifier>{432389aa-8e74-45d5-a082-512627c0dcad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Particles\System">
+      <UniqueIdentifier>{c54a802f-a743-4435-9626-20171aaf6544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Animation">
+      <UniqueIdentifier>{1e329993-43b7-41c9-acd6-b693c1e4a6eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{89e13de0-3ec1-470a-a1b8-aaf32562f048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{58a01897-fd62-4b44-96a0-6e5d8aa022b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{5c65187e-e12b-4565-b0f2-cad1fd330f06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CinderGraphicsLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpriteDataParser.h">
+      <Filter>Source Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpriteSheet.h">
+      <Filter>Source Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpriteData.h">
+      <Filter>Source Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MovingCamera.h">
+      <Filter>Source Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BumpMaterial.h">
+      <Filter>Source Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhongMaterial.h">
+      <Filter>Source Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BaseMaterial.h">
+      <Filter>Source Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyStrings.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BloomEffect.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MiscMath.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Emitter.h">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImageEmitter.h">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PointEmitter.h">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VideoEmitter.h">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AreaEmitter.h">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VortexModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ColorModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommonModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FluidModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GravityModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PerlinModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PointGravityModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ParticleSystem.h">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ParticleSystemManager.h">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Particle.h">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Macros.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IsoSurface.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SpriteDataParser.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteSheet.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MovingCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhongMaterial.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BumpMaterial .cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BloomEffect.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MiscMath.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Emitter.cpp">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FluidModifier.cpp">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSystem.cpp">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoEmitter.cpp">
+      <Filter>Source Files\Particles\Emitters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IsoSurface.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="app.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
