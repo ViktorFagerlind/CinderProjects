@@ -1,8 +1,22 @@
 #include "Emitter.h"
 
+Vec3f Emitter::getRandomVelocity (const float maxVelocity)
+{
+  float randomNormedZ = Rand::randFloat (-1, 1);
+  float xyPlaneAngle = asin (randomNormedZ); 
+  float zAxisAngle = Rand::randFloat (0, 2.0f * (float)M_PI);
+
+  float randomVelocity = Rand::randFloat (0.0f, maxVelocity);
+
+  return Vec3f (randomVelocity * cos (xyPlaneAngle) * cos (zAxisAngle),
+                randomVelocity * cos (xyPlaneAngle) * sin (zAxisAngle),
+                randomVelocity * randomNormedZ);
+}
+
 Emitter::Emitter(const size_t maxNofParticles, const float particlesPerFrame)
 : mMaxNofParticles(maxNofParticles),
-  mParticleCount(0)
+  mParticleCount(0),
+  mIsAnimated(false)
 {
   mParticlesToCreate = 0.0f;
   mParticlesPerFrame = particlesPerFrame;
@@ -10,22 +24,10 @@ Emitter::Emitter(const size_t maxNofParticles, const float particlesPerFrame)
 
   mParticles = new Particle[mMaxNofParticles];
 
-  mSizes              = new float[mMaxNofParticles * 4];
-  mVerticies          = new Vec3f[mMaxNofParticles * 4];
-  mTextureCoordinates = new GLfloat[mMaxNofParticles * 8];
-  mColors             = new ColorAf[mMaxNofParticles * 4];
-
-  for( size_t i=0; i < mMaxNofParticles * 8; i+=8)
-  {
-    mTextureCoordinates[i]   = 0;
-    mTextureCoordinates[i+1] = 0;
-    mTextureCoordinates[i+2] = 1;
-    mTextureCoordinates[i+3] = 0;
-    mTextureCoordinates[i+4] = 1;
-    mTextureCoordinates[i+5] = 1;
-    mTextureCoordinates[i+6] = 0;
-    mTextureCoordinates[i+7] = 1;
-  }
+  mSizes              = new float[mMaxNofParticles];
+  mColors             = new ColorAf[mMaxNofParticles];
+  mVerticies          = new Vec3f[mMaxNofParticles];
+  mTextureCoordinates = NULL;
 
 	try {
 		mShader = gl::GlslProg (loadFile ("../Media/Shaders/pointSprite_vert.glsl"), loadFile ("../Media/Shaders/colorAndTextureBlend_frag.glsl"));
@@ -35,14 +37,34 @@ Emitter::Emitter(const size_t maxNofParticles, const float particlesPerFrame)
 	}	catch (...) {
 		std::cout << "Unable to load shader" << std::endl;
 	}
+}
 
+void Emitter::makeAnimated (std::string animationXmlPath)
+{
+  mIsAnimated = true;
+
+  // Delete and reallocate attributes to send when drawing without point prites
+  delete [] mSizes;
+  delete [] mColors;
+  delete [] mVerticies;
+  delete [] mTextureCoordinates;
+
+  mSizes              = NULL;
+  mColors             = new ColorAf[mMaxNofParticles * 4];
+  mVerticies          = new Vec3f[mMaxNofParticles   * 4];
+  mTextureCoordinates = new float[mMaxNofParticles   * 8];
+
+  m_spriteData = SpriteDataParser::parseSpriteData(animationXmlPath, 
+                                                   SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML);
 }
 
 Emitter::~Emitter()
 {
+  delete [] mSizes;
+  delete [] mColors;
   delete [] mVerticies;
   delete [] mTextureCoordinates;
-  delete [] mColors;
+
   delete [] mParticles;
 }
 
@@ -95,7 +117,15 @@ void Emitter::updateEmitter ()
     
 }
 
-void Emitter::draw()
+void Emitter::draw (ci::gl::Texture *texture)
+{
+  if (mIsAnimated)
+    drawAnimated (texture);
+  else
+    drawPointSprite ();
+}
+
+void Emitter::drawPointSprite()
 {
 /*
   // This is how will our point sprite's size will be modified by distance from the viewer
@@ -163,3 +193,64 @@ void Emitter::draw()
   mShader.unbind ();
 }
 
+void Emitter::drawAnimated (ci::gl::Texture *texture)
+{
+  uint32_t animationNofFrames = m_spriteData.size();
+
+  // Build arrays to draw
+  for (uint32_t i=0; i<mParticleCount; i++)
+  {
+    Particle *p   = &mParticles[i];
+
+    mColors[i*4]      = p->mColor;
+    mColors[i*4+1]    = p->mColor;
+    mColors[i*4+2]    = p->mColor;
+    mColors[i*4+3]    = p->mColor;
+
+    mVerticies[i*4]   = p->mPosition + Vec3f (-p->mCurrentSize,  p->mCurrentSize, 0);
+    mVerticies[i*4+1] = p->mPosition + Vec3f (p->mCurrentSize,   p->mCurrentSize, 0);
+    mVerticies[i*4+2] = p->mPosition + Vec3f (p->mCurrentSize,  -p->mCurrentSize, 0);
+    mVerticies[i*4+3] = p->mPosition + Vec3f (-p->mCurrentSize, -p->mCurrentSize, 0);
+
+    uint32_t frameNr = (uint32_t)((1.0f - (p->getLife () / Particle_fullLife_C)) * animationNofFrames);
+    if (frameNr >= animationNofFrames)
+      frameNr = animationNofFrames - 1;
+
+    SpriteData *frame = &m_spriteData[frameNr];
+    float xl = (float) frame->x             / (float)texture->getWidth ();
+    float xr = (float)(frame->x + frame->w) / (float)texture->getWidth ();
+	  float yu = (float) frame->y             / (float)texture->getHeight ();
+    float yd = (float)(frame->y + frame->h) / (float)texture->getHeight ();
+
+    // top left
+    mTextureCoordinates[i*8]   = xl;
+    mTextureCoordinates[i*8+1] = yu;
+    // top right
+    mTextureCoordinates[i*8+2] = xr;
+    mTextureCoordinates[i*8+3] = yu;
+    // bottom right
+    mTextureCoordinates[i*8+4] = xr;
+    mTextureCoordinates[i*8+5] = yd;
+    // bottom left
+    mTextureCoordinates[i*8+6] = xl;
+    mTextureCoordinates[i*8+7] = yd;
+  }
+  
+  // Set array pointers
+	glVertexPointer   (3, GL_FLOAT, 0, mVerticies);
+	glTexCoordPointer (2, GL_FLOAT, 0, mTextureCoordinates );
+	glColorPointer    (4, GL_FLOAT, 0, mColors);
+
+  // Enable arrays
+	glEnableClientState( GL_VERTEX_ARRAY );
+	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+	glEnableClientState( GL_COLOR_ARRAY );
+
+  // Draw arrays
+	glDrawArrays (GL_QUADS, 0, mParticleCount*4);
+
+  // Disable arrays
+	glDisableClientState (GL_VERTEX_ARRAY);
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState (GL_COLOR_ARRAY);
+}

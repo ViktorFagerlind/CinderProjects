@@ -50,7 +50,6 @@ Sun::Sun (const float                    mass,
 							                                   5,                    //minParticleSize,
 							                                   15,                   //maxParticleSize,
 							                                   Vec3f (0, 0, 0),      //baseVelocity,
-                                                 0.8f,
 							                                   0.9f);  //randVelocity
                                                  
   CommonModifier* commonModifier = new CommonModifier (1.2f, 2.0f, 0.1f);

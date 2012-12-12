@@ -89,7 +89,6 @@ void BumpMaterial::bind ()
 	mTangentUniformLoc = mShader.getAttribLocation ("vTangent");
   glEnableVertexAttribArrayARB (mTangentUniformLoc);
   glVertexAttribPointerARB (mTangentUniformLoc, 3, GL_FLOAT, GL_FALSE, 0, mTangentBuffer.data());
-  
 }
 
 void BumpMaterial::unbind ()

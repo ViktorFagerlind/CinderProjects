@@ -6,7 +6,7 @@ ParticleSystem::ParticleSystem(std::string particleImageFile)
 {
   mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
 
-  mKilled = false;
+  mKilled     = false;
 }
 
 ParticleSystem::~ParticleSystem()
@@ -107,14 +107,13 @@ void ParticleSystem::update()
 
 void ParticleSystem::draw()
 {
-	glEnable( GL_TEXTURE_2D );
-  mParticleTexture->bind();
+	glEnable (GL_TEXTURE_2D);
+  mParticleTexture->bind ();
 
   for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-    (*it)->draw();
-    //(*it)->drawArray();
+    (*it)->draw (mParticleTexture);
 
-  mParticleTexture->unbind();
+  mParticleTexture->unbind ();
 }
 
 

@@ -13,82 +13,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\Physics">
-      <UniqueIdentifier>{166059d1-0f26-445b-9bbd-dc59fe83729a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Particles">
-      <UniqueIdentifier>{f6cfda6a-1c3d-4897-9d6a-314e1a36cf47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Particles\Emitters">
-      <UniqueIdentifier>{5a8696fa-aa61-446a-a359-c1271b5b996f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Particles\Modifiers">
-      <UniqueIdentifier>{b5939c47-2ffa-4d10-ae2e-827c1c2b7798}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Particles\System">
-      <UniqueIdentifier>{0431259a-3323-41c7-bd5c-ccf6fd9c11f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Planets">
       <UniqueIdentifier>{5f1a6108-eb83-45f9-843e-e2c1a51ae15c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Camera">
-      <UniqueIdentifier>{36bcee81-cf20-4961-9f82-25741cb4eaa8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{c523871f-6567-417f-8da0-1beea52c764d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Material">
-      <UniqueIdentifier>{bb150126-d773-487a-8778-6c0fa75fd056}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\PlanetsApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PhysicsObject.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DynamicObject.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ParticleTest\src\Particle.cpp">
-      <Filter>Source Files\Particles\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ParticleTest\src\ParticleSystem.cpp">
-      <Filter>Source Files\Particles\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ParticleTest\src\Emitter.cpp">
-      <Filter>Source Files\Particles\Emitters</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ParticleTest\src\FluidModifier.cpp">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Planet.cpp">
       <Filter>Source Files\Planets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GravityField.cpp">
-      <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GameWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MiscMath.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Sun.cpp">
       <Filter>Source Files\Planets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BloomEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp">
-      <Filter>Source Files\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BumpMaterial .cpp">
-      <Filter>Source Files\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PhongMaterial.cpp">
-      <Filter>Source Files\Material</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Blob\src\IsoSurface.cpp">
       <Filter>Source Files</Filter>
@@ -104,95 +47,20 @@
     <ClInclude Include="..\src\BasicObject.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\PhysicsObject.h">
-      <Filter>Source Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DynamicObject.h">
-      <Filter>Source Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\ParticleSystem.h">
-      <Filter>Source Files\Particles\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\Particle.h">
-      <Filter>Source Files\Particles\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\ParticleSystemManager.h">
-      <Filter>Source Files\Particles\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\AreaEmitter.h">
-      <Filter>Source Files\Particles\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\ImageEmitter.h">
-      <Filter>Source Files\Particles\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\PointEmitter.h">
-      <Filter>Source Files\Particles\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\Emitter.h">
-      <Filter>Source Files\Particles\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\ColorModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\FluidModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\CommonModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\GravityModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\Modifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\PerlinModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\VortexModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ParticleTest\src\PointGravityModifier.h">
-      <Filter>Source Files\Particles\Modifiers</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Meteor.h">
       <Filter>Source Files\Planets</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Planet.h">
       <Filter>Source Files\Planets</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GravityField.h">
-      <Filter>Source Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\CollisionManager.h">
-      <Filter>Source Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\GameWorld.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SkyRoads\src\MovingCamera.h">
-      <Filter>Source Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\MiscMath.h">
-      <Filter>Source Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Sun.h">
       <Filter>Source Files\Planets</Filter>
     </ClInclude>
     <ClInclude Include="BloomEffect.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BloomEffect.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BumpMaterial.h">
-      <Filter>Source Files\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BaseMaterial.h">
-      <Filter>Source Files\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PhongMaterial.h">
-      <Filter>Source Files\Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

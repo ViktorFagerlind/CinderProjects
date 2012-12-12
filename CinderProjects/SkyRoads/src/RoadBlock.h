@@ -2,57 +2,44 @@
 
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
+#include "cinder/CinderMath.h"
 
 using namespace ci;
 
 class RoadBlock
 {
 public:
-  RoadBlock(const Vec3f& center, const Vec3f& normal, const Vec3f& left)
+  RoadBlock(const Vec3f& center, const Vec3f& up, const Vec3f& left)
 	{
     mCenter = center;
-		mNormal = normal;
+		mUp = up;
 		mLeft   = left;
 	}
 
-  static uint32_t getIterations () {return 4;}
+  static uint32_t getIterations () {return 6;}
 
   void draw (uint32_t i, float whereWeight)
   {
-    const Vec3f upAdd   = 7.0f  * mNormal * (whereWeight + 0.3f);
-    const Vec3f leftAdd = 10.0f * mLeft * (whereWeight + 0.3f);
+    const float sliceAngle = 2.0f * (float) M_PI / (float) getIterations ();
+    const float angle1 = sliceAngle * (float) i;
+    const float angle2 = sliceAngle * (float) (i+1);
 
-    Vec3f leftNormal = mLeft;
-    leftNormal.normalize ();
+    const float width   = 3.0f * (whereWeight + 0.5f);
+    const float height  = 8.0f * (whereWeight + 0.5f);
 
-    switch (i)
-    {
-      case 0:
-        glNormal3fv (mNormal);
-        glVertex3fv (mCenter + upAdd + leftAdd);
-        glVertex3fv (mCenter + upAdd - leftAdd);
-        break;
-      case 1:
-        glNormal3fv (-mNormal);
-        glVertex3fv (mCenter - upAdd + leftAdd);
-        glVertex3fv (mCenter - upAdd - leftAdd);
-        break;
-      case 2:
-        glNormal3fv (leftNormal);
-        glVertex3fv (mCenter + upAdd + leftAdd);
-        glVertex3fv (mCenter - upAdd + leftAdd);
-        break;
-      case 3:
-        glNormal3fv (-leftNormal);
-        glVertex3fv (mCenter + upAdd - leftAdd);
-        glVertex3fv (mCenter - upAdd - leftAdd);
-        break;
-    }
+    Vec3f p1 = mCenter + width * mLeft * cos(angle1) + height * mUp * sin(angle1);
+    Vec3f p2 = mCenter + width * mLeft * cos(angle2) + height * mUp * sin(angle2);
+
+    glNormal3f ((p1-mCenter).normalized());
+    glVertex3f (p1);
+
+    glNormal3f ((p2-mCenter).normalized());
+    glVertex3f (p2);
   }
 
 public:
   Vec3f   mCenter;
-  Vec3f   mNormal;
+  Vec3f   mUp;
   Vec3f   mLeft;
 };
 

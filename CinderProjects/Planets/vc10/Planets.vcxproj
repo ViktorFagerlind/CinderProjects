@@ -61,8 +61,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder_d.lib;CinderGraphicsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -89,8 +89,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;CinderGraphicsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -106,54 +106,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Blob\src\IsoSurface.cpp" />
-    <ClCompile Include="..\..\ParticleTest\src\Emitter.cpp" />
-    <ClCompile Include="..\..\ParticleTest\src\FluidModifier.cpp" />
-    <ClCompile Include="..\..\ParticleTest\src\Particle.cpp" />
-    <ClCompile Include="..\..\ParticleTest\src\ParticleSystem.cpp" />
-    <ClCompile Include="..\..\SkyRoads\src\MovingCamera.cpp" />
-    <ClCompile Include="..\src\BloomEffect.cpp" />
-    <ClCompile Include="..\src\BumpMaterial .cpp" />
-    <ClCompile Include="..\src\DynamicObject.cpp" />
     <ClCompile Include="..\src\GameWorld.cpp" />
-    <ClCompile Include="..\src\GravityField.cpp" />
     <ClCompile Include="..\src\Meteor.cpp" />
-    <ClCompile Include="..\src\MiscMath.cpp" />
-    <ClCompile Include="..\src\PhongMaterial.cpp" />
-    <ClCompile Include="..\src\PhysicsObject.cpp" />
     <ClCompile Include="..\src\Planet.cpp" />
     <ClCompile Include="..\src\PlanetsApp.cpp" />
     <ClCompile Include="..\src\Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\ParticleTest\src\AreaEmitter.h" />
-    <ClInclude Include="..\..\ParticleTest\src\ColorModifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\CommonModifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\Emitter.h" />
-    <ClInclude Include="..\..\ParticleTest\src\FluidModifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\GravityModifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\ImageEmitter.h" />
-    <ClInclude Include="..\..\ParticleTest\src\Modifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\Particle.h" />
-    <ClInclude Include="..\..\ParticleTest\src\ParticleSystem.h" />
-    <ClInclude Include="..\..\ParticleTest\src\ParticleSystemManager.h" />
-    <ClInclude Include="..\..\ParticleTest\src\PerlinModifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\PointEmitter.h" />
-    <ClInclude Include="..\..\ParticleTest\src\PointGravityModifier.h" />
-    <ClInclude Include="..\..\ParticleTest\src\VortexModifier.h" />
-    <ClInclude Include="..\..\SkyRoads\src\MovingCamera.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\BaseMaterial.h" />
     <ClInclude Include="..\src\BasicObject.h" />
-    <ClInclude Include="..\src\BloomEffect.h" />
-    <ClInclude Include="..\src\CollisionManager.h" />
-    <ClInclude Include="..\src\DynamicObject.h" />
     <ClInclude Include="..\src\GameWorld.h" />
-    <ClInclude Include="..\src\BumpMaterial.h" />
     <ClInclude Include="..\src\Meteor.h" />
-    <ClInclude Include="..\src\GravityField.h" />
-    <ClInclude Include="..\src\MiscMath.h" />
-    <ClInclude Include="..\src\PhongMaterial.h" />
-    <ClInclude Include="..\src\PhysicsObject.h" />
     <ClInclude Include="..\src\Planet.h" />
     <ClInclude Include="..\src\Sun.h" />
     <ClInclude Include="BloomEffect.h" />
