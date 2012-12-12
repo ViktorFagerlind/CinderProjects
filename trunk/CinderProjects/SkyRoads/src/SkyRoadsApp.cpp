@@ -50,7 +50,6 @@ private:
   bool mWireFrameMode;
   bool mPaused;
 
-  ParticleSystemManager mParticleSystemManager;
 };
 
 const uint32_t SkyRoadsApp::mRoadCount = 100;
@@ -83,26 +82,26 @@ void SkyRoadsApp::keyDown (KeyEvent event)
 void SkyRoadsApp::setupParticles()
 {
   // Particle system
-  ParticleSystem *particleSystem  = new ParticleSystem("../Media/Images/flare.png");
+  ParticleSystem *particleSystem = new ParticleSystem("../Media/Images/flare.png");
   
-  PointEmitter   *sunEmitter = new PointEmitter (10000,                //maxNofParticles,
-                                                 Vec3f(0,0,0),            //position, 
-  						                                   50,                   //particlesPerFrame, 
-							                                   5,                    //minParticleSize,
-							                                   15,                   //maxParticleSize,
-							                                   Vec3f (0, 0, 0),      //baseVelocity,
-							                                   0.9f);  //randVelocity
+  PointEmitter   *sunEmitter     = new PointEmitter (10000,                //maxNofParticles,
+                                                     Vec3f(0,0,0),         //position, 
+  						                                       50,                   //particlesPerFrame, 
+							                                       50,                    //minParticleSize,
+							                                       150,                   //maxParticleSize,
+							                                       Vec3f (0, 0, 0),      //baseVelocity,
+							                                       0.9f);                //randVelocity
                                                  
-  CommonModifier* commonModifier = new CommonModifier (1.2f, 2.0f, 0.1f);
-  ColorModifier*  colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.0f), //startColor 
-                                                       ColorAf(1, 0.8f, 0.2f, 0.2f), //middleColor
-                                                       ColorAf(1, 0.6f, 0.1f, 0), //endColor
-                                                       0.8f);//float middleTime)
+  CommonModifier *commonModifier = new CommonModifier (1.2f, 2.0f, 0.1f);
+  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.0f),  //startColor 
+                                                       ColorAf(1, 0.8f, 0.2f, 0.2f),  //middleColor
+                                                       ColorAf(1, 0.6f, 0.1f, 0),     //endColor
+                                                       0.8f);                         //float middleTime)
   particleSystem->addModifier (commonModifier);
   particleSystem->addModifier (colorModifier);
-  particleSystem->addEmitter (sunEmitter);
+  particleSystem->addEmitter  (sunEmitter);
 
-  mParticleSystemManager.addParticleSystem (particleSystem);
+  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
 }
 
 void SkyRoadsApp::setupLights()
@@ -141,8 +140,9 @@ void SkyRoadsApp::setup()
   glEnable(GL_COLOR_MATERIAL);
   glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
-  setupLights();
+  setupLights ();
 
+  setupParticles ();
 
   gl::GlslProg phongShader;
 	try {
@@ -159,7 +159,7 @@ void SkyRoadsApp::setup()
                                           ColorAf (0.05f, 0.1f,  0.05f, 1.0f),   // matAmbient,
                                           ColorAf (0.4f,  0.7f,  0.2f,  1.0f),   // matDiffuse,
                                           ColorAf (0.8f,  1.0f,  0.3f,  1.0f), // matSpecular,
-                                          3.0f));                             // matShininess
+                                          6.0f));                             // matShininess
 
   gl::enableDepthRead ();
 
@@ -179,13 +179,13 @@ void SkyRoadsApp::update()
   if (mPaused)
     return;
 
-  mSpringCamera->setTarget (mSkyRoads[0].getCurrentRoadEnd ());
+//  mSpringCamera->setTarget (mSkyRoads[0].getCurrentRoadEnd ());
   mSpringCamera->update ();
 
   for (int i=0; i<mRoadCount; i++)
     mSkyRoads[i].update ();
 
-  mParticleSystemManager.update ();
+  ParticleSystemManager::getSingleton().update ();
 }
 
 void SkyRoadsApp::draw()
@@ -197,7 +197,7 @@ void SkyRoadsApp::draw()
 	gl::disableDepthWrite ();
 	gl::enableAdditiveBlending();
 
-  mParticleSystemManager.draw ();
+  ParticleSystemManager::getSingleton().draw ();
 
 	gl::disableAlphaBlending();
 	gl::enableDepthWrite ();

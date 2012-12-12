@@ -36,7 +36,7 @@ void SpriteSheet::draw()
 	gl::rotate(rotation);
 	gl::scale(scale,scale,1.0);
 
-	float u = frame.x;
+	float u = (float)frame.x;
 	float v = frame.y;
    // v += frame.h;
     //v = frame.oH - v;

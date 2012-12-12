@@ -55,11 +55,10 @@ void GameWorld::setup ()
   mGravityField = new GravityField (Vec3f (1000, 600, 200), Vec3i (51, 31, 13));
 
   // --- Initialise particle system ---------------------------------
-  mParticleSystemManager = new ParticleSystemManager ();
 
   // --- The star dust -------------------
   ParticleSystem *particleSystem  = new ParticleSystem("../Media/Images/particle1.jpg");
-  mParticleSystemManager->addParticleSystem (particleSystem);
+  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
 
   AreaEmitter *areaEmitter     = new AreaEmitter  (50000,          // maxNofParticles,
                                                    Vec3f (0, 0, 0), // position, 
@@ -89,7 +88,7 @@ void GameWorld::setup ()
   mExposionSystem->addModifier (commonModifier);
   mExposionSystem->addModifier (colorModifier);
 
-  mParticleSystemManager->addParticleSystem (mExposionSystem);
+  ParticleSystemManager::getSingleton().addParticleSystem (mExposionSystem);
 
   // --- Initialise planet system ---------------------------------
 
@@ -228,7 +227,7 @@ void GameWorld::update ()
   }
 
   // Update particle systems
-  mParticleSystemManager->update();
+  ParticleSystemManager::getSingleton().update();
 }
 
 void GameWorld::setOrthoProjection ()
@@ -261,7 +260,7 @@ void GameWorld::draw   ()
   // Setup blending for particle system
 	gl::disableDepthWrite ();
 	gl::enableAdditiveBlending();
-  mParticleSystemManager->draw ();
+  ParticleSystemManager::getSingleton().draw ();
 	gl::disableAlphaBlending();
 
   // Draw gravity field

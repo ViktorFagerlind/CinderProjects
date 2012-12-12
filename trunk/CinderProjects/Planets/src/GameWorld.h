@@ -37,8 +37,6 @@ public:
 
   static ParticleSystem *getExplosionSystem ()  {return getSingleton ()->mExposionSystem;}
 
-  static ParticleSystemManager *getParticleSystemManager ()  {return getSingleton ()->mParticleSystemManager;}
-
   static GravityField* getGravityField ()       {return getSingleton ()->mGravityField;}
 
   static void setOrthoProjection ();

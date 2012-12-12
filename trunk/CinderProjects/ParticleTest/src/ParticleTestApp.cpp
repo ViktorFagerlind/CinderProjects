@@ -80,8 +80,6 @@ private:
 
   CameraPersp mCam;
 
-  ParticleSystemManager *mManager;
-
   SystemAttributes mSystems[MaxNofSystems_C];
 
   bool mSavingImages;
@@ -212,8 +210,6 @@ void ParticleApp::updateAttributes ()
 
 void ParticleApp::setup()
 {
-  mManager = new ParticleSystemManager();
-
   for (int i=0; i<MaxNofSystems_C; i++)
     mSystems[i].ps = NULL;
 
@@ -241,7 +237,7 @@ void ParticleApp::update()
 {
   updateAttributes();
 
-  mManager->update();
+  ParticleSystemManager::getSingleton().update();
 }
 
 
@@ -281,14 +277,14 @@ void ParticleApp::draw()
 
   updateCamera(); 
 
-  mManager->draw();
+  ParticleSystemManager::getSingleton().draw();
 
   gl::popMatrices();
 
   frameCount++;
   if ((frameCount % 10) == 0)
   {
-    particleCount = mManager->getCount();
+    particleCount = ParticleSystemManager::getSingleton().getCount();
 //  gl::drawString( "FPS: " + toString((size_t)getAverageFps()) + "Count: " + toString(particleCount), Vec2f( 0.0f, 0.0f ), Color::white(), mFont );
     console() << "FPS: " << getAverageFps() << " Count: " << toString(particleCount) << std::endl;
   }
@@ -323,7 +319,7 @@ void ParticleApp::draw()
 
 void ParticleApp::mouseDown( MouseEvent event )
 {
-  size_t count = mManager->getCount();
+  size_t count = ParticleSystemManager::getSingleton().getCount();
 }
 
 void ParticleApp::keyDown( KeyEvent event )
@@ -372,7 +368,7 @@ void ParticleApp::keyDown( KeyEvent event )
   if (mSystems[index].ps == NULL)
   {
     mSystems[index] = createParticleSystem(index);
-    mManager->addParticleSystem (mSystems[index].ps);
+    ParticleSystemManager::getSingleton().addParticleSystem (mSystems[index].ps);
   }
   else
   {
