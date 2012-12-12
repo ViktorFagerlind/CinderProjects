@@ -10,6 +10,14 @@ using std::list;
 class ParticleSystemManager
 {
 public:
+
+  static ParticleSystemManager& getSingleton ()
+  {
+      static ParticleSystemManager instance;
+
+      return instance;
+  }
+
   virtual ~ParticleSystemManager()
   {
     for (list<ParticleSystem*>::iterator it = mParticleSystems.begin(); it != mParticleSystems.end(); it++)
@@ -57,6 +65,10 @@ public:
       (*it)->draw();
   }
 
+private:
+        ParticleSystemManager() {}
+        ParticleSystemManager(ParticleSystemManager const&);  // Don't Implement.
+        void operator=(ParticleSystemManager const&);         // Don't implement
 private:
   list<ParticleSystem*>  mParticleSystems;
 };

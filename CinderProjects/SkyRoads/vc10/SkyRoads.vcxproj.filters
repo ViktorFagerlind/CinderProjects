@@ -18,10 +18,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SkyRoadsApp.cpp">
+    <ClCompile Include="..\src\Road.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Road.cpp">
+    <ClCompile Include="..\src\SkyRoadsApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
