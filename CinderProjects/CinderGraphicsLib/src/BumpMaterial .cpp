@@ -37,7 +37,7 @@ void BumpMaterial::calculateTangents (const TriMesh& mesh)
   nofAdditions.resize  (nofVertices);
 
   // Go through the triangles and sum the tangents for the different faces
-  for (int t=0; t<mesh.getNumTriangles (); t++)
+  for (uint32_t t=0; t<mesh.getNumTriangles (); t++)
   {
     const int i1 = meshIndices[3*t];
     const int i2 = meshIndices[3*t+1];
@@ -67,7 +67,7 @@ void BumpMaterial::calculateTangents (const TriMesh& mesh)
 
   // Calculate the mean tangent and convert to float vector format
   mTangentBuffer.resize (nofVertices * 3); // One tangent (3 floats) for each vertex
-  for (int i=0; i<nofVertices; i++)
+  for (uint32_t i=0; i<nofVertices; i++)
   {
     mTangentBuffer[3*i]   = addedTangents[i].x / (float)nofAdditions[i];
     mTangentBuffer[3*i+1] = addedTangents[i].y / (float)nofAdditions[i];
