@@ -68,10 +68,12 @@ void PhysicsCubeApp::draw()
   gl::color(0.3f, 0.3f, 1.0f);
   gl::drawVector(Vec3f(0, 0, 0), Vec3f(0, 0, 50), 10.0f, 5.0f);
   
-  //gl::drawCoordinateFrame(100.0f, 20.0f, 10.0f);
+  gl::drawCoordinateFrame(100.0f, 20.0f, 10.0f);
+
+  console() << "FPS: " << getAverageFps() << std::endl;
 
   physicsEngine->draw();
 }
 
 
-CINDER_APP_BASIC( PhysicsCubeApp, RendererGl )
+CINDER_APP_BASIC( PhysicsCubeApp, RendererGl (RendererGl::AA_NONE) )
