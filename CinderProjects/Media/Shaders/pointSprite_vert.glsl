@@ -4,7 +4,7 @@ attribute float size;
 
 const float defaultScale = 1500.0;
 const float minSize = 1.0;
-const float maxSize = 100.0;
+const float maxSize = 1000.0;
 
 void main()
 {

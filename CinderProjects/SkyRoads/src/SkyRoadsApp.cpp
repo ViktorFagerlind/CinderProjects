@@ -11,10 +11,6 @@
 
 
 #include "ParticleSystemManager.h"
-#include "ParticleSystem.h"
-#include "CommonModifier.h"
-#include "ColorModifier.h"
-#include "PointEmitter.h"
 
 
 
@@ -29,7 +25,6 @@ public:
 
 	void setup();
 	void setupLights();
-	void setupParticles();
 
 	void mouseDown (MouseEvent event);
   void keyDown (KeyEvent event);
@@ -79,30 +74,6 @@ void SkyRoadsApp::keyDown (KeyEvent event)
   }
 }
 
-void SkyRoadsApp::setupParticles()
-{
-  // Particle system
-  ParticleSystem *particleSystem = new ParticleSystem("../Media/Images/flare.png");
-  
-  PointEmitter   *sunEmitter     = new PointEmitter (10000,                //maxNofParticles,
-                                                     Vec3f(0,0,0),         //position, 
-  						                                       50,                   //particlesPerFrame, 
-							                                       50,                    //minParticleSize,
-							                                       150,                   //maxParticleSize,
-							                                       Vec3f (0, 0, 0),      //baseVelocity,
-							                                       0.9f);                //randVelocity
-                                                 
-  CommonModifier *commonModifier = new CommonModifier (1.2f, 2.0f, 0.1f);
-  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(1, 1,    0.5f, 0.0f),  //startColor 
-                                                       ColorAf(1, 0.8f, 0.2f, 0.2f),  //middleColor
-                                                       ColorAf(1, 0.6f, 0.1f, 0),     //endColor
-                                                       0.8f);                         //float middleTime)
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  particleSystem->addEmitter  (sunEmitter);
-
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
-}
 
 void SkyRoadsApp::setupLights()
 {
@@ -142,8 +113,6 @@ void SkyRoadsApp::setup()
 
   setupLights ();
 
-  setupParticles ();
-
   gl::GlslProg phongShader;
 	try {
 		phongShader = gl::GlslProg (loadFile ("../Media/Shaders/phong_vert.glsl"), 
@@ -179,7 +148,7 @@ void SkyRoadsApp::update()
   if (mPaused)
     return;
 
-//  mSpringCamera->setTarget (mSkyRoads[0].getCurrentRoadEnd ());
+  mSpringCamera->setTarget (mSkyRoads[0].getCurrentRoadEnd ());
   mSpringCamera->update ();
 
   for (int i=0; i<mRoadCount; i++)
@@ -190,8 +159,17 @@ void SkyRoadsApp::update()
 
 void SkyRoadsApp::draw()
 {
-	// clear out the window with black
+	// clear the window with black
 	gl::clear( Color( 0, 0, 0 ) ); 
+
+  // Draw roads
+  mRoadMaterial->bind();
+
+  for (int i=0; i<mRoadCount; i++)
+    mSkyRoads[i].draw ();
+
+  mRoadMaterial->unbind();
+
 
   // Draw particle system
 	gl::disableDepthWrite ();
@@ -202,14 +180,6 @@ void SkyRoadsApp::draw()
 	gl::disableAlphaBlending();
 	gl::enableDepthWrite ();
 
-
-  // Draw roads
-  mRoadMaterial->bind();
-
-  for (int i=0; i<mRoadCount; i++)
-    mSkyRoads[i].draw ();
-
-  mRoadMaterial->unbind();
 }
 
 CINDER_APP_BASIC( SkyRoadsApp, RendererGl )

@@ -131,6 +131,9 @@
     <ClCompile Include="src\VideoEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Media\Shaders\pointSprite_vert.glsl">
+      <FileType>Document</FileType>
+    </None>
     <None Include="app.ico" />
     <None Include="ReadMe.txt" />
   </ItemGroup>

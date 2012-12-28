@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Misc">
       <UniqueIdentifier>{5c65187e-e12b-4565-b0f2-cad1fd330f06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Particles\shaders">
+      <UniqueIdentifier>{40947f6d-aeed-4e45-8337-1beb4a66c893}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CinderGraphicsLib.h">
@@ -175,6 +178,9 @@
     <None Include="ReadMe.txt" />
     <None Include="app.ico">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Media\Shaders\pointSprite_vert.glsl">
+      <Filter>Source Files\Particles\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
