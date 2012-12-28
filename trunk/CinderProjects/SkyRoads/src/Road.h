@@ -2,6 +2,8 @@
 
 #include "RoadBlock.h"
 
+#include "AreaEmitter.h"
+
 #include "cinder/Vector.h"
 #include <list>
 
@@ -13,6 +15,8 @@ using namespace ci;
 class Road
 {
 public:
+  void setupParticles ();
+
   Road ();
   
   void updateVectors (const Vec3f& center);
@@ -50,5 +54,7 @@ private:
   static const float width;
   static const float gravity;       // 1 = no gravity, 0 = infinite
   static const uint32_t maxLength;     // how many points per spline section
+
+  AreaEmitter *mHeadEmitter;
 };
 

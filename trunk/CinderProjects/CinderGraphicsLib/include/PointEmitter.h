@@ -33,6 +33,12 @@ public:
 	  particle->define(mPosition, particleSize, particleVelocity);
   }
 
+  void setPosition (const Vec3f& position) 
+  {
+    mPosition = position;
+  }
+
+
 private:
   Vec3f   mPosition;
 	Vec3f   mBaseVelocity;

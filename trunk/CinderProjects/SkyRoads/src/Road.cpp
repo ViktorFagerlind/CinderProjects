@@ -1,6 +1,11 @@
 #include "Road.h"
 
 #include "BSpline.h"
+#include "ParticleSystemManager.h"
+#include "ParticleSystem.h"
+#include "CommonModifier.h"
+#include "ColorModifier.h"
+#include "PointEmitter.h"
 
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
@@ -10,6 +15,34 @@ const float Road::speed             = 230.0f;
 const float Road::gravity           = 0.98f;     // 1 = no gravity, 0 = infinite
 const uint32_t Road::maxLength  = 100;      // how many points per spline section
 
+void Road::setupParticles ()
+{
+  // Particle system
+  ParticleSystem *particleSystem = new ParticleSystem("../Media/Images/flare.png");
+  
+  mHeadEmitter = new AreaEmitter (4000,                  // maxNofParticles,
+                                   Vec3f(0,0,0),         // position, 
+  						                     70,                   // particlesPerFrame, 
+  						                     15,                   // width
+  						                     15,                   // height 
+                                   15,                   // depth,
+							                     15,                  // minParticleSize,
+							                     15,                  // maxParticleSize,
+							                     Vec3f (0, 0, 0),      // baseVelocity,
+							                     2.0f);                // randVelocity
+
+
+  CommonModifier *commonModifier = new CommonModifier (2.0f, 1.0f, 2.0f);
+  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(0.7f,  1.0f,  0.2f,  1.0f),  //startColor 
+                                                       ColorAf(0.4f,  0.7f,  0.2f,  0.7f),  //middleColor
+                                                       ColorAf(0.4f,  0.7f,  0.2f,  0.0f),  //endColor
+                                                       0.8f);                               //float middleTime)
+  particleSystem->addModifier (commonModifier);
+  particleSystem->addModifier (colorModifier);
+  particleSystem->addEmitter  (mHeadEmitter);
+
+  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
+}
 
 Road::Road ()
 {
@@ -23,16 +56,18 @@ Road::Road ()
   mSteerPoints = new Vec3f[4];
   for (int i=0; i<4; i++)
   {
-    mSteerPoints[i] = Vec3f::zero();
+    mSteerPoints[i] = Vec3f::zero ();
   }
     
   mSplineTime    = 0.0f;
     
+  setupParticles ();
+
   // Let the road go for a while to avoid the boring beginning
   for (int i=0; i<20; i++)
     update();
 
-  roadBlocks.clear();
+  roadBlocks.clear ();
 }
   
 void Road::updateVectors (const Vec3f& center)
@@ -110,6 +145,8 @@ void Road::update()
   Vec3f nextPoint = VfBSpline::calc3D (mSteerPoints[0], mSteerPoints[1], mSteerPoints[2], mSteerPoints[3], mSplineTime);
     
   addRoadBlock (nextPoint);
+
+  mHeadEmitter->setPosition (nextPoint);
 }
 	
 void Road::draw ()
