@@ -44,7 +44,6 @@ private:
 
   bool mWireFrameMode;
   bool mPaused;
-
 };
 
 const uint32_t SkyRoadsApp::mRoadCount = 100;
