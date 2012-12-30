@@ -18,34 +18,10 @@
     <ClCompile Include="..\src\BulletTestApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletWorldBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletRigidBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletRigidBody.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletSoftWorld.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletRigidWorld.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletPhysicsUtils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletPhysics.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\msalibs-master\MSABulletPhysics\src\MSABulletWorldBase.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

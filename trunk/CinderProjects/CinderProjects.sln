@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleTest", "ParticleTest\vc10\ParticleTest.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
@@ -43,6 +43,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CinderGraphicsLib", "CinderGraphicsLib\CinderGraphicsLib.vcxproj", "{D1206F27-AA25-4012-A280-18A76F197F46}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletTest", "BulletTest\vc10\BulletTest.vcxproj", "{661C1B79-8696-4E6C-9CD4-44D0E1F93E86}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
