@@ -8,6 +8,7 @@
 #include "PhongMaterial.h"
 #include "IsoSurface.h"
 #include "BumpMaterial.h"
+#include "ShaderHelper.h"
 
 #include "cinder/Perlin.h"
 
@@ -144,33 +145,15 @@ void BlobApp::setup()
 
 
   // Load shaders
-  gl::GlslProg surfaceShader;
-	try {
-    //	int32_t maxGeomOutputVertices;
-    //	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
-		surfaceShader = gl::GlslProg (loadFile ("../Media/Shaders/phong_vert.glsl"), 
-                                  loadFile ("../Media/Shaders/phong_frag.glsl"));
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}
+  gl::GlslProg surfaceShader = ShaderHelper::loadShader ("../Media/Shaders/phong_vert.glsl", 
+                                                         "../Media/Shaders/phong_frag.glsl");
 
-  gl::GlslProg blobShader;
-	try {
-    //	int32_t maxGeomOutputVertices;
-    //	glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES_EXT, &maxGeomOutputVertices);
-		blobShader = gl::GlslProg (loadFile ("../Media/Shaders/blob_vert.glsl"), 
-                               loadFile ("../Media/Shaders/blob_frag.glsl"),
-                               loadFile ("../Media/Shaders/blob_geom.glsl"),
-                               GL_LINES_ADJACENCY_EXT, GL_TRIANGLE_STRIP, 4/*maxGeomOutputVertices*/);
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}
+  gl::GlslProg blobShader = ShaderHelper::loadShader ("../Media/Shaders/blob_vert.glsl",
+                                                      "../Media/Shaders/blob_frag.glsl",
+                                                      "../Media/Shaders/blob_geom.glsl",
+                                                      GL_LINES_ADJACENCY_EXT, 
+                                                      GL_TRIANGLE_STRIP, 
+                                                      4/*maxGeomOutputVertices*/);
 
   // Setup material
   mBlobMaterial = new PhongMaterial (blobShader,                       // Shader
@@ -178,17 +161,6 @@ void BlobApp::setup()
                                      ColorAf (0.5f, 0.2f, 0.7f, 1.0f), // matDiffuse,
                                      ColorAf (1.0f, 1.0f, 1.0f, 1.0f), // matSpecular,
                                      50.0f);                           // matShininess
-
-  /*
-  BumpMaterial (      gl::Texture   diffuseTexture,
-                      gl::Texture   normalTexture,
-                      gl::GlslProg  shader,
-                const TriMesh&      mesh, 
-                const ColorAf&      matAmbient,
-                const ColorAf&      matDiffuse,
-                const ColorAf&      matSpecular,
-                const float         matShininess);
-  */
 
   mSurfaceMaterial = new PhongMaterial (surfaceShader,                    // Shader
                                         ColorAf (0.2f, 0.2f, 0.1f, 1.0f), // matAmbient,
@@ -281,7 +253,6 @@ void BlobApp::draw()
   mBlobMaterial->bind ();
 
   int nofBalls = mBallPositions.size ();
-  mBlobMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
   mBlobMaterial->getShader ().uniform ("ballPositions", mBallPositions.data (), nofBalls);
   mBlobMaterial->getShader ().uniform ("nofBalls",      nofBalls);
   mBlobMaterial->getShader ().uniform ("radiusSquared", mBallRadius*mBallRadius);

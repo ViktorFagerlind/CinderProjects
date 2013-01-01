@@ -27,7 +27,7 @@ class BulletRigidBody
 		
 		// initialize the rigidbody with the given collisionShape and startPosition
 		// ownsCollisionShape is for advanced (and internal use) only
-		void					setup(Vec3f &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass = 1);
+		void					setup (Vec3f &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass=1.f, float restitution=0.f);
 		btCollisionShape		*getCollisionShape();	
 		btRigidBody				*getBulletBody();
 		
@@ -41,18 +41,18 @@ class BulletRigidBody
 		
 	protected:
 		//	float					mass;
-		bool					ownsCollisionShape;		// whether the object owns (and can delete) the collision shape
-		btRigidBody				*bulletBody;
-		btCollisionShape		*collisionShape;
+		bool               m_ownsCollisionShape;		// whether the object owns (and can delete) the collision shape
+		btRigidBody       *m_bulletBody;
+		btCollisionShape  *m_collisionShape;
 	};
 	
 	
 	inline btCollisionShape		*BulletRigidBody::getCollisionShape() {
-		return collisionShape;
+		return m_collisionShape;
 	}
 	
 	inline btRigidBody			*BulletRigidBody::getBulletBody() {
-		return bulletBody;
+		return m_bulletBody;
 	}
 	//
 	//inline void					BulletRigidBody::setMass(float m) {

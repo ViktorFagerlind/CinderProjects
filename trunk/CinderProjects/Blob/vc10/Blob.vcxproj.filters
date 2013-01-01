@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Resource Files\shaders">
+    <Filter Include="Source Files\shaders">
       <UniqueIdentifier>{1e7fd3d9-9308-4fec-af38-fe0b139ba898}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -34,19 +34,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Media\Shaders\blob_frag.glsl">
-      <Filter>Resource Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="..\..\Media\Shaders\blob_vert.glsl">
-      <Filter>Resource Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="..\..\Media\Shaders\blob_geom.glsl">
-      <Filter>Resource Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="..\..\Media\Shaders\phong_frag.glsl">
-      <Filter>Resource Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="..\..\Media\Shaders\phong_vert.glsl">
-      <Filter>Resource Files\shaders</Filter>
+      <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>

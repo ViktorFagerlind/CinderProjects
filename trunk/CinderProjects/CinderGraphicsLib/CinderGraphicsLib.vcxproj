@@ -369,6 +369,7 @@
     <ClInclude Include="include\ImageEmitter.h" />
     <ClInclude Include="include\IsoSurface.h" />
     <ClInclude Include="include\Macros.h" />
+    <ClInclude Include="include\Miscellaneous.h" />
     <ClInclude Include="include\MiscMath.h" />
     <ClInclude Include="include\MovingCamera.h" />
     <ClInclude Include="include\MyStrings.h" />
@@ -401,7 +402,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BloomEffect.cpp" />
-    <ClCompile Include="src\BumpMaterial .cpp" />
+    <ClCompile Include="src\BumpMaterial.cpp" />
     <ClCompile Include="src\Emitter.cpp" />
     <ClCompile Include="src\FluidModifier.cpp" />
     <ClCompile Include="src\IsoSurface.cpp" />

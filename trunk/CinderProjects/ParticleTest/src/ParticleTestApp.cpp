@@ -619,7 +619,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
       sa.ps = new ParticleSystem ("../Media/Movies/FireBall/FireBall.png");
 
       sa.ae1  = new AreaEmitter (1000,
-                                Vec3f(0, -400, 0),                //position
+                                Vec3f(0, 0, 0),                //position
                                 1.2, // particlesPerFrame,
   						                  50,      // width
   						                  50,      // height 
@@ -627,7 +627,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 120.0f,   // min size
                                 160.0f,   // max size
                                 Vec3f (0, 0, 0),     // baseVelocity
-                                3.0f);    // randVelocity
+                                8.5f);    // randVelocity
 
       sa.ae1->makeAnimated ("../Media/Movies/FireBall/FireBall.xml");
 
@@ -644,8 +644,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                             0.5f);                     // middleTime
       sa.ps->addModifier (sa.colorModifier);
 
-      sa.gm = new GravityModifier (Vec3f(0,0.12,0));
-      sa.ps->addModifier (sa.gm);
+      sa.pgm = new PointGravityModifier (Vec3f(0,0,0), 1000000.f, .06f, 1500.f);
+      sa.ps->addModifier (sa.pgm);
 
       break;
 

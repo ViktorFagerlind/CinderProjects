@@ -1,8 +1,9 @@
 #include "MovingCamera.h"
 
-MovingCamera::MovingCamera (float distance)
+MovingCamera::MovingCamera (float distance, float stepSize)
 {
   mStartingDistance = distance;
+  mStepSize         = stepSize;
 
   reset ();
 }
@@ -43,28 +44,25 @@ void MovingCamera::mouseMove (MouseEvent event)
 
 void MovingCamera::keyDown (KeyEvent event)
 {
-  float stepSize = 20.0f;
   Vec3f forward = mTargetVec.normalized ();
   Vec3f right   = forward.cross (mUpVector);
 
-
   Vec3f move = Vec3f (0, 0, 0);
-
 
   switch (event.getChar ())
   {
-    case '.': move += stepSize * forward; break;
-    case ',': move -= stepSize * forward; break;
+    case '.': move += mStepSize * forward; break;
+    case ',': move -= mStepSize * forward; break;
 
     case ' ': reset (); break;
   }
     
   switch (event.getCode ())
   {
-    case KeyEvent::KEY_UP:    move += stepSize * mUpVector; break;
-    case KeyEvent::KEY_DOWN:  move -= stepSize * mUpVector; break;
-    case KeyEvent::KEY_LEFT:  move -= stepSize * right;     break;
-    case KeyEvent::KEY_RIGHT: move += stepSize * right;     break;
+    case KeyEvent::KEY_UP:    move += mStepSize * mUpVector; break;
+    case KeyEvent::KEY_DOWN:  move -= mStepSize * mUpVector; break;
+    case KeyEvent::KEY_LEFT:  move -= mStepSize * right;     break;
+    case KeyEvent::KEY_RIGHT: move += mStepSize * right;     break;
   }
 
   mEye += move;

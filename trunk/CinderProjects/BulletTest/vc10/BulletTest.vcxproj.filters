@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{68a6c772-6684-4afd-b766-36c728c4ff4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BulletTestApp.cpp">
@@ -28,5 +31,16 @@
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Media\Shaders\point_2_sphere_geom.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\point_2_sphere_vert.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\point_2_sphere_frag.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
