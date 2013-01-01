@@ -1,6 +1,8 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
+#include "cinder/gl/Vbo.h"
+#include "cinder/ObjLoader.h"
 
 #include "MSABulletRigidBody.h"
 #include "MSABulletRigidWorld.h"
@@ -8,6 +10,8 @@
 #include "ShaderHelper.h"
 #include "PhongMaterial.h"
 #include "MovingCamera.h"
+#include "Macros.h"
+#include "Miscellaneous.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -17,9 +21,11 @@ BulletRigidWorld world;
 
 class BulletTestApp : public AppBasic {
 public:
+  void prepareSettings (Settings *settings);
 	void setup();
 	void mouseDown( MouseEvent event );	
   void keyDown (KeyEvent event);
+  void mouseMove (MouseEvent event);
 	void update();
 	void draw();
 
@@ -29,8 +35,15 @@ private:
 
   bool mDebugMode;
 
+  gl::VboMesh mBallVbo;
+
   uint32_t frameCount;
 };
+
+void BulletTestApp::prepareSettings (Settings *settings)
+{
+  settings->setWindowSize (1600, 1000);
+}
 
 void BulletTestApp::setup()
 {
@@ -63,8 +76,29 @@ void BulletTestApp::setup()
 		world.addBulletRigidBody(body);
 	}
 	
-	Vec3f p(0, 0, 0);
-  world.createRigidBox (Vec3f(0.f,-15.f,0.f), Vec3f(15.f, 0.3f, 15.f), 0.f);
+//	Vec3f p(0, 0, 0);
+//  world.createRigidBox (Vec3f(0.f,-15.f,0.f), Vec3f(15.f, 0.3f, 15.f), 0.f);
+
+  const Vec3f normals[] = 
+  {
+    Vec3f ( 0, 1, 0),
+    Vec3f ( 0,-1, 0),
+    Vec3f ( 1, 0, 0),
+    Vec3f (-1, 0, 0),
+    Vec3f ( 0, 0, 1),
+    Vec3f ( 0, 0,-1)};
+
+  const float halfSize = 10.f;
+
+  for (uint32_t i = 0; i < NOF_ELEMENTS(normals); i++)
+  {
+    btCollisionShape* groundShape = new btStaticPlaneShape(Vec3f_To_btVector3 (normals[i]), -halfSize);
+    btCollisionObject *groundObject = new btCollisionObject ();
+    groundObject->setCollisionShape (groundShape);
+    groundObject->setRestitution (1.f);
+    world.getBulletWorld ().addCollisionObject (groundObject);
+  }
+
 
   float white[] = {1.0f, 1.0f, 1.0f , 0.0f};
   float red[]   = {1.0f, 0.0f, 0.0f , 0.0f};
@@ -87,23 +121,37 @@ void BulletTestApp::setup()
 
   mMaterial.reset (new PhongMaterial (ShaderHelper::loadShader ("../Media/Shaders/phong_vert.glsl", 
                                                                 "../Media/Shaders/phong_frag.glsl"), // Shader
-                                      ColorAf (0.05f, 0.1f,  0.05f, 1.0f),                           // matAmbient,
-                                      ColorAf (0.8f,  0.5f,  0.2f,  1.0f),                           // matDiffuse,
-                                      ColorAf (0.9f,  0.5f,  0.3f,  1.0f),                           // matSpecular,
-                                      6.0f));                                                        // matShininess
+                                      ColorAf (0.05f, 0.1f,  0.05f, 1.0f),  // matAmbient,
+                                      ColorAf (0.8f,  0.5f,  0.2f,  1.0f),  // matDiffuse,
+                                      ColorAf (0.9f,  0.5f,  0.3f,  1.0f),  // matSpecular,
+                                      6.0f));                               // matShininess
 
-  mCamera.reset (new MovingCamera(50.0f));
+  mCamera.reset (new MovingCamera(30.0f, 1.0f));
+
+
+  // Load mesh
+  ObjLoader    loader (loadFile ("../Media/Meshes/Sphere.obj"));
+  TriMesh      ballMesh;
+  loader.load (&ballMesh);
+	mBallVbo = gl::VboMesh (ballMesh);
 
   frameCount = 0;
 }
 
 void BulletTestApp::mouseDown( MouseEvent event )
 {
-	for(int i=0; i<10; i++) 
-  {
-    Vec3f p(Rand::randFloat(-10.f, 10.f), Rand::randFloat(-10.f, 10.f), Rand::randFloat(-10.f, 10.f));
+  const float boxHalfSize = 8.f;
+  const float maxForce = 2000.f;
 
-		world.createRigidSphere(p, Rand::randFloat(.5f, 1.f));
+	for(int i=0; i<20; i++) 
+  {
+    Vec3f p(Rand::randFloat (-boxHalfSize, boxHalfSize), Rand::randFloat (-boxHalfSize, boxHalfSize), Rand::randFloat (-boxHalfSize, boxHalfSize));
+
+		BulletRigidBody *rigidBody = world.createRigidSphere (p, Rand::randFloat(.2f, .5f), 1.f, 1.f);
+
+    rigidBody->getBulletBody ()->applyCentralForce (btVector3 (Rand::randFloat (-maxForce, maxForce), 
+                                                               Rand::randFloat (-maxForce, maxForce), 
+                                                               Rand::randFloat (-maxForce, maxForce)));
 	}
 }
 
@@ -119,6 +167,12 @@ void BulletTestApp::keyDown (KeyEvent event)
   mCamera->keyDown (event);
 }
 
+
+void BulletTestApp::mouseMove (MouseEvent event)
+{
+  mCamera->mouseMove (event);
+}
+
 void BulletTestApp::update()
 {
   world.update();
@@ -130,7 +184,7 @@ void BulletTestApp::draw()
 	gl::clear (Color (0, 0, 0)); 
 
   // Setup camera
-  mCamera->setModelMatrix ();
+  mCamera->setMatrices ();
 
   if (mDebugMode)
   {
@@ -138,7 +192,6 @@ void BulletTestApp::draw()
   }
   else
   {
-    mMaterial->bind();
 
 	  for (int j=0; j<world.getBulletWorld().getNumCollisionObjects(); j++)
 	  {
@@ -154,21 +207,36 @@ void BulletTestApp::draw()
 
         btCollisionShape *shape = body->getCollisionShape();
 
+        float res = body->getRestitution ();
+
         switch (shape->getShapeType ())
         {
         case 0:
-          gl::drawCube (Vec3f(0,0,0), btVector3_To_Vec3f (((btBoxShape*) shape)->getHalfExtentsWithoutMargin())); 
+          gl::drawCube (Vec3f(0,0,0), 2.f * btVector3_To_Vec3f (((btBoxShape*) shape)->getHalfExtentsWithoutMargin ())); 
           break;
         case 8:
-          gl::drawSphere (Vec3f(0,0,0), ((btSphereShape*) shape)->getRadius()); 
-          break;
+          {
+            float radius = ((btSphereShape*) shape)->getRadius ();
+
+            mMaterial->bind ();
+
+//            gl::drawSphere (Vec3f(0,0,0), radius);
+
+            glEnable (GL_RESCALE_NORMAL);
+            gl::scale (radius, radius, radius);
+            gl::draw (mBallVbo);
+            glDisable (GL_RESCALE_NORMAL);
+
+            mMaterial->unbind ();
+
+            break;
+          }
         }
 
 			  glPopMatrix();
 		  }
 	  }
 
-    mMaterial->unbind();
   }
 
   frameCount++;

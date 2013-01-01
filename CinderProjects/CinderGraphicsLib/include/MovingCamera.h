@@ -14,7 +14,7 @@ using namespace ci::app;
 class MovingCamera
 {
 public:  
-  MovingCamera (float distance);
+  MovingCamera (float distance=1000.f, float stepSize=20.f);
 
   void reset ();
 
@@ -43,4 +43,6 @@ private:
   Vec3f mUpVector;
 
   float mDist;
+
+  float mStepSize;
 };

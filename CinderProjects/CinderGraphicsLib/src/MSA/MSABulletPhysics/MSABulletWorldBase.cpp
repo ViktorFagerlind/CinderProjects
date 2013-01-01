@@ -33,7 +33,8 @@ namespace MSA {
 		if(!collisionConfiguration) collisionConfiguration = new btDefaultCollisionConfiguration();
 		
 		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-		if(!dispatcher) dispatcher = new btCollisionDispatcher(collisionConfiguration);
+		if(!dispatcher) 
+      dispatcher = new btCollisionDispatcher(collisionConfiguration);
 		
 		///the maximum size of the collision bulletWorld. Make sure objects stay within these boundaries
 		///Don't make the bulletWorld AABB size too large, it will harm simulation quality and performance
@@ -48,7 +49,8 @@ namespace MSA {
 		if(!solver) solver = new btSequentialImpulseConstraintSolver;
 		if(!bulletWorld) bulletWorld = createBulletWorld();
 		
-		setGravity (0, -9.81, 0);
+		setGravity (0, -9.81f, 0);
+		setGravity (0, 0, 0);
 	}
 	
 	void BulletWorldBase::destroy() {
@@ -62,17 +64,21 @@ namespace MSA {
 				delete body->getMotionState();
 			}
 			bulletWorld->removeCollisionObject( obj );
-			delete obj;
-		}	
-		
+
+      //  Do not delete rigid body, this is done below...
+      //	delete obj;
+		}
+
 		//delete objects
-		for (int i=0; i<objects.size(); i++) {
+		for (int i=0; i<objects.size(); i++) 
+    {
 			BulletRigidBody* o = objects[i];
 			objects[i] = 0;
 			delete o;		// this line results in "non-page-aligned, non-allocated pointer being freed". not sure why
 		}
 		objects.clear();
 		
+
 		DelPointer(bulletWorld);
 		DelPointer(solver);
 		DelPointer(broadphase);
