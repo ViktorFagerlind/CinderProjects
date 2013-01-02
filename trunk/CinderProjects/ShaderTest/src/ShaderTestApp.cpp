@@ -1,131 +1,218 @@
 #include "cinder/app/AppBasic.h"
-
-#include "cinder/Utilities.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Camera.h"
-
 #include "cinder/gl/gl.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/gl/GlslProg.h"
+#include "cinder/Rand.h"
+#include "cinder/gl/Vbo.h"
+#include "cinder/ObjLoader.h"
+
+#include "ShaderHelper.h"
+#include "PhongMaterial.h"
+#include "MovingCamera.h"
+#include "Macros.h"
+#include "Miscellaneous.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class ShaderTestAppApp : public AppBasic 
+class ShaderTestApp : public AppBasic 
 {
-  public:
+public:
   void prepareSettings (Settings *settings);
 	void setup();
-	void mouseDown( MouseEvent event );	
+  void keyDown (KeyEvent event);
+  void mouseMove (MouseEvent event);
 	void update();
 	void draw();
 
-	// gl::Texture		mTexture;	
-	gl::GlslProg	mShader;
-	float			    mAngle;
+private:
+  shared_ptr<MovingCamera>  mCamera;
+  shared_ptr<PhongMaterial> mMaterial;
 
-	float			    mTime;
+  bool mPaused;
+  bool mWireFrameMode;
 
-  CameraPersp mCam;
+  uint32_t frameCount;
+
+  std::vector<Vec3f> points;
 };
 
-void ShaderTestAppApp::prepareSettings (Settings *settings)
+void ShaderTestApp::prepareSettings (Settings *settings)
 {
-  settings->setWindowSize (1280, 768);
+  settings->setWindowSize (1600, 1000);
 }
 
-void ShaderTestAppApp::setup()
+void ShaderTestApp::setup()
 {
-  /*
-	try 
-  {
-		mTexture = gl::Texture( loadImage( loadFile("../Media/Images/football.png") ) );
-	}
-	catch (...) 
-  {
-		std::cout << "unable to load the texture file!" << std::endl;
-	}
-	*/
+  float white[] = {1.0f, 1.0f, 1.0f , 0.0f};
+  float red[]   = {1.0f, 0.0f, 0.0f , 0.0f};
+  float green[] = {0.2f, 0.8f, 0.3f , 0.0f};
+  float blue[]  = {0.0f, 0.0f, 1.0f , 0.0f};
+  float black[] = {0.0f, 0.0f, 0.0f , 0.0f};
 
-	try 
-  {
-		mShader = gl::GlslProg (loadFile ("../Media/Shaders/test1_vert.glsl"), loadFile ("../Media/Shaders/test1_frag.glsl"));
-	}
-	catch (gl::GlslProgCompileExc &exc) 
-  {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}
-	catch (...) 
-  {
-		std::cout << "Unable to load shader" << std::endl;
-	}
+  float p1[] = {-1000, 5000, 0};
 
-  mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
-  Vec3f cameraPosition = Vec3f (0.0f, 0.0f, 1000.0f);
-  mCam.lookAt(cameraPosition,  // camera
-              Vec3f::zero(),   // center
-              Vec3f::yAxis()); // up
+  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE,  white);
+  glLightfv(GL_LIGHT0, GL_AMBIENT,  white);
+	glLightfv(GL_LIGHT0, GL_POSITION, p1);
+	glEnable (GL_LIGHT0);
 
-  mAngle = 0.0f;
-  mTime  = 0.0f;
+  gl::enableDepthRead ();
+  gl::enableDepthWrite ();
 
-  glEnable (GL_DEPTH_TEST);
+  gl::GlslProg shader = ShaderHelper::loadShader ("../Media/Shaders/tube_vert.glsl", 
+                                                  "../Media/Shaders/tube_frag.glsl",
+                                                  "../Media/Shaders/tube_geom.glsl",
+                                                  GL_POINTS,
+                                                  GL_TRIANGLE_STRIP,
+                                                  1024);
+
+  mMaterial.reset (new PhongMaterial (shader,
+                                      ColorAf (0.05f, 0.1f,  0.05f, 1.0f),  // matAmbient,
+                                      ColorAf (0.8f,  0.5f,  0.2f,  1.0f),  // matDiffuse,
+                                      ColorAf (1.0f,  0.7f,  0.6f,  1.0f),  // matSpecular,
+                                      10.0f));                               // matShininess                         // matShininess
+
+  mCamera.reset (new MovingCamera(30.0f, 1.0f));
+
+
+  frameCount     = 0;
+  mWireFrameMode = false;
+  mPaused        = false;
 }
 
-void ShaderTestAppApp::mouseDown( MouseEvent event )
+
+void ShaderTestApp::keyDown (KeyEvent event)
 {
-}
+  char c = event.getChar();
 
-void ShaderTestAppApp::update()
-{
-	mAngle += 0.3f;
-
-  mTime += 1.0f/60.0f;
-
-//  if (mTime > 5.0f)
-//    mTime = 0.0f;
-}
-
-void ShaderTestAppApp::draw()
-{
-	gl::clear();
-
-	//mTexture.enableAndBind();
-
-	mShader.bind();
-//	mShader.uniform ("tex0", 0 );
-//	mShader.uniform ("sampleOffset", Vec2f( cos( mAngle ), sin( mAngle ) ) * ( 1.0f / getWindowWidth() ));
-	mShader.uniform ("t", mTime);
-
-  gl::setMatrices (mCam);
-
-  gl::rotate (Vec3f (mAngle, mAngle, mAngle));
-
-  gl::translate (Vec3f (-800, -800, -800));
-  for (int z = 0; z < 5; z++)
+  if (c == 'w')
   {
-    for (int y = 0; y < 5; y++)
-    {
-      for (int x = 0; x < 5; x++)
-      {
-	      gl::drawCube (Vec3f(0,0,0), Vec3f(150.0f, 150.0f, 150.0f));
-        gl::drawSphere (Vec3f(0,0,0), 100.0f, 20);
+    if (mWireFrameMode)
+      gl::disableWireframe ();
+    else
+      gl::enableWireframe ();
 
-        gl::translate (Vec3f (400, 0, 0));
-      }
-      gl::translate (Vec3f (0, 400, 0));
-      gl::translate (Vec3f (-2000, 0, 0));
-    }
-    gl::translate (Vec3f (0, 0, 400));
-    gl::translate (Vec3f (0, -2000, 0));
+    mWireFrameMode = !mWireFrameMode;
+  }
+  else if (c == 'p')
+  {
+    mPaused = !mPaused;
   }
 
-//	gl::drawSolidRect (getWindowBounds());
-
-
-//	mTexture.unbind();
+  mCamera->keyDown (event);
 }
 
-CINDER_APP_BASIC( ShaderTestAppApp, RendererGl )
+
+void ShaderTestApp::mouseMove (MouseEvent event)
+{
+  mCamera->mouseMove (event);
+}
+
+void ShaderTestApp::update()
+{
+  if (mPaused)
+    return;
+
+  points.clear ();
+
+  points.push_back (Vec3f (0, 0, 0));
+  points.push_back (Vec3f (3, 0, 0));
+  for (uint32_t i=1; i<50; i++)
+  {
+    Vec3f prevDiff = points[i] - points[i-1];
+    points.push_back (points[i] + prevDiff + Vec3f(Rand::randFloat (-3.f, 3.f),
+                                                   Rand::randFloat (-3.f, 3.f),
+                                                   Rand::randFloat (-3.f, 3.f)));
+  }
+}
+
+// Projects v onto a plane with normal n
+// n must be of unity length
+Vec3f projectOnPlane (const Vec3f& n, const Vec3f& v)
+{
+  return v - n * n.dot (v);
+}
+
+void ShaderTestApp::draw()
+{
+	// clear out the window with black
+	gl::clear (Color (0, 0, 0)); 
+
+  // Setup camera
+  mCamera->setMatrices ();
+
+  // Choose a general direction for the "up" vector so that it is perpendicular to the 
+  // general layout of the entire line, in that way the face normals are less likely 
+  // to be aligned to the direction (which is not good when projecting on that plane)
+  Vec3f upDirection = Vec3f (0,0,1).cross (points[points.size()-1] - points[0]);
+
+  Vec3f planeNormal1;
+  Vec3f planeNormal2;
+
+  Vec3f up1;
+  Vec3f up2;
+
+  Vec3f side1;
+  Vec3f side2;
+/*
+  gl::translate (Vec3f (-200.f*3.f/2.f, 0, 0));
+  for (uint32_t x = 0; x < 200; x++)
+  {
+    gl::translate (Vec3f (3, 0, 0));
+*/
+  for (uint32_t i=0; i<points.size() - 2; i++)
+  {
+    Vec3f currentToNext  = points[i+1] - points[i];
+    Vec3f nextToNextNext = points[i+2] - points[i+1];
+
+    if (i==0)
+    {
+      planeNormal1 = currentToNext.normalized ();
+      up1          = projectOnPlane (planeNormal1, upDirection).normalized ();
+      side1        = planeNormal1.cross (up1).normalized();
+    }
+    else
+    {
+      planeNormal1 = planeNormal2;
+      up1          = up2;
+      side1        = side2;
+    }
+
+    planeNormal2 = (currentToNext + nextToNextNext).normalized ();
+    up2          = projectOnPlane (planeNormal2, upDirection).normalized ();
+    side2        = planeNormal2.cross (up2).normalized();
+
+    gl::color (1,0,0);
+    gl::drawVector (points[i]*0.5f, (points[i] + planeNormal1)*0.5f);
+    gl::color (0,1,0);
+    gl::drawVector (points[i]*0.5f, (points[i] + up1)*0.5f);
+    gl::color (0,0,1);
+    gl::drawVector (points[i]*0.5f, (points[i] + side1)*0.5f);
+
+    mMaterial->bind ();
+
+    mMaterial->getShader().uniform ("u_point2", points[i+1]);
+    mMaterial->getShader().uniform ("u_up1",    up1);
+    mMaterial->getShader().uniform ("u_up2",    up2);
+    mMaterial->getShader().uniform ("u_side1",  side1);
+    mMaterial->getShader().uniform ("u_side2",  side2);
+
+    gl::begin (GL_POINTS);
+    gl::vertex (points[i]);
+    gl::end ();
+
+    mMaterial->unbind ();
+
+  }
+//  }
+
+
+  Misc::CheckForOpenGlError ();
+
+  frameCount++;
+  if ((frameCount % 10) == 0)
+    console() << "FPS: " << getAverageFps() << std::endl;
+}
+
+CINDER_APP_BASIC( ShaderTestApp, RendererGl )
