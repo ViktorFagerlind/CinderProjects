@@ -29,7 +29,7 @@ private:
   shared_ptr<MovingCamera>  mCamera;
   shared_ptr<PhongMaterial> mMaterial;
 
-  shared_ptr<Tube>          mTube;
+  std::vector<shared_ptr<Tube>> mTubes;
 
   bool mPaused;
   bool mWireFrameMode;
@@ -77,7 +77,13 @@ void ShaderTestApp::setup()
   mCamera.reset (new MovingCamera(30.0f, 1.0f));
 
 
-  mTube.reset (new Tube ());
+  for (uint32_t i=0; i<20; i++)
+  {
+    shared_ptr<Tube> t(new Tube (Vec3f(0,0,0), Vec3f (Rand::randFloat(-1,1), 
+                                                      Rand::randFloat(-1,1), 
+                                                      Rand::randFloat(-1,1)).normalized ()));
+    mTubes.push_back (t);
+  }
 
   frameCount     = 0;
   mWireFrameMode = false;
@@ -135,7 +141,8 @@ void ShaderTestApp::draw()
 
   mMaterial->bind ();
 
-  mTube->draw (mMaterial->getShader ());
+  for (uint32_t i=0; i<mTubes.size (); i++)
+    mTubes[i]->draw (mMaterial->getShader ());
 
   mMaterial->unbind ();
 
