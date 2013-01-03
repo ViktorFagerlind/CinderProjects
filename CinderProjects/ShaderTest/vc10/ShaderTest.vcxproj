@@ -104,11 +104,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Amoeba.cpp" />
     <ClCompile Include="..\src\ShaderTestApp.cpp" />
     <ClCompile Include="..\src\Tube.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Amoeba.h" />
     <ClInclude Include="..\src\Tube.h" />
   </ItemGroup>
   <ItemGroup>
