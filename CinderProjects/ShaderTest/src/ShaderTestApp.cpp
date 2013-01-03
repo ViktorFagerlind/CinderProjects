@@ -150,11 +150,16 @@ void ShaderTestApp::draw()
   Vec3f planeNormal1;
   Vec3f planeNormal2;
 
+#ifdef DEBUG
   Vec3f up1;
   Vec3f up2;
 
   Vec3f side1;
   Vec3f side2;
+#else
+  mMaterial->bind ();
+#endif
+
 /*
   gl::translate (Vec3f (-200.f*3.f/2.f, 0, 0));
   for (uint32_t x = 0; x < 200; x++)
@@ -167,19 +172,24 @@ void ShaderTestApp::draw()
     Vec3f nextToNextNext = points[i+2] - points[i+1];
 
     if (i==0)
-    {
       planeNormal1 = currentToNext.normalized ();
+    else
+      planeNormal1 = planeNormal2;
+
+    planeNormal2 = (currentToNext + nextToNextNext).normalized ();
+
+#ifdef DEBUG
+    if (i==0)
+    {
       up1          = projectOnPlane (planeNormal1, upDirection).normalized ();
       side1        = planeNormal1.cross (up1).normalized();
     }
     else
     {
-      planeNormal1 = planeNormal2;
       up1          = up2;
       side1        = side2;
     }
 
-    planeNormal2 = (currentToNext + nextToNextNext).normalized ();
     up2          = projectOnPlane (planeNormal2, upDirection).normalized ();
     side2        = planeNormal2.cross (up2).normalized();
 
@@ -191,22 +201,29 @@ void ShaderTestApp::draw()
     gl::drawVector (points[i]*0.5f, (points[i] + side1)*0.5f);
 
     mMaterial->bind ();
+#endif
 
-    mMaterial->getShader().uniform ("u_point2", points[i+1]);
-    mMaterial->getShader().uniform ("u_up1",    up1);
-    mMaterial->getShader().uniform ("u_up2",    up2);
-    mMaterial->getShader().uniform ("u_side1",  side1);
-    mMaterial->getShader().uniform ("u_side2",  side2);
+
+    mMaterial->getShader().uniform ("u_generalUp",    upDirection);
+
+    mMaterial->getShader().uniform ("u_point2",       points[i+1]);
+    mMaterial->getShader().uniform ("u_planeNormal1", planeNormal1);
+    mMaterial->getShader().uniform ("u_planeNormal2", planeNormal2);
 
     gl::begin (GL_POINTS);
     gl::vertex (points[i]);
     gl::end ();
 
+#ifdef DEBUG
     mMaterial->unbind ();
+#endif
 
   }
 //  }
 
+#ifndef DEBUG
+    mMaterial->unbind ();
+#endif
 
   Misc::CheckForOpenGlError ();
 
