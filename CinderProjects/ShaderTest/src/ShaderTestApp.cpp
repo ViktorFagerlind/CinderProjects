@@ -9,6 +9,7 @@
 #include "MovingCamera.h"
 #include "Macros.h"
 #include "Miscellaneous.h"
+#include "Tube.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -28,12 +29,12 @@ private:
   shared_ptr<MovingCamera>  mCamera;
   shared_ptr<PhongMaterial> mMaterial;
 
+  shared_ptr<Tube>          mTube;
+
   bool mPaused;
   bool mWireFrameMode;
 
   uint32_t frameCount;
-
-  std::vector<Vec3f> points;
 };
 
 void ShaderTestApp::prepareSettings (Settings *settings)
@@ -76,6 +77,8 @@ void ShaderTestApp::setup()
   mCamera.reset (new MovingCamera(30.0f, 1.0f));
 
 
+  mTube.reset (new Tube ());
+
   frameCount     = 0;
   mWireFrameMode = false;
   mPaused        = false;
@@ -113,25 +116,6 @@ void ShaderTestApp::update()
 {
   if (mPaused)
     return;
-
-  points.clear ();
-
-  points.push_back (Vec3f (0, 0, 0));
-  points.push_back (Vec3f (3, 0, 0));
-  for (uint32_t i=1; i<50; i++)
-  {
-    Vec3f prevDiff = points[i] - points[i-1];
-    points.push_back (points[i] + prevDiff + Vec3f(Rand::randFloat (-3.f, 3.f),
-                                                   Rand::randFloat (-3.f, 3.f),
-                                                   Rand::randFloat (-3.f, 3.f)));
-  }
-}
-
-// Projects v onto a plane with normal n
-// n must be of unity length
-Vec3f projectOnPlane (const Vec3f& n, const Vec3f& v)
-{
-  return v - n * n.dot (v);
 }
 
 void ShaderTestApp::draw()
@@ -142,88 +126,20 @@ void ShaderTestApp::draw()
   // Setup camera
   mCamera->setMatrices ();
 
-  // Choose a general direction for the "up" vector so that it is perpendicular to the 
-  // general layout of the entire line, in that way the face normals are less likely 
-  // to be aligned to the direction (which is not good when projecting on that plane)
-  Vec3f upDirection = Vec3f (0,0,1).cross (points[points.size()-1] - points[0]);
-
-  Vec3f planeNormal1;
-  Vec3f planeNormal2;
-
-#ifdef DEBUG
-  Vec3f up1;
-  Vec3f up2;
-
-  Vec3f side1;
-  Vec3f side2;
-#else
-  mMaterial->bind ();
-#endif
-
 /*
   gl::translate (Vec3f (-200.f*3.f/2.f, 0, 0));
   for (uint32_t x = 0; x < 200; x++)
   {
     gl::translate (Vec3f (3, 0, 0));
 */
-  for (uint32_t i=0; i<points.size() - 2; i++)
-  {
-    Vec3f currentToNext  = points[i+1] - points[i];
-    Vec3f nextToNextNext = points[i+2] - points[i+1];
 
-    if (i==0)
-      planeNormal1 = currentToNext.normalized ();
-    else
-      planeNormal1 = planeNormal2;
+  mMaterial->bind ();
 
-    planeNormal2 = (currentToNext + nextToNextNext).normalized ();
+  mTube->draw (mMaterial->getShader ());
 
-#ifdef DEBUG
-    if (i==0)
-    {
-      up1          = projectOnPlane (planeNormal1, upDirection).normalized ();
-      side1        = planeNormal1.cross (up1).normalized();
-    }
-    else
-    {
-      up1          = up2;
-      side1        = side2;
-    }
+  mMaterial->unbind ();
 
-    up2          = projectOnPlane (planeNormal2, upDirection).normalized ();
-    side2        = planeNormal2.cross (up2).normalized();
-
-    gl::color (1,0,0);
-    gl::drawVector (points[i]*0.5f, (points[i] + planeNormal1)*0.5f);
-    gl::color (0,1,0);
-    gl::drawVector (points[i]*0.5f, (points[i] + up1)*0.5f);
-    gl::color (0,0,1);
-    gl::drawVector (points[i]*0.5f, (points[i] + side1)*0.5f);
-
-    mMaterial->bind ();
-#endif
-
-
-    mMaterial->getShader().uniform ("u_generalUp",    upDirection);
-
-    mMaterial->getShader().uniform ("u_point2",       points[i+1]);
-    mMaterial->getShader().uniform ("u_planeNormal1", planeNormal1);
-    mMaterial->getShader().uniform ("u_planeNormal2", planeNormal2);
-
-    gl::begin (GL_POINTS);
-    gl::vertex (points[i]);
-    gl::end ();
-
-#ifdef DEBUG
-    mMaterial->unbind ();
-#endif
-
-  }
 //  }
-
-#ifndef DEBUG
-    mMaterial->unbind ();
-#endif
 
   Misc::CheckForOpenGlError ();
 
