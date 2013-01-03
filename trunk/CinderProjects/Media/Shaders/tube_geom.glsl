@@ -92,7 +92,7 @@ void main()
                 up2,
                 side1,
                 side2,
-                2,
+                0.5,
                 8);
 }
 

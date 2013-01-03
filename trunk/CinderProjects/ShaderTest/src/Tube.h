@@ -20,18 +20,22 @@ public:
 public:
   Vec3f m_normal;
   float m_length;
+  Vec3f m_pos;
 };
 
 class Tube
 {
 public:
-  class Tube ();
+  class Tube (const Vec3f& startPosition, const Vec3f& startNormal);
   
   void update ();
 	
 	void draw (gl::GlslProg& shader);
 
 private:
+
+  void setJointPositions ();
+
 	void drawSegment (const Vec3f&  point1, 
                     const Vec3f&  point2,
                     const Vec3f&  planeNormal1, 
