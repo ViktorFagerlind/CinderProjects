@@ -2,11 +2,10 @@
 #extension GL_EXT_gpu_shader4 : require
 #extension GL_EXT_geometry_shader4 : require
 
+uniform vec3 u_generalUp;
 uniform vec3 u_point2;
-uniform vec3 u_up1;
-uniform vec3 u_up2;
-uniform vec3 u_side1;
-uniform vec3 u_side2;
+uniform vec3 u_planeNormal1;
+uniform vec3 u_planeNormal2;
 
 varying in  vec3 vLightDir[1];
 varying in  vec3 vEyeVec[1];
@@ -65,6 +64,13 @@ void drawCylinder (vec3 p1,           // end point 1
   }
 }
 
+// Projects v onto a plane with normal n
+// n must be of unity length
+vec3 projectOnPlane (vec3 n, const vec3 v)
+{
+  return v - n * dot (n, v);
+}
+
 ///////////////////////
 
 void main()
@@ -72,12 +78,20 @@ void main()
   gLightDir = vLightDir[0];
   gEyeVec   = vEyeVec[0];
 
+  vec3 up1, up2, side1, side2;
+
+  up1   = normalize (projectOnPlane (u_planeNormal1, u_generalUp));
+  side1 = normalize (cross (u_planeNormal1, up1));
+
+  up2   = normalize (projectOnPlane (u_planeNormal2, u_generalUp));
+  side2 = normalize (cross (u_planeNormal2, up2));
+
   drawCylinder (gl_PositionIn[0].xyz, 
                 u_point2,
-                u_up1,
-                u_up2,
-                u_side1,
-                u_side2,
+                up1,
+                up2,
+                side1,
+                side2,
                 2,
                 8);
 }

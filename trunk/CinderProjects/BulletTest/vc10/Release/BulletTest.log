@@ -1,4 +1,4 @@
-﻿Build started 2013-01-01 13:21:53.
+﻿Build started 2013-01-03 08:03:00.
      1>Project "D:\Libraries\Documents\Programming\CppGraphics\Cinder\CinderProjects\BulletTest\vc10\BulletTest.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Release\BulletTest.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -22,4 +22,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.08
+Time Elapsed 00:00:27.71
