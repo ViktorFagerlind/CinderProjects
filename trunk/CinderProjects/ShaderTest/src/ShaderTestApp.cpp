@@ -5,7 +5,7 @@
 #include "cinder/ObjLoader.h"
 
 #include "ShaderHelper.h"
-#include "PhongMaterial.h"
+#include "Amoeba.h"
 #include "MovingCamera.h"
 #include "Macros.h"
 #include "Miscellaneous.h"
@@ -26,13 +26,12 @@ public:
 	void draw();
 
 private:
-  shared_ptr<MovingCamera>  mCamera;
-  shared_ptr<PhongMaterial> mMaterial;
-
-  std::vector<shared_ptr<Tube>> mTubes;
+  shared_ptr<MovingCamera> mCamera;
 
   bool mPaused;
   bool mWireFrameMode;
+
+  shared_ptr<Amoeba> mAmoeba;
 
   uint32_t frameCount;
 };
@@ -61,29 +60,9 @@ void ShaderTestApp::setup()
   gl::enableDepthRead ();
   gl::enableDepthWrite ();
 
-  gl::GlslProg shader = ShaderHelper::loadShader ("../Media/Shaders/tube_vert.glsl", 
-                                                  "../Media/Shaders/tube_frag.glsl",
-                                                  "../Media/Shaders/tube_geom.glsl",
-                                                  GL_POINTS,
-                                                  GL_TRIANGLE_STRIP,
-                                                  1024);
-
-  mMaterial.reset (new PhongMaterial (shader,
-                                      ColorAf (0.05f, 0.1f,  0.05f, 1.0f),  // matAmbient,
-                                      ColorAf (0.8f,  0.5f,  0.2f,  1.0f),  // matDiffuse,
-                                      ColorAf (1.0f,  0.7f,  0.6f,  1.0f),  // matSpecular,
-                                      10.0f));                               // matShininess                         // matShininess
-
   mCamera.reset (new MovingCamera(30.0f, 1.0f));
 
-
-  for (uint32_t i=0; i<20; i++)
-  {
-    shared_ptr<Tube> t(new Tube (Vec3f(0,0,0), Vec3f (Rand::randFloat(-1,1), 
-                                                      Rand::randFloat(-1,1), 
-                                                      Rand::randFloat(-1,1)).normalized ()));
-    mTubes.push_back (t);
-  }
+  mAmoeba.reset (new Amoeba ());
 
   frameCount     = 0;
   mWireFrameMode = false;
@@ -122,6 +101,8 @@ void ShaderTestApp::update()
 {
   if (mPaused)
     return;
+
+  mAmoeba->update ();
 }
 
 void ShaderTestApp::draw()
@@ -132,21 +113,7 @@ void ShaderTestApp::draw()
   // Setup camera
   mCamera->setMatrices ();
 
-/*
-  gl::translate (Vec3f (-200.f*3.f/2.f, 0, 0));
-  for (uint32_t x = 0; x < 200; x++)
-  {
-    gl::translate (Vec3f (3, 0, 0));
-*/
-
-  mMaterial->bind ();
-
-  for (uint32_t i=0; i<mTubes.size (); i++)
-    mTubes[i]->draw (mMaterial->getShader ());
-
-  mMaterial->unbind ();
-
-//  }
+  mAmoeba->draw ();
 
   Misc::CheckForOpenGlError ();
 
