@@ -26,5 +26,5 @@ void main()
 		final_color += gl_LightSource[0].specular * gl_FrontMaterial.specular * specular;	
 	}
 
-	gl_FragColor = final_color + vec4(0.2, 0.2, 0.2, 1.0);
+	gl_FragColor = final_color;
 }
