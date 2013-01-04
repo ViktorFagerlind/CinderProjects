@@ -14,26 +14,6 @@ varying out vec3 gNormal;
 varying out vec3 gLightDir;
 varying out vec3 gEyeVec;
 
-void createSide (vec4  world1, 
-                 vec4  world2,
-                 vec3  add1, 
-                 vec3  add2,
-                 float radius)
-{
-    vec4  world_add1, world_add2;
-
-    world_add1  = gl_ModelViewProjectionMatrix * (vec4(add1 * radius,1));
-    world_add2  = gl_ModelViewProjectionMatrix * (vec4(add2 * radius,1));
-
-    gl_Position = world1 + world_add1;
-    gNormal     = add1;
-    EmitVertex();
-
-    gl_Position = world2 + world_add2;
-    gNormal     = add2;
-    EmitVertex();
-}
-
 void drawCylinder (vec3 p1,           // end point 1
                    vec3 p2,           // end point 2
                    vec3 up1,          // "up" vector at point 1
@@ -60,7 +40,14 @@ void drawCylinder (vec3 p1,           // end point 1
 
     e1 =  w_up1 + w_side1;
     e2 =  w_up2 + w_side2;
-    createSide (world_p1, world_p2, e1, e2, radius);
+
+    gl_Position = world_p1 + vec4(e1 * radius,0);
+    gNormal     = e1;
+    EmitVertex();
+
+    gl_Position = world_p2 + vec4(e2 * radius,0);
+    gNormal     = e2;
+    EmitVertex();
   }
 }
 
@@ -94,6 +81,8 @@ void main()
                 side2,
                 0.5,
                 8);
+
+  EndPrimitive ();
 }
 
 
