@@ -21,3 +21,14 @@ void MiscMath::ComputeTangent(const Vec3f& P1,  const Vec3f& P2,  const Vec3f& P
       tangent.normalize ();
    }
 }
+
+Vec3f MiscMath::getRandomDirection ()
+{
+  float randomNormedZ = Rand::randFloat (-1, 1);
+  float xyPlaneAngle = asin (randomNormedZ); 
+  float zAxisAngle = Rand::randFloat (0, 2.0f * (float)M_PI);
+
+  return Vec3f (cos (xyPlaneAngle) * cos (zAxisAngle),
+                cos (xyPlaneAngle) * sin (zAxisAngle),
+                randomNormedZ);
+}

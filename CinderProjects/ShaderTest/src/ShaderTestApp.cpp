@@ -60,9 +60,9 @@ void ShaderTestApp::setup()
   gl::enableDepthRead ();
   gl::enableDepthWrite ();
 
-  mCamera.reset (new MovingCamera(30.0f, 1.0f));
+  mCamera.reset (new MovingCamera(50.0f, 1.0f));
 
-  mAmoeba.reset (new Amoeba ());
+  mAmoeba.reset (new Amoeba (5.f));
 
   frameCount     = 0;
   mWireFrameMode = false;
@@ -74,18 +74,31 @@ void ShaderTestApp::keyDown (KeyEvent event)
 {
   char c = event.getChar();
 
-  if (c == 'w')
+  switch (c)
   {
+  case 'w':
     if (mWireFrameMode)
       gl::disableWireframe ();
     else
       gl::enableWireframe ();
 
     mWireFrameMode = !mWireFrameMode;
-  }
-  else if (c == 'p')
-  {
+    break;
+  case 'p':
     mPaused = !mPaused;
+    break;
+  case 'x':
+    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1),  5.f * (float)M_PI / 180.f));
+    break;
+  case 'c':
+    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1), -5.f * (float)M_PI / 180.f));
+    break;
+  case 'a':
+    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0),  5.f * (float)M_PI / 180.f));
+    break;
+  case 'z':
+    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0), -5.f * (float)M_PI / 180.f));
+    break;
   }
 
   mCamera->keyDown (event);

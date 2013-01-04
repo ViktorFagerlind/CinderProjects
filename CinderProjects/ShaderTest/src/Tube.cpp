@@ -4,30 +4,46 @@
 
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
+#include "cinder/CinderMath.h"
 
-const uint32_t Tube::m_nofSplineSegments = 10UL; // how many points per spline section
-
-Tube::Tube (const Vec3f& startPosition, const Vec3f& startNormal)
+Tube::Tube (const Vec3f&    startPosition, 
+            const Vec3f&    startNormal, 
+            const float     startLength,
+            const uint32_t  nofSegmentsPerJoint, 
+            const uint32_t  nofJoints, 
+            const float     jointLength,
+            const float     radius)
+: m_nofSegmentsPerJoint (nofSegmentsPerJoint),
+  m_radius (radius)
 {
-  const float segmentLength = 4.f;
-
   // Create initial joints
-  m_Joints.push_back (Joint (startNormal, segmentLength));
-  for (uint32_t i=1; i<20; i++)
+  m_Joints.push_back (Joint (startPosition, startNormal, startLength));
+  for (uint32_t i=1; i<nofJoints; i++)
   {
-    m_Joints.push_back (Joint ((m_Joints[i-1].m_normal*1.5f + Vec3f (Rand::randFloat(-1,1), 
+    m_Joints.push_back (Joint (m_Joints[i-1].getEndPosition (),
+                               (m_Joints[i-1].m_normal*0.5f + Vec3f (Rand::randFloat(-1,1), 
                                                                      Rand::randFloat(-1,1), 
-                                                                     Rand::randFloat(-1,1))
-                               ).normalized (), segmentLength));
+                                                                     Rand::randFloat(-1,1))).normalized (), 
+                               jointLength));
   }
 
-  m_Joints[0].m_pos = startPosition;
-
-  m_drawPoints.resize (m_nofSplineSegments * m_Joints.size ());
+  m_drawPoints.resize (m_nofSegmentsPerJoint * nofJoints);
 }
 
-void Tube::update()
+void Tube::rotate (const Matrix44<float>& rotationMatrix)
 {
+  m_Joints[0].m_position = rotationMatrix * m_Joints[0].m_position;
+  m_Joints[0].m_normal   = rotationMatrix * m_Joints[0].m_normal;
+}
+
+
+void Tube::update ()
+{
+  // Note that the first joint is never updated, it is stuck on the body
+
+  for (uint32_t i=1; i<m_Joints.size (); i++)
+    m_Joints[i].update (m_Joints[i-1].getEndPosition (), m_Joints[i-1].m_normal);
+
 }
 
 #ifdef _DEBUG
@@ -54,16 +70,13 @@ void Tube::drawSegment (const Vec3f&  point1,
 
     shader.unbind ();
     gl::color (1,0,0);
-    gl::drawVector (point1*0.5f, (point1 + planeNormal1)*0.5f);
+    gl::drawVector (point1, point1 + planeNormal1);
     gl::color (0,1,0);
-    gl::drawVector (point1*0.5f, (point1 + up1)*0.5f);
+    gl::drawVector (point1, point1 + up1);
     gl::color (0,0,1);
-    gl::drawVector (point1*0.5f, (point1 + side1)*0.5f);
+    gl::drawVector (point1, point1 + side1);
     shader.bind ();
 #endif
-
-
-    shader.uniform ("u_generalUp",    upDirection);
 
     shader.uniform ("u_point2",       point2);
     shader.uniform ("u_planeNormal1", planeNormal1);
@@ -73,33 +86,25 @@ void Tube::drawSegment (const Vec3f&  point1,
     gl::vertex (point1);
     gl::end    ();
 }
-
-void Tube::setJointPositions ()
-{
-  for (uint32_t i=1; i<m_Joints.size (); i++)
-    m_Joints[i].m_pos = m_Joints[i-1].m_pos + m_Joints[i-1].m_length * m_Joints[i-1].m_normal;
-}
 	
 void Tube::draw (gl::GlslProg& shader)
 {
-  setJointPositions ();
-
   // Choose a general direction for the "up" vector so that it is perpendicular to the 
   // general layout of the entire line, in that way the face normals are less likely 
   // to be aligned to the direction (which is not good when projecting on that plane)
-  Vec3f upDirection = Vec3f (0,0,1).cross (m_Joints[m_Joints.size()-1].m_pos - m_Joints[0].m_pos);
+  Vec3f upDirection = Vec3f (0,0,1).cross (m_Joints[m_Joints.size()-1].m_position - m_Joints[0].m_position);
 
   // Create all the points along the b-spline joints
   uint32_t nofPoints = 0;
   for (uint32_t i=0; i<m_Joints.size () - 3; i++)
   {
-    for (uint32_t j=0; j<m_nofSplineSegments; j++)
+    for (uint32_t j=0; j<m_nofSegmentsPerJoint; j++)
     {
-      m_drawPoints[nofPoints] = VfBSpline::calc3D (m_Joints[i  ].m_pos, 
-                                                   m_Joints[i+1].m_pos, 
-                                                   m_Joints[i+2].m_pos, 
-                                                   m_Joints[i+3].m_pos, 
-                                                   (float) j / (float) m_nofSplineSegments);
+      m_drawPoints[nofPoints] = VfBSpline::calc3D (m_Joints[i  ].m_position, 
+                                                   m_Joints[i+1].m_position, 
+                                                   m_Joints[i+2].m_position, 
+                                                   m_Joints[i+3].m_position, 
+                                                   (float) j / (float) m_nofSegmentsPerJoint);
       nofPoints++;
     }
   }
@@ -109,7 +114,7 @@ void Tube::draw (gl::GlslProg& shader)
   for (uint32_t i=0; i<m_Joints.size () - 1; i++)
   {
     gl::color (1,1,0);
-    gl::drawVector (m_Joints[i].m_pos*0.5f, m_Joints[i+1].m_pos*0.5f);
+    gl::drawVector (m_Joints[i].m_position, m_Joints[i+1].m_position);
   }
   shader.bind ();
 #endif
@@ -117,6 +122,10 @@ void Tube::draw (gl::GlslProg& shader)
   // Draw the tube along the b-spline route
   Vec3f planeNormal1;
   Vec3f planeNormal2;
+
+  shader.uniform ("u_radius",    m_radius);
+  shader.uniform ("u_generalUp", upDirection);
+
 
   for (uint32_t i=0; i<nofPoints - 2; i++)
   {

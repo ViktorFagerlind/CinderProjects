@@ -2,6 +2,8 @@
 #extension GL_EXT_gpu_shader4 : require
 #extension GL_EXT_geometry_shader4 : require
 
+uniform float u_radius;
+
 uniform vec3 u_generalUp;
 uniform vec3 u_point2;
 uniform vec3 u_planeNormal1;
@@ -26,9 +28,6 @@ void drawCylinder (vec3 p1,           // end point 1
   float PI = 3.14159f;
   vec3  e1, e2;
 
-  vec4  world_p1 = gl_ModelViewProjectionMatrix * vec4(p1,1);
-  vec4  world_p2 = gl_ModelViewProjectionMatrix * vec4(p2,1);
-
 	for (int j=0; j<=nofSegments; j++) 
   {
     float theta1 = j * 2 * PI / nofSegments;
@@ -41,11 +40,11 @@ void drawCylinder (vec3 p1,           // end point 1
     e1 =  w_up1 + w_side1;
     e2 =  w_up2 + w_side2;
 
-    gl_Position = world_p1 + vec4(e1 * radius,0);
+    gl_Position = gl_ModelViewProjectionMatrix * vec4(p1 + e1 * radius,1);
     gNormal     = e1;
     EmitVertex();
 
-    gl_Position = world_p2 + vec4(e2 * radius,0);
+    gl_Position = gl_ModelViewProjectionMatrix * vec4(p2 + e2 * radius,1);
     gNormal     = e2;
     EmitVertex();
   }
@@ -79,7 +78,7 @@ void main()
                 up2,
                 side1,
                 side2,
-                0.5,
+                u_radius,
                 8);
 
   EndPrimitive ();
