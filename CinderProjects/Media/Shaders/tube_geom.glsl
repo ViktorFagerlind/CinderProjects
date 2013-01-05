@@ -13,9 +13,9 @@ uniform float u_radius2;
 varying in  vec3 vLightDir[1];
 varying in  vec3 vEyeVec[1];
 
-varying out vec3 gNormal;
-varying out vec3 gLightDir;
-varying out vec3 gEyeVec;
+varying out vec3 normal;
+varying out vec3 lightDir;
+varying out vec3 eyeVec;
 
 void drawCylinder (vec3 p1,           // end point 1
                    vec3 p2,           // end point 2
@@ -43,11 +43,11 @@ void drawCylinder (vec3 p1,           // end point 1
     e2 =  w_up2 + w_side2;
 
     gl_Position = gl_ModelViewProjectionMatrix * vec4(p1 + e1 * radius1,1);
-    gNormal     = e1;
+    normal     = e1;
     EmitVertex();
 
     gl_Position = gl_ModelViewProjectionMatrix * vec4(p2 + e2 * radius2,1);
-    gNormal     = e2;
+    normal     = e2;
     EmitVertex();
   }
 }
@@ -63,8 +63,8 @@ vec3 projectOnPlane (vec3 n, const vec3 v)
 
 void main()
 {
-  gLightDir = vLightDir[0];
-  gEyeVec   = vEyeVec[0];
+  lightDir = vLightDir[0];
+  eyeVec   = vEyeVec[0];
 
   vec3 up1, up2, side1, side2;
 

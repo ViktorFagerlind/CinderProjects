@@ -49,7 +49,7 @@ void ShaderTestApp::setup()
   float blue[]  = {0.0f, 0.0f, 1.0f , 0.0f};
   float black[] = {0.0f, 0.0f, 0.0f , 0.0f};
 
-  float p1[] = {-1000, 5000, 0};
+  float p1[] = {-1000, 1000, 0};
 
   glLightfv(GL_LIGHT0, GL_SPECULAR, white);
   glLightfv(GL_LIGHT0, GL_DIFFUSE,  white);

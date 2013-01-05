@@ -8,22 +8,22 @@
 Amoeba::Amoeba (const float radius)
 : m_radius (radius)
 {
-  ColorAf ambient  (0.05f, 0.1f,  0.05f, 1.0f);
-  ColorAf diffuse  (0.8f,  0.5f,  0.2f,  1.0f);
-  ColorAf specular (1.0f,  0.7f,  0.6f,  1.0f);
+  ColorAf ambient  (0.05f, 0.05f,  0.15f, 1.0f);
+  ColorAf diffuse  (0.2f,  0.4f,   0.6f,  1.0f);
+  ColorAf specular (0.6f,  0.8f,   1.0f,  1.0f);
   float   shininess = 10.0f;
   gl::GlslProg shader;
 
   shader = ShaderHelper::loadShader ("../Media/Shaders/tube_vert.glsl", 
-                                     "../Media/Shaders/tube_frag.glsl",
+                                     "../Media/Shaders/amoeba_frag.glsl",
                                      "../Media/Shaders/tube_geom.glsl",
                                      GL_POINTS,
                                      GL_TRIANGLE_STRIP,
                                      1024);
   m_tubeMaterial.reset (new PhongMaterial (shader, ambient, diffuse, specular, shininess));
 
-  shader = ShaderHelper::loadShader ("../Media/Shaders/phong_vert.glsl", 
-                                     "../Media/Shaders/phong_frag.glsl");
+  shader = ShaderHelper::loadShader ("../Media/Shaders/amoeba_vert.glsl", 
+                                     "../Media/Shaders/amoeba_frag.glsl");
   m_bodyMaterial.reset (new PhongMaterial (shader, ambient, diffuse, specular, shininess));
 
 
@@ -55,7 +55,7 @@ Amoeba::Amoeba (const float radius)
                                   5,             // Number of segments per joint
                                   8,             // Number of joint
                                   3,             // Segment lengths
-                                  0.4f));        // Tube radius
+                                  0.6f));        // Tube radius
     m_tubes.push_back (t);
   }
 

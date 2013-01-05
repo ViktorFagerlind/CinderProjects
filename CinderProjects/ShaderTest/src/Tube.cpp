@@ -147,7 +147,7 @@ void Tube::draw (gl::GlslProg& shader)
       planeNormal1 = planeNormal2;
     }
 
-    radius2      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.3f)/((float)nofPoints*1.3f));
+    radius2      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.2f)/((float)nofPoints*1.2f));
     planeNormal2 = (currentToNext + nextToNextNext).normalized ();
 
     drawSegment (m_drawPoints[i], 
