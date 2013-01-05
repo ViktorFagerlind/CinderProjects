@@ -2,12 +2,13 @@
 #extension GL_EXT_gpu_shader4 : require
 #extension GL_EXT_geometry_shader4 : require
 
-uniform float u_radius;
 
-uniform vec3 u_generalUp;
-uniform vec3 u_point2;
-uniform vec3 u_planeNormal1;
-uniform vec3 u_planeNormal2;
+uniform vec3  u_generalUp;
+uniform vec3  u_point2;
+uniform vec3  u_planeNormal1;
+uniform vec3  u_planeNormal2;
+uniform float u_radius1;
+uniform float u_radius2;
 
 varying in  vec3 vLightDir[1];
 varying in  vec3 vEyeVec[1];
@@ -22,7 +23,8 @@ void drawCylinder (vec3 p1,           // end point 1
                    vec3 up2,          // "up" vector at point 2
                    vec3 side1,        // "side" vector at point 1
                    vec3 side2,        // "side" vector at point 2
-                   float radius,      // radius
+                   float radius1,     // radius at point 1
+                   float radius2,     // radius at point 2
                    int nofSegments)   // number of segments
 {
   float PI = 3.14159f;
@@ -40,11 +42,11 @@ void drawCylinder (vec3 p1,           // end point 1
     e1 =  w_up1 + w_side1;
     e2 =  w_up2 + w_side2;
 
-    gl_Position = gl_ModelViewProjectionMatrix * vec4(p1 + e1 * radius,1);
+    gl_Position = gl_ModelViewProjectionMatrix * vec4(p1 + e1 * radius1,1);
     gNormal     = e1;
     EmitVertex();
 
-    gl_Position = gl_ModelViewProjectionMatrix * vec4(p2 + e2 * radius,1);
+    gl_Position = gl_ModelViewProjectionMatrix * vec4(p2 + e2 * radius2,1);
     gNormal     = e2;
     EmitVertex();
   }
@@ -78,8 +80,9 @@ void main()
                 up2,
                 side1,
                 side2,
-                u_radius,
-                8);
+                u_radius1,
+                u_radius2,
+                12);
 
   EndPrimitive ();
 }
