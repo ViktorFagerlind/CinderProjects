@@ -117,6 +117,8 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Media\Shaders\amoeba_frag.glsl" />
+    <None Include="..\..\Media\Shaders\amoeba_vert.glsl" />
     <None Include="..\..\Media\Shaders\tube_frag.glsl" />
     <None Include="..\..\Media\Shaders\tube_geom.glsl" />
     <None Include="..\..\Media\Shaders\tube_vert.glsl" />
