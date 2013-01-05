@@ -29,24 +29,35 @@ Amoeba::Amoeba (const float radius)
 
   for (uint32_t i=0; i<30; i++)
   {
-    shared_ptr<Tube>  t(new Tube (Vec3f(0,0,0),                     // Start position
-                                  MiscMath::getRandomDirection (),  // Start normal
-                                  m_radius,                         // First segment length
-                                  5,                                // Number of segments per joint
-                                  8,                                // Number of joint
-                                  3,                                // Segment lengths
-                                  0.4f));                           // Tube radius
+    Vec3f direction;
+    
+    if (i==0) 
+      direction = Vec3f(1,0,0);
+    else // Do not allow new tube to close to another
+    {
+      bool found = false;
+      while (!found)
+      {
+        found = true;
+        direction = MiscMath::getRandomDirection ();
+        for (uint32_t j=0; j<i && found; j++)
+        {
+          float angle = math<float>::acos (m_tubes[j]->getStartNormal ().dot (direction));
+          if (angle < 30.f * (float)M_PI / 180.f)
+            found = false;
+        }
+      }
+    }
+
+    shared_ptr<Tube>  t(new Tube (Vec3f(0,0,0),  // Start position
+                                  direction,     // Start normal
+                                  m_radius,      // First segment length
+                                  5,             // Number of segments per joint
+                                  8,             // Number of joint
+                                  3,             // Segment lengths
+                                  0.4f));        // Tube radius
     m_tubes.push_back (t);
   }
-  /*
-  for (uint32_t i=0; i<20; i++)
-  {
-    shared_ptr<Tube> t(new Tube (Vec3f(0,0,0), Vec3f (Rand::randFloat(-1,1), 
-                                                      Rand::randFloat(-1,1), 
-                                                      Rand::randFloat(-1,1)).normalized ()));
-    m_tubes.push_back (t);
-  }
-  */
 
   // Load mesh
   ObjLoader    loader (loadFile ("../Media/Meshes/Sphere.obj"));
@@ -75,7 +86,6 @@ void Amoeba::draw ()
   m_bodyMaterial->bind ();
 
   gl::pushModelView ();
-
   gl::enable  (GL_RESCALE_NORMAL);
   gl::scale   (m_radius, m_radius, m_radius);
   gl::draw    (m_bodyMesh);

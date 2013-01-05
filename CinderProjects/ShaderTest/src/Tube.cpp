@@ -59,6 +59,8 @@ void Tube::drawSegment (const Vec3f&  point1,
                         const Vec3f&  point2,
                         const Vec3f&  planeNormal1, 
                         const Vec3f&  planeNormal2,
+                        const float   radius1, 
+                        const float   radius2,
                         const Vec3f&  upDirection,
                         gl::GlslProg& shader)
 {
@@ -81,6 +83,8 @@ void Tube::drawSegment (const Vec3f&  point1,
     shader.uniform ("u_point2",       point2);
     shader.uniform ("u_planeNormal1", planeNormal1);
     shader.uniform ("u_planeNormal2", planeNormal2);
+    shader.uniform ("u_radius1",      radius1);
+    shader.uniform ("u_radius2",      radius2);
 
     gl::begin  (GL_POINTS);
     gl::vertex (point1);
@@ -122,10 +126,10 @@ void Tube::draw (gl::GlslProg& shader)
   // Draw the tube along the b-spline route
   Vec3f planeNormal1;
   Vec3f planeNormal2;
+  float radius1;
+  float radius2;
 
-  shader.uniform ("u_radius",    m_radius);
   shader.uniform ("u_generalUp", upDirection);
-
 
   for (uint32_t i=0; i<nofPoints - 2; i++)
   {
@@ -133,16 +137,25 @@ void Tube::draw (gl::GlslProg& shader)
     Vec3f nextToNextNext = m_drawPoints[i+2] - m_drawPoints[i+1];
 
     if (i==0)
+    {
+      radius1      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, 0.f);
       planeNormal1 = currentToNext.normalized ();
+    }
     else
+    {
+      radius1      = radius2;
       planeNormal1 = planeNormal2;
+    }
 
+    radius2      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.3f)/((float)nofPoints*1.3f));
     planeNormal2 = (currentToNext + nextToNextNext).normalized ();
 
     drawSegment (m_drawPoints[i], 
                  m_drawPoints[i+1],
                  planeNormal1, 
                  planeNormal2,
+                 radius1,
+                 radius2,
                  upDirection,
                  shader);
   }

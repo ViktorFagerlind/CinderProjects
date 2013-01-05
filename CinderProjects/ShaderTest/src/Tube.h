@@ -64,12 +64,16 @@ public:
 	
 	void draw (gl::GlslProg& shader);
 
+  const Vec3f& getStartNormal () {return m_Joints[0].m_normal;}
+
 private:
 
 	void drawSegment (const Vec3f&  point1, 
                     const Vec3f&  point2,
                     const Vec3f&  planeNormal1, 
                     const Vec3f&  planeNormal2,
+                    const float   radius1, 
+                    const float   radius2,
                     const Vec3f&  upDirection,
                     gl::GlslProg& shader);
 
