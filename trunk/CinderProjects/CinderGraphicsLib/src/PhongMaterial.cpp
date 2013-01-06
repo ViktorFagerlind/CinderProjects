@@ -33,8 +33,6 @@ PhongMaterial::PhongMaterial (      gl::GlslProg  shader,
 
 void PhongMaterial::bind ()
 {
-	glDisable (GL_BLEND);
-
   // Setup material for planets
   glMaterialfv (GL_FRONT, GL_AMBIENT,	   mMatAmbient);
   glMaterialfv (GL_FRONT, GL_DIFFUSE,	   mMatDiffuse);

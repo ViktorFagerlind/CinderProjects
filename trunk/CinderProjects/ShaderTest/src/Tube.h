@@ -27,8 +27,11 @@ public:
 
     if (angle > 5.f * (float)M_PI / 180.f) // only rotate if angle is greater than threashold
     {
+      m_normal = newTempNormal;
+
       Vec3f rotationAxis = newTempNormal.cross (wantedNormal);
-      m_normal.rotate (rotationAxis, angle*0.2f);
+      m_normal.rotate (rotationAxis, angle*0.3f);
+
       m_normal.normalize ();
     }
 
@@ -50,15 +53,16 @@ public:
 class Tube
 {
 public:
-  class Tube (const Vec3f&    startPosition, 
-              const Vec3f&    startNormal, 
+  class Tube (const Vec3f&    startNormal, 
               const float     startLength,
               const uint32_t  nofSegmentsPerJoint, 
               const uint32_t  nofJoints, 
               const float     jointLength,
               const float     radius);
   
-  void rotate (const Matrix44<float>& rotationMatrix);
+  void setRotation (const Matrix44<float>& rotationMatrix);
+
+  void setPosition (const Vec3f& position);
 	
   void update ();
 	
@@ -85,5 +89,10 @@ private:
   std::vector<Joint> m_Joints;
 
   std::vector<Vec3f> m_drawPoints;
+
+  Vec3f              m_position;
+  Vec3f              m_startNormal;
+
+  Matrix44<float>    m_rotation;
 };
 

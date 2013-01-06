@@ -51,9 +51,6 @@
     <None Include="..\..\Media\Shaders\tube_vert.glsl">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="..\..\Media\Shaders\tube_frag.glsl">
-      <Filter>Source Files\shaders</Filter>
-    </None>
     <None Include="..\..\Media\Shaders\amoeba_frag.glsl">
       <Filter>Source Files\shaders</Filter>
     </None>

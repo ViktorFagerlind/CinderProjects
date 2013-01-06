@@ -2,6 +2,7 @@
 #extension GL_EXT_gpu_shader4 : require
 #extension GL_EXT_geometry_shader4 : require
 
+uniform bool  u_blendSphere;
 
 uniform vec3  u_generalUp;
 uniform vec3  u_point2;
@@ -43,11 +44,14 @@ void drawCylinder (vec3 p1,           // end point 1
     e2 =  w_up2 + w_side2;
 
     gl_Position = gl_ModelViewProjectionMatrix * vec4(p1 + e1 * radius1,1);
-    normal     = e1;
+    if (u_blendSphere)
+      normal = normalize (p1 + e1 * radius1);
+    else
+      normal = normalize (e1);
     EmitVertex();
 
     gl_Position = gl_ModelViewProjectionMatrix * vec4(p2 + e2 * radius2,1);
-    normal     = e2;
+    normal      = normalize (e2);
     EmitVertex();
   }
 }
@@ -82,7 +86,7 @@ void main()
                 side2,
                 u_radius1,
                 u_radius2,
-                12);
+                10);
 
   EndPrimitive ();
 }

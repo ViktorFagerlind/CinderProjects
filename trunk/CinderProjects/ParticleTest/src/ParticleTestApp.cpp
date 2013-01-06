@@ -204,13 +204,13 @@ void ParticleApp::setup()
   mFont = Font( "Quicksand Book Regular", 12.0f );
 
   // Create frame buffer
-  mFrameBuffer = new gl::Fbo (getWindowWidth(), getWindowHeight(), true, true, false);
-/*
+  //mFrameBuffer = new gl::Fbo (getWindowWidth(), getWindowHeight(), true, true, false);
+
   gl::Fbo::Format format;
-	format.setSamples( 4 ); // 4x antialiasing
+	format.setSamples (4); // 4x antialiasing
   format.enableDepthBuffer (false);
 	mFrameBuffer = new gl::Fbo (getWindowWidth(), getWindowHeight(), format);
-*/
+
 
   mCam.setPerspective (60.0f, getWindowAspectRatio(), 100.0f, 5000.0f);
 

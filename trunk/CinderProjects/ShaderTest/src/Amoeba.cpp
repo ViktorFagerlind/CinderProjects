@@ -5,13 +5,14 @@
 #include "cinder/Rand.h"
 #include "cinder/ObjLoader.h"
 
-Amoeba::Amoeba (const float radius)
-: m_radius (radius)
+Amoeba::Amoeba (const float radius, const Vec3f position)
+: m_radius (radius),
+  m_position (position)
 {
-  ColorAf ambient  (0.05f, 0.05f,  0.15f, 1.0f);
-  ColorAf diffuse  (0.2f,  0.4f,   0.6f,  1.0f);
-  ColorAf specular (0.6f,  0.8f,   1.0f,  1.0f);
-  float   shininess = 10.0f;
+  ColorAf ambient  = ColorAf (0.05f, 0.05f,  0.15f, 1.0f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  ColorAf diffuse  = ColorAf (0.2f,  0.4f,   0.6f,  1.0f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  ColorAf specular = ColorAf (0.6f,  0.8f,   1.0f,  1.0f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  float   shininess = Rand::randFloat(5.f, 20.f);
   gl::GlslProg shader;
 
   shader = ShaderHelper::loadShader ("../Media/Shaders/tube_vert.glsl", 
@@ -22,10 +23,13 @@ Amoeba::Amoeba (const float radius)
                                      1024);
   m_tubeMaterial.reset (new PhongMaterial (shader, ambient, diffuse, specular, shininess));
 
-  shader = ShaderHelper::loadShader ("../Media/Shaders/amoeba_vert.glsl", 
+  shader = ShaderHelper::loadShader ("../Media/Shaders/phong_vert.glsl", 
                                      "../Media/Shaders/amoeba_frag.glsl");
   m_bodyMaterial.reset (new PhongMaterial (shader, ambient, diffuse, specular, shininess));
 
+  uint32_t  nofJoints   = Rand::randInt (10,15);
+  float     jointLength = m_radius * Rand::randFloat (0.8f, 1.5f);
+  float     tubeRadius  = m_radius * Rand::randFloat (0.07f, 0.15f);
 
   for (uint32_t i=0; i<30; i++)
   {
@@ -43,19 +47,18 @@ Amoeba::Amoeba (const float radius)
         for (uint32_t j=0; j<i && found; j++)
         {
           float angle = math<float>::acos (m_tubes[j]->getStartNormal ().dot (direction));
-          if (angle < 30.f * (float)M_PI / 180.f)
+          if (angle < 25.f * (float)M_PI / 180.f)
             found = false;
         }
       }
     }
 
-    shared_ptr<Tube>  t(new Tube (Vec3f(0,0,0),  // Start position
-                                  direction,     // Start normal
-                                  m_radius,      // First segment length
-                                  5,             // Number of segments per joint
-                                  8,             // Number of joint
-                                  3,             // Segment lengths
-                                  0.6f));        // Tube radius
+    shared_ptr<Tube>  t(new Tube (direction,                                    // Start normal
+                                  m_radius,                                     // First segment length
+                                  4,                                            // Number of segments per joint
+                                  nofJoints,                                    // Number of joint
+                                  jointLength * Rand::randFloat (.8f, 1.2f),    // Joint lengths
+                                  tubeRadius  * Rand::randFloat (.8f, 1.2f)));  // Tube radius
     m_tubes.push_back (t);
   }
 
@@ -64,30 +67,69 @@ Amoeba::Amoeba (const float radius)
   TriMesh      bodyTriMesh;
   loader.load (&bodyTriMesh);
 	m_bodyMesh = gl::VboMesh (bodyTriMesh);
+
+
+	m_perlin.setSeed (clock ());
+  m_animationCounter = 0.f;
 }
 
 void Amoeba::rotate (const Matrix44<float>& rotationMatrix)
 {
-  for (uint32_t i=0; i<m_tubes.size (); i++)
-    m_tubes[i]->rotate (rotationMatrix);
+  m_rotation *= rotationMatrix;
+}
+
+void Amoeba::move (const Vec3f& offset)
+{
+  m_position += offset;
+}
+
+void Amoeba::animate ()
+{
+  const float speed           = 0.03f;
+  const float gravityStrength = 0.002f;
+  const float rotationsSpeed  = 0.001f;
+
+	Vec3f direction = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter) * 0.005f, 
+                                          (m_position.y + m_animationCounter) * 0.005f,
+                                          (m_position.z + m_animationCounter) * 0.005f));
+
+  move ((direction - m_position * gravityStrength) * speed);
+
+	Vec3f rotation  = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter/2.f) * 0.005f, 
+                                          (m_position.y + m_animationCounter/2.f) * 0.005f,
+                                          (m_position.z + m_animationCounter/2.f) * 0.005f));
+
+  rotate (Matrix44<float>::createRotation (rotation * rotationsSpeed));
+
+  m_animationCounter += 0.02f;
 }
 
 void Amoeba::update ()
 {
   for (uint32_t i=0; i<m_tubes.size (); i++)
+  {
+    animate ();
+
+    m_tubes[i]->setRotation (m_rotation);
+    m_tubes[i]->setPosition (m_position);
+
     m_tubes[i]->update ();
+  }
 }
 
 void Amoeba::draw ()
 {
-  gl::enableDepthRead ();
-  gl::enableDepthWrite ();
-
   m_bodyMaterial->bind ();
 
   gl::pushModelView ();
+
+
+  gl::translate (m_position);
+  gl::multModelView (m_rotation);
+
   gl::enable  (GL_RESCALE_NORMAL);
   gl::scale   (m_radius, m_radius, m_radius);
+
   gl::draw    (m_bodyMesh);
   gl::disable (GL_RESCALE_NORMAL);
 
