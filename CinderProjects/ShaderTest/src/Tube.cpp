@@ -6,18 +6,19 @@
 #include "cinder/Rand.h"
 #include "cinder/CinderMath.h"
 
-Tube::Tube (const Vec3f&    startPosition, 
-            const Vec3f&    startNormal, 
+Tube::Tube (const Vec3f&    startNormal, 
             const float     startLength,
             const uint32_t  nofSegmentsPerJoint, 
             const uint32_t  nofJoints, 
             const float     jointLength,
             const float     radius)
 : m_nofSegmentsPerJoint (nofSegmentsPerJoint),
-  m_radius (radius)
+  m_radius              (radius),
+  m_position            (Vec3f(0,0,0)),
+  m_startNormal         (startNormal)
 {
   // Create initial joints
-  m_Joints.push_back (Joint (startPosition, startNormal, startLength));
+  m_Joints.push_back (Joint (m_position, m_startNormal, startLength));
   for (uint32_t i=1; i<nofJoints; i++)
   {
     m_Joints.push_back (Joint (m_Joints[i-1].getEndPosition (),
@@ -30,16 +31,22 @@ Tube::Tube (const Vec3f&    startPosition,
   m_drawPoints.resize (m_nofSegmentsPerJoint * nofJoints);
 }
 
-void Tube::rotate (const Matrix44<float>& rotationMatrix)
+void Tube::setRotation (const Matrix44<float>& rotationMatrix)
 {
-  m_Joints[0].m_position = rotationMatrix * m_Joints[0].m_position;
-  m_Joints[0].m_normal   = rotationMatrix * m_Joints[0].m_normal;
+  m_rotation = rotationMatrix;
 }
 
+void Tube::setPosition (const Vec3f& position)
+{
+  m_position = position;
+}
 
 void Tube::update ()
 {
   // Note that the first joint is never updated, it is stuck on the body
+
+  m_Joints[0].m_position = Matrix44<float>::createTranslation (m_position) * m_rotation * Vec3f(0,0,0);
+  m_Joints[0].m_normal   = m_rotation * m_startNormal;
 
   for (uint32_t i=1; i<m_Joints.size (); i++)
     m_Joints[i].update (m_Joints[i-1].getEndPosition (), m_Joints[i-1].m_normal);
@@ -72,11 +79,11 @@ void Tube::drawSegment (const Vec3f&  point1,
 
     shader.unbind ();
     gl::color (1,0,0);
-    gl::drawVector (point1, point1 + planeNormal1);
+    gl::drawLine (point1, point1 + planeNormal1);
     gl::color (0,1,0);
-    gl::drawVector (point1, point1 + up1);
+    gl::drawLine (point1, point1 + up1);
     gl::color (0,0,1);
-    gl::drawVector (point1, point1 + side1);
+    gl::drawLine (point1, point1 + side1);
     shader.bind ();
 #endif
 
@@ -118,7 +125,7 @@ void Tube::draw (gl::GlslProg& shader)
   for (uint32_t i=0; i<m_Joints.size () - 1; i++)
   {
     gl::color (1,1,0);
-    gl::drawVector (m_Joints[i].m_position, m_Joints[i+1].m_position);
+    gl::drawLine (m_Joints[i].m_position, m_Joints[i+1].m_position);
   }
   shader.bind ();
 #endif
@@ -138,16 +145,18 @@ void Tube::draw (gl::GlslProg& shader)
 
     if (i==0)
     {
+      shader.uniform ("u_blendSphere", true);
       radius1      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, 0.f);
       planeNormal1 = currentToNext.normalized ();
     }
     else
     {
+      shader.uniform ("u_blendSphere", false);
       radius1      = radius2;
       planeNormal1 = planeNormal2;
     }
 
-    radius2      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.2f)/((float)nofPoints*1.2f));
+    radius2      = VfBSpline::calc1D (m_radius*5.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.2f)/((float)nofPoints*1.2f));
     planeNormal2 = (currentToNext + nextToNextNext).normalized ();
 
     drawSegment (m_drawPoints[i], 

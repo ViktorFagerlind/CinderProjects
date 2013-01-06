@@ -1,5 +1,6 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Fbo.h"
 #include "cinder/Rand.h"
 #include "cinder/gl/Vbo.h"
 #include "cinder/ObjLoader.h"
@@ -10,6 +11,10 @@
 #include "Macros.h"
 #include "Miscellaneous.h"
 #include "Tube.h"
+
+#include "cinder/qtime/MovieWriter.h"
+#include "cinder/ip/Flip.h"
+
 
 using namespace ci;
 using namespace ci::app;
@@ -28,12 +33,18 @@ public:
 private:
   shared_ptr<MovingCamera> mCamera;
 
-  bool mPaused;
-  bool mWireFrameMode;
+  bool    m_paused;
+  bool    m_savingVideo;
+  bool    m_wireFrameMode;
 
-  shared_ptr<Amoeba> mAmoeba;
+  unique_ptr<gl::Fbo>             m_frameBuffer;
 
-  uint32_t frameCount;
+  std::vector<shared_ptr<Amoeba>> m_amoebas;
+
+  qtime::MovieWriter	            m_movieWriter;
+
+
+  uint32_t m_frameCount;
 };
 
 void ShaderTestApp::prepareSettings (Settings *settings)
@@ -57,16 +68,27 @@ void ShaderTestApp::setup()
 	glLightfv(GL_LIGHT0, GL_POSITION, p1);
 	glEnable (GL_LIGHT0);
 
-  gl::enableDepthRead ();
-  gl::enableDepthWrite ();
+  mCamera.reset (new MovingCamera(130.0f, 1.0f));
 
-  mCamera.reset (new MovingCamera(50.0f, 1.0f));
+  m_amoebas.push_back (shared_ptr<Amoeba> (new Amoeba (5.f, Vec3f(0,0,0))));
+  for (uint32_t i=0; i<10; i++)
+  {
+    shared_ptr<Amoeba> amoeba(new Amoeba (Rand::randFloat(4.f,6.f),             // Size
+                                          Vec3f(Rand::randFloat(-100,100),     // Position
+                                                Rand::randFloat(-100,100),
+                                                Rand::randFloat(-100,100))));
 
-  mAmoeba.reset (new Amoeba (5.f));
+    m_amoebas.push_back (amoeba);
+  }
 
-  frameCount     = 0;
-  mWireFrameMode = false;
-  mPaused        = false;
+  gl::Fbo::Format format;
+	format.setSamples (16); // 8x antialiasing
+  m_frameBuffer.reset (new gl::Fbo (getWindowWidth(), getWindowHeight(), format));
+
+  m_frameCount        = 0;
+  m_wireFrameMode     = false;
+  m_paused            = false;
+  m_savingVideo       = false;
 }
 
 
@@ -77,28 +99,50 @@ void ShaderTestApp::keyDown (KeyEvent event)
   switch (c)
   {
   case 'w':
-    if (mWireFrameMode)
-      gl::disableWireframe ();
-    else
-      gl::enableWireframe ();
-
-    mWireFrameMode = !mWireFrameMode;
+    m_wireFrameMode = !m_wireFrameMode;
     break;
   case 'p':
-    mPaused = !mPaused;
+    m_paused = !m_paused;
     break;
+
+  case 'v':
+  {
+    m_savingVideo = true;
+
+	  qtime::MovieWriter::Format format;
+    std::string dir = "D:\\Libraries\\Documents\\Programming\\CppGraphics\\Cinder\\CinderProjects\\Release\\";
+
+	  if (qtime::MovieWriter::getUserCompressionSettings (&format, loadImage ("../Media/Images/flare.png")))
+		  m_movieWriter = qtime::MovieWriter (dir + "saveVideo.mov", 1280, 768, format);
+
+    break;
+  }
   case 'x':
-    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1),  5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1),  5.f * (float)M_PI / 180.f));
     break;
   case 'c':
-    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1), -5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1), -5.f * (float)M_PI / 180.f));
     break;
   case 'a':
-    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0),  5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0),  5.f * (float)M_PI / 180.f));
     break;
   case 'z':
-    mAmoeba->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0), -5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0), -5.f * (float)M_PI / 180.f));
     break;
+
+  case 'f':
+    m_amoebas[0]->move (Vec3f(-10,  0, 0));
+    break;
+  case 'h':
+    m_amoebas[0]->move (Vec3f( 10,  0, 0));
+    break;
+  case 't':
+    m_amoebas[0]->move (Vec3f(  0, 10, 0));
+    break;
+  case 'g':
+    m_amoebas[0]->move (Vec3f(  0,-10, 0));
+    break;
+
   }
 
   mCamera->keyDown (event);
@@ -112,27 +156,67 @@ void ShaderTestApp::mouseMove (MouseEvent event)
 
 void ShaderTestApp::update()
 {
-  if (mPaused)
+  if (m_paused)
     return;
 
-  mAmoeba->update ();
+  for (uint32_t i=0; i<m_amoebas.size (); i++)
+    m_amoebas[i]->update ();
+
 }
 
 void ShaderTestApp::draw()
 {
+  // Draw to frame buffer from now on
+  m_frameBuffer->bindFramebuffer();
+
+  gl::enableDepthRead ();
+  gl::enableDepthWrite ();
+
+  if (m_wireFrameMode)
+    gl::enableWireframe ();
+
 	// clear out the window with black
-	gl::clear (Color (0, 0, 0)); 
+	gl::clear (Color (0.03, 0.05, 0.07)); 
+
+  gl::pushMatrices();
 
   // Setup camera
   mCamera->setMatrices ();
 
-  mAmoeba->draw ();
+  for (uint32_t i=0; i<m_amoebas.size (); i++)
+    m_amoebas[i]->draw ();
 
   Misc::CheckForOpenGlError ();
 
-  frameCount++;
-  if ((frameCount % 10) == 0)
+  gl::popMatrices();
+
+  m_frameBuffer->unbindFramebuffer();
+
+  m_frameCount++;
+  if ((m_frameCount % 10) == 0)
     console() << "FPS: " << getAverageFps() << std::endl;
+
+  gl::disableWireframe ();
+
+  gl::disableDepthRead ();
+
+  gl::setMatricesWindow (getWindowSize (), false);
+  gl::draw (m_frameBuffer->getTexture(), m_frameBuffer->getTexture().getBounds(), getWindowBounds());
+
+  // Save video
+  if (m_savingVideo)
+  {
+    static int currentImage = 0;
+    if ((currentImage%2) == 0)
+    {
+      Surface surface (m_frameBuffer->getTexture());
+      ip::flipVertical (&surface);
+
+      if (m_savingVideo)
+        m_movieWriter.addFrame (surface);
+    }
+    currentImage++;
+  }
 }
 
 CINDER_APP_BASIC( ShaderTestApp, RendererGl )
