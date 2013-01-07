@@ -11,6 +11,7 @@
 #include "Macros.h"
 #include "Miscellaneous.h"
 #include "Tube.h"
+#include "BloomEffect.h"
 
 #include "cinder/qtime/MovieWriter.h"
 #include "cinder/ip/Flip.h"
@@ -43,13 +44,15 @@ private:
 
   qtime::MovieWriter	            m_movieWriter;
 
+  shared_ptr<BloomEffect>         m_bloomEffect;
 
   uint32_t m_frameCount;
 };
 
 void ShaderTestApp::prepareSettings (Settings *settings)
 {
-  settings->setWindowSize (1600, 1000);
+  settings->setWindowSize (1280, 1024);
+  settings->setFullScreen ();
 }
 
 void ShaderTestApp::setup()
@@ -85,10 +88,15 @@ void ShaderTestApp::setup()
 	format.setSamples (16); // 8x antialiasing
   m_frameBuffer.reset (new gl::Fbo (getWindowWidth(), getWindowHeight(), format));
 
+  m_bloomEffect.reset (new BloomEffect (getWindowWidth()/4, getWindowHeight()/4, getWindowWidth(), getWindowHeight()));
+
   m_frameCount        = 0;
   m_wireFrameMode     = false;
   m_paused            = false;
   m_savingVideo       = false;
+
+  hideCursor ();
+
 }
 
 
@@ -101,6 +109,17 @@ void ShaderTestApp::keyDown (KeyEvent event)
   case 'w':
     m_wireFrameMode = !m_wireFrameMode;
     break;
+
+  case 'f':
+  {
+    setFullScreen (!isFullScreen ());
+
+    gl::Fbo::Format format;
+	  format.setSamples (16); // 8x antialiasing
+    m_frameBuffer.reset (new gl::Fbo (getWindowWidth(), getWindowHeight(), format));
+    m_bloomEffect.reset (new BloomEffect (getWindowWidth()/4, getWindowHeight()/4, getWindowWidth(), getWindowHeight()));
+    break;
+  }  
   case 'p':
     m_paused = !m_paused;
     break;
@@ -117,6 +136,7 @@ void ShaderTestApp::keyDown (KeyEvent event)
 
     break;
   }
+#if 0
   case 'x':
     m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1),  5.f * (float)M_PI / 180.f));
     break;
@@ -142,7 +162,7 @@ void ShaderTestApp::keyDown (KeyEvent event)
   case 'g':
     m_amoebas[0]->move (Vec3f(  0,-10, 0));
     break;
-
+#endif
   }
 
   mCamera->keyDown (event);
@@ -151,7 +171,7 @@ void ShaderTestApp::keyDown (KeyEvent event)
 
 void ShaderTestApp::mouseMove (MouseEvent event)
 {
-  mCamera->mouseMove (event);
+  // mCamera->mouseMove (event);
 }
 
 void ShaderTestApp::update()
@@ -192,6 +212,20 @@ void ShaderTestApp::draw()
 
   m_frameBuffer->unbindFramebuffer();
 
+
+
+  // Get blooming effect
+  gl::Fbo& bloomedFbo = m_bloomEffect->render (*m_frameBuffer.get());
+
+  // Draw blooming effect
+  m_frameBuffer->bindFramebuffer ();
+  gl::setMatricesWindow (getWindowSize (), false);
+	gl::enableAdditiveBlending();
+  gl::color (1, 1, 1, 0.7f);
+	gl::draw (bloomedFbo.getTexture(), bloomedFbo.getTexture().getBounds(), getWindowBounds());
+	gl::disableAlphaBlending();
+  m_frameBuffer->unbindFramebuffer ();
+
   m_frameCount++;
   if ((m_frameCount % 10) == 0)
     console() << "FPS: " << getAverageFps() << std::endl;
@@ -202,6 +236,7 @@ void ShaderTestApp::draw()
 
   gl::setMatricesWindow (getWindowSize (), false);
   gl::draw (m_frameBuffer->getTexture(), m_frameBuffer->getTexture().getBounds(), getWindowBounds());
+
 
   // Save video
   if (m_savingVideo)
