@@ -9,9 +9,9 @@ Amoeba::Amoeba (const float radius, const Vec3f position)
 : m_radius (radius),
   m_position (position)
 {
-  ColorAf ambient  = ColorAf (0.05f, 0.05f,  0.15f, 1.0f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
-  ColorAf diffuse  = ColorAf (0.2f,  0.4f,   0.6f,  1.0f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
-  ColorAf specular = ColorAf (0.6f,  0.8f,   1.0f,  1.0f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  ColorAf ambient  = ColorAf (0.05f, 0.05f,  0.15f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  ColorAf diffuse  = ColorAf (0.15f, 0.35f,  0.50f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  ColorAf specular = ColorAf (0.50f, 0.70f,  0.90f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
   float   shininess = Rand::randFloat(5.f, 20.f);
   gl::GlslProg shader;
 
@@ -28,7 +28,7 @@ Amoeba::Amoeba (const float radius, const Vec3f position)
   m_bodyMaterial.reset (new PhongMaterial (shader, ambient, diffuse, specular, shininess));
 
   uint32_t  nofJoints   = Rand::randInt (10,15);
-  float     jointLength = m_radius * Rand::randFloat (0.8f, 1.5f);
+  float     jointLength = m_radius * Rand::randFloat (0.9f, 1.7f);
   float     tubeRadius  = m_radius * Rand::randFloat (0.07f, 0.15f);
 
   for (uint32_t i=0; i<30; i++)
@@ -54,7 +54,7 @@ Amoeba::Amoeba (const float radius, const Vec3f position)
     }
 
     shared_ptr<Tube>  t(new Tube (direction,                                    // Start normal
-                                  m_radius,                                     // First segment length
+                                  m_radius*0.8f,                                // First segment length
                                   4,                                            // Number of segments per joint
                                   nofJoints,                                    // Number of joint
                                   jointLength * Rand::randFloat (.8f, 1.2f),    // Joint lengths
