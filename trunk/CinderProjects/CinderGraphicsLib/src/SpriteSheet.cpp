@@ -37,14 +37,14 @@ void SpriteSheet::draw()
 	gl::scale(scale,scale,1.0);
 
 	float u = (float)frame.x;
-	float v = frame.y;
+	float v = (float)frame.y;
    // v += frame.h;
     //v = frame.oH - v;
-    float s = u + frame.w;
-    float t = v + frame.h;
+  float s = u + (float)frame.w;
+  float t = v + (float)frame.h;
 
 	bool textureRectangle = true;
-	ci::Rectf rect(frame.oX,frame.oY,frame.oX+frame.w, frame.oY+frame.h);
+	ci::Rectf rect((float)frame.oX,(float)frame.oY,(float)(frame.oX+frame.w), (float)(frame.oY+frame.h));
 
 	GLfloat verts[8];
 	GLfloat texCoords[8];
