@@ -384,6 +384,7 @@
     <ClInclude Include="include\SpriteData.h" />
     <ClInclude Include="include\SpriteDataParser.h" />
     <ClInclude Include="include\SpriteSheet.h" />
+    <ClInclude Include="include\VfBaseApp.h" />
     <ClInclude Include="include\VideoEmitter.h" />
     <ClInclude Include="include\VortexModifier.h" />
     <ClInclude Include="resource.h" />
@@ -416,6 +417,7 @@
     <ClCompile Include="src\PhongMaterial.cpp" />
     <ClCompile Include="src\SpriteDataParser.cpp" />
     <ClCompile Include="src\SpriteSheet.cpp" />
+    <ClCompile Include="src\VfBaseApp.cpp" />
     <ClCompile Include="src\VideoEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
