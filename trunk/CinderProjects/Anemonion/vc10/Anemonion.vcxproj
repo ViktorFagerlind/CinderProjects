@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F6ACC654-B782-4705-912D-706E7C8E711A}</ProjectGuid>
-    <RootNamespace>ShaderTestApp</RootNamespace>
+    <RootNamespace>AnemonionApp</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -105,7 +105,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Amoeba.cpp" />
-    <ClCompile Include="..\src\ShaderTestApp.cpp" />
+    <ClCompile Include="..\src\AnemonionApp.cpp" />
     <ClCompile Include="..\src\Tube.cpp" />
   </ItemGroup>
   <ItemGroup>

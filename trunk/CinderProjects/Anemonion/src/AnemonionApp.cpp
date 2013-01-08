@@ -19,7 +19,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class ShaderTestApp : public VfBaseApp 
+class AnemonionApp : public VfBaseApp 
 {
 public:
 	void setup();
@@ -35,7 +35,7 @@ private:
   shared_ptr<BloomEffect>         m_bloomEffect;
 };
 
-void ShaderTestApp::setup()
+void AnemonionApp::setup()
 {
   VfBaseApp::setup (130.0f, 1.0f);
 
@@ -71,7 +71,7 @@ void ShaderTestApp::setup()
 }
 
 
-void ShaderTestApp::keyDown (KeyEvent event)
+void AnemonionApp::keyDown (KeyEvent event)
 {
   VfBaseApp::keyDown (event);
 
@@ -122,7 +122,7 @@ void ShaderTestApp::keyDown (KeyEvent event)
 }
 
 
-void ShaderTestApp::update()
+void AnemonionApp::update()
 {
   if (m_paused)
     return;
@@ -132,13 +132,13 @@ void ShaderTestApp::update()
 
 }
 
-void ShaderTestApp::draw()
+void AnemonionApp::draw()
 {
   // Draw to frame buffer from now on
   m_frameBuffer->bindFramebuffer();
 
 	// clear the window with black
-	gl::clear (Color (0.03, 0.05, 0.07)); 
+	gl::clear (Color (0.03f, 0.05f, 0.07f)); 
 
   gl::enableDepthRead ();
   gl::enableDepthWrite ();
@@ -171,4 +171,4 @@ void ShaderTestApp::draw()
   VfBaseApp::drawToScreen ();
 }
 
-CINDER_APP_BASIC( ShaderTestApp, RendererGl )
+CINDER_APP_BASIC( AnemonionApp, RendererGl )
