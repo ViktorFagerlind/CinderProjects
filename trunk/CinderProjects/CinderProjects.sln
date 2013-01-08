@@ -44,6 +44,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletTest", "BulletTest\vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Anemonion", "Anemonion\vc10\Anemonion.vcxproj", "{F6ACC654-B782-4705-912D-706E7C8E711A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VegetationPlanet", "VegetationPlanet\vc10\VegetationPlanet.vcxproj", "{479ECC84-1896-4746-8C95-BCD7D3169ACF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -90,6 +92,10 @@ Global
 		{F6ACC654-B782-4705-912D-706E7C8E711A}.Debug|Win32.Build.0 = Debug|Win32
 		{F6ACC654-B782-4705-912D-706E7C8E711A}.Release|Win32.ActiveCfg = Release|Win32
 		{F6ACC654-B782-4705-912D-706E7C8E711A}.Release|Win32.Build.0 = Release|Win32
+		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Debug|Win32.Build.0 = Debug|Win32
+		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Release|Win32.ActiveCfg = Release|Win32
+		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
