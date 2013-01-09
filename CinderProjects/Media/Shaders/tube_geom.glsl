@@ -10,6 +10,7 @@ uniform vec3  u_planeNormal1;
 uniform vec3  u_planeNormal2;
 uniform float u_radius1;
 uniform float u_radius2;
+uniform int   u_nofSegments;
 
 varying in  vec3 vLightDir[1];
 varying in  vec3 vEyeVec[1];
@@ -86,7 +87,7 @@ void main()
                 side2,
                 u_radius1,
                 u_radius2,
-                10);
+                u_nofSegments);
 
   EndPrimitive ();
 }

@@ -136,7 +136,8 @@ void Tube::draw (gl::GlslProg& shader)
   float radius1;
   float radius2;
 
-  shader.uniform ("u_generalUp", upDirection);
+  shader.uniform ("u_generalUp",   upDirection);
+  shader.uniform ("u_nofSegments", 10);
 
   for (uint32_t i=0; i<nofPoints - 2; i++)
   {
