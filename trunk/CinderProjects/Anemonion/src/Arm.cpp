@@ -1,4 +1,4 @@
-#include "Tube.h"
+#include "Arm.h"
 
 #include "BSpline.h"
 #include "MiscMath.h"
@@ -8,12 +8,12 @@
 #include "cinder/Rand.h"
 #include "cinder/CinderMath.h"
 
-Tube::Tube (const Vec3f&    startNormal, 
-            const float     startLength,
-            const uint32_t  nofSegmentsPerJoint, 
-            const uint32_t  nofJoints, 
-            const float     jointLength,
-            const float     radius)
+Arm::Arm (const Vec3f&    startNormal, 
+          const float     startLength,
+          const uint32_t  nofSegmentsPerJoint, 
+          const uint32_t  nofJoints, 
+          const float     jointLength,
+          const float     radius)
 : m_nofSegmentsPerJoint (nofSegmentsPerJoint),
   m_radius              (radius),
   m_position            (Vec3f(0,0,0)),
@@ -33,17 +33,17 @@ Tube::Tube (const Vec3f&    startNormal,
   m_drawPoints.resize (m_nofSegmentsPerJoint * nofJoints);
 }
 
-void Tube::setRotation (const Matrix44<float>& rotationMatrix)
+void Arm::setRotation (const Matrix44<float>& rotationMatrix)
 {
   m_rotation = rotationMatrix;
 }
 
-void Tube::setPosition (const Vec3f& position)
+void Arm::setPosition (const Vec3f& position)
 {
   m_position = position;
 }
 
-void Tube::update ()
+void Arm::update ()
 {
   // Note that the first joint is never updated, it is stuck on the body
 
@@ -56,7 +56,7 @@ void Tube::update ()
 }
 
 	
-void Tube::draw (gl::GlslProg& shader)
+void Arm::draw (gl::GlslProg& shader)
 {
   // Create all the points along the b-spline joints
   uint32_t nofPoints = 0;
