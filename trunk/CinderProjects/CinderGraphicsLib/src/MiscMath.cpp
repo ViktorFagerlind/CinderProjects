@@ -32,3 +32,8 @@ Vec3f MiscMath::getRandomDirection ()
                 cos (xyPlaneAngle) * sin (zAxisAngle),
                 randomNormedZ);
 }
+
+Vec3f MiscMath::projectOnPlane (const Vec3f& n, const Vec3f& v)
+{
+  return v - n * n.dot (v);
+}

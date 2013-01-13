@@ -14,4 +14,9 @@ public:
                              Vec3f &tangent);
 
   static Vec3f getRandomDirection ();
+
+  // Projects v onto a plane with normal n
+  // n must be of unity length
+  static Vec3f projectOnPlane (const Vec3f& n, const Vec3f& v);
+
 };

@@ -54,7 +54,7 @@ void AnemonionApp::setup()
 	glEnable (GL_LIGHT0);
 
   m_amoebas.push_back (shared_ptr<Amoeba> (new Amoeba (5.f, Vec3f(0,0,0))));
-  for (uint32_t i=0; i<10; i++)
+  for (uint32_t i=0; i<15; i++)
   {
     shared_ptr<Amoeba> amoeba(new Amoeba (Rand::randFloat(4.f,6.f),             // Size
                                           Vec3f(Rand::randFloat(-100,100),     // Position

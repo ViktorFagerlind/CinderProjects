@@ -43,8 +43,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletTest", "BulletTest\vc
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Anemonion", "Anemonion\vc10\Anemonion.vcxproj", "{F6ACC654-B782-4705-912D-706E7C8E711A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VegetationPlanet", "VegetationPlanet\vc10\VegetationPlanet.vcxproj", "{479ECC84-1896-4746-8C95-BCD7D3169ACF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

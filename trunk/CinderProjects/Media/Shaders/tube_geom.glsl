@@ -3,14 +3,15 @@
 #extension GL_EXT_geometry_shader4 : require
 
 uniform bool  u_blendSphere;
-
 uniform vec3  u_generalUp;
-uniform vec3  u_point2;
-uniform vec3  u_planeNormal1;
-uniform vec3  u_planeNormal2;
-uniform float u_radius1;
-uniform float u_radius2;
 uniform int   u_nofSegments;
+
+varying in vec3  v_point2[1];
+varying in vec3  v_planeNormal1[1];
+varying in vec3  v_planeNormal2[1];
+varying in float v_radius1[1];
+varying in float v_radius2[1];
+
 
 varying in  vec3 vLightDir[1];
 varying in  vec3 vEyeVec[1];
@@ -73,20 +74,20 @@ void main()
 
   vec3 up1, up2, side1, side2;
 
-  up1   = normalize (projectOnPlane (u_planeNormal1, u_generalUp));
-  side1 = normalize (cross (u_planeNormal1, up1));
+  up1   = normalize (projectOnPlane (v_planeNormal1[0], u_generalUp));
+  side1 = normalize (cross (v_planeNormal1[0], up1));
 
-  up2   = normalize (projectOnPlane (u_planeNormal2, u_generalUp));
-  side2 = normalize (cross (u_planeNormal2, up2));
+  up2   = normalize (projectOnPlane (v_planeNormal2[0], u_generalUp));
+  side2 = normalize (cross (v_planeNormal2[0], up2));
 
   drawCylinder (gl_PositionIn[0].xyz, 
-                u_point2,
+                v_point2[0],
                 up1,
                 up2,
                 side1,
                 side2,
-                u_radius1,
-                u_radius2,
+                v_radius1[0],
+                v_radius2[0],
                 u_nofSegments);
 
   EndPrimitive ();

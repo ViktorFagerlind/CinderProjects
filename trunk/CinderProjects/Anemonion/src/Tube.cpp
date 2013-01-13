@@ -1,6 +1,8 @@
 #include "Tube.h"
 
 #include "BSpline.h"
+#include "MiscMath.h"
+#include "TubeDrawer.h"
 
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
@@ -53,58 +55,9 @@ void Tube::update ()
 
 }
 
-#ifdef _DEBUG
-// Projects v onto a plane with normal n
-// n must be of unity length
-Vec3f projectOnPlane (const Vec3f& n, const Vec3f& v)
-{
-  return v - n * n.dot (v);
-}
-#endif
-
-void Tube::drawSegment (const Vec3f&  point1, 
-                        const Vec3f&  point2,
-                        const Vec3f&  planeNormal1, 
-                        const Vec3f&  planeNormal2,
-                        const float   radius1, 
-                        const float   radius2,
-                        const Vec3f&  upDirection,
-                        gl::GlslProg& shader)
-{
-#ifdef _DEBUG
-    Vec3f up1, side1;
-
-    up1   = projectOnPlane (planeNormal1, upDirection).normalized ();
-    side1 = planeNormal1.cross (up1).normalized();
-
-    shader.unbind ();
-    gl::color (1,0,0);
-    gl::drawLine (point1, point1 + planeNormal1);
-    gl::color (0,1,0);
-    gl::drawLine (point1, point1 + up1);
-    gl::color (0,0,1);
-    gl::drawLine (point1, point1 + side1);
-    shader.bind ();
-#endif
-
-    shader.uniform ("u_point2",       point2);
-    shader.uniform ("u_planeNormal1", planeNormal1);
-    shader.uniform ("u_planeNormal2", planeNormal2);
-    shader.uniform ("u_radius1",      radius1);
-    shader.uniform ("u_radius2",      radius2);
-
-    gl::begin  (GL_POINTS);
-    gl::vertex (point1);
-    gl::end    ();
-}
 	
 void Tube::draw (gl::GlslProg& shader)
 {
-  // Choose a general direction for the "up" vector so that it is perpendicular to the 
-  // general layout of the entire line, in that way the face normals are less likely 
-  // to be aligned to the direction (which is not good when projecting on that plane)
-  Vec3f upDirection = Vec3f (0,0,1).cross (m_Joints[m_Joints.size()-1].m_position - m_Joints[0].m_position);
-
   // Create all the points along the b-spline joints
   uint32_t nofPoints = 0;
   for (uint32_t i=0; i<m_Joints.size () - 3; i++)
@@ -120,53 +73,51 @@ void Tube::draw (gl::GlslProg& shader)
     }
   }
 
-#ifdef _DEBUG
-  shader.unbind ();
-  for (uint32_t i=0; i<m_Joints.size () - 1; i++)
-  {
-    gl::color (1,1,0);
-    gl::drawLine (m_Joints[i].m_position, m_Joints[i+1].m_position);
-  }
-  shader.bind ();
-#endif
+  m_normals.resize (nofPoints-1);
+  m_radie.resize   (nofPoints-1);
 
-  // Draw the tube along the b-spline route
-  Vec3f planeNormal1;
-  Vec3f planeNormal2;
-  float radius1;
-  float radius2;
-
-  shader.uniform ("u_generalUp",   upDirection);
-  shader.uniform ("u_nofSegments", 10);
+  m_radie[0]   = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, 0.f);
+  m_normals[0] = (m_drawPoints[1] - m_drawPoints[0]).normalized ();
 
   for (uint32_t i=0; i<nofPoints - 2; i++)
   {
     Vec3f currentToNext  = m_drawPoints[i+1] - m_drawPoints[i];
     Vec3f nextToNextNext = m_drawPoints[i+2] - m_drawPoints[i+1];
 
-    if (i==0)
-    {
-      shader.uniform ("u_blendSphere", true);
-      radius1      = VfBSpline::calc1D (m_radius*10.f, m_radius, 0.f, 0.f, 0.f);
-      planeNormal1 = currentToNext.normalized ();
-    }
-    else
-    {
-      shader.uniform ("u_blendSphere", false);
-      radius1      = radius2;
-      planeNormal1 = planeNormal2;
-    }
-
-    radius2      = VfBSpline::calc1D (m_radius*5.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.2f)/((float)nofPoints*1.2f));
-    planeNormal2 = (currentToNext + nextToNextNext).normalized ();
-
-    drawSegment (m_drawPoints[i], 
-                 m_drawPoints[i+1],
-                 planeNormal1, 
-                 planeNormal2,
-                 radius1,
-                 radius2,
-                 upDirection,
-                 shader);
+    m_radie[i+1]   = VfBSpline::calc1D (m_radius*5.f, m_radius, 0.f, 0.f, (float)(i+(float)nofPoints*0.2f)/((float)nofPoints*1.2f));
+    m_normals[i+1] = (currentToNext + nextToNextNext).normalized ();
   }
+
+  // Choose a general direction for the "up" vector so that it is perpendicular to the 
+  // general layout of the entire line, in that way the face normals are less likely 
+  // to be aligned to the direction (which is not good when projecting on that plane)
+  Vec3f upDirection = Vec3f (0,0,1).cross (m_Joints[m_Joints.size()-1].m_position - m_Joints[0].m_position);
+
+  TubeDrawer::draw (shader, 
+                    upDirection,
+                    true,
+                    7,
+                    m_drawPoints.data (),
+                    m_normals.data (),
+                    m_radie.data (),
+                    nofPoints - 1);
+
+  
+#ifdef _DEBUG
+  shader.unbind ();
+
+  for (uint32_t i=0; i<m_Joints.size () - 1; i++)
+  {
+    gl::color (1,1,0);
+    gl::drawLine (m_Joints[i].m_position, m_Joints[i+1].m_position);
+  }
+
+  TubeDrawer::debugDraw (upDirection,
+                         m_drawPoints.data (), 
+                         m_normals.data (), 
+                         m_radie.data (),
+                         nofPoints - 1);
+  shader.bind ();
+#endif
+  
 }
