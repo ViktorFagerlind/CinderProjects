@@ -72,23 +72,14 @@ public:
 
 private:
 
-	void drawSegment (const Vec3f&  point1, 
-                    const Vec3f&  point2,
-                    const Vec3f&  planeNormal1, 
-                    const Vec3f&  planeNormal2,
-                    const float   radius1, 
-                    const float   radius2,
-                    const Vec3f&  upDirection,
-                    gl::GlslProg& shader);
-
-private:
-
   const uint32_t m_nofSegmentsPerJoint;
   const float    m_radius;
 
   std::vector<Joint> m_Joints;
 
   std::vector<Vec3f> m_drawPoints;
+  std::vector<Vec3f> m_normals;
+  std::vector<float> m_radie;
 
   Vec3f              m_position;
   Vec3f              m_startNormal;

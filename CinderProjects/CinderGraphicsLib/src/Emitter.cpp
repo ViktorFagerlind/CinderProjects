@@ -177,7 +177,7 @@ void Emitter::drawPointSprite()
 	glVertexPointer( 3, GL_FLOAT, 0, mVerticies);
 	glColorPointer( 4, GL_FLOAT, 0, mColors);
 
-	glEnableClientState( GL_COLOR_ARRAY );
+	glEnableClientState (GL_COLOR_ARRAY);
 	glEnableClientState (GL_VERTEX_ARRAY);
 
 	glDrawArrays (GL_POINTS, 0, mParticleCount);

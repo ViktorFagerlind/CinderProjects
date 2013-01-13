@@ -49,5 +49,8 @@
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="..\..\Media\Shaders\pointSprite_vert.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

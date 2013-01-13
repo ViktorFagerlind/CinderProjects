@@ -360,6 +360,7 @@
     <ClInclude Include="include\AreaEmitter.h" />
     <ClInclude Include="include\BaseMaterial.h" />
     <ClInclude Include="include\BloomEffect.h" />
+    <ClInclude Include="include\BSpline.h" />
     <ClInclude Include="include\BumpMaterial.h" />
     <ClInclude Include="include\ColorModifier.h" />
     <ClInclude Include="include\CommonModifier.h" />
@@ -384,6 +385,7 @@
     <ClInclude Include="include\SpriteData.h" />
     <ClInclude Include="include\SpriteDataParser.h" />
     <ClInclude Include="include\SpriteSheet.h" />
+    <ClInclude Include="include\TubeDrawer.h" />
     <ClInclude Include="include\VfBaseApp.h" />
     <ClInclude Include="include\VideoEmitter.h" />
     <ClInclude Include="include\VortexModifier.h" />
@@ -417,6 +419,7 @@
     <ClCompile Include="src\PhongMaterial.cpp" />
     <ClCompile Include="src\SpriteDataParser.cpp" />
     <ClCompile Include="src\SpriteSheet.cpp" />
+    <ClCompile Include="src\TubeDrawer.cpp" />
     <ClCompile Include="src\VfBaseApp.cpp" />
     <ClCompile Include="src\VideoEmitter.cpp" />
   </ItemGroup>

@@ -1002,6 +1002,12 @@
     <ClInclude Include="include\VfBaseApp.h">
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="include\BSpline.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TubeDrawer.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SpriteDataParser.cpp">
@@ -1053,6 +1059,9 @@
       <Filter>Source Files\Material</Filter>
     </ClCompile>
     <ClCompile Include="src\VfBaseApp.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TubeDrawer.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
