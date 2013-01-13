@@ -50,15 +50,15 @@ public:
   Vec3f       m_position;
 };
 
-class Tube
+class Arm
 {
 public:
-  class Tube (const Vec3f&    startNormal, 
-              const float     startLength,
-              const uint32_t  nofSegmentsPerJoint, 
-              const uint32_t  nofJoints, 
-              const float     jointLength,
-              const float     radius);
+  class Arm (const Vec3f&    startNormal, 
+             const float     startLength,
+             const uint32_t  nofSegmentsPerJoint, 
+             const uint32_t  nofJoints, 
+             const float     jointLength,
+             const float     radius);
   
   void setRotation (const Matrix44<float>& rotationMatrix);
 

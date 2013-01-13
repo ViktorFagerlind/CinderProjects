@@ -21,10 +21,10 @@
     <ClCompile Include="..\src\AnemonionApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Tube.cpp">
+    <ClCompile Include="..\src\Amoeba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Amoeba.cpp">
+    <ClCompile Include="..\src\Arm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Tube.h">
+    <ClInclude Include="..\src\Amoeba.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Amoeba.h">
+    <ClInclude Include="..\src\Arm.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

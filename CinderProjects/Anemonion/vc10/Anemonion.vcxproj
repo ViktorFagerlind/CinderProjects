@@ -106,12 +106,12 @@
   <ItemGroup>
     <ClCompile Include="..\src\Amoeba.cpp" />
     <ClCompile Include="..\src\AnemonionApp.cpp" />
-    <ClCompile Include="..\src\Tube.cpp" />
+    <ClCompile Include="..\src\Arm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\Amoeba.h" />
-    <ClInclude Include="..\src\Tube.h" />
+    <ClInclude Include="..\src\Arm.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

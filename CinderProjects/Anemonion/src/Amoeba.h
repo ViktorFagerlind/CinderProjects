@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tube.h"
+#include "Arm.h"
 
 #include "PhongMaterial.h"
 
@@ -38,7 +38,7 @@ private:
 
   shared_ptr<PhongMaterial>       m_tubeMaterial;
   shared_ptr<PhongMaterial>       m_bodyMaterial;
-  std::vector<shared_ptr<Tube>>   m_tubes;
+  std::vector<shared_ptr<Arm>>    m_arms;
 
   gl::VboMesh                     m_bodyMesh;
 

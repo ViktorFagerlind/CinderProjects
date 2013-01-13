@@ -57,25 +57,6 @@ void TubeDrawer::draw (gl::GlslProg&   shader,
 
   for (uint32_t i=0; i<5; i++)
     glDisableVertexAttribArrayARB (location[i]);
-
-/*
-  shader.uniform ("u_generalUp",   upDirection);
-  shader.uniform ("u_blendSphere", blendFirst);
-  shader.uniform ("u_nofSegments", (int)nofCircularSegments);
-
-  for (uint32_t i=0; i<nofPoints - 1; i++)
-  {
-    shader.uniform ("a_point2",       points[i+1]);
-    shader.uniform ("a_planeNormal1", normals[i]);
-    shader.uniform ("a_planeNormal2", normals[i+1]);
-    shader.uniform ("a_radius1",      radie[i]);
-    shader.uniform ("a_radius2",      radie[i+1]);
-
-    gl::begin  (GL_POINTS);
-    gl::vertex (points[i]);
-    gl::end    ();
-  }
-*/
 }
 
 

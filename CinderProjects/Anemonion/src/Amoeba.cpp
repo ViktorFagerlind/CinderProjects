@@ -46,20 +46,20 @@ Amoeba::Amoeba (const float radius, const Vec3f position)
         direction = MiscMath::getRandomDirection ();
         for (uint32_t j=0; j<i && found; j++)
         {
-          float angle = math<float>::acos (m_tubes[j]->getStartNormal ().dot (direction));
+          float angle = math<float>::acos (m_arms[j]->getStartNormal ().dot (direction));
           if (angle < 25.f * (float)M_PI / 180.f)
             found = false;
         }
       }
     }
 
-    shared_ptr<Tube>  t(new Tube (direction,                                    // Start normal
+    shared_ptr<Arm>  t(new Arm (direction,                                    // Start normal
                                   m_radius*0.8f,                                // First segment length
                                   4,                                            // Number of segments per joint
                                   nofJoints,                                    // Number of joint
                                   jointLength * Rand::randFloat (.8f, 1.2f),    // Joint lengths
                                   tubeRadius  * Rand::randFloat (.8f, 1.2f)));  // Tube radius
-    m_tubes.push_back (t);
+    m_arms.push_back (t);
   }
 
   // Load mesh
@@ -106,14 +106,14 @@ void Amoeba::animate ()
 
 void Amoeba::update ()
 {
-  for (uint32_t i=0; i<m_tubes.size (); i++)
+  for (uint32_t i=0; i<m_arms.size (); i++)
   {
     animate ();
 
-    m_tubes[i]->setRotation (m_rotation);
-    m_tubes[i]->setPosition (m_position);
+    m_arms[i]->setRotation (m_rotation);
+    m_arms[i]->setPosition (m_position);
 
-    m_tubes[i]->update ();
+    m_arms[i]->update ();
   }
 }
 
@@ -140,8 +140,8 @@ void Amoeba::draw ()
 
   m_tubeMaterial->bind ();
 
-  for (uint32_t i=0; i<m_tubes.size (); i++)
-    m_tubes[i]->draw (m_tubeMaterial->getShader ());
+  for (uint32_t i=0; i<m_arms.size (); i++)
+    m_arms[i]->draw (m_tubeMaterial->getShader ());
 
   m_tubeMaterial->unbind ();
 }
