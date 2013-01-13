@@ -96,7 +96,7 @@ void Arm::draw (gl::GlslProg& shader)
   TubeDrawer::draw (shader, 
                     upDirection,
                     true,
-                    7,
+                    10,
                     m_drawPoints.data (),
                     m_normals.data (),
                     m_radie.data (),
