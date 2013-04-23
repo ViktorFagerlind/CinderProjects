@@ -12,6 +12,7 @@
 #include "ColorModifier.h"
 #include "PerlinModifier.h"
 #include "PointEmitter.h"
+#include "ShaderHelper.h"
 
 #include <list>
 
@@ -302,18 +303,10 @@ shared_ptr<BumpMaterial> GameWorld::getBumpMaterial (const TriMesh& mesh,
 {
 	gl::Texture earthColor	= gl::Texture (loadImage (loadFile (diffuseTexture)));
 	gl::Texture earthNormal	= gl::Texture (loadImage (loadFile (normalTexture)));
-	earthColor.setWrap( GL_REPEAT, GL_REPEAT );
-	earthNormal.setWrap( GL_REPEAT, GL_REPEAT );
+	earthColor.setWrap (GL_REPEAT, GL_REPEAT);
+	earthNormal.setWrap (GL_REPEAT, GL_REPEAT);
 
-  gl::GlslProg bumpShader;
-	try {
-		bumpShader = gl::GlslProg (loadFile ("../Media/Shaders/BumpMap_Vertex.glsl"), loadFile ("../Media/Shaders/BumpMap_Pixel.glsl"));
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}
+  gl::GlslProg bumpShader = ShaderHelper::loadShader("../Media/Shaders/BumpMap_Vertex.glsl", "../Media/Shaders/BumpMap_Pixel.glsl");
 
   BumpMaterial* materialPtr = new BumpMaterial (earthColor, // const gl::Texture&  diffuseTexture,
                                                 earthNormal, // const gl::Texture&  normalTexture,

@@ -168,24 +168,9 @@ void ParticleApp::updateAttributes ()
         sa.ae1->setPosition (Vec3f (mMousePosition.x, mMousePosition.y, 0.0f));
       break;
 
-      case 6:
-      {
-        static float r1, r2, r3;
-        if ((count % 100) == 0)
-        {
-          r1 = Rand::randFloat(-.8f, .8f);
-          r2 = Rand::randFloat(-.8f, .8f);
-          r3 = Rand::randFloat(-10.0f, 10.0f);
-        }
 
-        sa.fm->applyMovement (Vec2f (800.0f, 200), Vec2f (-2, r2));
-        sa.fm->applyMovement (Vec2f (800.0f, -200), Vec2f (-2, r2));
-
-        sa.fm->applyMovement (Vec2f::zero(), Vec2f (r3, r3));
-      }
-      break;
     }
-
+    
   }
 
 
@@ -650,33 +635,27 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
       break;
 
     case 6:
-      sa.ps = new ParticleSystem("../Media/Images/smoke.png");
+      sa.ps = new ParticleSystem ("../Media/Images/Particle1.jpg");
 
-      sa.fm = new FluidModifier (100, Vec3f::zero(), 0.001f, false, 2000, 1000);
-      sa.ps->addModifier (sa.fm);
+      sa.pe = new PointEmitter (10000,
+                              Vec3f(0, 0, 0), //position
+                              1.0f,  // particles per frame
+                              3.0f,   // min size
+                              7.0f,   // max size
+                              Vec3f (0, 0, 0),     // baseVelocity
+                              1.0f);    // randVelocity
+      sa.ps->addEmitter (sa.pe);
 
-      sa.ae2 = new AreaEmitter (100000,
-                                Vec3f(700, 0, 0),                //position
-                                2,      // particlesPerFrame,
-  						                  300,    // width
-  						                  1000,   // height 
-                                10,     // depth,
-							                  100,    // minParticleSize
-							                  100,    // maxParticleSize
-                                Vec3f (0, 0, 0),     // baseVelocity
-                                0.1f);    // randVelocity
-      sa.ps->addEmitter (sa.ae2);
 
-      sa.cm = new CommonModifier (0.4,    // lifeChange
+      sa.cm = new CommonModifier (0.9f,    // lifeChange
                                   1,    // relativeStartSize
-                                  1);   // relativeEndSize
+                                  1);  // relativeEndSize
       sa.ps->addModifier (sa.cm);
 
-      sa.colorModifier = new ColorModifier (ColorAf(0.1f, 0.2f, 1, 0), // startColor
-                                            ColorAf(0.1f, 0.2f, 1, 1), // middleColor
-                                            ColorAf(0.1f, 0.2f, 1, 0), // endColor
+      sa.colorModifier = new ColorModifier (ColorAf(0.3f, 1.0f, 0.2f, 0.5f),   // startColor
+                                            ColorAf(0.3f, 1.0f, 0.2f, 0.5f), // middleColor
+                                            ColorAf(0.3f, 1.0f, 0.2f, 0.1f),   // endColor
                                             0.5f);                     // middleTime
-
       sa.ps->addModifier (sa.colorModifier);
 
       break;
