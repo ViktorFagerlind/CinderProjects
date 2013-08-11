@@ -18,24 +18,24 @@ const uint32_t Road::maxLength  = 100;      // how many points per spline sectio
 void Road::setupParticles ()
 {
   // Particle system
-  ParticleSystem *particleSystem = new ParticleSystem("../Media/Images/flare.png");
+  ParticleSystem *particleSystem = new ParticleSystem("../Media/Images/smoke.png");
   
   mHeadEmitter = new AreaEmitter (4000,                  // maxNofParticles,
                                    Vec3f(0,0,0),         // position, 
-  						                     70,                   // particlesPerFrame, 
+  						                     20,                   // particlesPerFrame, 
   						                     15,                   // width
   						                     15,                   // height 
                                    15,                   // depth,
-							                     15,                  // minParticleSize,
-							                     15,                  // maxParticleSize,
+							                     40,                   // minParticleSize,
+							                     60,                   // maxParticleSize,
 							                     Vec3f (0, 0, 0),      // baseVelocity,
-							                     2.0f);                // randVelocity
+							                     3.0f);                // randVelocity
 
 
-  CommonModifier *commonModifier = new CommonModifier (2.0f, 1.0f, 2.0f);
-  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(0.7f,  1.0f,  0.2f,  1.0f),  //startColor 
-                                                       ColorAf(0.4f,  0.7f,  0.2f,  0.7f),  //middleColor
-                                                       ColorAf(0.4f,  0.7f,  0.2f,  0.0f),  //endColor
+  CommonModifier *commonModifier = new CommonModifier (1.0f, 1.0f, 5.0f);
+  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(0.7f,  0.2f,  0.2f,  0.0f),  //startColor 
+                                                       ColorAf(0.4f,  0.3f,  0.6f,  0.1f),  //middleColor
+                                                       ColorAf(0.4f,  0.6f,  0.2f,  0.0f),  //endColor
                                                        0.8f);                               //float middleTime)
   particleSystem->addModifier (commonModifier);
   particleSystem->addModifier (colorModifier);

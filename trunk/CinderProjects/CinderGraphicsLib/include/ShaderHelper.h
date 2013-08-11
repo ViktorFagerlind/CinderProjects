@@ -20,11 +20,12 @@ public:
     catch (gl::GlslProgCompileExc &exc) 
     {
 		  std::cout << "Shader compile error:" << std::endl;
-		  std::cout << exc.what();
+		  std::cout << exc.what() << std::endl;
 	  }	
-    catch (...) 
+    catch (exception& exc) 
     {
-		  std::cout << "Unable to load shader" << std::endl;
+		  std::cout << "Unable to load shader:" << std::endl;
+		  std::cout << exc.what() << std::endl;
 	  }
 
     return shader;

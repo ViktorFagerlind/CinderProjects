@@ -35,6 +35,7 @@ BloomEffect::~BloomEffect ()
 
 void BloomEffect::blurStep (gl::Fbo& fromFbo, gl::Fbo& toFbo, const Vec2f& blur)
 {
+  gl::setViewport (toFbo.getBounds ());
   gl::setMatricesWindow (toFbo.getSize (), false);
   toFbo.bindFramebuffer ();
 
@@ -66,6 +67,7 @@ gl::Fbo& BloomEffect::render (gl::Fbo& original)
   return mBothBlurFbo;
 
 /*
+  gl::setViewport (mFinalFbo.getBounds ());
   gl::setMatricesWindow (mFinalFbo.getSize (), false);
   mFinalFbo.bindFramebuffer ();
 	gl::draw (mBothBlurFbo.getTexture(), mBothBlurFbo.getTexture().getBounds(), mFinalFbo.getBounds());

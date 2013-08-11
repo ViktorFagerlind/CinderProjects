@@ -69,6 +69,7 @@ void VfBaseApp::drawToScreen ()
 
 
   gl::color (1,1,1);
+  gl::setViewport (getWindowBounds ());
   gl::setMatricesWindow (getWindowSize (), false);
   gl::draw (m_frameBuffer->getTexture(), m_frameBuffer->getTexture().getBounds(), getWindowBounds());
 

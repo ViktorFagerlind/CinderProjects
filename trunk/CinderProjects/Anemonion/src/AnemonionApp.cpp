@@ -158,11 +158,14 @@ void AnemonionApp::draw()
 
   // Draw blooming effect
   m_frameBuffer->bindFramebuffer ();
+  gl::setViewport (m_frameBuffer->getBounds ());
   gl::setMatricesWindow (getWindowSize (), false);
-	gl::enableAdditiveBlending();
+
+  gl::enableAdditiveBlending();
   gl::color (1, 1, 1, 0.7f);
-	gl::draw (bloomedFbo.getTexture(), bloomedFbo.getTexture().getBounds(), getWindowBounds());
-	gl::disableAlphaBlending();
+  gl::draw (bloomedFbo.getTexture(), bloomedFbo.getTexture().getBounds(), getWindowBounds());
+  gl::disableAlphaBlending();
+   
   m_frameBuffer->unbindFramebuffer ();
 
   gl::disableWireframe ();
