@@ -79,11 +79,6 @@ void SkyRoadsApp::setupLights()
 	glEnable( GL_LIGHTING );
 
   float white[] = {1.0f, 1.0f, 1.0f , 0.0f};
-  float red[]   = {1.0f, 0.0f, 0.0f , 0.0f};
-  float green[] = {0.2f, 0.8f, 0.3f , 0.0f};
-  float blue[]  = {0.0f, 0.0f, 1.0f , 0.0f};
-  float black[] = {0.0f, 0.0f, 0.0f , 0.0f};
-
   float p1[] = {-1000, 5000, 0};
 
   glLightfv(GL_LIGHT0, GL_SPECULAR, white);
@@ -123,11 +118,11 @@ void SkyRoadsApp::setup()
 		std::cout << "Unable to load shader" << std::endl;
 	}  
   
-  mRoadMaterial.reset (new PhongMaterial (phongShader,                        // Shader
-                                          ColorAf (0.05f, 0.1f,  0.05f, 1.0f),   // matAmbient,
-                                          ColorAf (0.4f,  0.7f,  0.2f,  1.0f),   // matDiffuse,
-                                          ColorAf (0.8f,  1.0f,  0.3f,  1.0f), // matSpecular,
-                                          6.0f));                             // matShininess
+  mRoadMaterial.reset (new PhongMaterial (phongShader,                         // Shader
+                                          ColorAf (0.05f, 0.1f,  0.15f, 1.0f), // matAmbient,
+                                          ColorAf (0.4f,  0.2f,  0.4f,  1.0f), // matDiffuse,
+                                          ColorAf (0.5f,  0.3f,  0.7f,  1.0f), // matSpecular,
+                                          6.0f));                              // matShininess
 
   gl::enableDepthRead ();
 

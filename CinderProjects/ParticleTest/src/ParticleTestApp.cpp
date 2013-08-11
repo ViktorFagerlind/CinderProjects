@@ -270,6 +270,7 @@ void ParticleApp::draw()
   //gl::draw( mFrameBuffer->getTexture() );
 //  mFrameBuffer->blitToScreen (mFrameBuffer->getBounds(), getWindowBounds());
 	gl::disableAlphaBlending ();
+  gl::setViewport (getWindowBounds ());
   gl::setMatricesWindow (getWindowSize (), false);
 	gl::draw (mFrameBuffer->getTexture(), mFrameBuffer->getTexture().getBounds(), getWindowBounds());
 	gl::enableAlphaBlending ();

@@ -52,6 +52,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VegetationPlanet", "Vegetat
 		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureShader", "PureShader\vc10\PureShader.vcxproj", "{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -102,6 +104,10 @@ Global
 		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Debug|Win32.Build.0 = Debug|Win32
 		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Release|Win32.ActiveCfg = Release|Win32
 		{479ECC84-1896-4746-8C95-BCD7D3169ACF}.Release|Win32.Build.0 = Release|Win32
+		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Debug|Win32.Build.0 = Debug|Win32
+		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Release|Win32.ActiveCfg = Release|Win32
+		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

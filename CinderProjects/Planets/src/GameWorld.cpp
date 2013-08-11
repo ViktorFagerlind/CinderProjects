@@ -290,6 +290,7 @@ void GameWorld::draw   ()
   gl::Fbo& bloomedFbo = mBloomEffect->render (mBloomFbo);
 
   // Draw blooming effect to screen
+  gl::setViewport (getWindowBounds ());
   gl::setMatricesWindow (getWindowSize (), false);
 	gl::enableAdditiveBlending();
   gl::color (1, 1, 1, 0.9f);
