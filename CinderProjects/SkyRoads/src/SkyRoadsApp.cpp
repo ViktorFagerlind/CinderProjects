@@ -5,6 +5,7 @@
 #include "cinder/Camera.h"
 
 #include "SpringCamera.h"
+#include "ShaderHelper.h"
 #include "Road.h"
 
 #include "PhongMaterial.h"
@@ -107,16 +108,7 @@ void SkyRoadsApp::setup()
 
   setupLights ();
 
-  gl::GlslProg phongShader;
-	try {
-		phongShader = gl::GlslProg (loadFile ("../Media/Shaders/phong_vert.glsl"), 
-                                loadFile ("../Media/Shaders/phong_frag.glsl"));
-	}	catch (gl::GlslProgCompileExc &exc) {
-		std::cout << "Shader compile error: " << std::endl;
-		std::cout << exc.what();
-	}	catch (...) {
-		std::cout << "Unable to load shader" << std::endl;
-	}  
+  gl::GlslProg phongShader = ShaderHelper::loadShader ("../Media/Shaders/phong_vert.glsl", "../Media/Shaders/phong_frag.glsl");
   
   mRoadMaterial.reset (new PhongMaterial (phongShader,                         // Shader
                                           ColorAf (0.05f, 0.1f,  0.15f, 1.0f), // matAmbient,
@@ -125,7 +117,6 @@ void SkyRoadsApp::setup()
                                           6.0f));                              // matShininess
 
   gl::enableDepthRead ();
-
 }
 
 void SkyRoadsApp::mouseDown( MouseEvent event )
@@ -163,7 +154,6 @@ void SkyRoadsApp::draw()
     mSkyRoads[i].draw ();
 
   mRoadMaterial->unbind();
-
 
   // Draw particle system
 	gl::disableDepthWrite ();
