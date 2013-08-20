@@ -3,6 +3,8 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/DataSource.h"
 
+#include <exception>
+
 using namespace cinder;
 
 class ShaderHelper
@@ -22,7 +24,7 @@ public:
 		  std::cout << "Shader compile error:" << std::endl;
 		  std::cout << exc.what() << std::endl;
 	  }	
-    catch (exception& exc) 
+    catch (std::exception& exc) 
     {
 		  std::cout << "Unable to load shader:" << std::endl;
 		  std::cout << exc.what() << std::endl;
