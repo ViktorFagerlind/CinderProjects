@@ -21,7 +21,7 @@ public:
 	{
     const float time = Particle_fullLife_C - particle->getLife();
 
-    if(time < mMiddleTime)
+    if (time < mMiddleTime)
       particle->setColor (mColorK1 * time + mColorM1);  
     else
       particle->setColor (mColorK2 * time + mColorM2);  

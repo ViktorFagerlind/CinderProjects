@@ -25,7 +25,7 @@ class PhysicsCubeApp : public AppBasic {
 
 void PhysicsCubeApp::setup()
 {
-  camera = new MovingCamera(this, 300.0f);
+  camera = new MovingCamera (300.0f);
   physicsEngine = new PhysicsEngine();
 }
 

@@ -33,20 +33,14 @@ public:
   void makeAnimated (std::string animationXmlPath);
 
   // A method to test if the particle system still has particles
-  bool dead() 
-  {
-    return mKilled && mParticleCount == 0;
-  }
+  bool dead() {return mKilled && mParticleCount == 0;}
 
-  size_t getCount()
-  {
-  	return mParticleCount;
-  }
+  size_t getCount()  {return mParticleCount;}
   
-  void kill() 
-  {
-  	mKilled = true;
-  }
+  void kill() {mKilled = true;}
+
+  void pause() {mPaused = true;}
+  void unpause() {mPaused = false;}
 
   void applyModifierToParticles(Modifier *modifier);
   
@@ -59,6 +53,7 @@ public:
   virtual void defineParticle (Particle* particle) = 0; 
 
 private:
+  void drawNormal ();
   void drawPointSprite ();
   void drawAnimated (ci::gl::Texture *texture);
 
@@ -72,6 +67,7 @@ private:
   size_t          mParticleCount;
   
   bool            mKilled;
+  bool            mPaused;
 
   float          *mSizes;
   Vec3f          *mVerticies;

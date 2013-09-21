@@ -4,7 +4,15 @@
 #include "cinder/Vector.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Rand.h"
-#include "cinder/qtime/QuickTime.h"
+
+namespace cinder
+{
+  namespace qtime
+  {
+    class MovieSurface;
+  }
+}
+
 
 class VideoEmitter : public Emitter, public Modifier 
 {
@@ -54,7 +62,6 @@ private:
 
   Surface mSurface;
 
-	qtime::MovieSurface	mMovie;
-
+	qtime::MovieSurface	*mMovie;
 };
 

@@ -18,6 +18,8 @@ public:
 
   void reset ();
 
+  const CameraPersp& getCam () {return mCam;}
+
   void setEyePos (const Vec3f& pos) {mEye = pos;}
 
   void mouseMove (MouseEvent event);
@@ -30,8 +32,6 @@ public:
 
 private:
   CameraPersp mCam;
-
-  AppBasic *mApp;
 
 	float			mStartingDistance;
 

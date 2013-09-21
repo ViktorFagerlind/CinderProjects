@@ -17,7 +17,7 @@ void VfBaseApp::setup (const float cameraDistance, const float cameraStepSize)
 	format.setSamples (16); // 8x antialiasing
   m_frameBuffer.reset (new gl::Fbo (getWindowWidth(), getWindowHeight(), format));
 
-  mCamera.reset (new MovingCamera(cameraDistance, cameraStepSize));
+  mCamera.reset (new MovingCamera (cameraDistance, cameraStepSize));
 
   m_frameCount        = 0;
   m_wireFrameMode     = false;

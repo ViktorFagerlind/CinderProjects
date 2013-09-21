@@ -1,8 +1,8 @@
 #pragma once
 
-#include "cinder\Cinder.h"
-#include "cinder\app\App.h"
-#include "cinder\Xml.h"
+#include "cinder/Cinder.h"
+#include "cinder/app/App.h"
+#include "cinder/Xml.h"
 #include "SpriteData.h"
 #include "SpriteSheet.h"
 
