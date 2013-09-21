@@ -3,7 +3,6 @@
 #include "cinder/gl/gl.h"
 
 #include "World.h"
-#include "MainVessel.h"
 
 #include "MovingCamera.h"
 #include "ParticleSystemManager.h"
@@ -29,8 +28,6 @@ void SpacewarsApp::setup()
 	m_touchPressed = false;
 
   m_camera.reset (new MovingCamera (1000.f, 20.f));
-
-  m_mainVessel.reset (new MainVessel ());
 
 #if defined (CINDER_COCOA_TOUCH)
 	console() << "gyro available: " << MotionManager::isGyroAvailable() << std::endl;
@@ -170,9 +167,7 @@ void SpacewarsApp::update()
 
   Vec2f touchPos = mouseToWorld (m_touchPosition);
 
-  m_mainVessel->update (dt, touchPos);
-
-  World::getSingleton ().update (dt);
+  World::getSingleton ().update (dt, touchPos);
 
   frameCount++;
 }
@@ -186,19 +181,14 @@ void SpacewarsApp::draw()
 
 	gl::enableDepthRead (); 
 
-//  Vec3f p = Conversions::Vec2fTo3f (mouseToWorld (m_touchPosition));
-//  gl::drawSphere (p, 10);
-
   // Draw solid objects
 	gl::enable (GL_LIGHTING);
-
-  m_mainVessel->draw ();
 
   World::getSingleton ().draw ();
 
 	gl::disable (GL_LIGHTING);
 
-  // Draw particle system
+  // Draw particle systems
 	gl::enableAlphaBlending ();
 	gl::disableDepthWrite ();
 	gl::enableAdditiveBlending ();

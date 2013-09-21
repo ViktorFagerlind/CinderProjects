@@ -40,8 +40,6 @@ private:
 	Vec2f m_touchPosition;
 	Vec2f m_touchVelocity;
 
-  shared_ptr<MainVessel> m_mainVessel;
-
   shared_ptr<MovingCamera> m_camera;
 };
 

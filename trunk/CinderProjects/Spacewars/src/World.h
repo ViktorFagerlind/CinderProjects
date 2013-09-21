@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cinder/Cinder.h"
+#include "cinder/Vector.h"
+
 #include <Box2D/Box2d.h>
 
 #include "ContactListener.h"
@@ -10,8 +12,26 @@
 using namespace ci;
 using namespace std;
 
-class EnemyVessel;
+class Enemy1;
+class MainVessel;
 class DebugDrawer;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+class WorldObject
+{
+public:
+  WorldObject () {};
+
+  virtual ~WorldObject () {};
+
+  virtual void update (const float dt) = 0;
+
+  virtual void draw () = 0;
+
+  virtual bool isDead () = 0;
+};
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -25,7 +45,9 @@ public:
 
   static b2World& getPhysicsWorld ();
 
-  void update (float dt);
+  void update (const float dt, const Vec2f& touchPos);
+
+  void issueNewObjects ();
 
   void draw ();
 
@@ -38,7 +60,9 @@ private:
   b2Vec2                          m_gravity;
   b2World                         m_physicsWorld;
 
-  list<shared_ptr<EnemyVessel>>   m_enemies;
+  list<shared_ptr<WorldObject>>   m_objects;
+
+  shared_ptr<MainVessel>          m_mainVessel;
 
   shared_ptr<DebugDrawer>         m_debugDrawer;
 

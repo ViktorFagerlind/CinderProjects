@@ -39,7 +39,7 @@ Shot::Shot ()
 	fixtureDef.shape               = &dynamicBox;
 	fixtureDef.isSensor            = true;
   fixtureDef.filter.categoryBits = 0; // deactivated from the start
-  fixtureDef.filter.maskBits     = Enemies_E;
+  fixtureDef.filter.maskBits     = EntityCategory_Enemies_E;
 
 	m_body->CreateFixture (&fixtureDef);
 
@@ -52,8 +52,8 @@ void Shot::define (const Vec2f& position)
 
   // Turn on collision detection
   b2Filter filter;
-  filter.categoryBits = OurShots_E; // deactivated from the start
-  filter.maskBits     = Enemies_E;
+  filter.categoryBits = EntityCategory_OurShots_E; // deactivated from the start
+  filter.maskBits     = EntityCategory_Enemies_E;
 
   m_body->GetFixtureList ()->SetFilterData (filter);
 
@@ -68,12 +68,12 @@ void Shot::kill ()
   // Turn off collision detection
   b2Filter filter;
   filter.categoryBits = 0;
-  filter.maskBits     = Enemies_E;
+  filter.maskBits     = EntityCategory_Enemies_E;
   m_body->GetFixtureList ()->SetFilterData (filter);
 }
 
 
-void Shot::update (float dt)
+void Shot::update (const float dt)
 {
   Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
 
@@ -179,7 +179,7 @@ Weapon::~Weapon ()
 {
 }
 
-void Weapon::update (float dt, const Vec2f& parentPos)
+void Weapon::update (const float dt, const Vec2f& parentPos)
 {
   m_position = parentPos + m_relativePos;
 
