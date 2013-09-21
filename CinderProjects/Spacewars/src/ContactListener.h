@@ -2,12 +2,12 @@
 
 #include <Box2D/Box2d.h>
 
-enum _entityCategory 
+enum EntityCategory
 {
-  OurShots_E      = 0x0001,
-  EnemyShots_E    = 0x0002,
-  Enemies_E       = 0x0004,
-  OurShip_E       = 0x0008
+  EntityCategory_OurShots_E      = 0x0001,
+  EntityCategory_EnemyShots_E    = 0x0002,
+  EntityCategory_Enemies_E       = 0x0004,
+  EntityCategory_OurShip_E       = 0x0008
 };
 
 class ContactListener : public b2ContactListener

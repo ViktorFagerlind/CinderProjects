@@ -75,7 +75,7 @@ Engine::~Engine ()
 {
 }
 
-void Engine::update (float dt, const Vec2f& pos)
+void Engine::update (const float dt, const Vec2f& pos)
 {
   Vec3f exhaustPos = Conversions::Vec2fTo3f (pos - Vec2f (0.f, 25.f));
 
@@ -111,8 +111,8 @@ MainVessel::MainVessel ()
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
 	fixtureDef.restitution = 0.f; // bounce
-  fixtureDef.filter.categoryBits = OurShip_E;
-  fixtureDef.filter.maskBits     = Enemies_E | EnemyShots_E;
+  fixtureDef.filter.categoryBits = EntityCategory_OurShip_E;
+  fixtureDef.filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemyShots_E;
 
 	m_body->CreateFixture (&fixtureDef);
 
@@ -134,7 +134,7 @@ MainVessel::~MainVessel ()
   World::getPhysicsWorld ().DestroyBody (m_body);
 }
 
-void MainVessel::update (float dt, const Vec2f& touchPos)
+void MainVessel::update (const float dt, const Vec2f& touchPos)
 {
   //------------ Handle movement ---------------------
   const float capDistanceSquared  = 1000.f;

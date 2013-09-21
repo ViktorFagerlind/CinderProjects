@@ -24,7 +24,7 @@ public:
 
   virtual ~Engine ();
 
-  void update (float dt, const Vec2f& pos);
+  void update (const float dt, const Vec2f& pos);
 
   void draw ();
 
@@ -42,7 +42,7 @@ public:
 
   virtual ~MainVessel ();
 
-  void update (float dt, const Vec2f& touchPos);
+  void update (const float dt, const Vec2f& touchPos);
 
   void draw ();
 

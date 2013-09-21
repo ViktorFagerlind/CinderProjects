@@ -21,7 +21,7 @@ public:
 
   void define (const Vec2f& position);
 
-  void update (float dt);
+  void update (const float dt);
 
   void draw ();
 
@@ -57,7 +57,7 @@ public:
 
   virtual ~Weapon ();
 
-  void update (float dt, const Vec2f& parentPos);
+  void update (const float dt, const Vec2f& parentPos);
 
   void draw ();
 

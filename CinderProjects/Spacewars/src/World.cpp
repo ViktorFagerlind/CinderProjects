@@ -5,9 +5,9 @@
 #include "cinder/Timeline.h"
 #include "cinder/app/App.h"
 #include "cinder/CinderMath.h"
-//#include "Box2D/Common/b2Draw.h"
+#include "MainVessel.h"
 
-#include "EnemyVessel.h"
+#include "Enemy1.h"
 #include "Conversions.h"
 
 using namespace ci;
@@ -72,8 +72,9 @@ World::World ()
   m_physicsWorld    (m_gravity),
   m_previousSecond  (0)
 {
-
   m_physicsWorld.SetContactListener (&m_contactListener);
+
+  m_mainVessel.reset (new MainVessel ());
 
 #ifdef _DEBUG
   m_debugDrawer.reset (new DebugDrawer);
@@ -91,29 +92,8 @@ b2World& World::getPhysicsWorld ()
   return getSingleton ().m_physicsWorld;
 }
 
-void World::update (float dt)
+void World::issueNewObjects ()
 {
-  for (list<shared_ptr<EnemyVessel>>::iterator it=m_enemies.begin (); it != m_enemies.end (); )
-  {
-    shared_ptr<EnemyVessel> enemy = *it;
-
-    if (!enemy->isDead ())
-    {
-      enemy->update (dt);
-      it++;
-    }
-    else
-      it = m_enemies.erase (it);
-  }
-
-	// --- step physics world ------------
-
-	int32 velocityIterations = 6;
-	int32 positionIterations = 2;
-
-	m_physicsWorld.Step (dt, velocityIterations, positionIterations);
-
-	// --- use the timeline --------------
   timeline().getCurrentTime ();
 
   uint32_t currentSecond = (uint32_t) math<float>::floor (timeline ().getCurrentTime ());
@@ -126,7 +106,7 @@ void World::update (float dt)
     case 15:
     case 16:
     default:
-      m_enemies.push_back (shared_ptr<EnemyVessel> (new EnemyVessel));
+      m_objects.push_back (shared_ptr<WorldObject> (new Enemy1));
       break;
     }
 
@@ -134,15 +114,48 @@ void World::update (float dt)
   }
 }
 
-void World::draw ()
+void World::update (const float dt, const Vec2f& touchPos)
 {
-  for (list<shared_ptr<EnemyVessel>>::iterator it=m_enemies.begin (); it != m_enemies.end (); it++)
-  {
-    shared_ptr<EnemyVessel> enemy = *it;
+	// --- issue new object ----------
+  issueNewObjects ();
 
-    enemy->draw ();
+	// --- update ship ---------------
+  m_mainVessel->update (dt, touchPos);
+
+	// --- update objects ------------
+  for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end ();)
+  {
+    shared_ptr<WorldObject> object = *it;
+
+    if (!object->isDead ())
+    {
+      object->update (dt);
+      it++;
+    }
+    else
+      it = m_objects.erase (it);
   }
 
+	// --- step physics world ------------
+	int32 velocityIterations = 6;
+	int32 positionIterations = 2;
+
+	m_physicsWorld.Step (dt, velocityIterations, positionIterations);
+}
+
+void World::draw ()
+{
+	// --- draw ship ---------------------
+  m_mainVessel->draw ();
+
+	// --- draw objects ------------------
+  for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)
+  {
+    shared_ptr<WorldObject> object = *it;
+    object->draw ();
+  }
+
+	// --- draw debug physics world ------
   m_physicsWorld.DrawDebugData ();
 }
 
