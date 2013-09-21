@@ -12,6 +12,8 @@ class ParticleSystem
 public:
   ParticleSystem(std::string particleImageFile);
 
+  ParticleSystem (ImageSourceRef particleImage);
+
   virtual ~ParticleSystem();
 
   void addEmitter (Emitter *const emitter);

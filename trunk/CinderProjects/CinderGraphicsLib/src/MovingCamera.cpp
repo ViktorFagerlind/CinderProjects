@@ -1,5 +1,7 @@
 #include "MovingCamera.h"
 
+using namespace ci::app;
+
 MovingCamera::MovingCamera (float distance, float stepSize)
 {
   mStartingDistance = distance;
@@ -10,8 +12,6 @@ MovingCamera::MovingCamera (float distance, float stepSize)
 
 void MovingCamera::reset ()
 {
-  mApp        = AppBasic::get ();
-  
   mEye        = Vec3f(0,0, mStartingDistance);
   mTargetVec  = Vec3f(0,0,-mStartingDistance);
   mUpVector   = Vec3f(0,1,0);
@@ -57,6 +57,7 @@ void MovingCamera::keyDown (KeyEvent event)
     case ' ': reset (); break;
   }
     
+#if !defined (CINDER_COCOA_TOUCH)
   switch (event.getCode ())
   {
     case KeyEvent::KEY_UP:    move += mStepSize * mUpVector; break;
@@ -64,6 +65,7 @@ void MovingCamera::keyDown (KeyEvent event)
     case KeyEvent::KEY_LEFT:  move -= mStepSize * right;     break;
     case KeyEvent::KEY_RIGHT: move += mStepSize * right;     break;
   }
+#endif
 
   mEye += move;
 }
@@ -71,21 +73,21 @@ void MovingCamera::keyDown (KeyEvent event)
 void MovingCamera::setMatrices ()
 {
   mCam.lookAt (mEye, mEye + mTargetVec, mUpVector);
-  mCam.setPerspective  (60.0f, mApp->getWindowAspectRatio(), 1, 20000);
+  mCam.setPerspective  (60.0f, getWindowAspectRatio(), 1, 20000);
   gl::setMatrices (mCam);
 }
 
 void MovingCamera::setModelMatrix ()
 {
   mCam.lookAt (mEye, mEye + mTargetVec, mUpVector);
-  mCam.setPerspective  (60.0f, mApp->getWindowAspectRatio(), 1, 20000);
+  mCam.setPerspective  (60.0f, getWindowAspectRatio(), 1, 20000);
   gl::setModelView (mCam);
 }
 
 void MovingCamera::setProjectionMatrix ()
 {
   mCam.lookAt (mEye, mEye + mTargetVec, mUpVector);
-  mCam.setPerspective  (60.0f, mApp->getWindowAspectRatio(), 1, 20000);
+  mCam.setPerspective  (60.0f, getWindowAspectRatio(), 1, 20000);
   gl::setProjection (mCam);
 }
 

@@ -2,6 +2,7 @@
 
 #include "cinder/app/AppBasic.h"
 #include "cinder/CinderMath.h"
+#include "cinder/qtime/QuickTime.h"
 
 VideoEmitter::VideoEmitter (const size_t maxNofParticles,
                             const float particlesPerFrame,
@@ -38,8 +39,8 @@ void VideoEmitter::updateEmitter()
 
   if ((count % 2) == 0) // Only 30 fps
   {
- 	  mMovie.stepForward();
-    mSurface = mMovie.getSurface ();
+ 	  mMovie->stepForward();
+    mSurface = mMovie->getSurface ();
   }
 
   Emitter::updateEmitter ();
@@ -169,28 +170,28 @@ void VideoEmitter::loadMovieFile (const std::string &moviePath )
   app::AppBasic *app = app::AppBasic::get ();
 
 	try {
-		mMovie = qtime::MovieSurface (moviePath);
+    mMovie = &qtime::MovieSurface (moviePath);
 
-    mMovieWidth  = mMovie.getWidth ();
-	  mMovieHeight = mMovie.getHeight ();
+    mMovieWidth  = mMovie->getWidth ();
+	  mMovieHeight = mMovie->getHeight ();
 
-		app->console() << "Dimensions:" << mMovie.getWidth() << " x " << mMovie.getHeight() << std::endl;
-		app->console() << "Duration:  " << mMovie.getDuration() << " seconds" << std::endl;
-		app->console() << "Frames:    " << mMovie.getNumFrames() << std::endl;
-		app->console() << "Framerate: " << mMovie.getFramerate() << std::endl;
-		app->console() << "Alpha channel: " << mMovie.hasAlpha() << std::endl;		
-		app->console() << "Has audio: " << mMovie.hasAudio() << " Has visuals: " << mMovie.hasVisuals() << std::endl;
+		app->console () << "Dimensions:" << mMovie->getWidth() << " x " << mMovie->getHeight() << std::endl;
+		app->console () << "Duration:  " << mMovie->getDuration() << " seconds" << std::endl;
+		app->console () << "Frames:    " << mMovie->getNumFrames() << std::endl;
+		app->console () << "Framerate: " << mMovie->getFramerate() << std::endl;
+		app->console () << "Alpha channel: " << mMovie->hasAlpha() << std::endl;		
+		app->console () << "Has audio: " << mMovie->hasAudio() << " Has visuals: " << mMovie->hasVisuals() << std::endl;
 
-		mMovie.setLoop( true, true );
-		mMovie.seekToStart();
-		mMovie.seekToTime( mMovie.getDuration() / 2 );
+		mMovie->setLoop (true, true);
+		mMovie->seekToStart ();
+		mMovie->seekToTime (mMovie->getDuration() / 2);
 
-    mMovie.setVolume (0);
-		mMovie.play ();
+    mMovie->setVolume (0);
+		mMovie->play ();
 
     Sleep (1*1000);
 
-  	mMovie.stop();
+  	mMovie->stop();
 	}
 	catch( ... ) {
 		app->console() << "Unable to load the movie." << std::endl;

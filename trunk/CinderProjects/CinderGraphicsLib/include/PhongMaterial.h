@@ -28,8 +28,6 @@ public:
 
 private:
 	gl::GlslProg mShader;
-	gl::Texture  mDiffuseTexture;
-	gl::Texture  mNormalTexture;
 
   float mMatAmbient[4];
   float mMatDiffuse[4];

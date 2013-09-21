@@ -1,11 +1,14 @@
-#pragma once
-
 #include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem(std::string particleImageFile)
 {
   mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
+  mKilled     = false;
+}
 
+ParticleSystem::ParticleSystem (ImageSourceRef particleImage)
+{
+  mParticleTexture = new gl::Texture (particleImage);
   mKilled     = false;
 }
 

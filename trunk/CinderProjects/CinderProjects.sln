@@ -54,6 +54,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VegetationPlanet", "Vegetat
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PureShader", "PureShader\vc10\PureShader.vcxproj", "{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iOS_TestAgain", "iOS_TestAgain\vc10\iOS_TestAgain.vcxproj", "{C41318D0-3B0C-474A-BBF1-770F1FBA5BB9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsBox2d", "PhysicsBox2d\vc10\PhysicsBox2d.vcxproj", "{9590AEEA-6FCF-4BD7-B6BC-833439686C13}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\cinder\vc10\cinder.vcxproj", "{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Spacewars", "Spacewars\vc10\Spacewars.vcxproj", "{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -108,6 +116,22 @@ Global
 		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Debug|Win32.Build.0 = Debug|Win32
 		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Release|Win32.ActiveCfg = Release|Win32
 		{91BE9D6B-22F4-45A9-AB22-E8B9C7FAEBEC}.Release|Win32.Build.0 = Release|Win32
+		{C41318D0-3B0C-474A-BBF1-770F1FBA5BB9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C41318D0-3B0C-474A-BBF1-770F1FBA5BB9}.Debug|Win32.Build.0 = Debug|Win32
+		{C41318D0-3B0C-474A-BBF1-770F1FBA5BB9}.Release|Win32.ActiveCfg = Release|Win32
+		{C41318D0-3B0C-474A-BBF1-770F1FBA5BB9}.Release|Win32.Build.0 = Release|Win32
+		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Debug|Win32.Build.0 = Debug|Win32
+		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Release|Win32.ActiveCfg = Release|Win32
+		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Release|Win32.Build.0 = Release|Win32
+		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Debug|Win32.Build.0 = Debug|Win32
+		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Release|Win32.ActiveCfg = Release|Win32
+		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Release|Win32.Build.0 = Release|Win32
+		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Debug|Win32.Build.0 = Debug|Win32
+		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Release|Win32.ActiveCfg = Release|Win32
+		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

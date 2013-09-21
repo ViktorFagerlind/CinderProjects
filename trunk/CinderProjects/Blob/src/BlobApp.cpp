@@ -129,7 +129,7 @@ void BlobApp::mouseMove (MouseEvent event)
 
 void BlobApp::setup()
 {
-  mCamera.reset (new MovingCamera(700.0f));
+  mCamera.reset (new MovingCamera (700.0f));
   mCamera.get ()->setEyePos (Vec3f (0, 200.0f, 700.0f));
 
   // Initialise light

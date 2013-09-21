@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cinder\Cinder.h"
+#include "cinder/Cinder.h"
 #include <stdio.h>
 
 class SpriteData{

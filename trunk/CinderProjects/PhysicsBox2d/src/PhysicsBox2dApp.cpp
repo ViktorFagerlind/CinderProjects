@@ -34,14 +34,14 @@ public:
   void prepareSettings (Settings *settings);
 	void setup();
 
-	void mouseDown(MouseEvent event);	
-	void mouseUp(MouseEvent event);
-	void mouseMove(MouseEvent event);
-	void mouseDrag(MouseEvent event);
+	void mouseDown (MouseEvent event);	
+	void mouseUp   (MouseEvent event);
+	void mouseMove (MouseEvent event);
+	void mouseDrag (MouseEvent event);
 
-	void touchesBegan( TouchEvent event );
-	void touchesMoved( TouchEvent event );
-	void touchesEnded( TouchEvent event );
+	void touchesBegan (TouchEvent event);
+	void touchesMoved (TouchEvent event);
+	void touchesEnded (TouchEvent event);
 
 	void keyDown(KeyEvent event);
 	void update();
@@ -136,7 +136,7 @@ void PhysicsBox2dApp::setup()
 {
 	m_pressed = false;
 
-//  mCamera.reset (new MovingCamera (this, 1000.f, 20.f));
+//  mCamera.reset (new MovingCamera (1000.f, 20.f));
 
 	// pass world to ParticleController
 	particleController.setup(world);

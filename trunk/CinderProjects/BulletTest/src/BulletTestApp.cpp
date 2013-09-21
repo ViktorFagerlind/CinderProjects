@@ -126,7 +126,7 @@ void BulletTestApp::setup()
                                       ColorAf (0.9f,  0.5f,  0.3f,  1.0f),  // matSpecular,
                                       6.0f));                               // matShininess
 
-  mCamera.reset (new MovingCamera(30.0f, 1.0f));
+  mCamera.reset (new MovingCamera (30.0f, 1.0f));
 
 
   // Load mesh
