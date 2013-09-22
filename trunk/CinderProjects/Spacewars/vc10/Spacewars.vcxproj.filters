@@ -61,6 +61,15 @@
     <Filter Include="Blocks\Mine\src">
       <UniqueIdentifier>{61cfabb4-85e1-4ac7-9d97-0fd6a8cd8288}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\enemies">
+      <UniqueIdentifier>{4a5863a9-d043-4b69-a77d-e3dd13c4bc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vessels">
+      <UniqueIdentifier>{88cec924-f560-43c7-bb67-cefbda095bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world">
+      <UniqueIdentifier>{fdb14c21-2d50-4bf8-8097-40781e9ff184}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SpacewarsApp.cpp">
@@ -360,40 +369,40 @@
     <ClCompile Include="..\..\CinderGraphicsLib\src\MovingCamera.cpp">
       <Filter>Blocks\Mine\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\World.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Weapon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ContactListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ModelLibrary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Vessel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Enemy1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystemHelper.cpp">
       <Filter>Blocks\Mine\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\CinderGraphicsLib\src\ImageLibrary.cpp">
       <Filter>Blocks\Mine\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Enemy1.cpp">
+      <Filter>Source Files\enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EnemyBot.cpp">
+      <Filter>Source Files\enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Vessel.cpp">
+      <Filter>Source Files\vessels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\World.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModelLibrary.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ContactListener.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Protagonist.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\vessels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Weapon.cpp">
+      <Filter>Source Files\vessels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Conversions.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\cinder\blocks\MotionManager\src\cinder\MotionImplCoreMotion.h">
       <Filter>Blocks\MotionManager\src</Filter>
@@ -431,31 +440,7 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\SpriteDataParser.h">
       <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\World.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SpacewarsApp.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Weapon.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ContactListener.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Collider.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ModelLibrary.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Vessel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PositionAndAngle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Enemy1.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemHelper.h">
@@ -467,8 +452,38 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemManager.h">
       <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\EnemyBot.h">
+      <Filter>Source Files\enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Enemy1.h">
+      <Filter>Source Files\enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Vessel.h">
+      <Filter>Source Files\vessels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\World.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModelLibrary.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Collider.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Conversions.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ContactListener.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PositionAndAngle.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Protagonist.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\vessels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Weapon.h">
+      <Filter>Source Files\vessels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,8 @@
 #include "Protagonist.h"
 
 #include "Enemy1.h"
+#include "EnemyBot.h"
+
 #include "Conversions.h"
 
 using namespace ci;
@@ -69,8 +71,7 @@ public:
 
 World::World ()
 : m_gravity         (0.0f, 0.f),//-9.82f),
-  m_physicsWorld    (m_gravity),
-  m_previousSecond  (0)
+  m_physicsWorld    (m_gravity)
 {
   m_physicsWorld.SetContactListener (&m_contactListener);
 
@@ -84,6 +85,8 @@ World::World ()
 void World::setup ()
 {
   m_protagonist.reset (new Protagonist ());
+
+  m_previousTime = m_currentTime = timeline ().getCurrentTime ()*1000.f;
 }
 
 World::~World ()
@@ -97,30 +100,25 @@ b2World& World::getPhysicsWorld ()
 
 void World::issueNewObjects ()
 {
-  timeline().getCurrentTime ();
+  static float timeEnemy1     = 0.f;
+  static float timeEnemyBot   = 0.f;
 
-  uint32_t currentSecond = (uint32_t) math<float>::floor (timeline ().getCurrentTime ());
-  if (currentSecond != m_previousSecond)
+  m_currentTime = timeline ().getCurrentTime ();
+
+
+  if ((m_currentTime - timeEnemy1) > 2.f)
   {
-    switch (currentSecond)
-    {
-    case 2:
-    case 4:
-    case 6:
-    case 8:
-    case 10:
-    case 12:
-    case 14:
-    case 16:
-    case 18:
-    case 20:
-    default:
-      m_objects.push_back (shared_ptr<WorldObject> (new Enemy1));
-      break;
-    }
-
-    m_previousSecond = currentSecond;
+    m_objects.push_back (shared_ptr<WorldObject> (new Enemy1));
+    timeEnemy1 = m_currentTime;
   }
+
+  if ((m_currentTime - timeEnemyBot) > 0.12f)
+  {
+    m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
+    timeEnemyBot = m_currentTime;
+  }
+
+  m_previousTime = m_currentTime;
 }
 
 void World::update (const float dt, const Vec2f& touchPos)

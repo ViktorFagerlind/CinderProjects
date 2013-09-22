@@ -21,6 +21,8 @@ public:
 
   void draw ();
 
+  void getMinMax (float& xMin, float& xMax, float& yMin, float& yMax);
+
 private:
   gl::Material	      m_material;
 
@@ -39,6 +41,8 @@ public:
   Model (const vector<ModelElement>& elements);
 
   virtual ~Model ();
+
+  void getMinMax (float& xMin, float& xMax, float& yMin, float& yMax);
 
   void draw (Vec2f position, float zAngle, float yAngle);
 
@@ -66,7 +70,7 @@ public:
   }
 
 private:
-  void addMesh (string name);
+  shared_ptr<TriMesh> getOrAddMesh (string name);
 
 private:
   map<string, shared_ptr<TriMesh>> m_meshes;

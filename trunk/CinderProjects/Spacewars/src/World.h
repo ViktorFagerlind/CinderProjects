@@ -8,6 +8,7 @@
 #include "ContactListener.h"
 
 #include <list>
+#include <vector>
 
 using namespace ci;
 using namespace std;
@@ -56,8 +57,21 @@ public:
   static World& getSingleton ();
 
 private:
+  bool isCloseToTime (const float t) const {return m_previousTime < t && t <= m_currentTime;}
 
-  uint32_t                        m_previousSecond;
+  bool isCloseToTime (const vector<float> ts) const 
+  {
+    for (uint32_t i=0; i<ts.size(); i++)
+    {
+      if (isCloseToTime (ts[i]))
+        return true;
+    }
+    return false;
+  }
+
+private:
+  float                           m_currentTime;
+  float                           m_previousTime;
 
   b2Vec2                          m_gravity;
   b2World                         m_physicsWorld;
@@ -71,6 +85,8 @@ private:
   ContactListener                 m_contactListener;
 
   b2Body*                         m_body;
+
+
 };
 
 //----------------------------------------------------------------------------------------------------------------------

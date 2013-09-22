@@ -28,6 +28,9 @@ Vessel::Vessel (const VesselDef& vesselDef)
   m_leanConst     (vesselDef.leanConst),
   m_life          (vesselDef.initialLife)
 {
+  // Set model
+  m_model = ModelLibrary::getSingleton ().getModel (vesselDef.modelName);
+
   // -------------- setup physics ----------------
 	// create a dynamic body
 	b2BodyDef bodyDef;
@@ -39,20 +42,35 @@ Vessel::Vessel (const VesselDef& vesselDef)
 	bodyDef.userData        = this;
 	m_body = World::getPhysicsWorld ().CreateBody (&bodyDef);
 
+  // create collision shape
+  float xMin, xMax, yMin, yMax;
+	b2PolygonShape boxShape;
+
+  m_model->getMinMax (xMin, xMax, yMin, yMax);
+  float halfW = (xMax-xMin)/2.f;
+  float halfH = (yMax-yMin)/2.f;
+  float shrinkFactor = 0.8f;
+	boxShape.SetAsBox (shrinkFactor * Conversions::toPhysics (halfW), 
+                     shrinkFactor * Conversions::toPhysics (halfH), 
+                     shrinkFactor * Conversions::toPhysics (Vec2f (xMax-halfW, yMax-halfH)), 
+                     0.f);
+
   // create fixture
 	b2FixtureDef fixtureDef;
-  fixtureDef.shape                = vesselDef.fixtureShape;
+  fixtureDef.shape                = &boxShape;
 	fixtureDef.density              = vesselDef.fixtureDensity;
 	fixtureDef.friction             = 0.3f;
 	fixtureDef.restitution          = 0.f; // bounce
-  fixtureDef.filter.categoryBits  = vesselDef.isEnemy ? EntityCategory_Enemies_E : EntityCategory_OurShip_E;
-  fixtureDef.filter.maskBits      = vesselDef.isEnemy ? 
-                                      EntityCategory_OurShip_E | EntityCategory_OurShots_E | EntityCategory_Enemies_E :
-                                      EntityCategory_Enemies_E | EntityCategory_EnemyShots_E;
-	m_body->CreateFixture (&fixtureDef);
+  fixtureDef.filter.categoryBits  = vesselDef.category;
 
-  // Set model
-  m_model = ModelLibrary::getSingleton ().getModel (vesselDef.modelName);
+  if (vesselDef.category == EntityCategory_Enemies_E)
+    fixtureDef.filter.maskBits = EntityCategory_OurShip_E | EntityCategory_OurShots_E | EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
+  else if (vesselDef.category == EntityCategory_EnemySwarm_E)
+    fixtureDef.filter.maskBits = EntityCategory_OurShip_E | EntityCategory_OurShots_E | EntityCategory_Enemies_E;
+  else if (vesselDef.category == EntityCategory_OurShip_E)
+    fixtureDef.filter.maskBits = EntityCategory_Enemies_E | EntityCategory_EnemyShots_E | EntityCategory_EnemySwarm_E;
+
+	m_body->CreateFixture (&fixtureDef);
 }
 
 Vessel::~Vessel ()
@@ -82,7 +100,14 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
 
   //------------ Handle rotation ---------------------
   const float rotationConst = 1.f;
-  m_body->ApplyAngularImpulse (-rotationConst * (m_body->GetAngle () - positionAndAngle.m_angle));
+  float angleDifferance = positionAndAngle.m_angle-m_body->GetAngle ();
+
+  if (angleDifferance > toRadians (180.f))
+    angleDifferance -= toRadians (360.f);
+  else if (angleDifferance < toRadians (-180.f))
+    angleDifferance += toRadians (360.f);
+
+  m_body->ApplyAngularImpulse (rotationConst * angleDifferance);
 }
 
 void Vessel::draw ()

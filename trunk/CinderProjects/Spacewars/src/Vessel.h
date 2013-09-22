@@ -3,6 +3,7 @@
 #include "cinder/Vector.h"
 #include "Collider.h"
 #include "Conversions.h"
+#include "ContactListener.h"
 
 class b2Shape;
 class Model;
@@ -18,33 +19,31 @@ class VesselDef
 {
 public:
   VesselDef ()
-  : position          (Vec2f::zero ()),
+  : position            (Vec2f::zero ()),
     angle               (toRadians (180.f)),
-    isEnemy             (true),
+    category            (EntityCategory_Enemies_E),
     initialLife         (100.f),
     modelName           ("error.obj"),
     bodyLinearDamping   (10.f),
     bodyAngularDamping  (15.f),
-    fixtureShape        (NULL),
     fixtureDensity      (1.f)
   {
   }
 
 public:
-  Vec2f     position;
-  float     angle;
-  bool      isEnemy;
-  float     initialLife;
-  float     moveCapForce;
-  float     moveDistConst;
-  float     leanConst;
-  string    modelName;
+  Vec2f           position;
+  float           angle;
+  EntityCategory  category;
+  float           initialLife;
+  float           moveCapForce;
+  float           moveDistConst;
+  float           leanConst;
+  string          modelName;
 
 
-  float     bodyLinearDamping;
-  float     bodyAngularDamping;
-  b2Shape*  fixtureShape;
-  float     fixtureDensity;
+  float           bodyLinearDamping;
+  float           bodyAngularDamping;
+  float           fixtureDensity;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -47,16 +47,13 @@ void Engine::draw ()
 Protagonist::Protagonist ()
 {
   // -------------- setup vessel ----------
-  // create collision shape
-	b2PolygonShape boxShape;
-	boxShape.SetAsBox (Conversions::toPhysics (20.f), Conversions::toPhysics (50.f));
 
   // define vessel
   VesselDef vesselDef;
   vesselDef.position            = Vec2f (0.f, 0.f);
   vesselDef.angle               = 0.f;
-  vesselDef.isEnemy             = false;
-  vesselDef.initialLife         = 100.f;
+  vesselDef.category            = EntityCategory_OurShip_E;
+  vesselDef.initialLife         = 500.f;
   vesselDef.moveCapForce        = 4000.f;
   vesselDef.moveDistConst       = 400.f;
   vesselDef.leanConst           = .001f;
@@ -64,7 +61,6 @@ Protagonist::Protagonist ()
 
   vesselDef.bodyLinearDamping   = 15.f;
   vesselDef.bodyAngularDamping  = 15.f;
-  vesselDef.fixtureShape        = &boxShape;
   vesselDef.fixtureDensity      = 1.f;
 
   m_vessel.reset (new ProtagonistVessel (vesselDef));
