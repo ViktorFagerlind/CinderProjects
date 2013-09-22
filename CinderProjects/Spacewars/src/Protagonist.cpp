@@ -1,4 +1,4 @@
-#include "MainVessel.h"
+#include "Protagonist.h"
 
 #include "cinder/gl/gl.h"
 #include "cinder/app/App.h"

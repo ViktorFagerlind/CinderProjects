@@ -5,7 +5,7 @@
 #include "cinder/Timeline.h"
 #include "cinder/app/App.h"
 #include "cinder/CinderMath.h"
-#include "MainVessel.h"
+#include "Protagonist.h"
 
 #include "Enemy1.h"
 #include "Conversions.h"
