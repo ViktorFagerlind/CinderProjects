@@ -66,6 +66,7 @@
 		BF1161CF17EF1C37003EB38A /* Protagonist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161CD17EF1C37003EB38A /* Protagonist.cpp */; };
 		BF1161D217EF20EF003EB38A /* FireBall.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D017EF20EF003EB38A /* FireBall.png */; };
 		BF1161D317EF20EF003EB38A /* FireBall.xml in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D117EF20EF003EB38A /* FireBall.xml */; };
+		BF1161D617EF47CF003EB38A /* EnemyBot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161D417EF47CF003EB38A /* EnemyBot.cpp */; };
 		BF18A8D617ECCB8B0080B583 /* ContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF18A8D017ECCB8B0080B583 /* ContactListener.cpp */; };
 		BF18A8D817ECCB8B0080B583 /* ModelLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF18A8D417ECCB8B0080B583 /* ModelLibrary.cpp */; };
 		BF18A8DD17ECCC890080B583 /* space_barell_body_v08.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF18A8DA17ECCC890080B583 /* space_barell_body_v08.obj */; };
@@ -201,6 +202,8 @@
 		BF1161CE17EF1C37003EB38A /* Protagonist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Protagonist.h; path = ../src/Protagonist.h; sourceTree = "<group>"; };
 		BF1161D017EF20EF003EB38A /* FireBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FireBall.png; path = ../../Media/Movies/FireBall.png; sourceTree = "<group>"; };
 		BF1161D117EF20EF003EB38A /* FireBall.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FireBall.xml; path = ../../Media/Movies/FireBall.xml; sourceTree = "<group>"; };
+		BF1161D417EF47CF003EB38A /* EnemyBot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnemyBot.cpp; path = ../src/EnemyBot.cpp; sourceTree = "<group>"; };
+		BF1161D517EF47CF003EB38A /* EnemyBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnemyBot.h; path = ../src/EnemyBot.h; sourceTree = "<group>"; };
 		BF18A8CF17ECCB8B0080B583 /* Collider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collider.h; path = ../src/Collider.h; sourceTree = "<group>"; };
 		BF18A8D017ECCB8B0080B583 /* ContactListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContactListener.cpp; path = ../src/ContactListener.cpp; sourceTree = "<group>"; };
 		BF18A8D117ECCB8B0080B583 /* ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactListener.h; path = ../src/ContactListener.h; sourceTree = "<group>"; };
@@ -353,6 +356,8 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161D417EF47CF003EB38A /* EnemyBot.cpp */,
+				BF1161D517EF47CF003EB38A /* EnemyBot.h */,
 				BF1161CD17EF1C37003EB38A /* Protagonist.cpp */,
 				BF1161CE17EF1C37003EB38A /* Protagonist.h */,
 				BF1161B617EED44C003EB38A /* Enemy1.cpp */,
@@ -802,6 +807,7 @@
 				BF1161BC17EED44C003EB38A /* Vessel.cpp in Sources */,
 				BF1161CB17EF1BB1003EB38A /* ImageLibrary.cpp in Sources */,
 				BF1161CF17EF1C37003EB38A /* Protagonist.cpp in Sources */,
+				BF1161D617EF47CF003EB38A /* EnemyBot.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
