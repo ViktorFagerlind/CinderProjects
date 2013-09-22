@@ -22,7 +22,8 @@ Emitter::Emitter(const size_t maxNofParticles, const float particlesPerFrame)
   mPaused(false),
   mKilled(false),
   mParticlesToCreate(0.f),
-  mParticlesPerFrame(particlesPerFrame)
+  mParticlesPerFrame(particlesPerFrame),
+  mFramesToLive(0xFFFFFFFF)
 {
 
   mParticles = new Particle[mMaxNofParticles];
@@ -79,6 +80,11 @@ void Emitter::updateEmitter ()
 {
   if (!mPaused)
   {
+    if (mFramesToLive == 0)
+      kill ();
+    else
+      mFramesToLive--;
+
     // Update how many particles to create
     mParticlesToCreate += mParticlesPerFrame;
 

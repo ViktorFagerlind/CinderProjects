@@ -35,6 +35,8 @@ public:
   // A method to test if the particle system still has particles
   bool dead() {return mKilled && mParticleCount == 0;}
 
+  void setFramesToLive (const uint32_t framesToLive) {mFramesToLive = framesToLive;}
+
   size_t getCount()  {return mParticleCount;}
   
   void kill() {mKilled = true;}
@@ -78,6 +80,7 @@ private:
 
   bool            mIsAnimated;
 
+  uint32_t        mFramesToLive;
   std::vector<SpriteData> m_spriteData;
 };
 

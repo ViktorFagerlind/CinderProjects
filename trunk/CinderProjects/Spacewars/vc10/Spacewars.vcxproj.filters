@@ -369,14 +369,23 @@
     <ClCompile Include="..\src\Weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EnemyVessel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ContactListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ModelLibrary.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Vessel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Enemy1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystemHelper.cpp">
+      <Filter>Blocks\Mine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CinderGraphicsLib\src\ImageLibrary.cpp">
+      <Filter>Blocks\Mine\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,15 +416,6 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\Emitter.h">
       <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CinderGraphicsLib\include\FluidModifier.h">
-      <Filter>Blocks\Mine\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CinderGraphicsLib\include\GravityModifier.h">
-      <Filter>Blocks\Mine\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CinderGraphicsLib\include\PerlinModifier.h">
-      <Filter>Blocks\Mine\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\CinderGraphicsLib\include\PointGravityModifier.h">
       <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
@@ -443,9 +443,6 @@
     <ClInclude Include="..\src\Weapon.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EnemyVessel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ContactListener.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -454,6 +451,24 @@
     </ClInclude>
     <ClInclude Include="..\src\ModelLibrary.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Vessel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PositionAndAngle.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Enemy1.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemHelper.h">
+      <Filter>Blocks\Mine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CinderGraphicsLib\include\ImageLibrary.h">
+      <Filter>Blocks\Mine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemManager.h">
+      <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

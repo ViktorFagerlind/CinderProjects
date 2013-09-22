@@ -368,6 +368,7 @@
     <ClInclude Include="include\FluidModifier.h" />
     <ClInclude Include="include\GravityModifier.h" />
     <ClInclude Include="include\ImageEmitter.h" />
+    <ClInclude Include="include\ImageLibrary.h" />
     <ClInclude Include="include\IsoSurface.h" />
     <ClInclude Include="include\Macros.h" />
     <ClInclude Include="include\Miscellaneous.h" />
@@ -376,6 +377,7 @@
     <ClInclude Include="include\MyStrings.h" />
     <ClInclude Include="include\Particle.h" />
     <ClInclude Include="include\ParticleSystem.h" />
+    <ClInclude Include="include\ParticleSystemHelper.h" />
     <ClInclude Include="include\ParticleSystemManager.h" />
     <ClInclude Include="include\PerlinModifier.h" />
     <ClInclude Include="include\PhongMaterial.h" />
@@ -408,6 +410,7 @@
     <ClCompile Include="src\BumpMaterial.cpp" />
     <ClCompile Include="src\Emitter.cpp" />
     <ClCompile Include="src\FluidModifier.cpp" />
+    <ClCompile Include="src\ImageLibrary.cpp" />
     <ClCompile Include="src\IsoSurface.cpp" />
     <ClCompile Include="src\MiscMath.cpp" />
     <ClCompile Include="src\MovingCamera.cpp" />
@@ -416,6 +419,7 @@
     <ClCompile Include="src\MSA\MSACore\MSACoreGL.cpp" />
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
+    <ClCompile Include="src\ParticleSystemHelper.cpp" />
     <ClCompile Include="src\PhongMaterial.cpp" />
     <ClCompile Include="src\SpriteDataParser.cpp" />
     <ClCompile Include="src\SpriteSheet.cpp" />

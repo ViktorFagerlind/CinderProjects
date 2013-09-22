@@ -45,6 +45,8 @@ public:
 
   static b2World& getPhysicsWorld ();
 
+  void setup ();
+
   void update (const float dt, const Vec2f& touchPos);
 
   void issueNewObjects ();

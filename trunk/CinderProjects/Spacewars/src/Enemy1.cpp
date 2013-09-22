@@ -38,6 +38,9 @@ Enemy1::Enemy1 ()
   vesselDef.angle               = m_positionAndAngle.value ().m_angle;
   vesselDef.isEnemy             = true;
   vesselDef.initialLife         = 100.f;
+  vesselDef.moveCapForce        = 400.f;
+  vesselDef.moveDistConst       = 150.f;
+  vesselDef.leanConst           = .003f;
   vesselDef.modelName           = "enemy_vessel";
 
   vesselDef.bodyLinearDamping   = 10.f;

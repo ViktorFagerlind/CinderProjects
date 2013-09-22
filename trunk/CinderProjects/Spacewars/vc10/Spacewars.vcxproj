@@ -89,7 +89,7 @@
     <Link>
       <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\cinder\lib";"..\..\..\cinder\lib\msw"</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -104,12 +104,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\CinderGraphicsLib\src\Emitter.cpp" />
+    <ClCompile Include="..\..\CinderGraphicsLib\src\ImageLibrary.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\MovingCamera.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\Particle.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystemHelper.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\SpriteDataParser.cpp" />
     <ClCompile Include="..\src\ContactListener.cpp" />
-    <ClCompile Include="..\src\EnemyVessel.cpp" />
+    <ClCompile Include="..\src\Enemy1.cpp" />
     <ClCompile Include="..\src\MainVessel.cpp" />
     <ClCompile Include="..\src\ModelLibrary.cpp" />
     <ClCompile Include="..\src\SpacewarsApp.cpp" />
@@ -158,6 +160,7 @@
     <ClCompile Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Rope\b2Rope.cpp" />
+    <ClCompile Include="..\src\Vessel.cpp" />
     <ClCompile Include="..\src\Weapon.cpp" />
     <ClCompile Include="..\src\World.cpp" />
   </ItemGroup>
@@ -168,10 +171,10 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\ColorModifier.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\CommonModifier.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\Emitter.h" />
-    <ClInclude Include="..\..\CinderGraphicsLib\include\FluidModifier.h" />
-    <ClInclude Include="..\..\CinderGraphicsLib\include\GravityModifier.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\ImageEmitter.h" />
-    <ClInclude Include="..\..\CinderGraphicsLib\include\PerlinModifier.h" />
+    <ClInclude Include="..\..\CinderGraphicsLib\include\ImageLibrary.h" />
+    <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemHelper.h" />
+    <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemManager.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\PointEmitter.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\PointGravityModifier.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\SpriteDataParser.h" />
@@ -227,10 +230,12 @@
     <ClInclude Include="..\src\Collider.h" />
     <ClInclude Include="..\src\ContactListener.h" />
     <ClInclude Include="..\src\Conversions.h" />
-    <ClInclude Include="..\src\EnemyVessel.h" />
+    <ClInclude Include="..\src\Enemy1.h" />
     <ClInclude Include="..\src\MainVessel.h" />
     <ClInclude Include="..\src\ModelLibrary.h" />
+    <ClInclude Include="..\src\PositionAndAngle.h" />
     <ClInclude Include="..\src\SpacewarsApp.h" />
+    <ClInclude Include="..\src\Vessel.h" />
     <ClInclude Include="..\src\Weapon.h" />
     <ClInclude Include="..\src\World.h" />
   </ItemGroup>

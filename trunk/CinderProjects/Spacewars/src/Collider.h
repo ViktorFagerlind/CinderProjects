@@ -1,5 +1,9 @@
 #pragma once
 
+#include "cinder/Vector.h"
+
+using namespace ci;
+
 class Collider
 {
 public:
@@ -7,7 +11,9 @@ public:
 
   virtual float getDamageOutput () const                 = 0;
 
-  virtual void collide (const Collider& c)
+  virtual bool performSolve () const {return true;}
+
+  virtual void collide (const Collider& c, const Vec2f& contactPoint)
   {
     decreaseLife (c.getDamageOutput ());
   };

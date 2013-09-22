@@ -2,14 +2,20 @@
 
 ParticleSystem::ParticleSystem(std::string particleImageFile)
 {
-  mParticleTexture = new gl::Texture (loadImage (loadFile (particleImageFile)));
-  mKilled     = false;
+  mParticleTexture = gl::Texture (loadImage (loadFile (particleImageFile)));
+  mKilled          = false;
 }
 
 ParticleSystem::ParticleSystem (ImageSourceRef particleImage)
 {
-  mParticleTexture = new gl::Texture (particleImage);
-  mKilled     = false;
+  mParticleTexture = gl::Texture (particleImage);
+  mKilled          = false;
+}
+
+ParticleSystem::ParticleSystem (gl::Texture particleTexture)
+{
+  mParticleTexture = particleTexture;
+  mKilled          = false;
 }
 
 ParticleSystem::~ParticleSystem()
@@ -21,8 +27,6 @@ ParticleSystem::~ParticleSystem()
   for (vector<Modifier*>::iterator it = mModifiers.begin(); it != mModifiers.end(); it++)
     delete (*it);
   mModifiers.clear();
-
-  delete mParticleTexture;
 }
 
 void ParticleSystem::addEmitter (Emitter *const emitter)
@@ -78,7 +82,7 @@ void ParticleSystem::updateModifiers()
   }
 }
 
-void ParticleSystem::kill()
+void ParticleSystem::killSystemAndEmitters ()
 {
   mKilled = true;
 
@@ -89,15 +93,14 @@ void ParticleSystem::kill()
   }
 }
 
+void ParticleSystem::killSystem()
+{
+  mKilled = true;
+}
+
 bool ParticleSystem::dead()
 {
-  if (!mKilled)
-    return false;
-
-  if (mEmitters.size () > 0)
-    return false;
-
-  return true;
+  return mKilled && mEmitters.size () == 0;
 }
 
 
@@ -111,12 +114,12 @@ void ParticleSystem::update()
 void ParticleSystem::draw()
 {
 	glEnable (GL_TEXTURE_2D);
-  mParticleTexture->bind ();
+  mParticleTexture.bind ();
 
   for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-    (*it)->draw (mParticleTexture);
+    (*it)->draw (&mParticleTexture);
 
-  mParticleTexture->unbind ();
+  mParticleTexture.unbind ();
 }
 
 

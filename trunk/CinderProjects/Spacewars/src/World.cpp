@@ -74,13 +74,16 @@ World::World ()
 {
   m_physicsWorld.SetContactListener (&m_contactListener);
 
-  m_mainVessel.reset (new MainVessel ());
-
 #ifdef _DEBUG
   m_debugDrawer.reset (new DebugDrawer);
   m_debugDrawer->SetFlags (b2Draw::e_shapeBit);
   m_physicsWorld.SetDebugDraw (m_debugDrawer.get ());
 #endif
+}
+
+void World::setup ()
+{
+  m_mainVessel.reset (new MainVessel ());
 }
 
 World::~World ()
@@ -101,10 +104,16 @@ void World::issueNewObjects ()
   {
     switch (currentSecond)
     {
-    case 13:
+    case 2:
+    case 4:
+    case 6:
+    case 8:
+    case 10:
+    case 12:
     case 14:
-    case 15:
     case 16:
+    case 18:
+    case 20:
     default:
       m_objects.push_back (shared_ptr<WorldObject> (new Enemy1));
       break;

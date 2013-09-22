@@ -1008,6 +1008,12 @@
     <ClInclude Include="include\TubeDrawer.h">
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="include\ParticleSystemHelper.h">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImageLibrary.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SpriteDataParser.cpp">
@@ -1062,6 +1068,12 @@
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="src\TubeDrawer.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSystemHelper.cpp">
+      <Filter>Source Files\Particles\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImageLibrary.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
