@@ -30,24 +30,38 @@ private:
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class MainVessel
+class ProtagonistVessel : public Vessel
 {
 public:
-  MainVessel ();
+  ProtagonistVessel (const VesselDef& vesselDef)
+  : Vessel (vesselDef)
+  {}
 
-  virtual ~MainVessel ();
+  virtual ~ProtagonistVessel() {}
+
+  virtual float getDamageOutput () const {return 1.f;}
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+
+class Protagonist
+{
+public:
+  Protagonist ();
+
+  virtual ~Protagonist ();
 
   void update (const float dt, const Vec2f& touchPos);
 
   void draw ();
 
 private:
-  shared_ptr<Vessel> m_vessel;
+  shared_ptr<ProtagonistVessel> m_vessel;
 
-  Engine             m_engine;
+  Engine                        m_engine;
 
-  shared_ptr<Weapon> m_leftLaser;
-  shared_ptr<Weapon> m_rightLaser;
+  shared_ptr<Weapon>            m_leftLaser;
+  shared_ptr<Weapon>            m_rightLaser;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

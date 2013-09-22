@@ -29,8 +29,8 @@ void ContactListener::BeginContact(b2Contact* contact)
 
   if (colliderA != NULL && colliderB != NULL)
   {
-    colliderA->collide (*colliderB, contactPoint);
-    colliderB->collide (*colliderA, contactPoint);
+    colliderA->collide (colliderB->getDamageOutput (), contactPoint);
+    colliderB->collide (colliderA->getDamageOutput (), contactPoint);
   }
 }
   

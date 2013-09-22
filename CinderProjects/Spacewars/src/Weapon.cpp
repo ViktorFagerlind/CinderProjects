@@ -72,7 +72,7 @@ void Shot::kill ()
   m_body->GetFixtureList ()->SetFilterData (filter);
 }
 
-void Shot::collide (const Collider& c, const Vec2f& contactPoint)
+void Shot::collide (float damage, const Vec2f& contactPoint)
 {
   // Create small explosion at contact
   ParticleSystemHelper::createMiniExplosion ()->setPosition (Conversions::Vec2fTo3f (contactPoint));
