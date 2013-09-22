@@ -19,7 +19,7 @@ using namespace ci::app;
 //----------------------------------------------------------------------------------------------------------------------
 
 Shot::Shot ()
-: m_speed    (Vec2f (0.f, 1000.f)),
+: m_speed    (Vec2f (0.f, 2000.f)),
   m_isDead   (true)
 {
   // -------------- setup physics ----------------
@@ -39,7 +39,7 @@ Shot::Shot ()
 	fixtureDef.shape               = &dynamicBox;
 	//fixtureDef.isSensor            = true;
   fixtureDef.filter.categoryBits = 0; // deactivated from the start
-  fixtureDef.filter.maskBits     = EntityCategory_Enemies_E;
+  fixtureDef.filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
 
 	m_body->CreateFixture (&fixtureDef);
 
@@ -53,7 +53,7 @@ void Shot::define (const Vec2f& position)
   // Turn on collision detection
   b2Filter filter;
   filter.categoryBits = EntityCategory_OurShots_E; // deactivated from the start
-  filter.maskBits     = EntityCategory_Enemies_E;
+  filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
 
   m_body->GetFixtureList ()->SetFilterData (filter);
 
@@ -68,7 +68,7 @@ void Shot::kill ()
   // Turn off collision detection
   b2Filter filter;
   filter.categoryBits = 0;
-  filter.maskBits     = EntityCategory_Enemies_E;
+  filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
   m_body->GetFixtureList ()->SetFilterData (filter);
 }
 
@@ -142,7 +142,7 @@ void Shot::draw ()
 Weapon::Weapon (const Vec2f& relativePos)
 : m_relativePos (relativePos),
   m_fireCounter (0),
-  m_fireRate    (15),
+  m_fireRate    (10),
   m_emitterTime (5),
   m_maxNofShots (100),
   m_nofShots    (0)

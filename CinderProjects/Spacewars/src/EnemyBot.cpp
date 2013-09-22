@@ -1,8 +1,9 @@
-#include "Enemy1.h"
+#include "EnemyBot.h"
 
 #include "cinder/gl/gl.h"
 #include "cinder/app/App.h"
 #include "cinder/ObjLoader.h"
+#include "cinder/Rand.h"
 
 #include <Box2D/Box2d.h>
 
@@ -22,49 +23,57 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Enemy1::Enemy1 ()
+EnemyBot::EnemyBot ()
 {
   // -------------- initial position ----------
-  m_positionAndAngle = PositionAndAngle (-300, 700, toRadians (180.f));
+  m_positionAndAngle = PositionAndAngle (0, 800, toRadians (0.f));
 
   // -------------- setup vessel ----------
   // define vessel
   VesselDef vesselDef;
   vesselDef.position            = m_positionAndAngle.value ().m_position;
   vesselDef.angle               = m_positionAndAngle.value ().m_angle;
-  vesselDef.category            = EntityCategory_Enemies_E;
-  vesselDef.initialLife         = 100.f;
-  vesselDef.moveCapForce        = 400.f;
-  vesselDef.moveDistConst       = 150.f;
+  vesselDef.category            = EntityCategory_EnemySwarm_E;
+  vesselDef.initialLife         = 5.f;
+  vesselDef.moveCapForce        = 200.f;
+  vesselDef.moveDistConst       = 50.f;
   vesselDef.leanConst           = .003f;
-  vesselDef.modelName           = "enemy_vessel";
+  vesselDef.modelName           = "enemy_bot";
 
   vesselDef.bodyLinearDamping   = 10.f;
   vesselDef.bodyAngularDamping  = 15.f;
-  vesselDef.fixtureDensity      = 1.f;
+  vesselDef.fixtureDensity      = 2.5f;
 
-  m_vessel.reset (new Enemy1Vessel (vesselDef));
+  m_vessel.reset (new EnemyBotVessel (vesselDef));
 
   // -------------- setup animation ----------
-  timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone());
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (   0, 200, toRadians (220.f)), 2.5f, EaseNone());
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50, 200, toRadians (180.f)), 0.5f, EaseNone());
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50,-300, toRadians (180.f)), 1.0f, EaseNone());
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 400,   0, toRadians (300.f)), 1.5f, EaseNone());
-  timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 300, 800, toRadians (360.f)), 2.0f, EaseNone())
+  Vec2f prevPrevPosition = m_positionAndAngle.value ().m_position + Vec2f (0.f,10.f);
+  Vec2f prevPosition     = m_positionAndAngle.value ().m_position;
+  for (uint32_t i=0; i<10; i++)
+  {
+    Vec2f newPosition = Vec2f (Rand::randFloat (-400.f, 400.f), Rand::randFloat (-700.f, 600.f));
+    Vec2f delta       = newPosition - prevPosition;
+    float angle       = -acos (Vec2f(0,1).dot (delta) / delta.length ());
+
+    timeline().appendTo (&m_positionAndAngle, PositionAndAngle (newPosition.x, newPosition.y, angle), 1.0f, EaseNone());
+
+    prevPrevPosition  = prevPosition;
+    prevPosition      = newPosition;
+  }
+  timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 0, 1000, toRadians (360.f)), 1.0f, EaseNone())
     .finishFn (bind (&Vessel::eliminate, m_vessel));
 }
 
-Enemy1::~Enemy1 ()
+EnemyBot::~EnemyBot ()
 {
 }
 
-void Enemy1::update (const float dt)
+void EnemyBot::update (const float dt)
 {
   m_vessel->update (dt, m_positionAndAngle);
 }
 
-void Enemy1::draw ()
+void EnemyBot::draw ()
 {
   m_vessel->draw ();
 }
