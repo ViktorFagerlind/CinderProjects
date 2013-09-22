@@ -16,6 +16,8 @@
 #include <list>
 
 using namespace ci;
+using namespace std;
+
 using std::list;
 
 class Emitter
@@ -30,7 +32,7 @@ public:
   virtual ~Emitter();
 
   // For animated emitters
-  void makeAnimated (std::string animationXmlPath);
+  void makeAnimated (shared_ptr<vector<SpriteData>> spriteData);
 
   // A method to test if the particle system still has particles
   bool dead() {return mKilled && mParticleCount == 0;}
@@ -71,16 +73,18 @@ private:
   bool            mKilled;
   bool            mPaused;
 
+/*
   float          *mSizes;
   Vec3f          *mVerticies;
   GLfloat        *mTextureCoordinates;
   ColorAf        *mColors;
+*/
 
   gl::GlslProg    mShader;
 
   bool            mIsAnimated;
 
   uint32_t        mFramesToLive;
-  std::vector<SpriteData> m_spriteData;
+  shared_ptr<vector<SpriteData>> m_spriteData;
 };
 

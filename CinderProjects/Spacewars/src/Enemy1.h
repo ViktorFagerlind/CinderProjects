@@ -31,7 +31,7 @@ public:
 
   virtual ~Enemy1Vessel() {}
 
-  virtual float getDamageOutput () const {return 1.f;}
+  virtual float getDamageOutput () const {return 10.f;}
 };
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -13,6 +13,12 @@
 #endif
 
 #if defined (CINDER_COCOA_TOUCH)
+#define LOAD_MOVIE_FILE_OR_RESOURCE(Filename)  loadResource (Filename)
+#else
+#define LOAD_MOVIE_FILE_OR_RESOURCE(Filename)  loadFile ("../Media/Movies/" + std::string (Filename))
+#endif
+
+#if defined (CINDER_COCOA_TOUCH)
 #define LOAD_MESH_FILE_OR_RESOURCE(Filename)  loadResource (Filename)
 #else
 #define LOAD_MESH_FILE_OR_RESOURCE(Filename)  loadFile ("../Media/Meshes/" + std::string (Filename))

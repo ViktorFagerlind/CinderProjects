@@ -62,6 +62,8 @@ public:
 
   void eliminate () {m_isDead = true;}
 
+  void explode ();
+
   bool isDead () const {return m_isDead;}
 
   shared_ptr<Model> getModel () {return m_model;}

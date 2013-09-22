@@ -2,6 +2,7 @@
 
 #include "ImageLibrary.h"
 
+#include "Macros.h"
 #include "ParticleSystemManager.h"
 #include "Emitter.h"
 #include "AreaEmitter.h"
@@ -90,6 +91,45 @@ Emitter* ParticleSystemHelper::createMiniExplosion ()
   ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(1.0f,  0.8f,  0.7f,  0.7f),  //startColor 
                                                        ColorAf(1.0f,  0.8f,  0.2f,  0.7f),  //middleColor
                                                        ColorAf(1.0f,  0.2f,  0.2f,  0.0f),  //endColor
+                                                       0.5f);                               //middleTime
+  particleSystem->addModifier (commonModifier);
+  particleSystem->addModifier (colorModifier);
+
+  particleSystem->killSystem ();
+
+  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
+
+  return emitter;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+Emitter* ParticleSystemHelper::createExplosion (const Vec3f& position, const Vec3f& speed)
+{
+  TextureAnimLibraryItem &libItem = TextureAnimLibrary::getSingleton ().getOrAddItem ("FireBall.png", "FireBall.xml");
+
+  ParticleSystem *particleSystem = new ParticleSystem (libItem.m_texture);
+
+  AreaEmitter *emitter = new AreaEmitter (20,               // maxNofParticles
+                                          position,         // position
+                                          4,                // particlesPerFrame,
+  						                            20,               // width
+  						                            20,               // height 
+                                          20,               // depth,
+                                          50.0f,            // min size
+                                          80.0f,            // max size
+                                          speed*0.5f,       // baseVelocity
+                                          2.0f);            // randVelocity
+
+  emitter->makeAnimated (libItem.m_spriteData);
+
+  emitter->setFramesToLive (2);
+  particleSystem->addEmitter  (emitter);
+
+  CommonModifier *commonModifier = new CommonModifier (1.5f, 1.0f, 1.0f);
+  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(1.0f,  1.0f,  1.0f,  0.7f),  //startColor 
+                                                       ColorAf(1.0f,  1.0f,  1.0f,  0.7f),  //middleColor
+                                                       ColorAf(1.0f,  1.0f,  1.0f,  0.3f),  //endColor
                                                        0.5f);                               //middleTime
   particleSystem->addModifier (commonModifier);
   particleSystem->addModifier (colorModifier);

@@ -58,6 +58,14 @@
 		BF013E4917DE62100038EC5D /* Weapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF013E4717DE62100038EC5D /* Weapon.cpp */; };
 		BF1161BB17EED44C003EB38A /* Enemy1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161B617EED44C003EB38A /* Enemy1.cpp */; };
 		BF1161BC17EED44C003EB38A /* Vessel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161B917EED44C003EB38A /* Vessel.cpp */; };
+		BF1161C617EF1B68003EB38A /* space_bot_body.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C217EF1B67003EB38A /* space_bot_body.obj */; };
+		BF1161C717EF1B68003EB38A /* space_bot_flanges.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C317EF1B67003EB38A /* space_bot_flanges.obj */; };
+		BF1161C817EF1B68003EB38A /* space_bot_lens.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C417EF1B67003EB38A /* space_bot_lens.obj */; };
+		BF1161C917EF1B68003EB38A /* space_bot_wings.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C517EF1B68003EB38A /* space_bot_wings.obj */; };
+		BF1161CB17EF1BB1003EB38A /* ImageLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161CA17EF1BB1003EB38A /* ImageLibrary.cpp */; };
+		BF1161CF17EF1C37003EB38A /* Protagonist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161CD17EF1C37003EB38A /* Protagonist.cpp */; };
+		BF1161D217EF20EF003EB38A /* FireBall.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D017EF20EF003EB38A /* FireBall.png */; };
+		BF1161D317EF20EF003EB38A /* FireBall.xml in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D117EF20EF003EB38A /* FireBall.xml */; };
 		BF18A8D617ECCB8B0080B583 /* ContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF18A8D017ECCB8B0080B583 /* ContactListener.cpp */; };
 		BF18A8D817ECCB8B0080B583 /* ModelLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF18A8D417ECCB8B0080B583 /* ModelLibrary.cpp */; };
 		BF18A8DD17ECCC890080B583 /* space_barell_body_v08.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF18A8DA17ECCC890080B583 /* space_barell_body_v08.obj */; };
@@ -68,7 +76,6 @@
 		BFB9FBDA17CA591200F1C77C /* MotionImplCoreMotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = BFB9FBD717CA591200F1C77C /* MotionImplCoreMotion.mm */; };
 		BFB9FBDB17CA591200F1C77C /* MotionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9FBD817CA591200F1C77C /* MotionManager.cpp */; };
 		BFB9FBDD17CA5B3100F1C77C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB9FBDC17CA5B3100F1C77C /* CoreMotion.framework */; };
-		BFBD3F8617DB25E800B1FCE5 /* MainVessel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFBD3F8417DB25E800B1FCE5 /* MainVessel.cpp */; };
 		BFBD3F8917DB25F200B1FCE5 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFBD3F8717DB25F200B1FCE5 /* World.cpp */; };
 		BFDA7B7D17CFCCCE00E72AF0 /* basic particle 1.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDA7B7C17CFCCCE00E72AF0 /* basic particle 1.png */; };
 		BFDB566717CFEDFD0041AA90 /* MovingCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFDB564017CFEDFD0041AA90 /* MovingCamera.cpp */; };
@@ -184,6 +191,16 @@
 		BF1161B817EED44C003EB38A /* PositionAndAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PositionAndAngle.h; path = ../src/PositionAndAngle.h; sourceTree = "<group>"; };
 		BF1161B917EED44C003EB38A /* Vessel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Vessel.cpp; path = ../src/Vessel.cpp; sourceTree = "<group>"; };
 		BF1161BA17EED44C003EB38A /* Vessel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vessel.h; path = ../src/Vessel.h; sourceTree = "<group>"; };
+		BF1161C217EF1B67003EB38A /* space_bot_body.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_bot_body.obj; path = ../../Media/Meshes/space_bot_body.obj; sourceTree = "<group>"; };
+		BF1161C317EF1B67003EB38A /* space_bot_flanges.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_bot_flanges.obj; path = ../../Media/Meshes/space_bot_flanges.obj; sourceTree = "<group>"; };
+		BF1161C417EF1B67003EB38A /* space_bot_lens.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_bot_lens.obj; path = ../../Media/Meshes/space_bot_lens.obj; sourceTree = "<group>"; };
+		BF1161C517EF1B68003EB38A /* space_bot_wings.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_bot_wings.obj; path = ../../Media/Meshes/space_bot_wings.obj; sourceTree = "<group>"; };
+		BF1161CA17EF1BB1003EB38A /* ImageLibrary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageLibrary.cpp; path = ../../CinderGraphicsLib/src/ImageLibrary.cpp; sourceTree = "<group>"; };
+		BF1161CC17EF1BC0003EB38A /* ImageLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLibrary.h; path = ../../CinderGraphicsLib/include/ImageLibrary.h; sourceTree = "<group>"; };
+		BF1161CD17EF1C37003EB38A /* Protagonist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Protagonist.cpp; path = ../src/Protagonist.cpp; sourceTree = "<group>"; };
+		BF1161CE17EF1C37003EB38A /* Protagonist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Protagonist.h; path = ../src/Protagonist.h; sourceTree = "<group>"; };
+		BF1161D017EF20EF003EB38A /* FireBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FireBall.png; path = ../../Media/Movies/FireBall.png; sourceTree = "<group>"; };
+		BF1161D117EF20EF003EB38A /* FireBall.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FireBall.xml; path = ../../Media/Movies/FireBall.xml; sourceTree = "<group>"; };
 		BF18A8CF17ECCB8B0080B583 /* Collider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collider.h; path = ../src/Collider.h; sourceTree = "<group>"; };
 		BF18A8D017ECCB8B0080B583 /* ContactListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContactListener.cpp; path = ../src/ContactListener.cpp; sourceTree = "<group>"; };
 		BF18A8D117ECCB8B0080B583 /* ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactListener.h; path = ../src/ContactListener.h; sourceTree = "<group>"; };
@@ -201,8 +218,6 @@
 		BFB9FBD817CA591200F1C77C /* MotionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MotionManager.cpp; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/MotionManager/src/cinder/MotionManager.cpp; sourceTree = "<group>"; };
 		BFB9FBD917CA591200F1C77C /* MotionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MotionManager.h; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/MotionManager/src/cinder/MotionManager.h; sourceTree = "<group>"; };
 		BFB9FBDC17CA5B3100F1C77C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		BFBD3F8417DB25E800B1FCE5 /* MainVessel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainVessel.cpp; path = ../src/MainVessel.cpp; sourceTree = "<group>"; };
-		BFBD3F8517DB25E800B1FCE5 /* MainVessel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainVessel.h; path = ../src/MainVessel.h; sourceTree = "<group>"; };
 		BFBD3F8717DB25F200B1FCE5 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = ../src/World.cpp; sourceTree = "<group>"; };
 		BFBD3F8817DB25F200B1FCE5 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = ../src/World.h; sourceTree = "<group>"; };
 		BFD9D8FD17CD391600F2D8CF /* ShaderHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShaderHelper.h; path = ../../CinderGraphicsLib/include/ShaderHelper.h; sourceTree = "<group>"; };
@@ -338,6 +353,8 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161CD17EF1C37003EB38A /* Protagonist.cpp */,
+				BF1161CE17EF1C37003EB38A /* Protagonist.h */,
 				BF1161B617EED44C003EB38A /* Enemy1.cpp */,
 				BF1161B717EED44C003EB38A /* Enemy1.h */,
 				BF1161B817EED44C003EB38A /* PositionAndAngle.h */,
@@ -353,8 +370,6 @@
 				BF013E4217DB2E1E0038EC5D /* SpacewarsApp.h */,
 				BFBD3F8717DB25F200B1FCE5 /* World.cpp */,
 				BFBD3F8817DB25F200B1FCE5 /* World.h */,
-				BFBD3F8417DB25E800B1FCE5 /* MainVessel.cpp */,
-				BFBD3F8517DB25E800B1FCE5 /* MainVessel.h */,
 				BF082B8417C8A3F1005FC69A /* Conversions.h */,
 				5518D4A7022F4D9D918BA15F /* SpacewarsApp.cpp */,
 			);
@@ -364,6 +379,12 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161D017EF20EF003EB38A /* FireBall.png */,
+				BF1161D117EF20EF003EB38A /* FireBall.xml */,
+				BF1161C217EF1B67003EB38A /* space_bot_body.obj */,
+				BF1161C317EF1B67003EB38A /* space_bot_flanges.obj */,
+				BF1161C417EF1B67003EB38A /* space_bot_lens.obj */,
+				BF1161C517EF1B68003EB38A /* space_bot_wings.obj */,
 				BF18A8E017ECCE3E0080B583 /* Rock.obj */,
 				BF18A8DA17ECCC890080B583 /* space_barell_body_v08.obj */,
 				BF18A8DB17ECCC890080B583 /* space_barell_engine_v08.obj */,
@@ -558,6 +579,7 @@
 		BFE3C02017CBE5B000E47CF9 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161CA17EF1BB1003EB38A /* ImageLibrary.cpp */,
 				BF18A8E417EED2C50080B583 /* ParticleSystemHelper.h */,
 				BF18A8E217EED2B40080B583 /* ParticleSystemHelper.cpp */,
 				BFDB564017CFEDFD0041AA90 /* MovingCamera.cpp */,
@@ -572,6 +594,7 @@
 		BFE3C02917CBE5FF00E47CF9 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161CC17EF1BC0003EB38A /* ImageLibrary.h */,
 				BF18A8D917ECCBF30080B583 /* Macros.h */,
 				BFDB563817CFEDEB0041AA90 /* MovingCamera.h */,
 				BFD9D8FD17CD391600F2D8CF /* ShaderHelper.h */,
@@ -701,6 +724,12 @@
 				BF18A8DE17ECCC890080B583 /* space_barell_engine_v08.obj in Resources */,
 				BF18A8DF17ECCC890080B583 /* space_barell_windshield_v08.obj in Resources */,
 				BF18A8E117ECCE3E0080B583 /* Rock.obj in Resources */,
+				BF1161C617EF1B68003EB38A /* space_bot_body.obj in Resources */,
+				BF1161C717EF1B68003EB38A /* space_bot_flanges.obj in Resources */,
+				BF1161C817EF1B68003EB38A /* space_bot_lens.obj in Resources */,
+				BF1161C917EF1B68003EB38A /* space_bot_wings.obj in Resources */,
+				BF1161D217EF20EF003EB38A /* FireBall.png in Resources */,
+				BF1161D317EF20EF003EB38A /* FireBall.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,7 +793,6 @@
 				BFE3C02717CBE5F800E47CF9 /* ParticleSystem.cpp in Sources */,
 				BFE3C02817CBE5F800E47CF9 /* SpriteDataParser.cpp in Sources */,
 				BFDB566717CFEDFD0041AA90 /* MovingCamera.cpp in Sources */,
-				BFBD3F8617DB25E800B1FCE5 /* MainVessel.cpp in Sources */,
 				BFBD3F8917DB25F200B1FCE5 /* World.cpp in Sources */,
 				BF013E4917DE62100038EC5D /* Weapon.cpp in Sources */,
 				BF18A8D617ECCB8B0080B583 /* ContactListener.cpp in Sources */,
@@ -772,6 +800,8 @@
 				BF18A8E317EED2B40080B583 /* ParticleSystemHelper.cpp in Sources */,
 				BF1161BB17EED44C003EB38A /* Enemy1.cpp in Sources */,
 				BF1161BC17EED44C003EB38A /* Vessel.cpp in Sources */,
+				BF1161CB17EF1BB1003EB38A /* ImageLibrary.cpp in Sources */,
+				BF1161CF17EF1C37003EB38A /* Protagonist.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

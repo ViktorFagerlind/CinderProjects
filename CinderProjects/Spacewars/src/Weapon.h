@@ -31,7 +31,7 @@ public:
 
   // Collider methods
   virtual bool performSolve () const {return false;}
-  virtual float getDamageOutput () const {return 100.f;}
+  virtual float getDamageOutput () const {return 20.f;}
   virtual void collide (float damage, const Vec2f& contactPoint);
 
 private:

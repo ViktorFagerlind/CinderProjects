@@ -39,7 +39,7 @@ public:
 
   virtual ~ProtagonistVessel() {}
 
-  virtual float getDamageOutput () const {return 1.f;}
+  virtual float getDamageOutput () const {return 100.f;}
 };
 
 //----------------------------------------------------------------------------------------------------------------------

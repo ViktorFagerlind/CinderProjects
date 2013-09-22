@@ -6,6 +6,8 @@
 
 #include <Box2D/Box2d.h>
 
+#include "ParticleSystemHelper.h"
+#include "Emitter.h"
 #include "PositionAndAngle.h"
 #include "ModelLibrary.h"
 #include "Macros.h"
@@ -71,6 +73,9 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
   m_body->ApplyForceToCenter (force);
   Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
 
+  if (m_life <= 0.f)
+    explode ();
+
 #if _DEBUG
   m_previousDesiredPosition = positionAndAngle.m_position;
 #endif
@@ -101,6 +106,15 @@ void Vessel::draw ()
   gl::drawSolidCircle (m_previousDesiredPosition, 10);
   gl::enable (GL_LIGHTING);
 #endif
+}
+
+
+void Vessel::explode ()
+{
+  ParticleSystemHelper::createExplosion (Conversions::fromPhysics3f (m_body->GetPosition ()),
+                                         Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f);
+
+  eliminate ();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
