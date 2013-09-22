@@ -354,7 +354,7 @@ void ParticleApp::keyDown( KeyEvent event )
   }
   else
   {
-    mSystems[index].ps->kill();
+    mSystems[index].ps->killSystemAndEmitters();
     mSystems[index].ps = NULL;
   }
 }

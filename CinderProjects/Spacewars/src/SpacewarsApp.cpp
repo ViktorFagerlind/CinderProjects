@@ -23,7 +23,7 @@ void SpacewarsApp::prepareSettings (Settings *settings)
 
 void SpacewarsApp::setup()
 {
-  World::getSingleton ();
+  World::getSingleton ().setup ();
 
 	m_touchPressed = false;
 

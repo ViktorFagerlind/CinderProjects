@@ -1,16 +1,11 @@
 #pragma once
 
 #include "cinder/Vector.h"
-#include "cinder/TriMesh.h"
-#include "cinder/gl/Material.h"
 
 #include "Weapon.h"
-#include "Collider.h"
+#include "Vessel.h"
 
-class AreaEmitter;
-class PointEmitter;
-class b2Body;
-class Model;
+class Emitter;
 
 using namespace ci;
 using namespace std;
@@ -29,13 +24,13 @@ public:
   void draw ();
 
 private:
-  AreaEmitter  *m_baseEmitter;
-  PointEmitter *m_flareEmitter;
+  Emitter *m_baseEmitter;
+  Emitter *m_flareEmitter;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class MainVessel : Collider
+class MainVessel
 {
 public:
   MainVessel ();
@@ -46,27 +41,13 @@ public:
 
   void draw ();
 
-  // Collider methods
-  virtual void decreaseLife (const float lifeToDecrease) {m_life -= lifeToDecrease;}
-
-  virtual float getDamageOutput () const {return 1.f;}
-
-  virtual void collide (const Collider& c)
-  {
-    Collider::collide (c);
-  };
-
 private:
+  shared_ptr<Vessel> m_vessel;
+
   Engine             m_engine;
-
-  b2Body*            m_body;
-
-  shared_ptr<Model>  m_model;
 
   shared_ptr<Weapon> m_leftLaser;
   shared_ptr<Weapon> m_rightLaser;
-  
-  float         m_life;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

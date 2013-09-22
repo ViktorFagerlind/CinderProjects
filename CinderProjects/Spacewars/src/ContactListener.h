@@ -12,7 +12,8 @@ enum EntityCategory
 
 class ContactListener : public b2ContactListener
 {
+public:
+  void PreSolve (b2Contact* contact, const b2Manifold* oldManifold);
+
   void BeginContact (b2Contact* contact);
-  
-  void EndContact (b2Contact* contact);
 };

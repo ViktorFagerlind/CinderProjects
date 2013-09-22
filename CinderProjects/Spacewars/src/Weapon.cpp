@@ -5,11 +5,11 @@
 #include "cinder/app/App.h"
 #include "cinder/ObjLoader.h"
 
-#include "ParticleSystemManager.h"
+#include "ParticleSystemHelper.h"
+#include "Emitter.h"
+#include "ImageLibrary.h"
+
 #include "Macros.h"
-#include "PointEmitter.h"
-#include "CommonModifier.h"
-#include "ColorModifier.h"
 #include "World.h"
 #include "Conversions.h"
 
@@ -37,7 +37,7 @@ Shot::Shot ()
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape               = &dynamicBox;
-	fixtureDef.isSensor            = true;
+	//fixtureDef.isSensor            = true;
   fixtureDef.filter.categoryBits = 0; // deactivated from the start
   fixtureDef.filter.maskBits     = EntityCategory_Enemies_E;
 
@@ -72,6 +72,13 @@ void Shot::kill ()
   m_body->GetFixtureList ()->SetFilterData (filter);
 }
 
+void Shot::collide (const Collider& c, const Vec2f& contactPoint)
+{
+  // Create small explosion at contact
+  ParticleSystemHelper::createMiniExplosion ()->setPosition (Conversions::Vec2fTo3f (contactPoint));
+  
+  kill ();
+};
 
 void Shot::update (const float dt)
 {
@@ -146,33 +153,10 @@ Weapon::Weapon (const Vec2f& relativePos)
     m_shots.push_back (shot);
   }
 
-  // TODO: Flytta skotten med kinematic object....
+  m_shotTexture = ImageLibrary::getSingleton ().getTexture ("particle1.jpg");
 
-  ImageSourceRef image = loadImage (LOAD_IMAGE_FILE_OR_RESOURCE("particle1.jpg"));
 
-  m_shotTexture = gl::Texture (image);
-
-  //------------------------ setup particle system ------------------------------
-  ParticleSystem *particleSystem = new ParticleSystem (image);
-
-  m_emitter = new PointEmitter (20, 
-                                Vec3f::zero (), 
-                                1, 
-                                4, 
-                                6, 
-                                Vec3f::zero (), 
-                                2.f);
-  particleSystem->addEmitter  (m_emitter);
-
-  CommonModifier *commonModifier = new CommonModifier (5.0f, 1.0f, 0.1f);
-  ColorModifier  *colorModifier  = new ColorModifier  (ColorAf (0.8f,  0.8f,  1.0f,  1.0f),  //startColor 
-                                                       ColorAf (0.8f,  0.8f,  1.0f,  0.5f),  //middleColor
-                                                       ColorAf (0.8f,  0.8f,  1.0f,  0.0f),  //endColor
-                                                       0.5f);                                //float middleTime)  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
+  m_emitter = ParticleSystemHelper::createSparks ();
 }
 
 Weapon::~Weapon ()

@@ -14,6 +14,8 @@ public:
 
   ParticleSystem (ImageSourceRef particleImage);
 
+  ParticleSystem (gl::Texture particleTexture);
+
   virtual ~ParticleSystem();
 
   void addEmitter (Emitter *const emitter);
@@ -22,7 +24,9 @@ public:
 
   size_t getCount();
   
-  void kill();
+  void killSystemAndEmitters ();
+
+  void killSystem ();
 
   bool dead();
 
@@ -30,7 +34,7 @@ public:
 
   void draw();
 
-  gl::Texture *getTexture () {return mParticleTexture;}
+  gl::Texture *getTexture () {return &mParticleTexture;}
 
 
 private:
@@ -44,6 +48,6 @@ private:
 
 	vector<Modifier*> mModifiers;
 
-  gl::Texture      *mParticleTexture;
+  gl::Texture       mParticleTexture;
 };
 

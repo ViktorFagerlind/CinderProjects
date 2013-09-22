@@ -10,7 +10,7 @@
 using namespace ci;
 using namespace std;
 
-class PointEmitter;
+class Emitter;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -34,11 +34,9 @@ public:
 
   virtual float getDamageOutput () const {return 1.f;}
 
-  virtual void collide (const Collider& c)
-  {
-    // TODO
-    kill ();
-  };
+  virtual bool performSolve () const {return false;}
+
+  virtual void collide (const Collider& c, const Vec2f& contactPoint);
 
 private:
   Vec2f   m_speed;
@@ -77,7 +75,7 @@ private:
 
   gl::Texture       m_shotTexture;
 
-  PointEmitter     *m_emitter;
+  Emitter          *m_emitter;
   const uint32_t    m_emitterTime;
 
   Vec2f             m_position;

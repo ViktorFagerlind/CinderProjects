@@ -20,7 +20,11 @@ using namespace ci::app;
 //----------------------------------------------------------------------------------------------------------------------
 
 Vessel::Vessel (const VesselDef& vesselDef)
-: m_isDead (false)
+: m_isDead        (false),
+  m_moveCapForce  (vesselDef.moveCapForce),
+  m_moveDistConst (vesselDef.moveDistConst),
+  m_leanConst     (vesselDef.leanConst),
+  m_life          (vesselDef.initialLife)
 {
   // -------------- setup physics ----------------
 	// create a dynamic body
@@ -45,9 +49,6 @@ Vessel::Vessel (const VesselDef& vesselDef)
                                       EntityCategory_Enemies_E | EntityCategory_EnemyShots_E;
 	m_body->CreateFixture (&fixtureDef);
 
-  // Set life
-  m_life = vesselDef.initialLife;
-
   // Set model
   m_model = ModelLibrary::getSingleton ().getModel (vesselDef.modelName);
 }
@@ -60,21 +61,18 @@ Vessel::~Vessel ()
 void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
 {
   //------------ Handle position ---------------------
-  const float capForce  = 400.f;
-  const float distConst = 150.f;
-
   b2Vec2 distance = Conversions::toPhysics (positionAndAngle.m_position) - m_body->GetPosition ();
-  b2Vec2 force = distConst * distance;
-  if (force.LengthSquared () > capForce * capForce)
+  b2Vec2 force = m_moveDistConst * distance;
+  if (force.LengthSquared () > m_moveCapForce * m_moveCapForce)
   {
     force.Normalize ();
-    force = capForce * force;
+    force = m_moveCapForce * force;
   }
   m_body->ApplyForceToCenter (force);
   Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
 
 #if _DEBUG
-  m_previousPositionAndAngle = &positionAndAngle;
+  m_previousDesiredPosition = positionAndAngle.m_position;
 #endif
 
   //------------ Handle rotation ---------------------
@@ -84,7 +82,7 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
 
 void Vessel::draw ()
 {
-  const float leanConst = 0.003f;
+  const float leanConst = m_leanConst;
 
   Vec2f rightForVehicle = Vec2f (1.f, 0.f);
   rightForVehicle.rotate (m_body->GetAngle ());
@@ -100,7 +98,7 @@ void Vessel::draw ()
 #if _DEBUG
   gl::disable (GL_LIGHTING);
   gl::color (1,0,0);
-  gl::drawSolidCircle (m_previousPositionAndAngle->m_position, 10);
+  gl::drawSolidCircle (m_previousDesiredPosition, 10);
   gl::enable (GL_LIGHTING);
 #endif
 }
