@@ -360,9 +360,6 @@
     <ClCompile Include="..\..\CinderGraphicsLib\src\MovingCamera.cpp">
       <Filter>Blocks\Mine\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MainVessel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -386,6 +383,9 @@
     </ClCompile>
     <ClCompile Include="..\..\CinderGraphicsLib\src\ImageLibrary.cpp">
       <Filter>Blocks\Mine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Protagonist.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -431,9 +431,6 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\SpriteDataParser.h">
       <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MainVessel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\World.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -469,6 +466,9 @@
     </ClInclude>
     <ClInclude Include="..\..\CinderGraphicsLib\include\ParticleSystemManager.h">
       <Filter>Blocks\Mine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Protagonist.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -112,8 +112,8 @@
     <ClCompile Include="..\..\CinderGraphicsLib\src\SpriteDataParser.cpp" />
     <ClCompile Include="..\src\ContactListener.cpp" />
     <ClCompile Include="..\src\Enemy1.cpp" />
-    <ClCompile Include="..\src\MainVessel.cpp" />
     <ClCompile Include="..\src\ModelLibrary.cpp" />
+    <ClCompile Include="..\src\Protagonist.cpp" />
     <ClCompile Include="..\src\SpacewarsApp.cpp" />
     <ClCompile Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
     <ClCompile Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Collision\b2CollideCircle.cpp" />
@@ -231,9 +231,9 @@
     <ClInclude Include="..\src\ContactListener.h" />
     <ClInclude Include="..\src\Conversions.h" />
     <ClInclude Include="..\src\Enemy1.h" />
-    <ClInclude Include="..\src\MainVessel.h" />
     <ClInclude Include="..\src\ModelLibrary.h" />
     <ClInclude Include="..\src\PositionAndAngle.h" />
+    <ClInclude Include="..\src\Protagonist.h" />
     <ClInclude Include="..\src\SpacewarsApp.h" />
     <ClInclude Include="..\src\Vessel.h" />
     <ClInclude Include="..\src\Weapon.h" />
