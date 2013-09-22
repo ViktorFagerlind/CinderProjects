@@ -48,7 +48,7 @@ Enemy1::Enemy1 ()
   vesselDef.fixtureShape        = &boxShape;
   vesselDef.fixtureDensity      = 1.f;
 
-  m_vessel.reset (new Vessel (vesselDef));
+  m_vessel.reset (new Enemy1Vessel (vesselDef));
 
   // -------------- setup animation ----------
   timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone());

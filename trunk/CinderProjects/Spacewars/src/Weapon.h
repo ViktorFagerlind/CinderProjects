@@ -30,13 +30,9 @@ public:
   void kill ();
 
   // Collider methods
-  virtual void decreaseLife (const float lifeToDecrease) {}
-
-  virtual float getDamageOutput () const {return 1.f;}
-
   virtual bool performSolve () const {return false;}
-
-  virtual void collide (const Collider& c, const Vec2f& contactPoint);
+  virtual float getDamageOutput () const {return 100.f;}
+  virtual void collide (float damage, const Vec2f& contactPoint);
 
 private:
   Vec2f   m_speed;

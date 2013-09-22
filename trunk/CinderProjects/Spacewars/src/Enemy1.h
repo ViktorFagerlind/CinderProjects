@@ -22,6 +22,20 @@ using namespace std;
 
 //----------------------------------------------------------------------------------------------------------------------
 
+class Enemy1Vessel : public Vessel
+{
+public:
+  Enemy1Vessel (const VesselDef& vesselDef)
+  : Vessel (vesselDef)
+  {}
+
+  virtual ~Enemy1Vessel() {}
+
+  virtual float getDamageOutput () const {return 1.f;}
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+
 class Enemy1 : public WorldObject
 {
 public:
@@ -36,9 +50,9 @@ public:
   bool isDead () {return m_vessel->isDead ();}
 
 private:
-	Anim<PositionAndAngle>	m_positionAndAngle;
+	Anim<PositionAndAngle>	  m_positionAndAngle;
 
-  shared_ptr<Vessel>      m_vessel;
+  shared_ptr<Enemy1Vessel>  m_vessel;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -44,7 +44,7 @@ void Engine::draw ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-MainVessel::MainVessel ()
+Protagonist::Protagonist ()
 {
   // -------------- setup vessel ----------
   // create collision shape
@@ -67,18 +67,18 @@ MainVessel::MainVessel ()
   vesselDef.fixtureShape        = &boxShape;
   vesselDef.fixtureDensity      = 1.f;
 
-  m_vessel.reset (new Vessel (vesselDef));
+  m_vessel.reset (new ProtagonistVessel (vesselDef));
 
   // -------------- create weapons ----------
   m_leftLaser.reset  (new Weapon (Vec2f (-15.f, 60.f)));
   m_rightLaser.reset (new Weapon (Vec2f ( 15.f, 60.f)));
 }
 
-MainVessel::~MainVessel ()
+Protagonist::~Protagonist ()
 {
 }
 
-void MainVessel::update (const float dt, const Vec2f& touchPos)
+void Protagonist::update (const float dt, const Vec2f& touchPos)
 {
   m_vessel->update (dt, PositionAndAngle (touchPos.x, touchPos.y, 0.f));
 
@@ -90,7 +90,7 @@ void MainVessel::update (const float dt, const Vec2f& touchPos)
   m_rightLaser->update (dt, position);
 }
 
-void MainVessel::draw ()
+void Protagonist::draw ()
 {
   m_vessel->draw ();
 

@@ -13,7 +13,7 @@ using namespace ci;
 using namespace std;
 
 class Enemy1;
-class MainVessel;
+class Protagonist;
 class DebugDrawer;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ private:
 
   list<shared_ptr<WorldObject>>   m_objects;
 
-  shared_ptr<MainVessel>          m_mainVessel;
+  shared_ptr<Protagonist>         m_protagonist;
 
   shared_ptr<DebugDrawer>         m_debugDrawer;
 

@@ -83,7 +83,7 @@ World::World ()
 
 void World::setup ()
 {
-  m_mainVessel.reset (new MainVessel ());
+  m_protagonist.reset (new Protagonist ());
 }
 
 World::~World ()
@@ -129,7 +129,7 @@ void World::update (const float dt, const Vec2f& touchPos)
   issueNewObjects ();
 
 	// --- update ship ---------------
-  m_mainVessel->update (dt, touchPos);
+  m_protagonist->update (dt, touchPos);
 
 	// --- update objects ------------
   for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end ();)
@@ -155,7 +155,7 @@ void World::update (const float dt, const Vec2f& touchPos)
 void World::draw ()
 {
 	// --- draw ship ---------------------
-  m_mainVessel->draw ();
+  m_protagonist->draw ();
 
 	// --- draw objects ------------------
   for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)

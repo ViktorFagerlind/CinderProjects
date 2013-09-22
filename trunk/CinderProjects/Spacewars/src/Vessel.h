@@ -69,14 +69,7 @@ public:
   Vec2f getPosition () {return Conversions::fromPhysics (m_body->GetPosition ());}
 
   // Collider methods
-  virtual void decreaseLife (const float lifeToDecrease) {m_life -= lifeToDecrease;}
-
-  virtual float getDamageOutput () const {return 1.f;}
-
-  virtual void collide (const Collider& c, const Vec2f& contactPoint)
-  {
-    Collider::collide (c, contactPoint);
-  };
+  virtual void collide (float damage, const Vec2f& contactPoint)  {m_life -= damage;}
 
 private:
   bool                    m_isDead;

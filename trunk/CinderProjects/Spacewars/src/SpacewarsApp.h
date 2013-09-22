@@ -2,7 +2,7 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/Light.h"
 
-class MainVessel;
+class Protagonist;
 class MovingCamera;
 
 using namespace ci;
