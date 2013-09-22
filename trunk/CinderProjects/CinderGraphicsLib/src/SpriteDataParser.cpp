@@ -1,12 +1,13 @@
 #include "SpriteDataParser.h"
+#include "Macros.h"
 #include <list>
 
 using namespace std;
 using namespace ci;
 
-vector<SpriteData> SpriteDataParser::parseSpriteData(string filePath, int format)
+vector<SpriteData> SpriteDataParser::parseSpriteData(DataSourceRef dataSource, int format)
 {
-	cinder::XmlTree mainXml( ci::loadFile( filePath ) );
+	cinder::XmlTree mainXml(dataSource);
 
 	vector<SpriteData> spriteData;
 

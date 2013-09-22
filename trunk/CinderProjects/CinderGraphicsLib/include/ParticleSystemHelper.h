@@ -1,7 +1,11 @@
 #pragma once
 
+#include "cinder/Vector.h"
+
 class Emitter;
 class ParticleSystem;
+
+using namespace ci;
 
 class ParticleSystemHelper
 {
@@ -22,6 +26,8 @@ public:
   static Emitter* createFlareSystem ();
 
   static Emitter* createMiniExplosion ();
+
+  static Emitter* createExplosion (const Vec3f& position, const Vec3f& speed);
 
   static Emitter* createSparks ();
 /*

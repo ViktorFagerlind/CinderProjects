@@ -2,6 +2,7 @@
 
 #include "cinder/ImageIo.h"
 
+#include "SpriteDataParser.h"
 #include "Macros.h"
 
 using namespace ci;
@@ -37,3 +38,25 @@ ImageLibraryItem& ImageLibrary::getOrAddItem (const string& name)
   return m_items[name];
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+TextureAnimLibraryItem& TextureAnimLibrary::getOrAddItem (const string& textureName, const string& xmlName)
+{
+  map<string, TextureAnimLibraryItem>::iterator it = m_items.find (textureName);
+
+  if (it != m_items.end())
+    return it->second;
+
+  // Load image if not found in library
+  TextureAnimLibraryItem item;
+
+  vector<SpriteData> spriteData (SpriteDataParser::parseSpriteData (LOAD_MOVIE_FILE_OR_RESOURCE (xmlName),
+                                 SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML));
+
+  item.m_spriteData.reset ( new vector<SpriteData> (spriteData));
+  item.m_texture  = gl::Texture (loadImage (LOAD_MOVIE_FILE_OR_RESOURCE (textureName)));
+
+  m_items[textureName] = item;
+
+  return m_items[textureName];
+}

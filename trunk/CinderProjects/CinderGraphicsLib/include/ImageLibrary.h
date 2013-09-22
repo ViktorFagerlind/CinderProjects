@@ -3,6 +3,8 @@
 #include "cinder/gl/Texture.h"
 #include "cinder/Surface.h"
 
+#include "SpriteData.h"
+
 #include <map>
 
 using namespace ci;
@@ -16,7 +18,6 @@ public:
   gl::Texture     m_texture;
   ImageSourceRef  m_image;
 };
-
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -39,9 +40,38 @@ public:
 private:
   ImageLibraryItem& getOrAddItem (const string& name);
 
-
 private:
   map<string, ImageLibraryItem> m_items;
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+
+class TextureAnimLibraryItem
+{
+public:
+  gl::Texture                    m_texture;
+  shared_ptr<vector<SpriteData>> m_spriteData;
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+
+class TextureAnimLibrary
+{
+private:
+  TextureAnimLibrary () {};
+
+public:
+  static TextureAnimLibrary& getSingleton ()
+  {
+      static TextureAnimLibrary instance;
+
+      return instance;
+  }
+
+  TextureAnimLibraryItem& getOrAddItem (const string& textureName, const string& xmlName);
+
+private:
+  map<string, TextureAnimLibraryItem> m_items;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
