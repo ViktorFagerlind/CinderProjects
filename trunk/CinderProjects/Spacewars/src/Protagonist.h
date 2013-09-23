@@ -40,6 +40,8 @@ public:
   virtual ~ProtagonistVessel() {}
 
   virtual float getDamageOutput () const {return 100.f;}
+
+  virtual void explode () {}; // Not implemented yet...
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -53,7 +55,9 @@ public:
 
   void update (const float dt, const Vec2f& touchPos);
 
-  void draw ();
+  void drawSolid ();
+
+  void drawTransparent ();
 
 private:
   shared_ptr<ProtagonistVessel> m_vessel;

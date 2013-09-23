@@ -28,7 +28,9 @@ public:
 
   virtual void update (const float dt) = 0;
 
-  virtual void draw () = 0;
+  virtual void drawSolid () = 0;
+
+  virtual void drawTransparent () {};
 
   virtual bool isDead () = 0;
 };

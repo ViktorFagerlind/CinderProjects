@@ -485,6 +485,9 @@
     <ClInclude Include="..\src\Weapon.h">
       <Filter>Source Files\vessels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\CinderGraphicsLib\include\DampingModifier.h">
+      <Filter>Blocks\Mine\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

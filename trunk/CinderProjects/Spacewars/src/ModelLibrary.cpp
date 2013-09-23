@@ -151,7 +151,7 @@ ModelLibrary::ModelLibrary ()
   
   //---- create models ----------
 
-  // main_vessel
+  // space barrel
   {
     vector<ModelElement> elements;
     gl::Material         material (Color (.1f, .1f, .1f),    // Ambient 
@@ -161,67 +161,80 @@ ModelLibrary::ModelLibrary ()
                                    Color (0.f, 0.f, 0.f),    // Emission
                                    GL_FRONT_AND_BACK);       // Face
 
-    elements.push_back (ModelElement (material,                         // material
-                                      getOrAddMesh ("space_barell_body_v08.obj"),       // mesh
-                                      8.f));                            // scale
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_barell_body_v08.obj"),
+                                      8.f));
 
     material.setDiffuse   (Color (.6f, .4f, .4f));
-    elements.push_back (ModelElement (material,                         // material
-                                      getOrAddMesh ("space_barell_engine_v08.obj"),       // mesh
-                                      8.f));                            // scale
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_barell_engine_v08.obj"),
+                                      8.f));
 
     material.setDiffuse   (Color (.3f, .3f, .3f));
     material.setShininess (40.f);
-    elements.push_back (ModelElement (material,                         // material
-                                      getOrAddMesh ("space_barell_windshield_v08.obj"),       // mesh
-                                      8.f));                            // scale
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_barell_windshield_v08.obj"),
+                                      8.f));
 
-    m_models["main_vessel"] = shared_ptr<Model> (new Model (elements));
+    m_models["space_barrel"] = shared_ptr<Model> (new Model (elements));
   }
 
-  // Enemy1
+  // Enemy arrow
   {
     vector<ModelElement> elements;
     gl::Material         material (Color (.1f, .1f, .1f),    // Ambient 
-                                   Color (.8f, .6f, .5f),    // Diffuse
+                                   Color (.5f, .5f, .8f),    // Diffuse
                                    Color::white(),           // Specular
                                    5.f,                      // Shininess
                                    Color (0.f, 0.f, 0.f),    // Emission
                                    GL_FRONT_AND_BACK);       // Face
 
-    elements.push_back (ModelElement (material,                       // material
-                                      getOrAddMesh ("shuttle_export.obj"), // mesh
-                                      .7f,                            // scale
-                                      Vec3f (10.f, 23.f, 0.f)));      // relativePosition
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_arrow_body.obj"),
+                                      17.f));
 
-    m_models["enemy_vessel"] = shared_ptr<Model> (new Model (elements));
+    material.setDiffuse   (Color (.4f, .4f, .4f));
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_arrow_engine.obj"),
+                                      17.f));
+
+    material.setDiffuse   (Color (.3f, .3f, .3f));
+    material.setShininess (40.f);
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_arrow_window.obj"),
+                                      17.f));
+
+    m_models["enemy_arrow"] = shared_ptr<Model> (new Model (elements));
   }
 
   // Enemy bot
   {
     vector<ModelElement> elements;
     gl::Material         material (Color (.1f, .1f, .1f),    // Ambient 
-                                   Color (.8f, .6f, .5f),    // Diffuse
+                                   Color (.9f, .6f, .4f),    // Diffuse
                                    Color::white(),           // Specular
-                                   5.f,                      // Shininess
+                                   15.f,                     // Shininess
                                    Color (0.f, 0.f, 0.f),    // Emission
                                    GL_FRONT_AND_BACK);       // Face
 
-    elements.push_back (ModelElement (material,                       // material
-                                      getOrAddMesh ("space_bot_body.obj"), // mesh
-                                      8.f));                            // scale
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_bot_body.obj"),
+                                      8.f));
 
-    elements.push_back (ModelElement (material,                       // material
-                                      getOrAddMesh ("space_bot_flanges.obj"), // mesh
-                                      8.f));                            // scale
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_bot_wings.obj"),
+                                      8.f));
 
-    elements.push_back (ModelElement (material,                       // material
-                                      getOrAddMesh ("space_bot_lens.obj"), // mesh
-                                      8.f));                            // scale
+    material.setDiffuse   (Color (.3f, .3f, .3f));
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_bot_flanges.obj"),
+                                      8.f));
 
-    elements.push_back (ModelElement (material,                       // material
-                                      getOrAddMesh ("space_bot_wings.obj"), // mesh
-                                      8.f));                            // scale
+    material.setShininess (40.f);
+    elements.push_back (ModelElement (material,
+                                      getOrAddMesh ("space_bot_lens.obj"),
+                                      8.f));
+
 
     m_models["enemy_bot"] = shared_ptr<Model> (new Model (elements));
   }

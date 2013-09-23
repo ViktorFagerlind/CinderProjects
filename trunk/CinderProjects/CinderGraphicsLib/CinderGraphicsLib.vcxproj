@@ -364,6 +364,7 @@
     <ClInclude Include="include\BumpMaterial.h" />
     <ClInclude Include="include\ColorModifier.h" />
     <ClInclude Include="include\CommonModifier.h" />
+    <ClInclude Include="include\DampingModifier.h" />
     <ClInclude Include="include\Emitter.h" />
     <ClInclude Include="include\FluidModifier.h" />
     <ClInclude Include="include\GravityModifier.h" />

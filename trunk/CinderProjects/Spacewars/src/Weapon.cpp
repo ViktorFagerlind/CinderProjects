@@ -92,7 +92,7 @@ void Shot::update (const float dt)
 }
 
 
-void Shot::draw ()
+void Shot::drawTransparent ()
 {
   const float w=5.f, h=60.f;
 
@@ -114,10 +114,6 @@ void Shot::draw ()
 
   gl::color (1.f, 0.8f, 1.f, 1.f);
 
-  gl::disable (GL_LIGHTING);
-  gl::enableAlphaBlending ();
-	gl::enableAdditiveBlending ();
-
   // Set array pointers
 	glVertexPointer   (3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer (2, GL_FLOAT, 0, textureCoordinates);
@@ -132,9 +128,6 @@ void Shot::draw ()
   // Disable arrays
 	glDisableClientState (GL_VERTEX_ARRAY);
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-
-  gl::disableAlphaBlending ();
-  gl::enable (GL_LIGHTING);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -202,13 +195,24 @@ void Weapon::update (const float dt, const Vec2f& parentPos)
   m_emitter->setPosition (Conversions::Vec2fTo3f (m_position - Vec2f (0.f, 25.f)));
 }
 
-void Weapon::draw ()
+void Weapon::drawSolid ()
 {
   // Draw shots
   m_shotTexture.bind ();
   for (uint32_t i = 0; i < m_nofShots; i++)
   {
-    m_shots[i]->draw ();
+    m_shots[i]->drawSolid ();
+  }
+  m_shotTexture.unbind ();
+}
+
+void Weapon::drawTransparent ()
+{
+  // Draw shots
+  m_shotTexture.bind ();
+  for (uint32_t i = 0; i < m_nofShots; i++)
+  {
+    m_shots[i]->drawTransparent ();
   }
   m_shotTexture.unbind ();
 }

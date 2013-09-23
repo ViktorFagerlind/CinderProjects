@@ -9,6 +9,7 @@
 
 #include "Enemy1.h"
 #include "EnemyBot.h"
+#include "ParticleSystemManager.h"
 
 #include "Conversions.h"
 
@@ -106,16 +107,26 @@ void World::issueNewObjects ()
   m_currentTime = timeline ().getCurrentTime ();
 
 
-  if ((m_currentTime - timeEnemy1) > 2.f)
+  if ((m_currentTime - timeEnemy1) > 1.5f)
   {
     m_objects.push_back (shared_ptr<WorldObject> (new Enemy1));
     timeEnemy1 = m_currentTime;
   }
 
-  if ((m_currentTime - timeEnemyBot) > 0.12f)
+  if ( 5.f < m_currentTime && m_currentTime <  7.f ||
+      15.f < m_currentTime && m_currentTime < 17.f ||
+      25.f < m_currentTime && m_currentTime < 27.f ||
+      35.f < m_currentTime && m_currentTime < 37.f ||
+      45.f < m_currentTime && m_currentTime < 47.f ||
+      55.f < m_currentTime && m_currentTime < 57.f ||
+      65.f < m_currentTime && m_currentTime < 67.f ||
+      75.f < m_currentTime && m_currentTime < 77.f)
   {
-    m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
-    timeEnemyBot = m_currentTime;
+    if ((m_currentTime - timeEnemyBot) > 0.03f)
+    {
+      m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
+      timeEnemyBot = m_currentTime;
+    }
   }
 
   m_previousTime = m_currentTime;
@@ -143,6 +154,9 @@ void World::update (const float dt, const Vec2f& touchPos)
       it = m_objects.erase (it);
   }
 
+	// --- update particle systems -------
+  ParticleSystemManager::getSingleton().update ();
+
 	// --- step physics world ------------
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
@@ -152,18 +166,43 @@ void World::update (const float dt, const Vec2f& touchPos)
 
 void World::draw ()
 {
-	// --- draw ship ---------------------
-  m_protagonist->draw ();
+	gl::clear (Color (0, 0, 0));	
 
-	// --- draw objects ------------------
+	// --- draw solid objects ------------------
+	gl::enable (GL_LIGHTING);
+	gl::enableDepthRead (); 
+	gl::enableDepthWrite (); 
+	gl::disableAlphaBlending ();
+
+	// draw ship 
+  m_protagonist->drawSolid ();
+	// draw world objects
   for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)
   {
     shared_ptr<WorldObject> object = *it;
-    object->draw ();
+    object->drawSolid ();
   }
 
-	// --- draw debug physics world ------
+	// draw debug physics world
   m_physicsWorld.DrawDebugData ();
+
+	// --- draw transparent objects ------------------
+	gl::disable (GL_LIGHTING);
+	gl::disableDepthWrite ();
+	gl::enableAlphaBlending ();
+	gl::enableAdditiveBlending ();
+
+	// draw ship 
+  m_protagonist->drawTransparent ();
+	// draw world objects
+  for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)
+  {
+    shared_ptr<WorldObject> object = *it;
+    object->drawTransparent ();
+  }
+  // draw particle systems
+  ParticleSystemManager::getSingleton().draw ();
+
 }
 
 World& World::getSingleton ()

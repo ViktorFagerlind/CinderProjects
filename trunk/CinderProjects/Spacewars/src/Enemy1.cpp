@@ -1,24 +1,39 @@
 #include "Enemy1.h"
 
-#include "cinder/gl/gl.h"
 #include "cinder/app/App.h"
-#include "cinder/ObjLoader.h"
 
-#include <Box2D/Box2d.h>
+#include "ParticleSystemHelper.h"
 
-#include "ParticleSystemManager.h"
-#include "ModelLibrary.h"
-#include "AreaEmitter.h"
-#include "Macros.h"
-#include "PointEmitter.h"
-#include "CommonModifier.h"
-#include "ColorModifier.h"
-#include "Conversions.h"
-#include "World.h"
 
 using namespace ci;
 using namespace std;
 using namespace ci::app;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void Enemy1Vessel::startedDying ()
+{
+  Vec3f position = Conversions::fromPhysics3f (m_body->GetPosition ());
+  Vec3f speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
+
+  ParticleSystemHelper::createFireBall (position,
+                                        speed,
+                                        ColorAf(0.5f,  0.8f,  0.9f,  1.0f),
+                                        ColorAf(0.1f,  0.1f,  0.9f,  1.0f),
+                                        2.0f);
+
+}
+
+void Enemy1Vessel::died ()
+{
+  Vec3f position = Conversions::fromPhysics3f (m_body->GetPosition ());
+  Vec3f speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
+
+  ParticleSystemHelper::createSparkExplosion (position,
+                                              speed,
+                                              Color(0.5f,  0.7f, 1.0f),
+                                              2.0f);
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -34,13 +49,14 @@ Enemy1::Enemy1 ()
   vesselDef.angle               = m_positionAndAngle.value ().m_angle;
   vesselDef.category            = EntityCategory_Enemies_E;
   vesselDef.initialLife         = 100.f;
+  vesselDef.timeToDie           = 0.2f;
   vesselDef.moveCapForce        = 400.f;
-  vesselDef.moveDistConst       = 150.f;
+  vesselDef.moveDistConst       = 20.f;
   vesselDef.leanConst           = .003f;
-  vesselDef.modelName           = "enemy_vessel";
+  vesselDef.modelName           = "enemy_arrow";
 
-  vesselDef.bodyLinearDamping   = 10.f;
-  vesselDef.bodyAngularDamping  = 15.f;
+  vesselDef.bodyLinearDamping   = 2.f;
+  vesselDef.bodyAngularDamping  = 3.f;
   vesselDef.fixtureDensity      = 1.f;
 
   m_vessel.reset (new Enemy1Vessel (vesselDef));
@@ -64,9 +80,9 @@ void Enemy1::update (const float dt)
   m_vessel->update (dt, m_positionAndAngle);
 }
 
-void Enemy1::draw ()
+void Enemy1::drawSolid ()
 {
-  m_vessel->draw ();
+  m_vessel->drawSolid ();
 }
 
 //----------------------------------------------------------------------------------------------------------------------

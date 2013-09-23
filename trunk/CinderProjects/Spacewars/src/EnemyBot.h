@@ -32,6 +32,10 @@ public:
   virtual ~EnemyBotVessel() {}
 
   virtual float getDamageOutput () const {return 10.f;}
+
+  // operation from Vessel
+  virtual void startedDying ();
+  virtual void died ();
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,7 +49,7 @@ public:
 
   void update (const float dt);
 
-  void draw ();
+  void drawSolid ();
 
   bool isDead () {return m_vessel->isDead ();}
 

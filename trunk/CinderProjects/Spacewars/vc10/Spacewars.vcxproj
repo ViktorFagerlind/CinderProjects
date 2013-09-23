@@ -171,6 +171,7 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\AreaEmitter.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\ColorModifier.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\CommonModifier.h" />
+    <ClInclude Include="..\..\CinderGraphicsLib\include\DampingModifier.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\Emitter.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\ImageEmitter.h" />
     <ClInclude Include="..\..\CinderGraphicsLib\include\ImageLibrary.h" />

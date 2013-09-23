@@ -23,10 +23,12 @@ public:
     angle               (toRadians (180.f)),
     category            (EntityCategory_Enemies_E),
     initialLife         (100.f),
+    timeToDie           (0.2f),
     modelName           ("error.obj"),
     bodyLinearDamping   (10.f),
     bodyAngularDamping  (15.f),
-    fixtureDensity      (1.f)
+    fixtureDensity      (1.f),
+    fixedRotation       (false)
   {
   }
 
@@ -35,16 +37,18 @@ public:
   float           angle;
   EntityCategory  category;
   float           initialLife;
+  float           timeToDie;
   float           moveCapForce;
   float           moveDistConst;
   float           leanConst;
   string          modelName;
-
+  bool            fixedRotation;
 
   float           bodyLinearDamping;
   float           bodyAngularDamping;
   float           fixtureDensity;
 };
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -57,13 +61,15 @@ public:
 
   void update (const float dt, const PositionAndAngle& positionAndAngle);
 
-  void draw ();
+  void drawSolid ();
 
-  void eliminate () {m_isDead = true;}
+  void eliminate () {m_state = State_Dead_E;}
 
-  void explode ();
+  virtual void startedDying () {};
 
-  bool isDead () const {return m_isDead;}
+  virtual void died () {};
+
+  bool isDead () const {return m_state == State_Dead_E;}
 
   shared_ptr<Model> getModel () {return m_model;}
 
@@ -72,18 +78,29 @@ public:
   // Collider methods
   virtual void collide (float damage, const Vec2f& contactPoint)  {m_life -= damage;}
 
-private:
-  bool                    m_isDead;
+protected:
+  enum State
+  {
+    State_Living_E,
+    State_Dying_E,
+    State_Dead_E
+  };
 
+protected:
   const float             m_moveCapForce;
   const float             m_moveDistConst;
   const float             m_leanConst;
+
+  const float             m_timeToDie;
+  float                   m_timeOfDeath;
 
   b2Body*                 m_body;
 
   shared_ptr<Model>       m_model;
 
   float                   m_life;
+
+  Vessel::State           m_state;
 
 #if _DEBUG
   Vec2f                   m_previousDesiredPosition;
