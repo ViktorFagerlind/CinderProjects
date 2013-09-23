@@ -1,4 +1,4 @@
-#include "Enemy1.h"
+#include "EnemyArrow.h"
 
 #include "cinder/app/App.h"
 
@@ -11,7 +11,7 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void Enemy1Vessel::startedDying ()
+void EnemyArrowVessel::startedDying ()
 {
   Vec3f position = Conversions::fromPhysics3f (m_body->GetPosition ());
   Vec3f speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
@@ -24,7 +24,7 @@ void Enemy1Vessel::startedDying ()
 
 }
 
-void Enemy1Vessel::died ()
+void EnemyArrowVessel::died ()
 {
   Vec3f position = Conversions::fromPhysics3f (m_body->GetPosition ());
   Vec3f speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
@@ -37,7 +37,7 @@ void Enemy1Vessel::died ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Enemy1::Enemy1 ()
+EnemyArrow::EnemyArrow ()
 {
   // -------------- initial position ----------
   m_positionAndAngle = PositionAndAngle (-300, 700, toRadians (180.f));
@@ -59,7 +59,7 @@ Enemy1::Enemy1 ()
   vesselDef.bodyAngularDamping  = 3.f;
   vesselDef.fixtureDensity      = 1.f;
 
-  m_vessel.reset (new Enemy1Vessel (vesselDef));
+  m_vessel.reset (new EnemyArrowVessel (vesselDef));
 
   // -------------- setup animation ----------
   timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone());
@@ -71,16 +71,16 @@ Enemy1::Enemy1 ()
     .finishFn (bind (&Vessel::eliminate, m_vessel));
 }
 
-Enemy1::~Enemy1 ()
+EnemyArrow::~EnemyArrow ()
 {
 }
 
-void Enemy1::update (const float dt)
+void EnemyArrow::update (const float dt)
 {
   m_vessel->update (dt, m_positionAndAngle);
 }
 
-void Enemy1::drawSolid ()
+void EnemyArrow::drawSolid ()
 {
   m_vessel->drawSolid ();
 }

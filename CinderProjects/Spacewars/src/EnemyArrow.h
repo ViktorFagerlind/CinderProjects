@@ -22,14 +22,14 @@ using namespace std;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class Enemy1Vessel : public Vessel
+class EnemyArrowVessel : public Vessel
 {
 public:
-  Enemy1Vessel (const VesselDef& vesselDef)
+  EnemyArrowVessel (const VesselDef& vesselDef)
   : Vessel (vesselDef)
   {}
 
-  virtual ~Enemy1Vessel() {}
+  virtual ~EnemyArrowVessel() {}
 
   virtual float getDamageOutput () const {return 10.f;}
 
@@ -40,12 +40,12 @@ public:
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class Enemy1 : public WorldObject
+class EnemyArrow : public WorldObject
 {
 public:
-  Enemy1 ();
+  EnemyArrow ();
 
-  virtual ~Enemy1 ();
+  virtual ~EnemyArrow ();
 
   void update (const float dt);
 
@@ -56,7 +56,7 @@ public:
 private:
 	Anim<PositionAndAngle>	  m_positionAndAngle;
 
-  shared_ptr<Enemy1Vessel>  m_vessel;
+  shared_ptr<EnemyArrowVessel>  m_vessel;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

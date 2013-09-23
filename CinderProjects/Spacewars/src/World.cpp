@@ -7,7 +7,7 @@
 #include "cinder/CinderMath.h"
 #include "Protagonist.h"
 
-#include "Enemy1.h"
+#include "EnemyArrow.h"
 #include "EnemyBot.h"
 #include "ParticleSystemManager.h"
 
@@ -101,16 +101,16 @@ b2World& World::getPhysicsWorld ()
 
 void World::issueNewObjects ()
 {
-  static float timeEnemy1     = 0.f;
+  static float timeEnemyArrow = 0.f;
   static float timeEnemyBot   = 0.f;
 
   m_currentTime = timeline ().getCurrentTime ();
 
 
-  if ((m_currentTime - timeEnemy1) > 1.5f)
+  if ((m_currentTime - timeEnemyArrow) > 1.5f)
   {
-    m_objects.push_back (shared_ptr<WorldObject> (new Enemy1));
-    timeEnemy1 = m_currentTime;
+    m_objects.push_back (shared_ptr<WorldObject> (new EnemyArrow));
+    timeEnemyArrow = m_currentTime;
   }
 
   if ( 5.f < m_currentTime && m_currentTime <  7.f ||
