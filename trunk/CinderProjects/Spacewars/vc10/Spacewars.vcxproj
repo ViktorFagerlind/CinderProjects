@@ -111,7 +111,7 @@
     <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystemHelper.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\SpriteDataParser.cpp" />
     <ClCompile Include="..\src\ContactListener.cpp" />
-    <ClCompile Include="..\src\Enemy1.cpp" />
+    <ClCompile Include="..\src\EnemyArrow.cpp" />
     <ClCompile Include="..\src\EnemyBot.cpp" />
     <ClCompile Include="..\src\ModelLibrary.cpp" />
     <ClCompile Include="..\src\Protagonist.cpp" />
@@ -232,7 +232,7 @@
     <ClInclude Include="..\src\Collider.h" />
     <ClInclude Include="..\src\ContactListener.h" />
     <ClInclude Include="..\src\Conversions.h" />
-    <ClInclude Include="..\src\Enemy1.h" />
+    <ClInclude Include="..\src\EnemyArrow.h" />
     <ClInclude Include="..\src\EnemyBot.h" />
     <ClInclude Include="..\src\ModelLibrary.h" />
     <ClInclude Include="..\src\PositionAndAngle.h" />
