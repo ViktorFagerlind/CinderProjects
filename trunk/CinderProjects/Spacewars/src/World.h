@@ -13,7 +13,7 @@
 using namespace ci;
 using namespace std;
 
-class Enemy1;
+class EnemyArrow;
 class Protagonist;
 class DebugDrawer;
 
