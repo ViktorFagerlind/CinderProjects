@@ -3,10 +3,7 @@
 #include "cinder/gl/gl.h"
 
 #include "World.h"
-
 #include "MovingCamera.h"
-#include "ParticleSystemManager.h"
-#include "World.h"
 #include "Conversions.h"
 
 #if defined (CINDER_COCOA_TOUCH)
@@ -163,8 +160,6 @@ void SpacewarsApp::update()
   if ((frameCount % 60) == 0)
 	  console() << "FPS: " << getAverageFps () << std::endl;
 
-  ParticleSystemManager::getSingleton().update ();
-
   Vec2f touchPos = mouseToWorld (m_touchPosition);
 
   World::getSingleton ().update (dt, touchPos);
@@ -174,29 +169,10 @@ void SpacewarsApp::update()
 
 void SpacewarsApp::draw()
 {
-	gl::clear (Color (0, 0, 0));	
-
   // Setup camera
   m_camera->setMatrices ();
 
-	gl::enableDepthRead (); 
-
-  // Draw solid objects
-	gl::enable (GL_LIGHTING);
-
   World::getSingleton ().draw ();
-
-	gl::disable (GL_LIGHTING);
-
-  // Draw particle systems
-	gl::enableAlphaBlending ();
-	gl::disableDepthWrite ();
-	gl::enableAdditiveBlending ();
-
-  ParticleSystemManager::getSingleton().draw ();
-
-	gl::enableDepthWrite (); 
-	gl::disableAlphaBlending ();
 }
 
 #if defined (CINDER_COCOA_TOUCH)

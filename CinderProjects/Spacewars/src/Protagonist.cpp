@@ -22,7 +22,6 @@ using namespace ci::app;
 Engine::Engine ()
 {
   m_baseEmitter  = ParticleSystemHelper::createThrustSystem ();
-
   m_flareEmitter = ParticleSystemHelper::createFlareSystem ();
 }
 
@@ -57,7 +56,7 @@ Protagonist::Protagonist ()
   vesselDef.moveCapForce        = 4000.f;
   vesselDef.moveDistConst       = 400.f;
   vesselDef.leanConst           = .001f;
-  vesselDef.modelName           = "main_vessel";
+  vesselDef.modelName           = "space_barrel";
 
   vesselDef.bodyLinearDamping   = 15.f;
   vesselDef.bodyAngularDamping  = 15.f;
@@ -86,12 +85,18 @@ void Protagonist::update (const float dt, const Vec2f& touchPos)
   m_rightLaser->update (dt, position);
 }
 
-void Protagonist::draw ()
+void Protagonist::drawSolid ()
 {
-  m_vessel->draw ();
+  m_vessel->drawSolid ();
 
-  m_leftLaser->draw  ();
-  m_rightLaser->draw ();
+  m_leftLaser->drawSolid  ();
+  m_rightLaser->drawSolid ();
+}
+
+void Protagonist::drawTransparent ()
+{
+  m_leftLaser->drawTransparent  ();
+  m_rightLaser->drawTransparent ();
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -1014,6 +1014,9 @@
     <ClInclude Include="include\ImageLibrary.h">
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="include\DampingModifier.h">
+      <Filter>Source Files\Particles\Modifiers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SpriteDataParser.cpp">

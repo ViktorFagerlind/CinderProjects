@@ -1,11 +1,12 @@
 #pragma once
 
 #include "cinder/Vector.h"
+#include "cinder/Color.h"
+
+using namespace ci;
 
 class Emitter;
 class ParticleSystem;
-
-using namespace ci;
 
 class ParticleSystemHelper
 {
@@ -27,7 +28,16 @@ public:
 
   static Emitter* createMiniExplosion ();
 
-  static Emitter* createExplosion (const Vec3f& position, const Vec3f& speed);
+  static Emitter* createFireBall (const Vec3f&   position, 
+                                  const Vec3f&   speed, 
+                                  const ColorAf& startColor, 
+                                  const ColorAf& endColor,
+                                  const float    size);
+
+  static Emitter* createSparkExplosion (const Vec3f&   position, 
+                                        const Vec3f&   speed, 
+                                        const Colorf&  color,
+                                        const float    size);
 
   static Emitter* createSparks ();
 /*

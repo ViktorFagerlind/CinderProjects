@@ -23,7 +23,9 @@ public:
 
   void update (const float dt);
 
-  void draw ();
+  virtual void drawSolid () {};
+
+  virtual void drawTransparent ();
 
   bool isDead () const {return m_isDead;}
 
@@ -53,7 +55,9 @@ public:
 
   void update (const float dt, const Vec2f& parentPos);
 
-  void draw ();
+  void drawSolid ();
+
+  void drawTransparent ();
 
 private:
   void fire (const Vec2f& parentPos);
