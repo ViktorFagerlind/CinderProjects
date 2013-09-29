@@ -50,11 +50,12 @@ TextureAnimLibraryItem& TextureAnimLibrary::getOrAddItem (const string& textureN
   // Load image if not found in library
   TextureAnimLibraryItem item;
 
-  vector<SpriteData> spriteData (SpriteDataParser::parseSpriteData (LOAD_MOVIE_FILE_OR_RESOURCE (xmlName),
-                                 SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML));
+  item.m_spriteData.reset ( 
+    new vector<SpriteData> (SpriteDataParser::parseSpriteData (LOAD_MOVIE_FILE_OR_RESOURCE (xmlName),
+                                                               SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML)));
 
-  item.m_spriteData.reset ( new vector<SpriteData> (spriteData));
   item.m_texture  = gl::Texture (loadImage (LOAD_MOVIE_FILE_OR_RESOURCE (textureName)));
+
 
   m_items[textureName] = item;
 

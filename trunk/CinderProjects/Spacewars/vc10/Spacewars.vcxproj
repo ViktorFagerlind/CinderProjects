@@ -114,6 +114,7 @@
     <ClCompile Include="..\src\EnemyArrow.cpp" />
     <ClCompile Include="..\src\EnemyBot.cpp" />
     <ClCompile Include="..\src\ModelLibrary.cpp" />
+    <ClCompile Include="..\src\Parallax.cpp" />
     <ClCompile Include="..\src\Protagonist.cpp" />
     <ClCompile Include="..\src\SpacewarsApp.cpp" />
     <ClCompile Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="..\src\EnemyArrow.h" />
     <ClInclude Include="..\src\EnemyBot.h" />
     <ClInclude Include="..\src\ModelLibrary.h" />
+    <ClInclude Include="..\src\Parallax.h" />
     <ClInclude Include="..\src\PositionAndAngle.h" />
     <ClInclude Include="..\src\Protagonist.h" />
     <ClInclude Include="..\src\SpacewarsApp.h" />

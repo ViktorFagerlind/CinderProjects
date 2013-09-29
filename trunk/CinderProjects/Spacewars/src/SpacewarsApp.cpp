@@ -3,7 +3,6 @@
 #include "cinder/gl/gl.h"
 
 #include "World.h"
-#include "MovingCamera.h"
 #include "Conversions.h"
 
 #if defined (CINDER_COCOA_TOUCH)
@@ -24,7 +23,8 @@ void SpacewarsApp::setup()
 
 	m_touchPressed = false;
 
-  m_camera.reset (new MovingCamera (1000.f, 20.f));
+  gl::disableVerticalSync ();
+  setFrameRate (60);
 
 #if defined (CINDER_COCOA_TOUCH)
 	console() << "gyro available: " << MotionManager::isGyroAvailable() << std::endl;
@@ -121,33 +121,7 @@ void SpacewarsApp::touchesEnded( TouchEvent event )
 
 void SpacewarsApp::keyDown(KeyEvent event) 
 {
-  m_camera->keyDown (event);
-}
-
-
-Vec2f SpacewarsApp::mouseToWorld (const Vec2f& mousePos)
-{
-  float left, top, right, bottom, nearz, farz;
-
-  const CameraPersp& cam = m_camera->getCam ();
-
-  float distanceWidthScaler = 2.f * sinf (toRadians (cam.getFov ()/2.f));
-
-  // ??? Varför behövs detta (speciellt *2) ???
-  cam.getFrustum (&left, &top, &right, &bottom, &nearz, &farz);
-  distanceWidthScaler *= 2.f * -left;
-
-  const float worldWidth  = cam.getEyePoint().z*distanceWidthScaler;
-  const float worldHeight = worldWidth / getWindowAspectRatio ();
-
-  return Vec2f ((float)mousePos.x  / (float)getWindowWidth ()  * worldWidth - worldWidth/2.f,
-                (float)-mousePos.y / (float)getWindowHeight () * worldHeight + worldHeight/2.f);
-/*
-  float u = ((float) mousePos.x) / getWindowWidth ();
-  float v = ((float) (getWindowHeight () - mousePos.y)) / getWindowHeight ();
-  Ray ray = m_camera->getCam ().generateRay (u, v, getWindowAspectRatio ());
-    return Conversions::Vec3fTo2f (ray.calcPosition (1200.f));
-*/
+   World::getSingleton ().keyDown (event);
 }
 
 
@@ -157,10 +131,10 @@ void SpacewarsApp::update()
 
   float dt = 1.0f / getFrameRate ();
 
-  if ((frameCount % 60) == 0)
+  if ((frameCount % 100) == 0)
 	  console() << "FPS: " << getAverageFps () << std::endl;
 
-  Vec2f touchPos = mouseToWorld (m_touchPosition);
+  Vec2f touchPos = World::getSingleton ().pixelToWorld (m_touchPosition);
 
   World::getSingleton ().update (dt, touchPos);
 
@@ -169,9 +143,6 @@ void SpacewarsApp::update()
 
 void SpacewarsApp::draw()
 {
-  // Setup camera
-  m_camera->setMatrices ();
-
   World::getSingleton ().draw ();
 }
 

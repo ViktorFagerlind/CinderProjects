@@ -3,6 +3,7 @@
 #include "cinder/Vector.h"
 #include "cinder/TriMesh.h"
 #include "cinder/gl/Material.h"
+#include "cinder/gl/Texture.h"
 
 #include <vector>
 #include <map>
@@ -15,7 +16,11 @@ using namespace std;
 class ModelElement
 {
 public:
-  ModelElement (gl::Material material, shared_ptr<TriMesh> mesh, const float scale = 1.f, const Vec3f& relativePosition = Vec3f (0.f,0.f,0.f));
+  ModelElement (gl::Material          material, 
+                shared_ptr<TriMesh>   mesh, 
+                gl::Texture          *texture           = NULL, 
+                const float           scale             = 1.f, 
+                const Vec3f&          relativePosition  = Vec3f (0.f,0.f,0.f));
 
   virtual ~ModelElement ();
 
@@ -27,6 +32,9 @@ private:
   gl::Material	      m_material;
 
   shared_ptr<TriMesh> m_mesh;
+
+  bool                m_textured;
+  gl::Texture         m_texture;
 
   float               m_scale;
 
@@ -44,7 +52,7 @@ public:
 
   void getMinMax (float& xMin, float& xMax, float& yMin, float& yMax);
 
-  void draw (Vec2f position, float zAngle, float yAngle);
+  void draw (Vec2f position, const Vec3f& rotation);
 
 private:
   vector<ModelElement> m_elements;

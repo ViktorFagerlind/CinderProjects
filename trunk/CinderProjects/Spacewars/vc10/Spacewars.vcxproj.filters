@@ -399,6 +399,9 @@
     <ClCompile Include="..\src\EnemyArrow.cpp">
       <Filter>Source Files\enemies</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Parallax.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -487,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="..\src\EnemyArrow.h">
       <Filter>Source Files\enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Parallax.h">
+      <Filter>Source Files\world</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 
 #include "cinder/Cinder.h"
 #include "cinder/Vector.h"
+#include "cinder/app/App.h"
 
 #include <Box2D/Box2d.h>
 
@@ -11,11 +12,14 @@
 #include <vector>
 
 using namespace ci;
+using namespace ci::app;
 using namespace std;
 
 class EnemyArrow;
 class Protagonist;
 class DebugDrawer;
+class Parallax;
+class MovingCamera;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -58,6 +62,12 @@ public:
 
   static World& getSingleton ();
 
+  void keyDown(KeyEvent event);
+
+  Vec2f pixelToWorld (const Vec2f& mousePos);
+  Vec2f getTopLeft ();
+  Vec2f getDownRight ();
+
 private:
   bool isCloseToTime (const float t) const {return m_previousTime < t && t <= m_currentTime;}
 
@@ -88,7 +98,9 @@ private:
 
   b2Body*                         m_body;
 
+  shared_ptr<Parallax>            m_parallax;
 
+  shared_ptr<MovingCamera>        m_camera;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

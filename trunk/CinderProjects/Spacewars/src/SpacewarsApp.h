@@ -28,8 +28,6 @@ public:
 	void update();
 	void draw();
 
-  Vec2f mouseToWorld (const Vec2f& mousePos);
-
   void setupLights ();
 
 private:
@@ -39,7 +37,5 @@ private:
 	bool  m_touchPressed;
 	Vec2f m_touchPosition;
 	Vec2f m_touchVelocity;
-
-  shared_ptr<MovingCamera> m_camera;
 };
 

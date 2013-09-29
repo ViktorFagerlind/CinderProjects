@@ -14,10 +14,7 @@ public:
 							 const float 	maxParticleSize,
 							 const Vec3f& baseVelocity,
 							 const float  maxRandVelocity) 
-  : Emitter (maxNofParticles, particlesPerFrame),
-    mPosition           (position),
-	  mBaseVelocity       (baseVelocity),
-	  mMaxRandVelocity    (maxRandVelocity), 
+  : Emitter (maxNofParticles, particlesPerFrame, position, baseVelocity, 0.f, maxRandVelocity),
 	  mMinParticleSize    (minParticleSize),
 	  mMaxParticleSize    (maxParticleSize)
 	{
@@ -28,21 +25,12 @@ public:
   void defineParticle (Particle* particle)
 	{
 		float particleSize = Rand::randFloat(mMinParticleSize, mMaxParticleSize);
-    Vec3f particleVelocity = mBaseVelocity + Emitter::getRandomVelocity (mMaxRandVelocity);
 
-	  particle->define(mPosition, particleSize, particleVelocity);
-  }
-
-  void setPosition (const Vec3f& position) 
-  {
-    mPosition = position;
+	  particle->define (mPosition, particleSize, getParticleVelocity ());
   }
 
 
 private:
-  Vec3f   mPosition;
-	Vec3f   mBaseVelocity;
-	float   mMaxRandVelocity; 
 	float 	mMinParticleSize;
 	float 	mMaxParticleSize; 
 };

@@ -1,11 +1,14 @@
 #include "SpriteSheet.h"
 
+
+#include "cinder/app/App.h"
+
 using namespace std;
 using namespace ci;
 
 
 void SpriteSheet::init(ci::gl::Texture spriteImage, std::string xmlPath, int DataFormat){
-		m_spriteData = SpriteDataParser::parseSpriteData(xmlPath, DataFormat);
+		m_spriteData = SpriteDataParser::parseSpriteData (loadFile (xmlPath), DataFormat);
 		m_spriteImage = spriteImage;
 		m_currentFrame = 0;
 		m_totalFrames = m_spriteData.size();

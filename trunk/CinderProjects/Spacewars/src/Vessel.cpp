@@ -81,6 +81,22 @@ Vessel::~Vessel ()
   World::getPhysicsWorld ().DestroyBody (m_body);
 }
 
+Vec3f Vessel::vesselPositionToWorld (const Vec3f& vec) const
+{
+  return vesselRotationToWorld (vec) + getPosition ();
+}
+
+Vec3f Vessel::vesselRotationToWorld (const Vec3f& vec) const
+{
+  Vec3f rotatedVec = vec;
+
+  rotatedVec.rotateZ (m_rotation.z);
+  rotatedVec.rotateY (m_rotation.y);
+  rotatedVec.rotateX (m_rotation.x);
+  
+  return rotatedVec;
+}
+
 void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
 {
   switch (m_state)
@@ -140,27 +156,25 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
       break;
   }
 
-}
-
-void Vessel::drawSolid ()
-{
+  // Calculate rotation from physics object
   const float leanConst = m_leanConst;
 
   Vec2f rightForVehicle = Vec2f (1.f, 0.f);
   rightForVehicle.rotate (m_body->GetAngle ());
 
-  Vec2f speed = Conversions::fromPhysics (m_body->GetLinearVelocity ());
-  float rightNess = speed.dot (rightForVehicle) * leanConst;
+  Vec2f speed   = Conversions::fromPhysics (m_body->GetLinearVelocity ());
+  m_rotation.y  = speed.dot (rightForVehicle) * leanConst;
 
-  float zAngle;
   if (m_body->IsFixedRotation ())
-    zAngle = atan2 (speed.y,speed.x) + toRadians (270.f);
+    m_rotation.z = atan2 (speed.y,speed.x) + toRadians (270.f);
   else
-    zAngle = m_body->GetAngle ();
+    m_rotation.z = m_body->GetAngle ();
+}
 
+void Vessel::drawSolid ()
+{
   m_model->draw (Conversions::fromPhysics (m_body->GetPosition ()), // position
-                 zAngle,                                            // zAngle
-                 rightNess);                                        // yAngle
+                 m_rotation);                                       // rotation
 
 #if _DEBUG
   gl::disable (GL_LIGHTING);
@@ -168,8 +182,10 @@ void Vessel::drawSolid ()
 
   gl::drawSolidCircle (m_previousDesiredPosition, 10);
 
-  Vec3f drawDir = Vec3f(0.f, 30.f, 0.f);
-  drawDir.rotateZ (zAngle);
+  Vec3f drawDir = Vec3f(0.f, 80.f, 0.f);
+  drawDir.rotateZ (m_rotation.z);
+  drawDir.rotateY (m_rotation.y);
+  drawDir.rotateX (m_rotation.x);
   gl::drawVector (Conversions::fromPhysics3f (m_body->GetPosition ()),
                   Conversions::fromPhysics3f (m_body->GetPosition ()) + drawDir);
 

@@ -4,6 +4,7 @@
 #include "cinder/gl/gl.h"
 
 #include "Macros.h"
+#include "ImageLibrary.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -11,9 +12,22 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-ModelElement::ModelElement (gl::Material material, shared_ptr<TriMesh> mesh, const float scale, const Vec3f& relativePosition)
+ModelElement::ModelElement (gl::Material          material, 
+                            shared_ptr<TriMesh>   mesh, 
+                            gl::Texture          *texture, 
+                            const float           scale, 
+                            const Vec3f&          relativePosition)
 {
   m_material          = material;
+
+  if (texture != NULL)
+  {
+    m_textured = true;
+    m_texture  = *texture;
+  }
+  else
+    m_textured = false;
+
   m_mesh              = mesh;
   m_scale             = scale;
   m_relativePosition  = relativePosition;
@@ -65,7 +79,13 @@ void ModelElement::draw ()
 
   m_material.apply ();
 
+  if (m_textured)
+    m_texture.bind ();
+
   gl::draw (*m_mesh.get ());
+
+  if (m_textured)
+    m_texture.unbind ();
 
   gl::popModelView ();
 }
@@ -103,14 +123,14 @@ void Model::getMinMax (float& xMin, float& xMax, float& yMin, float& yMax)
   }
 }
 
-void Model::draw (Vec2f position, float zAngle, float yAngle)
+void Model::draw (Vec2f position, const Vec3f& rotation)
 {
   gl::pushModelView ();
 
   gl::translate (position);
-  gl::rotate (Vec3f (0, 0, toDegrees (zAngle)));
-
-  gl::rotate (Vec3f (0, toDegrees (yAngle), 0));
+  gl::rotate (Vec3f (0, 0, toDegrees (rotation.z)));
+  gl::rotate (Vec3f (0, toDegrees (rotation.y), 0));
+  gl::rotate (Vec3f (toDegrees (rotation.x), 0, 0));
 
   gl::enable  (GL_RESCALE_NORMAL);
 
@@ -149,12 +169,14 @@ ModelLibrary::ModelLibrary ()
 {
   shared_ptr<Model>   model;
   
+  //gl::Texture bodyTexture = ImageLibrary::getSingleton ().getTexture ("basic particle 2.png");
+
   //---- create models ----------
 
   // space barrel
   {
     vector<ModelElement> elements;
-    gl::Material         material (Color (.1f, .1f, .1f),    // Ambient 
+    gl::Material         material (Color (.1f, .1f, .1f),    // Ambient
                                    Color (.5f, .6f, .6f),    // Diffuse
                                    Color::white(),           // Specular
                                    25.f,                     // Shininess
@@ -163,17 +185,20 @@ ModelLibrary::ModelLibrary ()
 
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_barell_body_v08.obj"),
+                                      NULL, //&bodyTexture,
                                       8.f));
 
     material.setDiffuse   (Color (.6f, .4f, .4f));
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_barell_engine_v08.obj"),
+                                      NULL,
                                       8.f));
 
     material.setDiffuse   (Color (.3f, .3f, .3f));
     material.setShininess (40.f);
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_barell_windshield_v08.obj"),
+                                      NULL,
                                       8.f));
 
     m_models["space_barrel"] = shared_ptr<Model> (new Model (elements));
@@ -191,17 +216,20 @@ ModelLibrary::ModelLibrary ()
 
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_arrow_body.obj"),
+                                      NULL,
                                       17.f));
 
     material.setDiffuse   (Color (.4f, .4f, .4f));
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_arrow_engine.obj"),
+                                      NULL,
                                       17.f));
 
     material.setDiffuse   (Color (.3f, .3f, .3f));
     material.setShininess (40.f);
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_arrow_window.obj"),
+                                      NULL,
                                       17.f));
 
     m_models["enemy_arrow"] = shared_ptr<Model> (new Model (elements));
@@ -219,20 +247,24 @@ ModelLibrary::ModelLibrary ()
 
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_bot_body.obj"),
+                                      NULL,
                                       8.f));
 
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_bot_wings.obj"),
+                                      NULL,
                                       8.f));
 
     material.setDiffuse   (Color (.3f, .3f, .3f));
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_bot_flanges.obj"),
+                                      NULL,
                                       8.f));
 
     material.setShininess (40.f);
     elements.push_back (ModelElement (material,
                                       getOrAddMesh ("space_bot_lens.obj"),
+                                      NULL,
                                       8.f));
 
 

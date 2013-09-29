@@ -27,17 +27,6 @@ void Particle::define(const Vec3f& position, float size, Vec3f velocity)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void Particle::define(const Vec3f& position, float size, float minVelocity, float maxVelocity)
-{
-  Vec3f velocity = Vec3f (Rand::randFloat (minVelocity, maxVelocity),
-                          Rand::randFloat (minVelocity, maxVelocity),
-                          Rand::randFloat (minVelocity, maxVelocity));
-
-  define (position, size, velocity);
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-
 void Particle::applyForce(const Vec3f& force) 
 {
   mAcceleration += force;

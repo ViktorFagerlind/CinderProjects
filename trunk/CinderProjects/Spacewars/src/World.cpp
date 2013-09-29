@@ -5,8 +5,10 @@
 #include "cinder/Timeline.h"
 #include "cinder/app/App.h"
 #include "cinder/CinderMath.h"
-#include "Protagonist.h"
 
+#include "MovingCamera.h"
+#include "Protagonist.h"
+#include "Parallax.h"
 #include "EnemyArrow.h"
 #include "EnemyBot.h"
 #include "ParticleSystemManager.h"
@@ -76,6 +78,8 @@ World::World ()
 {
   m_physicsWorld.SetContactListener (&m_contactListener);
 
+  m_camera.reset (new MovingCamera (1000.f, 20.f));
+
 #ifdef _DEBUG
   m_debugDrawer.reset (new DebugDrawer);
   m_debugDrawer->SetFlags (b2Draw::e_shapeBit);
@@ -83,16 +87,59 @@ World::World ()
 #endif
 }
 
+World::~World ()
+{
+}
+
 void World::setup ()
 {
   m_protagonist.reset (new Protagonist ());
 
   m_previousTime = m_currentTime = timeline ().getCurrentTime ()*1000.f;
+
+  m_parallax.reset (new Parallax ());
 }
 
-World::~World ()
+void World::keyDown(KeyEvent event) 
 {
+  m_camera->keyDown (event);
 }
+
+Vec2f World::pixelToWorld (const Vec2f& mousePos)
+{
+  float left, top, right, bottom, nearz, farz;
+
+  const CameraPersp& cam = m_camera->getCam ();
+
+  float distanceWidthScaler = 2.f * sinf (toRadians (cam.getFov ()/2.f));
+
+  // ??? Varför behövs detta (speciellt *2) ???
+  cam.getFrustum (&left, &top, &right, &bottom, &nearz, &farz);
+  distanceWidthScaler *= 2.f * -left;
+
+  const float worldWidth  = cam.getEyePoint().z*distanceWidthScaler;
+  const float worldHeight = worldWidth / getWindowAspectRatio ();
+
+  return Vec2f ((float)mousePos.x  / (float)getWindowWidth ()  * worldWidth - worldWidth/2.f,
+                (float)-mousePos.y / (float)getWindowHeight () * worldHeight + worldHeight/2.f);
+/*
+  float u = ((float) mousePos.x) / getWindowWidth ();
+  float v = ((float) (getWindowHeight () - mousePos.y)) / getWindowHeight ();
+  Ray ray = m_camera->getCam ().generateRay (u, v, getWindowAspectRatio ());
+    return Conversions::Vec3fTo2f (ray.calcPosition (1200.f));
+*/
+}
+
+Vec2f World::getTopLeft () 
+{
+  return pixelToWorld (Vec2f (0, 0));
+}
+
+Vec2f World::getDownRight () 
+{
+  return pixelToWorld (Vec2f ((float)getWindowWidth (), (float)getWindowHeight ()));
+}
+
 
 b2World& World::getPhysicsWorld ()
 {
@@ -134,6 +181,9 @@ void World::issueNewObjects ()
 
 void World::update (const float dt, const Vec2f& touchPos)
 {
+	// --- update background ---------
+  m_parallax->update (dt);
+
 	// --- issue new object ----------
   issueNewObjects ();
 
@@ -154,24 +204,30 @@ void World::update (const float dt, const Vec2f& touchPos)
       it = m_objects.erase (it);
   }
 
-	// --- update particle systems -------
-  ParticleSystemManager::getSingleton().update ();
-
 	// --- step physics world ------------
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 
 	m_physicsWorld.Step (dt, velocityIterations, positionIterations);
+
+	// --- update particle systems -------
+  ParticleSystemManager::getSingleton().update ();
 }
 
 void World::draw ()
 {
-	gl::clear (Color (0, 0, 0));	
+  // Setup camera
+  m_camera->setMatrices ();
 
-	// --- draw solid objects ------------------
+	// --- clear screen ------------------------
+	gl::clear (Color (0, 0, 0));
+
+  
+  // --- draw solid objects ------------------
 	gl::enable (GL_LIGHTING);
 	gl::enableDepthRead (); 
 	gl::enableDepthWrite (); 
+
 	gl::disableAlphaBlending ();
 
 	// draw ship 
@@ -183,6 +239,11 @@ void World::draw ()
     object->drawSolid ();
   }
 
+	// draw parallax (late to be able to cover objects, but still not
+  // let transparent parts mess up the depth buffer
+	gl::disable (GL_LIGHTING);
+  m_parallax->drawSolid ();
+
 	// draw debug physics world
   m_physicsWorld.DrawDebugData ();
 
@@ -191,18 +252,27 @@ void World::draw ()
 	gl::disableDepthWrite ();
 	gl::enableAlphaBlending ();
 	gl::enableAdditiveBlending ();
+	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 
-	// draw ship 
+	// draw background
+	m_parallax->drawTransparent ();
+
+  // draw ship 
   m_protagonist->drawTransparent ();
+
 	// draw world objects
   for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)
   {
     shared_ptr<WorldObject> object = *it;
     object->drawTransparent ();
   }
+
   // draw particle systems
   ParticleSystemManager::getSingleton().draw ();
 
+	// draw parallax
+  m_parallax->drawTransparent ();
 }
 
 World& World::getSingleton ()

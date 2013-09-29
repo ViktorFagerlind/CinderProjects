@@ -73,7 +73,15 @@ public:
 
   shared_ptr<Model> getModel () {return m_model;}
 
-  Vec2f getPosition () {return Conversions::fromPhysics (m_body->GetPosition ());}
+  Vec3f getPosition () const {return Conversions::fromPhysics3f (m_body->GetPosition ());}
+
+  const Vec3f& getRotation () const {return m_rotation;}
+  void setRotation (const Vec3f& rotation) {m_rotation = rotation;}
+
+  Vec3f vesselPositionToWorld (const Vec3f& vec) const;
+
+  Vec3f vesselRotationToWorld (const Vec3f& vec) const;
+
 
   // Collider methods
   virtual void collide (float damage, const Vec2f& contactPoint)  {m_life -= damage;}
@@ -95,6 +103,8 @@ protected:
   float                   m_timeOfDeath;
 
   b2Body*                 m_body;
+
+  Vec3f                   m_rotation;
 
   shared_ptr<Model>       m_model;
 

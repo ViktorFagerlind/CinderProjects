@@ -39,8 +39,8 @@ EnemyBot::EnemyBot ()
   vesselDef.category            = EntityCategory_EnemySwarm_E;
   vesselDef.initialLife         = 5.f;
   vesselDef.timeToDie           = 0.05f;
-  vesselDef.moveCapForce        = 50.f;
-  vesselDef.moveDistConst       = 20.f;
+  vesselDef.moveCapForce        = 30.f;
+  vesselDef.moveDistConst       = 10.f;
   vesselDef.leanConst           = 0.002f;
   vesselDef.fixedRotation       = true;
   vesselDef.modelName           = "enemy_bot";
@@ -55,7 +55,7 @@ EnemyBot::EnemyBot ()
   {
     Vec2f newPosition = Vec2f (Rand::randFloat (-400.f, 400.f), Rand::randFloat (-700.f, 600.f));
 
-    timeline().appendTo (&m_positionAndAngle, PositionAndAngle (newPosition.x, newPosition.y, 0.f), 0.9f, EaseNone());
+    timeline().appendTo (&m_positionAndAngle, PositionAndAngle (newPosition.x, newPosition.y, 0.f), 1.4f, EaseNone());
   }
   timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 0, 1000, toRadians (360.f)), 1.0f, EaseNone())
     .finishFn (bind (&Vessel::eliminate, m_vessel));

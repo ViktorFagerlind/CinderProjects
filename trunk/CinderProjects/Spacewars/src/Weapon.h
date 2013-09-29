@@ -11,6 +11,7 @@ using namespace ci;
 using namespace std;
 
 class Emitter;
+class Vessel;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -19,13 +20,9 @@ class Shot : Collider
 public:
   Shot ();
 
-  void define (const Vec2f& position);
+  void define (const Vec2f& position, const Vec2f& speed, float rotation);
 
   void update (const float dt);
-
-  virtual void drawSolid () {};
-
-  virtual void drawTransparent ();
 
   bool isDead () const {return m_isDead;}
 
@@ -36,10 +33,10 @@ public:
   virtual float getDamageOutput () const {return 20.f;}
   virtual void collide (float damage, const Vec2f& contactPoint);
 
-private:
-  Vec2f   m_speed;
-
+public:
   bool    m_isDead;
+
+  float   m_rotation;
 
   b2Body* m_body;
 };
@@ -49,21 +46,20 @@ private:
 class Weapon
 {
 public:
-  Weapon (const Vec2f& relativePos);
+  Weapon (const Vec3f& relativePos);
 
   virtual ~Weapon ();
 
-  void update (const float dt, const Vec2f& parentPos);
+  void update (const float dt, const Vessel *vessel);
 
-  void drawSolid ();
+  void fire (const Vessel *vessel);
 
-  void drawTransparent ();
+  virtual void drawSolid () {};
 
-private:
-  void fire (const Vec2f& parentPos);
+  virtual void drawTransparent () {};
 
-private:
-  Vec2f             m_relativePos;
+protected:
+  Vec3f             m_relativePos;
 
   const uint32_t    m_maxNofShots;
   uint32_t          m_nofShots;
@@ -73,12 +69,27 @@ private:
 
   vector<shared_ptr<Shot>> m_shots;
 
-  gl::Texture       m_shotTexture;
-
   Emitter          *m_emitter;
   const uint32_t    m_emitterTime;
+};
 
-  Vec2f             m_position;
+//----------------------------------------------------------------------------------------------------------------------
+
+class Lazer : public Weapon
+{
+public:
+  Lazer (const Vec3f& relativePos, ColorAf color);
+
+  virtual ~Lazer ();
+
+  void drawTransparent ();
+
+private:
+  void fire (const Vessel *vessel);
+
+private:
+  gl::Texture m_shotTexture;
+  ColorAf     m_color;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
