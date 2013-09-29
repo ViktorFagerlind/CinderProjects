@@ -18,12 +18,9 @@ public:
 							 float  width,
 							 float  height,
 							 float  depth) 
-  : Emitter(maxNofParticles, particlesPerFrame),
-    mPosition(position),
+  : Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity),
 		mMinParticleSize(minParticleSize),
 		mMaxParticleSize(maxParticleSize),
-		mMinVelocity(minVelocity),
-		mMaxVelocity(maxVelocity),
 		mWidth(width),
 		mHeight(height),
 		mDepth(depth)
@@ -50,8 +47,7 @@ public:
 
 	  particle->define(relativeParticlePos + mPosition, 
 	  								 particleSize, 
-	  								 mMinVelocity, 
-	  							   mMaxVelocity);
+	  								 getParticleVelocity ());
   }
 	
 private:
@@ -71,15 +67,11 @@ private:
 
 private:
   Surface	*mEmitterImage;
-
-  Vec3f   mPosition;
   
   float 	mDepth;
   float 	mWidth;
 	float 	mHeight;
 	
-  float 	mMinVelocity;
-	float 	mMaxVelocity; 
 	float 	mMinParticleSize;
 	float 	mMaxParticleSize; 
 };

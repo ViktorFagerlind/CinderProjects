@@ -46,8 +46,7 @@ private:
   const Surface& getSurface () {return mSurface;}
 
 private:
-  Vec3f   mPosition;
-  
+
   float 	mDepth;
   float 	mWidth;
 	float 	mHeight;
@@ -55,8 +54,6 @@ private:
   uint32_t mMovieWidth;
 	uint32_t mMovieHeight;
 
-  float 	mMinVelocity;
-	float 	mMaxVelocity; 
 	float 	mMinParticleSize;
 	float 	mMaxParticleSize; 
 

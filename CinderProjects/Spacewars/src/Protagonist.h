@@ -15,17 +15,19 @@ using namespace std;
 class Engine
 {
 public:
-  Engine ();
+  Engine (const Vec3f& relativePos);
 
   virtual ~Engine ();
 
-  void update (const float dt, const Vec2f& pos);
+  void update (const float dt, const Vessel *vessel);
 
   void draw ();
 
 private:
   Emitter *m_baseEmitter;
   Emitter *m_flareEmitter;
+
+  Vec3f    m_relativePos;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -64,8 +66,8 @@ private:
 
   Engine                        m_engine;
 
-  shared_ptr<Weapon>            m_leftLaser;
-  shared_ptr<Weapon>            m_rightLaser;
+  shared_ptr<Lazer>             m_leftLaser;
+  shared_ptr<Lazer>             m_rightLaser;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

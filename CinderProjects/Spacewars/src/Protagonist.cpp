@@ -19,7 +19,8 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Engine::Engine ()
+Engine::Engine (const Vec3f& relativePos)
+: m_relativePos (relativePos)
 {
   m_baseEmitter  = ParticleSystemHelper::createThrustSystem ();
   m_flareEmitter = ParticleSystemHelper::createFlareSystem ();
@@ -29,12 +30,13 @@ Engine::~Engine ()
 {
 }
 
-void Engine::update (const float dt, const Vec2f& pos)
+void Engine::update (const float dt, const Vessel *vessel)
 {
-  Vec3f exhaustPos = Conversions::Vec2fTo3f (pos - Vec2f (0.f, 25.f));
+  m_baseEmitter->setPosition  (vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f,   0.f, 20.f)));
+  m_flareEmitter->setPosition (vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f, -25.f, 20.f)));
 
-  m_baseEmitter->setPosition  (exhaustPos + Vec3f (0.f, 0.f, 20.f));
-  m_flareEmitter->setPosition (exhaustPos + Vec3f (0.f, -25.f, 20.f));
+  m_baseEmitter->setRotation  (vessel->getRotation ());
+  m_flareEmitter->setRotation (vessel->getRotation ());
 }
 
 void Engine::draw ()
@@ -44,6 +46,7 @@ void Engine::draw ()
 //----------------------------------------------------------------------------------------------------------------------
 
 Protagonist::Protagonist ()
+: m_engine (Vec3f (0.f, -25.f, 0.f))
 {
   // -------------- setup vessel ----------
 
@@ -65,8 +68,8 @@ Protagonist::Protagonist ()
   m_vessel.reset (new ProtagonistVessel (vesselDef));
 
   // -------------- create weapons ----------
-  m_leftLaser.reset  (new Weapon (Vec2f (-15.f, 60.f)));
-  m_rightLaser.reset (new Weapon (Vec2f ( 15.f, 60.f)));
+  m_leftLaser.reset  (new Lazer (Vec3f (-15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f)));
+  m_rightLaser.reset (new Lazer (Vec3f ( 15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f)));
 }
 
 Protagonist::~Protagonist ()
@@ -78,11 +81,9 @@ void Protagonist::update (const float dt, const Vec2f& touchPos)
   m_vessel->update (dt, PositionAndAngle (touchPos.x, touchPos.y, 0.f));
 
   //------------ Update sub components----------------
-  Vec2f position = m_vessel->getPosition ();
-
-  m_engine.update      (dt, position);
-  m_leftLaser->update  (dt, position);
-  m_rightLaser->update (dt, position);
+  m_engine.update      (dt, m_vessel.get ());
+  m_leftLaser->update  (dt, m_vessel.get ());
+  m_rightLaser->update (dt, m_vessel.get ());
 }
 
 void Protagonist::drawSolid ()

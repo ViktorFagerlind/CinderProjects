@@ -7,6 +7,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/Rand.h"
+#include "cinder/Vector.h"
 
 #include "Math.h"
 
@@ -23,11 +24,18 @@ using std::list;
 class Emitter
 {
 public:
-  static Vec3f getRandomVelocity (const float maxVelocity);
+  static Vec3f getRandomVelocity  (const float minVelocity, const float maxVelocity);
+
+  static Vec3f getRandomDirection ();
 
 public:
   // For normal emitters
-  Emitter (const size_t maxNofParticles, const float particlesPerFrame);
+  Emitter (const size_t maxNofParticles, 
+           const float particlesPerFrame, 
+           const Vec3f position,
+           const Vec3f baseVelocity,
+	         const float minRandVelocity, 
+	         const float maxRandVelocity);
 
   virtual ~Emitter();
 
@@ -52,14 +60,49 @@ public:
 
   void draw (ci::gl::Texture *texture);
 
-  virtual void setPosition (const Vec3f& position) {}
+
+  void setPosition (const Vec3f& position)
+  {
+    mPosition = position;
+  }
+
+  void setRotation (const Vec3f& rotation)
+  {
+    mRotation = rotation;
+  }
 
   virtual void defineParticle (Particle* particle) = 0; 
+
+
+  static void drawBillboardTex (const Vec3f&   pos, 
+                                const Vec2f&   scale, 
+                                const GLfloat *texCoords,
+                                const ColorAf& color           = ColorAf::white (),
+                                const float    rotationDegrees = 0.f, 
+                                const Vec3f&   bbRight         = Vec3f (1,0,0), 
+                                const Vec3f&   bbUp            = Vec3f (0,1,0));
+
+  static void drawBillboard (const Vec3f&   pos, 
+                             const Vec2f&   scale, 
+                             const ColorAf& color           = ColorAf::white (), 
+                             const float    rotationDegrees = 0.f, 
+                             const Vec3f&   bbRight         = Vec3f (1,0,0), 
+                             const Vec3f&   bbUp            = Vec3f (0,1,0));
 
 private:
   void drawNormal ();
   void drawPointSprite ();
   void drawAnimated (ci::gl::Texture *texture);
+
+protected:
+  Vec3f getParticleVelocity ();
+
+protected:
+  Vec3f           mPosition;
+  Vec3f           mRotation;
+	Vec3f           mBaseVelocity;
+	float           mMinRandVelocity; 
+	float           mMaxRandVelocity; 
 
 private:
   Particle       *mParticles;

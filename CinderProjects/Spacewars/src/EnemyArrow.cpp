@@ -21,7 +21,6 @@ void EnemyArrowVessel::startedDying ()
                                         ColorAf(0.5f,  0.8f,  0.9f,  1.0f),
                                         ColorAf(0.1f,  0.1f,  0.9f,  1.0f),
                                         2.0f);
-
 }
 
 void EnemyArrowVessel::died ()

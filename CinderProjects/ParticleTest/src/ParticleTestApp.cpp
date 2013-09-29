@@ -602,7 +602,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 
       break;
     case 5:
-      sa.ps = new ParticleSystem ("../Media/Movies/FireBall/FireBall.png");
+      {
+      sa.ps = new ParticleSystem ("../Media/Movies/FireBall.png");
 
       sa.ae1  = new AreaEmitter (1000,
                                 Vec3f(0, 0, 0),                //position
@@ -615,7 +616,13 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 Vec3f (0, 0, 0),     // baseVelocity
                                 8.5f);    // randVelocity
 
-      sa.ae1->makeAnimated ("../Media/Movies/FireBall/FireBall.xml");
+//      vector<SpriteData> spriteData ();
+
+      shared_ptr<vector<SpriteData>> spriteDataRef ( 
+        new vector<SpriteData> (SpriteDataParser::parseSpriteData (loadFile ("../Media/Movies/FireBall.xml"),
+                                                                   SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML)));
+
+      sa.ae1->makeAnimated (spriteDataRef);
 
       sa.ps->addEmitter (sa.ae1);
 
@@ -634,12 +641,12 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
       sa.ps->addModifier (sa.pgm);
 
       break;
-
+  }
     case 6:
       sa.ps = new ParticleSystem ("../Media/Images/Particle1.jpg");
 
       sa.pe = new PointEmitter (10000,
-                              Vec3f(0, 0, 0), //position
+                              Vec3f(0, 0, 0), //position 
                               1.0f,  // particles per frame
                               3.0f,   // min size
                               7.0f,   // max size
@@ -661,7 +668,8 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
 
       break;
     case 7:
-      sa.ps = new ParticleSystem ("../Media/Movies/InkParticle/InkParticle.png");
+      {
+      sa.ps = new ParticleSystem ("../Media/Movies/InkParticle.png");
 
       sa.ae1  = new AreaEmitter (1000,
                                 Vec3f(0, -200, 0),                //position
@@ -674,7 +682,12 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
                                 Vec3f (0, 10, 0),     // baseVelocity
                                 2.0f);    // randVelocity
 
-      sa.ae1->makeAnimated ("../Media/Movies/InkParticle/InkParticle.xml");
+      shared_ptr<vector<SpriteData>> spriteDataRef ( 
+        new vector<SpriteData> (SpriteDataParser::parseSpriteData (loadFile ("../Media/Movies/InkParticle.xml"),
+                                                                   SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML)));
+
+      sa.ae1->makeAnimated (spriteDataRef);
+
 
       sa.ps->addEmitter (sa.ae1);
 
@@ -693,6 +706,7 @@ SystemAttributes ParticleApp::createParticleSystem(size_t index)
       sa.ps->addModifier (sa.gm);
 
       break;
+      }
     case 8:
       sa.ps = new ParticleSystem("../Media/Images/basic particle 1.png");
 

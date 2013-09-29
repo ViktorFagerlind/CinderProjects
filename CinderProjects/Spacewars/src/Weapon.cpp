@@ -8,6 +8,7 @@
 #include "ParticleSystemHelper.h"
 #include "Emitter.h"
 #include "ImageLibrary.h"
+#include "Vessel.h"
 
 #include "Macros.h"
 #include "World.h"
@@ -19,8 +20,7 @@ using namespace ci::app;
 //----------------------------------------------------------------------------------------------------------------------
 
 Shot::Shot ()
-: m_speed    (Vec2f (0.f, 2000.f)),
-  m_isDead   (true)
+: m_isDead   (true)
 {
   // -------------- setup physics ----------------
 	// create a dynamic body
@@ -46,9 +46,11 @@ Shot::Shot ()
   m_body->SetUserData (this);
 }
 
-void Shot::define (const Vec2f& position)
+void Shot::define (const Vec2f& position, const Vec2f& speed, float rotation)
 {
   m_isDead   = false;
+
+  m_rotation = rotation;
 
   // Turn on collision detection
   b2Filter filter;
@@ -58,7 +60,7 @@ void Shot::define (const Vec2f& position)
   m_body->GetFixtureList ()->SetFilterData (filter);
 
   m_body->SetTransform (Conversions::toPhysics (position), 0.f);
-  m_body->SetLinearVelocity (Conversions::toPhysics (m_speed));
+  m_body->SetLinearVelocity (Conversions::toPhysics (speed));
 }
 
 void Shot::kill ()
@@ -80,59 +82,21 @@ void Shot::collide (float damage, const Vec2f& contactPoint)
   kill ();
 };
 
+
 void Shot::update (const float dt)
 {
   Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
 
-  if (position.x >  1200.f ||
-      position.x < -1200.f || 
-      position.y >  1000.f ||
-      position.y < -1000.f)
+  if (position.x >   20.f + World::getSingleton ().getDownRight ().x ||
+      position.x <  -20.f + World::getSingleton ().getTopLeft   ().x || 
+      position.y >  100.f + World::getSingleton ().getTopLeft   ().y ||
+      position.y < -100.f + World::getSingleton ().getDownRight ().y)
     kill ();
-}
-
-
-void Shot::drawTransparent ()
-{
-  const float w=5.f, h=60.f;
-
-  float textureCoordinates[] = {0.f, 0.f,
-                                1.f, 0.f,
-                                1.f, 1.f,
-                                0.f, 0.f,
-                                1.f, 1.f,
-                                0.f, 1.f};
-
-  Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
-
-  Vec3f vertices[] = {Conversions::Vec2fTo3f (position) + Vec3f (-w, h, 0.f),
-                      Conversions::Vec2fTo3f (position) + Vec3f ( w, h, 0.f),
-                      Conversions::Vec2fTo3f (position) + Vec3f ( w,-h, 0.f),
-                      Conversions::Vec2fTo3f (position) + Vec3f (-w, h, 0.f),
-                      Conversions::Vec2fTo3f (position) + Vec3f ( w,-h, 0.f),
-                      Conversions::Vec2fTo3f (position) + Vec3f (-w,-h, 0.f)};
-
-  gl::color (1.f, 0.8f, 1.f, 1.f);
-
-  // Set array pointers
-	glVertexPointer   (3, GL_FLOAT, 0, vertices);
-	glTexCoordPointer (2, GL_FLOAT, 0, textureCoordinates);
-
-  // Enable arrays
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-
-  // Draw arrays
-	glDrawArrays (GL_TRIANGLES, 0, 6);
-  
-  // Disable arrays
-	glDisableClientState (GL_VERTEX_ARRAY);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Weapon::Weapon (const Vec2f& relativePos)
+Weapon::Weapon (const Vec3f& relativePos)
 : m_relativePos (relativePos),
   m_fireCounter (0),
   m_fireRate    (10),
@@ -146,9 +110,6 @@ Weapon::Weapon (const Vec2f& relativePos)
     m_shots.push_back (shot);
   }
 
-  m_shotTexture = ImageLibrary::getSingleton ().getTexture ("particle1.jpg");
-
-
   m_emitter = ParticleSystemHelper::createSparks ();
 }
 
@@ -156,13 +117,11 @@ Weapon::~Weapon ()
 {
 }
 
-void Weapon::update (const float dt, const Vec2f& parentPos)
+void Weapon::update (const float dt, const Vessel *vessel)
 {
-  m_position = parentPos + m_relativePos;
-
   if (m_fireCounter == m_fireRate) // Fire if it is time
   {
-    fire (parentPos);
+    fire (vessel);
     m_fireCounter = 0;
   }
   if (m_fireCounter == m_emitterTime) // Stops the fire sparks
@@ -192,41 +151,63 @@ void Weapon::update (const float dt, const Vec2f& parentPos)
   }
 
   // Move emitter
-  m_emitter->setPosition (Conversions::Vec2fTo3f (m_position - Vec2f (0.f, 25.f)));
+  m_emitter->setPosition (vessel->vesselPositionToWorld (m_relativePos));
 }
 
-void Weapon::drawSolid ()
-{
-  // Draw shots
-  m_shotTexture.bind ();
-  for (uint32_t i = 0; i < m_nofShots; i++)
-  {
-    m_shots[i]->drawSolid ();
-  }
-  m_shotTexture.unbind ();
-}
-
-void Weapon::drawTransparent ()
-{
-  // Draw shots
-  m_shotTexture.bind ();
-  for (uint32_t i = 0; i < m_nofShots; i++)
-  {
-    m_shots[i]->drawTransparent ();
-  }
-  m_shotTexture.unbind ();
-}
-
-void Weapon::fire (const Vec2f& parentPos)
+void Weapon::fire (const Vessel *vessel)
 {
   if (m_nofShots >= m_maxNofShots)
     return;
 
+  Vec2f worldPosition = Conversions::Vec3fTo2f (vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f, 20.f, 0.f)));
+  Vec2f worldSpeed    = Conversions::Vec3fTo2f (vessel->vesselRotationToWorld (Vec3f (0.f, 2000.f, 0.f)));
+
   // Create new shot
-  m_shots[m_nofShots]->define (m_position);
+  m_shots[m_nofShots]->define (worldPosition, worldSpeed, vessel->getRotation ().z);
 
   // Emit sparks
   m_emitter->unpause ();
 
   m_nofShots++;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+Lazer::Lazer (const Vec3f& relativePos, ColorAf color)
+: Weapon (relativePos),
+  m_color (color)
+{
+  m_shotTexture = ImageLibrary::getSingleton ().getTexture ("basic particle 1.png");
+}
+
+
+Lazer::~Lazer ()
+{
+}
+
+void Lazer::drawTransparent ()
+{
+  const float w=3.f, h=60.f;
+
+  // Enable arrays
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState (GL_COLOR_ARRAY);
+
+  m_shotTexture.bind ();
+
+  for (uint32_t i = 0; i < m_nofShots; i++)
+  {
+    Shot *s = m_shots[i].get ();
+
+    Emitter::drawBillboard (Conversions::fromPhysics3f (s->m_body->GetPosition ()),  Vec2f (w, h), m_color, s->m_rotation);
+  }
+
+  m_shotTexture.unbind ();
+
+  // Disable arrays
+	glDisableClientState (GL_VERTEX_ARRAY);
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState (GL_COLOR_ARRAY);
+
 }

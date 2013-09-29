@@ -56,7 +56,6 @@
 		BF013E4417DCF9480038EC5D /* particle1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF013E4317DCF9480038EC5D /* particle1.jpg */; };
 		BF013E4617DCF9580038EC5D /* shuttle_export.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF013E4517DCF9580038EC5D /* shuttle_export.obj */; };
 		BF013E4917DE62100038EC5D /* Weapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF013E4717DE62100038EC5D /* Weapon.cpp */; };
-		BF1161BB17EED44C003EB38A /* Enemy1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161B617EED44C003EB38A /* Enemy1.cpp */; };
 		BF1161BC17EED44C003EB38A /* Vessel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161B917EED44C003EB38A /* Vessel.cpp */; };
 		BF1161C617EF1B68003EB38A /* space_bot_body.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C217EF1B67003EB38A /* space_bot_body.obj */; };
 		BF1161C717EF1B68003EB38A /* space_bot_flanges.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C317EF1B67003EB38A /* space_bot_flanges.obj */; };
@@ -64,9 +63,20 @@
 		BF1161C917EF1B68003EB38A /* space_bot_wings.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161C517EF1B68003EB38A /* space_bot_wings.obj */; };
 		BF1161CB17EF1BB1003EB38A /* ImageLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161CA17EF1BB1003EB38A /* ImageLibrary.cpp */; };
 		BF1161CF17EF1C37003EB38A /* Protagonist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161CD17EF1C37003EB38A /* Protagonist.cpp */; };
-		BF1161D217EF20EF003EB38A /* FireBall.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D017EF20EF003EB38A /* FireBall.png */; };
-		BF1161D317EF20EF003EB38A /* FireBall.xml in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D117EF20EF003EB38A /* FireBall.xml */; };
 		BF1161D617EF47CF003EB38A /* EnemyBot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161D417EF47CF003EB38A /* EnemyBot.cpp */; };
+		BF1161DC17F351EC003EB38A /* space_arrow_body.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161D917F351EC003EB38A /* space_arrow_body.obj */; };
+		BF1161DD17F351EC003EB38A /* space_arrow_engine.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161DA17F351EC003EB38A /* space_arrow_engine.obj */; };
+		BF1161DE17F351EC003EB38A /* space_arrow_window.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF1161DB17F351EC003EB38A /* space_arrow_window.obj */; };
+		BF1161E017F35206003EB38A /* basic particle 2.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1161DF17F35206003EB38A /* basic particle 2.png */; };
+		BF1161E717F3522D003EB38A /* space_background_2_01_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF1161E117F3522D003EB38A /* space_background_2_01_01.jpg */; };
+		BF1161E817F3522D003EB38A /* space_background_2_01_02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF1161E217F3522D003EB38A /* space_background_2_01_02.jpg */; };
+		BF1161E917F3522D003EB38A /* space_background_2_01_03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF1161E317F3522D003EB38A /* space_background_2_01_03.jpg */; };
+		BF1161EA17F3522D003EB38A /* space_background_2_02_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF1161E417F3522D003EB38A /* space_background_2_02_01.jpg */; };
+		BF1161EC17F3522D003EB38A /* space_background_2_02_03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF1161E617F3522D003EB38A /* space_background_2_02_03.jpg */; };
+		BF1161F117F35733003EB38A /* Parallax.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161F017F35733003EB38A /* Parallax.cpp */; };
+		BF1161F317F35781003EB38A /* EnemyArrow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1161F217F35781003EB38A /* EnemyArrow.cpp */; };
+		BF1161F617F35BD3003EB38A /* FireBall_BW.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1161F417F35BD3003EB38A /* FireBall_BW.png */; };
+		BF1161F717F35BD3003EB38A /* FireBall_BW.xml in Resources */ = {isa = PBXBuildFile; fileRef = BF1161F517F35BD3003EB38A /* FireBall_BW.xml */; };
 		BF18A8D617ECCB8B0080B583 /* ContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF18A8D017ECCB8B0080B583 /* ContactListener.cpp */; };
 		BF18A8D817ECCB8B0080B583 /* ModelLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF18A8D417ECCB8B0080B583 /* ModelLibrary.cpp */; };
 		BF18A8DD17ECCC890080B583 /* space_barell_body_v08.obj in Resources */ = {isa = PBXBuildFile; fileRef = BF18A8DA17ECCC890080B583 /* space_barell_body_v08.obj */; };
@@ -78,12 +88,16 @@
 		BFB9FBDB17CA591200F1C77C /* MotionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9FBD817CA591200F1C77C /* MotionManager.cpp */; };
 		BFB9FBDD17CA5B3100F1C77C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB9FBDC17CA5B3100F1C77C /* CoreMotion.framework */; };
 		BFBD3F8917DB25F200B1FCE5 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFBD3F8717DB25F200B1FCE5 /* World.cpp */; };
-		BFDA7B7D17CFCCCE00E72AF0 /* basic particle 1.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDA7B7C17CFCCCE00E72AF0 /* basic particle 1.png */; };
 		BFDB566717CFEDFD0041AA90 /* MovingCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFDB564017CFEDFD0041AA90 /* MovingCamera.cpp */; };
+		BFDBF8B217F8A6C10033A7AB /* planet_01.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDBF8AF17F8A6C10033A7AB /* planet_01.png */; };
+		BFDBF8B317F8A6C10033A7AB /* planet_02.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDBF8B017F8A6C10033A7AB /* planet_02.png */; };
+		BFDBF8B417F8A6C10033A7AB /* space_background_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BFDBF8B117F8A6C10033A7AB /* space_background_1.jpg */; };
+		BFDBF8B617F8A9210033A7AB /* basic particle 1.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDBF8B517F8A9210033A7AB /* basic particle 1.png */; };
 		BFE3C02517CBE5F800E47CF9 /* Emitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02117CBE5F800E47CF9 /* Emitter.cpp */; };
 		BFE3C02617CBE5F800E47CF9 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02217CBE5F800E47CF9 /* Particle.cpp */; };
 		BFE3C02717CBE5F800E47CF9 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02317CBE5F800E47CF9 /* ParticleSystem.cpp */; };
 		BFE3C02817CBE5F800E47CF9 /* SpriteDataParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02417CBE5F800E47CF9 /* SpriteDataParser.cpp */; };
+		BFEF542217F38856001A6289 /* space_background_2_02_02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BFEF542117F38856001A6289 /* space_background_2_02_02.jpg */; };
 		C406E793CDE146B2B5BBEF14 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BC2DE7BBB0447AD92D59324 /* b2BroadPhase.cpp */; };
 		C5200E6C1ED34BF78F7DE506 /* b2Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 545938A145D243579CE88F38 /* b2Timer.cpp */; };
 		C725DFFE121DAC7F00FA186B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C727C02B121B400300192073 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -187,8 +201,6 @@
 		BF013E4717DE62100038EC5D /* Weapon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Weapon.cpp; path = ../src/Weapon.cpp; sourceTree = "<group>"; };
 		BF013E4817DE62100038EC5D /* Weapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Weapon.h; path = ../src/Weapon.h; sourceTree = "<group>"; };
 		BF082B8417C8A3F1005FC69A /* Conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Conversions.h; path = ../src/Conversions.h; sourceTree = "<group>"; };
-		BF1161B617EED44C003EB38A /* Enemy1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Enemy1.cpp; path = ../src/Enemy1.cpp; sourceTree = "<group>"; };
-		BF1161B717EED44C003EB38A /* Enemy1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Enemy1.h; path = ../src/Enemy1.h; sourceTree = "<group>"; };
 		BF1161B817EED44C003EB38A /* PositionAndAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PositionAndAngle.h; path = ../src/PositionAndAngle.h; sourceTree = "<group>"; };
 		BF1161B917EED44C003EB38A /* Vessel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Vessel.cpp; path = ../src/Vessel.cpp; sourceTree = "<group>"; };
 		BF1161BA17EED44C003EB38A /* Vessel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vessel.h; path = ../src/Vessel.h; sourceTree = "<group>"; };
@@ -200,10 +212,24 @@
 		BF1161CC17EF1BC0003EB38A /* ImageLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLibrary.h; path = ../../CinderGraphicsLib/include/ImageLibrary.h; sourceTree = "<group>"; };
 		BF1161CD17EF1C37003EB38A /* Protagonist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Protagonist.cpp; path = ../src/Protagonist.cpp; sourceTree = "<group>"; };
 		BF1161CE17EF1C37003EB38A /* Protagonist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Protagonist.h; path = ../src/Protagonist.h; sourceTree = "<group>"; };
-		BF1161D017EF20EF003EB38A /* FireBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FireBall.png; path = ../../Media/Movies/FireBall.png; sourceTree = "<group>"; };
-		BF1161D117EF20EF003EB38A /* FireBall.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FireBall.xml; path = ../../Media/Movies/FireBall.xml; sourceTree = "<group>"; };
 		BF1161D417EF47CF003EB38A /* EnemyBot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnemyBot.cpp; path = ../src/EnemyBot.cpp; sourceTree = "<group>"; };
 		BF1161D517EF47CF003EB38A /* EnemyBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnemyBot.h; path = ../src/EnemyBot.h; sourceTree = "<group>"; };
+		BF1161D817F351D1003EB38A /* EnemyArrow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EnemyArrow.h; path = ../src/EnemyArrow.h; sourceTree = "<group>"; };
+		BF1161D917F351EC003EB38A /* space_arrow_body.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_arrow_body.obj; path = ../../Media/Meshes/space_arrow_body.obj; sourceTree = "<group>"; };
+		BF1161DA17F351EC003EB38A /* space_arrow_engine.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_arrow_engine.obj; path = ../../Media/Meshes/space_arrow_engine.obj; sourceTree = "<group>"; };
+		BF1161DB17F351EC003EB38A /* space_arrow_window.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = space_arrow_window.obj; path = ../../Media/Meshes/space_arrow_window.obj; sourceTree = "<group>"; };
+		BF1161DF17F35206003EB38A /* basic particle 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "basic particle 2.png"; path = "../../Media/Images/basic particle 2.png"; sourceTree = "<group>"; };
+		BF1161E117F3522D003EB38A /* space_background_2_01_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_01_01.jpg; path = ../../Media/Images/space_background_2_01_01.jpg; sourceTree = "<group>"; };
+		BF1161E217F3522D003EB38A /* space_background_2_01_02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_01_02.jpg; path = ../../Media/Images/space_background_2_01_02.jpg; sourceTree = "<group>"; };
+		BF1161E317F3522D003EB38A /* space_background_2_01_03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_01_03.jpg; path = ../../Media/Images/space_background_2_01_03.jpg; sourceTree = "<group>"; };
+		BF1161E417F3522D003EB38A /* space_background_2_02_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_02_01.jpg; path = ../../Media/Images/space_background_2_02_01.jpg; sourceTree = "<group>"; };
+		BF1161E617F3522D003EB38A /* space_background_2_02_03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_02_03.jpg; path = ../../Media/Images/space_background_2_02_03.jpg; sourceTree = "<group>"; };
+		BF1161ED17F352BC003EB38A /* DampingModifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DampingModifier.h; path = ../../CinderGraphicsLib/include/DampingModifier.h; sourceTree = "<group>"; };
+		BF1161EF17F35403003EB38A /* Parallax.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Parallax.h; path = ../src/Parallax.h; sourceTree = "<group>"; };
+		BF1161F017F35733003EB38A /* Parallax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Parallax.cpp; path = ../src/Parallax.cpp; sourceTree = "<group>"; };
+		BF1161F217F35781003EB38A /* EnemyArrow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EnemyArrow.cpp; path = ../src/EnemyArrow.cpp; sourceTree = "<group>"; };
+		BF1161F417F35BD3003EB38A /* FireBall_BW.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FireBall_BW.png; path = ../../Media/Movies/FireBall_BW.png; sourceTree = "<group>"; };
+		BF1161F517F35BD3003EB38A /* FireBall_BW.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FireBall_BW.xml; path = ../../Media/Movies/FireBall_BW.xml; sourceTree = "<group>"; };
 		BF18A8CF17ECCB8B0080B583 /* Collider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Collider.h; path = ../src/Collider.h; sourceTree = "<group>"; };
 		BF18A8D017ECCB8B0080B583 /* ContactListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContactListener.cpp; path = ../src/ContactListener.cpp; sourceTree = "<group>"; };
 		BF18A8D117ECCB8B0080B583 /* ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactListener.h; path = ../src/ContactListener.h; sourceTree = "<group>"; };
@@ -224,9 +250,12 @@
 		BFBD3F8717DB25F200B1FCE5 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = World.cpp; path = ../src/World.cpp; sourceTree = "<group>"; };
 		BFBD3F8817DB25F200B1FCE5 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = World.h; path = ../src/World.h; sourceTree = "<group>"; };
 		BFD9D8FD17CD391600F2D8CF /* ShaderHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShaderHelper.h; path = ../../CinderGraphicsLib/include/ShaderHelper.h; sourceTree = "<group>"; };
-		BFDA7B7C17CFCCCE00E72AF0 /* basic particle 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "basic particle 1.png"; path = "../../Media/Images/basic particle 1.png"; sourceTree = "<group>"; };
 		BFDB563817CFEDEB0041AA90 /* MovingCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovingCamera.h; path = ../../CinderGraphicsLib/include/MovingCamera.h; sourceTree = "<group>"; };
 		BFDB564017CFEDFD0041AA90 /* MovingCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MovingCamera.cpp; path = ../../CinderGraphicsLib/src/MovingCamera.cpp; sourceTree = "<group>"; };
+		BFDBF8AF17F8A6C10033A7AB /* planet_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = planet_01.png; path = ../../Media/Images/planet_01.png; sourceTree = "<group>"; };
+		BFDBF8B017F8A6C10033A7AB /* planet_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = planet_02.png; path = ../../Media/Images/planet_02.png; sourceTree = "<group>"; };
+		BFDBF8B117F8A6C10033A7AB /* space_background_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_1.jpg; path = ../../Media/Images/space_background_1.jpg; sourceTree = "<group>"; };
+		BFDBF8B517F8A9210033A7AB /* basic particle 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "basic particle 1.png"; path = "../../Media/Images/basic particle 1.png"; sourceTree = "<group>"; };
 		BFE3C02117CBE5F800E47CF9 /* Emitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Emitter.cpp; path = ../../CinderGraphicsLib/src/Emitter.cpp; sourceTree = "<group>"; };
 		BFE3C02217CBE5F800E47CF9 /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Particle.cpp; path = ../../CinderGraphicsLib/src/Particle.cpp; sourceTree = "<group>"; };
 		BFE3C02317CBE5F800E47CF9 /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleSystem.cpp; path = ../../CinderGraphicsLib/src/ParticleSystem.cpp; sourceTree = "<group>"; };
@@ -252,6 +281,7 @@
 		BFE3C03C17CBE64000E47CF9 /* SpriteDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteDataParser.h; path = ../../CinderGraphicsLib/include/SpriteDataParser.h; sourceTree = "<group>"; };
 		BFE3C03D17CBE64000E47CF9 /* VideoEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoEmitter.h; path = ../../CinderGraphicsLib/include/VideoEmitter.h; sourceTree = "<group>"; };
 		BFE3C03E17CBE64000E47CF9 /* VortexModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VortexModifier.h; path = ../../CinderGraphicsLib/include/VortexModifier.h; sourceTree = "<group>"; };
+		BFEF542117F38856001A6289 /* space_background_2_02_02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_02_02.jpg; path = ../../Media/Images/space_background_2_02_02.jpg; sourceTree = "<group>"; };
 		C141EE93A24B4A0388B6B712 /* b2ContactManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2ContactManager.cpp; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/Box2D/src/Box2D/Dynamics/b2ContactManager.cpp; sourceTree = "<group>"; };
 		C193FE4FCEEB42C98D7750EF /* b2Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2Settings.h; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/Box2D/src/Box2D/Common/b2Settings.h; sourceTree = "<group>"; };
 		C1A13C80C44B48568ACF8235 /* b2PolygonAndCircleContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2PolygonAndCircleContact.h; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/Box2D/src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h; sourceTree = "<group>"; };
@@ -356,12 +386,14 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161F217F35781003EB38A /* EnemyArrow.cpp */,
+				BF1161F017F35733003EB38A /* Parallax.cpp */,
+				BF1161EF17F35403003EB38A /* Parallax.h */,
+				BF1161D817F351D1003EB38A /* EnemyArrow.h */,
 				BF1161D417EF47CF003EB38A /* EnemyBot.cpp */,
 				BF1161D517EF47CF003EB38A /* EnemyBot.h */,
 				BF1161CD17EF1C37003EB38A /* Protagonist.cpp */,
 				BF1161CE17EF1C37003EB38A /* Protagonist.h */,
-				BF1161B617EED44C003EB38A /* Enemy1.cpp */,
-				BF1161B717EED44C003EB38A /* Enemy1.h */,
 				BF1161B817EED44C003EB38A /* PositionAndAngle.h */,
 				BF1161B917EED44C003EB38A /* Vessel.cpp */,
 				BF1161BA17EED44C003EB38A /* Vessel.h */,
@@ -384,8 +416,22 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BF1161D017EF20EF003EB38A /* FireBall.png */,
-				BF1161D117EF20EF003EB38A /* FireBall.xml */,
+				BFDBF8B517F8A9210033A7AB /* basic particle 1.png */,
+				BFDBF8AF17F8A6C10033A7AB /* planet_01.png */,
+				BFDBF8B017F8A6C10033A7AB /* planet_02.png */,
+				BFDBF8B117F8A6C10033A7AB /* space_background_1.jpg */,
+				BFEF542117F38856001A6289 /* space_background_2_02_02.jpg */,
+				BF1161F417F35BD3003EB38A /* FireBall_BW.png */,
+				BF1161F517F35BD3003EB38A /* FireBall_BW.xml */,
+				BF1161E117F3522D003EB38A /* space_background_2_01_01.jpg */,
+				BF1161E217F3522D003EB38A /* space_background_2_01_02.jpg */,
+				BF1161E317F3522D003EB38A /* space_background_2_01_03.jpg */,
+				BF1161E417F3522D003EB38A /* space_background_2_02_01.jpg */,
+				BF1161E617F3522D003EB38A /* space_background_2_02_03.jpg */,
+				BF1161DF17F35206003EB38A /* basic particle 2.png */,
+				BF1161D917F351EC003EB38A /* space_arrow_body.obj */,
+				BF1161DA17F351EC003EB38A /* space_arrow_engine.obj */,
+				BF1161DB17F351EC003EB38A /* space_arrow_window.obj */,
 				BF1161C217EF1B67003EB38A /* space_bot_body.obj */,
 				BF1161C317EF1B67003EB38A /* space_bot_flanges.obj */,
 				BF1161C417EF1B67003EB38A /* space_bot_lens.obj */,
@@ -396,7 +442,6 @@
 				BF18A8DC17ECCC890080B583 /* space_barell_windshield_v08.obj */,
 				BF013E4517DCF9580038EC5D /* shuttle_export.obj */,
 				BF013E4317DCF9480038EC5D /* particle1.jpg */,
-				BFDA7B7C17CFCCCE00E72AF0 /* basic particle 1.png */,
 				00748057165D41390024B57A /* assets */,
 				0453A421C5E4405DB99FDBCF /* CinderApp_ios.png */,
 				4732096132AE4315ABD8241B /* Default-568h@2x.png */,
@@ -599,6 +644,7 @@
 		BFE3C02917CBE5FF00E47CF9 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				BF1161ED17F352BC003EB38A /* DampingModifier.h */,
 				BF1161CC17EF1BC0003EB38A /* ImageLibrary.h */,
 				BF18A8D917ECCBF30080B583 /* Macros.h */,
 				BFDB563817CFEDEB0041AA90 /* MovingCamera.h */,
@@ -722,7 +768,6 @@
 				00748058165D41390024B57A /* assets in Resources */,
 				56AB681AC3D64997819195A4 /* CinderApp_ios.png in Resources */,
 				AE5F59CFFC8A43B1902E938B /* Default-568h@2x.png in Resources */,
-				BFDA7B7D17CFCCCE00E72AF0 /* basic particle 1.png in Resources */,
 				BF013E4417DCF9480038EC5D /* particle1.jpg in Resources */,
 				BF013E4617DCF9580038EC5D /* shuttle_export.obj in Resources */,
 				BF18A8DD17ECCC890080B583 /* space_barell_body_v08.obj in Resources */,
@@ -733,8 +778,22 @@
 				BF1161C717EF1B68003EB38A /* space_bot_flanges.obj in Resources */,
 				BF1161C817EF1B68003EB38A /* space_bot_lens.obj in Resources */,
 				BF1161C917EF1B68003EB38A /* space_bot_wings.obj in Resources */,
-				BF1161D217EF20EF003EB38A /* FireBall.png in Resources */,
-				BF1161D317EF20EF003EB38A /* FireBall.xml in Resources */,
+				BF1161DC17F351EC003EB38A /* space_arrow_body.obj in Resources */,
+				BF1161DD17F351EC003EB38A /* space_arrow_engine.obj in Resources */,
+				BF1161DE17F351EC003EB38A /* space_arrow_window.obj in Resources */,
+				BF1161E017F35206003EB38A /* basic particle 2.png in Resources */,
+				BF1161E717F3522D003EB38A /* space_background_2_01_01.jpg in Resources */,
+				BF1161E817F3522D003EB38A /* space_background_2_01_02.jpg in Resources */,
+				BF1161E917F3522D003EB38A /* space_background_2_01_03.jpg in Resources */,
+				BF1161EA17F3522D003EB38A /* space_background_2_02_01.jpg in Resources */,
+				BF1161EC17F3522D003EB38A /* space_background_2_02_03.jpg in Resources */,
+				BF1161F617F35BD3003EB38A /* FireBall_BW.png in Resources */,
+				BF1161F717F35BD3003EB38A /* FireBall_BW.xml in Resources */,
+				BFEF542217F38856001A6289 /* space_background_2_02_02.jpg in Resources */,
+				BFDBF8B217F8A6C10033A7AB /* planet_01.png in Resources */,
+				BFDBF8B317F8A6C10033A7AB /* planet_02.png in Resources */,
+				BFDBF8B417F8A6C10033A7AB /* space_background_1.jpg in Resources */,
+				BFDBF8B617F8A9210033A7AB /* basic particle 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -803,11 +862,12 @@
 				BF18A8D617ECCB8B0080B583 /* ContactListener.cpp in Sources */,
 				BF18A8D817ECCB8B0080B583 /* ModelLibrary.cpp in Sources */,
 				BF18A8E317EED2B40080B583 /* ParticleSystemHelper.cpp in Sources */,
-				BF1161BB17EED44C003EB38A /* Enemy1.cpp in Sources */,
 				BF1161BC17EED44C003EB38A /* Vessel.cpp in Sources */,
 				BF1161CB17EF1BB1003EB38A /* ImageLibrary.cpp in Sources */,
 				BF1161CF17EF1C37003EB38A /* Protagonist.cpp in Sources */,
 				BF1161D617EF47CF003EB38A /* EnemyBot.cpp in Sources */,
+				BF1161F117F35733003EB38A /* Parallax.cpp in Sources */,
+				BF1161F317F35781003EB38A /* EnemyArrow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

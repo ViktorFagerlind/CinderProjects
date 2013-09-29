@@ -14,12 +14,9 @@ VideoEmitter::VideoEmitter (const size_t maxNofParticles,
 							              float   width,
 							              float   height,
 							              float   depth) 
-: Emitter(maxNofParticles, particlesPerFrame),
-  mPosition(position),
+: Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity),
 	mMinParticleSize(minParticleSize),
 	mMaxParticleSize(maxParticleSize),
-	mMinVelocity(minVelocity),
-	mMaxVelocity(maxVelocity),
 	mWidth(width),
 	mHeight(height),
 	mDepth(depth)
@@ -63,8 +60,7 @@ void VideoEmitter::defineParticle (Particle* particle)
 
 	particle->define(relativeParticlePos + mPosition, 
 	  								particleSize, 
-	  								mMinVelocity, 
-	  							  mMaxVelocity);
+                    getParticleVelocity ());
 
   ColorAf colorAtParticle = getColorAtParticle (particle);
 
