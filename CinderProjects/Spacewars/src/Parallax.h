@@ -28,7 +28,7 @@ class ParallaxLayer
 public:
   ParallaxLayer (float distance);
 
-  void addObject (const ParallaxObject &object) {m_objects.push_back (object);}
+  void addObject (const ParallaxObject &object);
 
   void update (const float dt, const float speed);
 
@@ -43,6 +43,12 @@ private:
   vector<ParallaxObject>  m_objects;
 
   Vec3f                   m_position;
+
+  float                   m_topObjectPosition;
+
+  float                   m_topFrustum;
+
+  float                   m_bottomFrustum;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -55,6 +61,7 @@ public:
   void update (const float dt, const float speed);
 
   void drawSolid ();
+
 
 private:
   vector<gl::Texture> m_backgrounds;
@@ -73,6 +80,8 @@ public:
   Parallax ();
 
   void update (const float dt);
+
+  void drawBackground ();
 
   void drawSolid ();
 

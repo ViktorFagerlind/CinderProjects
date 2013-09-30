@@ -26,6 +26,8 @@ public:
 
   void keyDown (KeyEvent event);
   
+  float getDistance () const {return mTargetVec.length ();};
+  
   void setMatrices ();
   void setModelMatrix ();
   void setProjectionMatrix ();
@@ -41,8 +43,6 @@ private:
   Vec3f mEye;
   Vec3f mTargetVec;
   Vec3f mUpVector;
-
-  float mDist;
 
   float mStepSize;
 };

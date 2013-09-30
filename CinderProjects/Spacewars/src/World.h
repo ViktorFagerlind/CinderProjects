@@ -64,6 +64,8 @@ public:
 
   void keyDown(KeyEvent event);
 
+  const MovingCamera& getCamera () {return *m_camera.get ();}
+
   Vec2f pixelToWorld (const Vec2f& mousePos);
   Vec2f getTopLeft ();
   Vec2f getDownRight ();
