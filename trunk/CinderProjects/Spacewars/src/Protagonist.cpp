@@ -19,34 +19,7 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Engine::Engine (const Vec3f& relativePos)
-: m_relativePos (relativePos)
-{
-  m_baseEmitter  = ParticleSystemHelper::createThrustSystem ();
-  m_flareEmitter = ParticleSystemHelper::createFlareSystem ();
-}
-
-Engine::~Engine ()
-{
-}
-
-void Engine::update (const float dt, const Vessel *vessel)
-{
-  m_baseEmitter->setPosition  (vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f,   0.f, 20.f)));
-  m_flareEmitter->setPosition (vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f, -25.f, 20.f)));
-
-  m_baseEmitter->setRotation  (vessel->getRotation ());
-  m_flareEmitter->setRotation (vessel->getRotation ());
-}
-
-void Engine::draw ()
-{
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
 Protagonist::Protagonist ()
-: m_engine (Vec3f (0.f, -25.f, 0.f))
 {
   // -------------- setup vessel ----------
 
@@ -70,6 +43,9 @@ Protagonist::Protagonist ()
   // -------------- create weapons ----------
   m_leftLaser.reset  (new Lazer (Vec3f (-15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f)));
   m_rightLaser.reset (new Lazer (Vec3f ( 15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f)));
+
+  m_vessel->addVesselEmitter (VesselEmitter (ParticleSystemHelper::createThrustSystem (),
+                                             Vec3f (0.f, -25.f, 0.f)));
 }
 
 Protagonist::~Protagonist ()
@@ -81,7 +57,6 @@ void Protagonist::update (const float dt, const Vec2f& touchPos)
   m_vessel->update (dt, PositionAndAngle (touchPos.x, touchPos.y, 0.f));
 
   //------------ Update sub components----------------
-  m_engine.update      (dt, m_vessel.get ());
   m_leftLaser->update  (dt, m_vessel.get ());
   m_rightLaser->update (dt, m_vessel.get ());
 }

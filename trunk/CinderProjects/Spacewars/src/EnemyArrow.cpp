@@ -68,10 +68,9 @@ EnemyArrow::EnemyArrow ()
 	timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 400,   0, toRadians (300.f)), 1.5f, EaseNone());
   timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 300, 800, toRadians (360.f)), 2.0f, EaseNone())
     .finishFn (bind (&Vessel::eliminate, m_vessel));
-}
 
-EnemyArrow::~EnemyArrow ()
-{
+  m_vessel->addVesselEmitter (VesselEmitter (ParticleSystemHelper::createThrustSystem (),
+                                             Vec3f (0.f, -60.f, 0.f)));
 }
 
 void EnemyArrow::update (const float dt)

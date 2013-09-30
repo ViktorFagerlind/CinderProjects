@@ -5,13 +5,30 @@
 #include "Conversions.h"
 #include "ContactListener.h"
 
+#include <vector>
+
 class b2Shape;
 class Model;
+class Emitter;
 class b2Body;
 class PositionAndAngle;
+class Vessel;
 
 using namespace ci;
 using namespace std;
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
+class VesselEmitter
+{
+public:
+  VesselEmitter (Emitter *emitter, const Vec3f& relativePos);
+
+public:
+  Vec3f    m_relativePos;
+  Emitter *m_emitter;
+};
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -82,6 +99,7 @@ public:
 
   Vec3f vesselRotationToWorld (const Vec3f& vec) const;
 
+  void  addVesselEmitter (const VesselEmitter& vesselEmitter) {m_vesselEmitters.push_back (vesselEmitter);}
 
   // Collider methods
   virtual void collide (float damage, const Vec2f& contactPoint)  {m_life -= damage;}
@@ -111,6 +129,9 @@ protected:
   float                   m_life;
 
   Vessel::State           m_state;
+
+  vector<VesselEmitter>   m_vesselEmitters;
+
 
 #if _DEBUG
   Vec2f                   m_previousDesiredPosition;
