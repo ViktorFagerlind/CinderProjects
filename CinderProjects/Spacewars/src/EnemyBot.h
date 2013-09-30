@@ -29,8 +29,6 @@ public:
   : Vessel (vesselDef)
   {}
 
-  virtual ~EnemyBotVessel() {}
-
   virtual float getDamageOutput () const {return 10.f;}
 
   // operation from Vessel

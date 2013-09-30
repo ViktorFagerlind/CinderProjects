@@ -260,8 +260,8 @@ void World::draw ()
 	gl::disableDepthWrite ();
 	gl::enableAlphaBlending ();
 	gl::enableAdditiveBlending ();
-	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+	// glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 
 	// draw background
 	m_parallax->drawTransparent ();

@@ -172,7 +172,7 @@ Parallax::Parallax ()
     o.m_size     = 400.f;
     o.m_texture  = ImageLibrary::getSingleton ().getTexture ("planet_02.png");
 
-    for (uint32 i=0; i<2; i++)
+    for (uint32 i=0; i<10; i++)
     {
       o.m_relativePosition = Vec2f (Rand::randFloat (-2000.f, 2000.f), 2000.f * (float)(i + 1));
       l.addObject (o);
@@ -188,7 +188,7 @@ Parallax::Parallax ()
     o.m_size     = 400.f;
     o.m_texture  = ImageLibrary::getSingleton ().getTexture ("planet_01.png");
 
-    for (uint32 i=0; i<2; i++)
+    for (uint32 i=0; i<10; i++)
     {
       o.m_relativePosition = Vec2f (Rand::randFloat (-800.f, 800.f), 2000.f * (float)(i + 1));
       l.addObject (o);

@@ -19,6 +19,15 @@ using namespace std;
 using namespace ci::app;
 
 
+
+//----------------------------------------------------------------------------------------------------------------------
+
+VesselEmitter::VesselEmitter (Emitter *emitter, const Vec3f& relativePos)
+: m_emitter     (emitter),
+  m_relativePos (relativePos)
+{
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
 Vessel::Vessel (const VesselDef& vesselDef)
@@ -132,14 +141,30 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
         m_body->ApplyAngularImpulse (rotationConst * angleDifferance);
       }
 
+      // Move and rotate emitters
+      for (uint32_t i=0; i<m_vesselEmitters.size (); i++)
+      {
+        VesselEmitter *ve = &m_vesselEmitters[i];
+        ve->m_emitter->setPosition (vesselPositionToWorld (ve->m_relativePos + Vec3f (0.f,   0.f, 20.f)));
+        ve->m_emitter->setRotation (getRotation ());
+      }
+
       //------------ Handle potential death ---------------------
       if (m_life <= 0.f)
       {
         m_state = State_Dying_E;
         m_timeOfDeath = timeline ().getCurrentTime ();
 
+        // Kill the emitters
+        for (uint32_t i=0; i<m_vesselEmitters.size (); i++)
+        {
+          VesselEmitter *ve = &m_vesselEmitters[i];
+          ve->m_emitter->kill ();
+        }
+
         startedDying ();
       }
+
       break;
     }
 
@@ -149,6 +174,7 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
         m_state = State_Dead_E;
         died ();
       }
+
       break;
 
     case State_Dead_E:

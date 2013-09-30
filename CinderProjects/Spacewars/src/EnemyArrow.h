@@ -45,8 +45,6 @@ class EnemyArrow : public WorldObject
 public:
   EnemyArrow ();
 
-  virtual ~EnemyArrow ();
-
   void update (const float dt);
 
   void drawSolid ();
@@ -54,7 +52,7 @@ public:
   bool isDead () {return m_vessel->isDead ();}
 
 private:
-	Anim<PositionAndAngle>	  m_positionAndAngle;
+	Anim<PositionAndAngle>	      m_positionAndAngle;
 
   shared_ptr<EnemyArrowVessel>  m_vessel;
 };
