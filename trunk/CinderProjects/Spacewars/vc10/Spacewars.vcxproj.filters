@@ -494,6 +494,9 @@
     <ClInclude Include="..\src\Parallax.h">
       <Filter>Source Files\world</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\CinderGraphicsLib\include\MovingCamera.h">
+      <Filter>Blocks\Mine\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

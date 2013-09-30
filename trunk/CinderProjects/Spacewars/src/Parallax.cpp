@@ -3,6 +3,7 @@
 #include "cinder/app/App.h"
 #include "cinder/Rand.h"
 
+#include "MovingCamera.h"
 #include "ImageLibrary.h"
 #include "Conversions.h"
 #include "World.h"
@@ -15,12 +16,33 @@ using namespace ci::app;
 
 ParallaxLayer::ParallaxLayer (float distance)
 : m_position (0.f, 0.f, distance)
-{                                                                     
+{                           
+  const float halfScreenHeightAt0 = World::getSingleton ().getTopLeft ().y;
+  const float cameraDistance      = World::getSingleton ().getCamera ().getDistance ();
+
+
+  m_topObjectPosition = 0.f;
+
+  m_topFrustum    = (halfScreenHeightAt0 / cameraDistance) * (cameraDistance - distance);
+
+  m_bottomFrustum = -m_topFrustum;
+}
+
+void ParallaxLayer::addObject (const ParallaxObject &object) 
+{
+  if (object.m_relativePosition.y > m_topObjectPosition)
+    m_topObjectPosition = object.m_relativePosition.y + object.m_size;
+
+  m_objects.push_back (object);
 }
 
 void ParallaxLayer::update (const float dt, const float speed)
 {
   m_position.y -= speed;
+
+  // Loop when the last object disappears below
+  if (m_topObjectPosition + m_position.y < m_bottomFrustum)
+    m_position.y = 0.f;
 }
 
 void ParallaxLayer::draw (bool useBlending)
@@ -39,8 +61,9 @@ void ParallaxLayer::draw (bool useBlending)
     if (useBlending == o->m_blend)
     {
       Vec3f position = m_position + Conversions::Vec2fTo3f (o->m_relativePosition);
-//      if (position.y + o->m_size > -halfScreenHeight &&
-//          position.y - o->m_size <  halfScreenHeight)
+
+      if (position.y + o->m_size >= m_bottomFrustum &&
+          position.y - o->m_size <= m_topFrustum)
       {
         o->m_texture.bind ();
         Emitter::drawBillboard (position, Vec2f (o->m_size, o->m_size));
@@ -149,9 +172,9 @@ Parallax::Parallax ()
     o.m_size     = 400.f;
     o.m_texture  = ImageLibrary::getSingleton ().getTexture ("planet_02.png");
 
-    for (uint32 i=0; i<100; i++)
+    for (uint32 i=0; i<2; i++)
     {
-      o.m_relativePosition = Vec2f (Rand::randFloat (-2000.f, 2000.f), 2000.f * (float)i);
+      o.m_relativePosition = Vec2f (Rand::randFloat (-2000.f, 2000.f), 2000.f * (float)(i + 1));
       l.addObject (o);
     }
 
@@ -165,9 +188,9 @@ Parallax::Parallax ()
     o.m_size     = 400.f;
     o.m_texture  = ImageLibrary::getSingleton ().getTexture ("planet_01.png");
 
-    for (uint32 i=0; i<100; i++)
+    for (uint32 i=0; i<2; i++)
     {
-      o.m_relativePosition = Vec2f (Rand::randFloat (-800.f, 800.f), 2000.f * (float)i);
+      o.m_relativePosition = Vec2f (Rand::randFloat (-800.f, 800.f), 2000.f * (float)(i + 1));
       l.addObject (o);
     }
 
@@ -178,12 +201,12 @@ Parallax::Parallax ()
     ParallaxLayer  l (100.f);
 
     o.m_blend    = true;
-    o.m_size     = 1000.f;
+    o.m_size     = 800.f;
     o.m_texture  = ImageLibrary::getSingleton ().getTexture ("space_background_1.jpg");
 
     for (uint32 i=0; i<20; i++)
     {
-      o.m_relativePosition = Vec2f (Rand::randFloat (-100.f, 100.f), 20000.f * (float)i);
+      o.m_relativePosition = Vec2f (Rand::randFloat (-300.f, 300.f), 17000.f * (float)(i + 1));
       l.addObject (o);
     }
 
@@ -201,12 +224,13 @@ void Parallax::update (const float dt)
     m_layers[i].update (dt, speed);
 }
 
+void Parallax::drawBackground ()
+{
+  m_bottomLayer.drawSolid ();
+}
+
 void Parallax::drawSolid ()
 {
-	gl::disableDepthWrite (); 
-  m_bottomLayer.drawSolid ();
-	gl::enableDepthWrite (); 
-
   gl::enableAlphaBlending ();
   glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 

@@ -93,6 +93,9 @@ World::~World ()
 
 void World::setup ()
 {
+  // Setup the matrices to get pixelToWorld, getTopLeft and getDownRight working
+  m_camera->setMatrices ();
+
   m_protagonist.reset (new Protagonist ());
 
   m_previousTime = m_currentTime = timeline ().getCurrentTime ()*1000.f;
@@ -222,6 +225,10 @@ void World::draw ()
 	// --- clear screen ------------------------
 	gl::clear (Color (0, 0, 0));
 
+	gl::disable (GL_LIGHTING);
+  gl::disableAlphaBlending ();
+	gl::disableDepthWrite ();
+  m_parallax->drawBackground ();
   
   // --- draw solid objects ------------------
 	gl::enable (GL_LIGHTING);
@@ -232,6 +239,7 @@ void World::draw ()
 
 	// draw ship 
   m_protagonist->drawSolid ();
+
 	// draw world objects
   for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)
   {
