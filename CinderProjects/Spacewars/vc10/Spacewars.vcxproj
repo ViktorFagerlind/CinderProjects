@@ -42,6 +42,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -231,6 +232,7 @@
     <ClInclude Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="..\..\..\cinder\blocks\Box2D\src\Box2D\Box2d.h" />
+    <ClInclude Include="..\src\AudioLibrary.h" />
     <ClInclude Include="..\src\Collider.h" />
     <ClInclude Include="..\src\ContactListener.h" />
     <ClInclude Include="..\src\Conversions.h" />

@@ -6,6 +6,7 @@
 #include <Box2D/Box2d.h>
 
 #include "Collider.h"
+#include "ContactListener.h"
 
 using namespace ci;
 using namespace std;
@@ -20,7 +21,9 @@ class Shot : Collider
 public:
   Shot ();
 
-  void define (const Vec2f& position, const Vec2f& speed, float rotation);
+  virtual ~Shot ();
+
+  void define (const Vec2f& position, const Vec2f& speed, const float rotation, const EntityCategory category);
 
   void update (const float dt);
 
@@ -46,31 +49,35 @@ public:
 class Weapon
 {
 public:
-  Weapon (const Vec3f& relativePos);
+  Weapon (const Vec3f& relativePos, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots);
 
   virtual ~Weapon ();
 
-  void update (const float dt, const Vessel *vessel);
+  void update (const float dt);
 
-  void fire (const Vessel *vessel);
+  void fire ();
 
   virtual void drawSolid () {};
 
   virtual void drawTransparent () {};
 
 protected:
-  Vec3f             m_relativePos;
+  Vec3f               m_relativePos;
 
-  const uint32_t    m_maxNofShots;
-  uint32_t          m_nofShots;
+  const uint32_t      m_maxNofShots;
+  uint32_t            m_nofShots;
 
-  uint32_t          m_fireCounter;
-  const uint32_t    m_fireRate;
+  uint32_t            m_fireCounter;
+  const uint32_t      m_fireRate;
 
   vector<shared_ptr<Shot>> m_shots;
 
-  Emitter          *m_emitter;
-  const uint32_t    m_emitterTime;
+  Emitter            *m_emitter;
+  const uint32_t      m_emitterTime;
+
+  shared_ptr<Vessel>  m_vessel;
+
+  EntityCategory      m_shotCategory;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,7 +85,7 @@ protected:
 class Lazer : public Weapon
 {
 public:
-  Lazer (const Vec3f& relativePos, ColorAf color);
+  Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots);
 
   virtual ~Lazer ();
 

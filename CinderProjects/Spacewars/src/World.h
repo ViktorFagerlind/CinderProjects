@@ -3,6 +3,8 @@
 #include "cinder/Cinder.h"
 #include "cinder/Vector.h"
 #include "cinder/app/App.h"
+#include "cinder/audio/Io.h"
+#include "cinder/audio/Output.h"
 
 #include <Box2D/Box2d.h>
 
@@ -103,6 +105,8 @@ private:
   shared_ptr<Parallax>            m_parallax;
 
   shared_ptr<MovingCamera>        m_camera;
+
+	audio::TrackRef                 m_backgroundMusicTrack;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
