@@ -5,7 +5,7 @@
 #include <vector>
 
 using namespace ci;
-using std::vector;
+using namespace std;
 
 class ParticleSystem
 {
@@ -18,8 +18,12 @@ public:
 
   virtual ~ParticleSystem();
 
+  void addEmitterRef (shared_ptr<Emitter> emitter);
+
   void addEmitter (Emitter *const emitter);
   
+  void addModifierRef (shared_ptr<Modifier> modifier);
+
   void addModifier (Modifier *const modifier);
 
   size_t getCount();
@@ -44,9 +48,9 @@ private:
 private:
   bool mKilled;
 
-  vector<Emitter*>  mEmitters;
+  vector<shared_ptr<Emitter>>  mEmitters;
 
-	vector<Modifier*> mModifiers;
+	vector<shared_ptr<Modifier>> mModifiers;
 
   gl::Texture       mParticleTexture;
 };

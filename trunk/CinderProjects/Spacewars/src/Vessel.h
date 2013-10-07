@@ -23,11 +23,11 @@ using namespace std;
 class VesselEmitter
 {
 public:
-  VesselEmitter (Emitter *emitter, const Vec3f& relativePos);
+  VesselEmitter (shared_ptr<Emitter> emitter, const Vec3f& relativePos);
 
 public:
-  Vec3f    m_relativePos;
-  Emitter *m_emitter;
+  Vec3f               m_relativePos;
+  shared_ptr<Emitter> m_emitter;
 };
 
 //----------------------------------------------------------------------------------------------------------------------

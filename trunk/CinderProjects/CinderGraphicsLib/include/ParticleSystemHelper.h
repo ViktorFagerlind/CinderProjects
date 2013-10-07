@@ -4,6 +4,7 @@
 #include "cinder/Color.h"
 
 using namespace ci;
+using namespace std;
 
 class Emitter;
 class ParticleSystem;
@@ -22,24 +23,24 @@ public:
   }
   */
 
-  static Emitter* createThrustSystem ();
+  static shared_ptr<Emitter> createThrustSystem ();
 
-  static Emitter* createFlareSystem ();
+  static shared_ptr<Emitter> createFlareSystem ();
 
-  static Emitter* createMiniExplosion ();
+  static shared_ptr<Emitter> createMiniExplosion ();
 
-  static Emitter* createFireBall (const Vec3f&   position, 
+  static shared_ptr<Emitter> createFireBall (const Vec3f&   position, 
                                   const Vec3f&   speed, 
                                   const ColorAf& startColor, 
                                   const ColorAf& endColor,
                                   const float    size);
 
-  static Emitter* createSparkExplosion (const Vec3f&   position, 
+  static shared_ptr<Emitter> createSparkExplosion (const Vec3f&   position, 
                                         const Vec3f&   speed, 
                                         const Colorf&  color,
                                         const float    size);
 
-  static Emitter* createSparks ();
+  static shared_ptr<Emitter> createSparks ();
 /*
 private:
   ParticleSystem* m_thrustSystem;
