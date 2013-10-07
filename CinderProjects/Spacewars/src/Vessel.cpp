@@ -22,7 +22,7 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-VesselEmitter::VesselEmitter (Emitter *emitter, const Vec3f& relativePos)
+VesselEmitter::VesselEmitter (shared_ptr<Emitter> emitter, const Vec3f& relativePos)
 : m_emitter     (emitter),
   m_relativePos (relativePos)
 {
@@ -99,9 +99,9 @@ Vec3f Vessel::vesselRotationToWorld (const Vec3f& vec) const
 {
   Vec3f rotatedVec = vec;
 
-  rotatedVec.rotateZ (m_rotation.z);
-  rotatedVec.rotateY (m_rotation.y);
   rotatedVec.rotateX (m_rotation.x);
+  rotatedVec.rotateY (m_rotation.y);
+  rotatedVec.rotateZ (m_rotation.z);
   
   return rotatedVec;
 }
@@ -167,7 +167,7 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
       for (uint32_t i=0; i<m_vesselEmitters.size (); i++)
       {
         VesselEmitter *ve = &m_vesselEmitters[i];
-        ve->m_emitter->setPosition (vesselPositionToWorld (ve->m_relativePos + Vec3f (0.f, 0.f, 20.f)));
+        ve->m_emitter->setPosition (vesselPositionToWorld (ve->m_relativePos));
         ve->m_emitter->setRotation (getRotation ());
       }
 
@@ -225,10 +225,10 @@ void Vessel::drawSolid ()
 
   gl::drawSolidCircle (m_previousDesiredPosition, 10);
 
-  Vec3f drawDir = Vec3f(0.f, 80.f, 0.f);
-  drawDir.rotateZ (m_rotation.z);
-  drawDir.rotateY (m_rotation.y);
+  Vec3f drawDir = Vec3f(0.f, 120.f, 0.f);
   drawDir.rotateX (m_rotation.x);
+  drawDir.rotateY (m_rotation.y);
+  drawDir.rotateZ (m_rotation.z);
   gl::drawVector (Conversions::fromPhysics3f (m_body->GetPosition ()),
                   Conversions::fromPhysics3f (m_body->GetPosition ()) + drawDir);
 

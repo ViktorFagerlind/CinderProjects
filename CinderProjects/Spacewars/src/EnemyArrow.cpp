@@ -61,20 +61,33 @@ EnemyArrow::EnemyArrow ()
   m_vessel.reset (new EnemyArrowVessel (vesselDef));
 
   // -------------- create weapons ----------
-  m_lazer.reset  (new Lazer (Vec3f (-15.f, 60.f, 0.f), ColorAf (1.f, .4f, .2f), m_vessel, EntityCategory_EnemyShots_E, 5));
+  m_lazer.reset  (new Lazer (Vec3f (0.f, 60.f, 0.f), ColorAf (1.f, .8f, .4f), m_vessel, EntityCategory_EnemyShots_E, 5));
 
   // -------------- setup animation ----------
-  timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone()).finishFn (bind (&Weapon::fire, m_lazer));
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (   0, 200, toRadians (220.f)), 2.5f, EaseNone());
+  slowFire ();
+  timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone()).finishFn (bind (&EnemyArrow::fastFire, this));
+	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (   0, 200, toRadians (220.f)), 2.5f, EaseNone()).finishFn (bind (&EnemyArrow::slowFire, this));
 	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50, 200, toRadians (180.f)), 0.5f, EaseNone());
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50,-300, toRadians (180.f)), 1.0f, EaseNone());
-	timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 400,   0, toRadians (300.f)), 1.5f, EaseNone());
+	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50,-300, toRadians (180.f)), 1.0f, EaseNone()).finishFn (bind (&EnemyArrow::fastFire, this));
+	timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 400,   0, toRadians (300.f)), 1.5f, EaseNone()).finishFn (bind (&EnemyArrow::slowFire, this));
   timeline().appendTo (&m_positionAndAngle, PositionAndAngle ( 300, 800, toRadians (360.f)), 2.0f, EaseNone())
     .finishFn (bind (&Vessel::eliminate, m_vessel));
 
   m_vessel->addVesselEmitter (VesselEmitter (ParticleSystemHelper::createThrustSystem (),
                                              Vec3f (0.f, -60.f, 0.f)));
 }
+
+
+void EnemyArrow::slowFire ()
+{
+  m_lazer->setFireRate (60);
+}
+
+void EnemyArrow::fastFire ()
+{
+  m_lazer->setFireRate (10);
+}
+
 
 void EnemyArrow::update (const float dt)
 {

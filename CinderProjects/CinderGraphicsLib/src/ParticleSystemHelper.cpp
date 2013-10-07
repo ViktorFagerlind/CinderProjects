@@ -4,6 +4,7 @@
 
 #include "Macros.h"
 #include "ParticleSystemManager.h"
+#include "ParticleSystem.h"
 #include "Emitter.h"
 #include "AreaEmitter.h"
 #include "PointEmitter.h"
@@ -15,11 +16,11 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Emitter* ParticleSystemHelper::createThrustSystem ()
+shared_ptr<Emitter> ParticleSystemHelper::createThrustSystem ()
 {
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
-  AreaEmitter *emitter = new AreaEmitter (100,                // maxNofParticles,
+  shared_ptr<Emitter> emitter (new AreaEmitter (100,                // maxNofParticles,
                                           Vec3f::zero (),     // position, 
                                           2,                  // particlesPerFrame, 
  						                              8,                  // width
@@ -28,8 +29,8 @@ Emitter* ParticleSystemHelper::createThrustSystem ()
 							                            10,                 // minParticleSize,
 							                            15,                 // maxParticleSize,
 							                            Vec3f (0, -10, 0),  // baseVelocity,
-							                            0.5f);              // randVelocity
-  particleSystem->addEmitter  (emitter);
+							                            0.5f));              // randVelocity
+  particleSystem->addEmitterRef  (emitter);
 
   DampingModifier *dampingModifier = new DampingModifier (0.01f);
   CommonModifier *commonModifier = new CommonModifier (6.0f, 1.0f, 0.3f);
@@ -48,18 +49,18 @@ Emitter* ParticleSystemHelper::createThrustSystem ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Emitter* ParticleSystemHelper::createFlareSystem ()
+shared_ptr<Emitter> ParticleSystemHelper::createFlareSystem ()
 {
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
-  PointEmitter *emitter = new PointEmitter (20,             // maxNofParticles,
+  shared_ptr<Emitter> emitter (new PointEmitter (20,             // maxNofParticles,
                                             Vec3f::zero (), // position, 
                                             2,              // particlesPerFrame, 
                                             40,             // minParticleSize,
                                             40,             // maxParticleSize,
                                             Vec3f::zero (), // baseVelocity,
-                                            0.f);           // randVelocity
-  particleSystem->addEmitter  (emitter);
+                                            0.f));           // randVelocity
+  particleSystem->addEmitterRef  (emitter);
 
   CommonModifier *commonModifier = new CommonModifier (20.0f, 1.0f, 0.6f);
   ColorModifier  *colorModifier  = new ColorModifier  (ColorAf (0.8f,  0.8f,  1.0f,  0.4f),  //startColor 
@@ -76,19 +77,19 @@ Emitter* ParticleSystemHelper::createFlareSystem ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Emitter* ParticleSystemHelper::createMiniExplosion ()
+shared_ptr<Emitter> ParticleSystemHelper::createMiniExplosion ()
 {
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
-  PointEmitter *emitter = new PointEmitter (100,            // maxNofParticles,
+  shared_ptr<Emitter> emitter (new PointEmitter (100,            // maxNofParticles,
                                             Vec3f::zero (), // position, 
                                             5,              // particlesPerFrame, 
                                             4,              // minParticleSize,
                                             8,              // maxParticleSize,
                                             Vec3f::zero (), // baseVelocity,
-                                            1.5f);          // randVelocity
+                                            1.5f));          // randVelocity
   emitter->setFramesToLive (2);
-  particleSystem->addEmitter  (emitter);
+  particleSystem->addEmitterRef  (emitter);
 
   CommonModifier *commonModifier = new CommonModifier (4.0f, 1.0f, 0.6f);
   ColorModifier  *colorModifier  = new ColorModifier  (ColorAf(1.0f,  0.8f,  0.7f,  0.7f),  //startColor 
@@ -107,7 +108,7 @@ Emitter* ParticleSystemHelper::createMiniExplosion ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Emitter* ParticleSystemHelper::createFireBall (const Vec3f&    position, 
+shared_ptr<Emitter> ParticleSystemHelper::createFireBall (const Vec3f&    position, 
                                                 const Vec3f&   speed, 
                                                 const ColorAf& startColor, 
                                                 const ColorAf& endColor,
@@ -117,7 +118,7 @@ Emitter* ParticleSystemHelper::createFireBall (const Vec3f&    position,
 
   ParticleSystem *particleSystem = new ParticleSystem (libItem.m_texture);
 
-  AreaEmitter *emitter = new AreaEmitter (20,               // maxNofParticles
+  shared_ptr<Emitter> emitter (new AreaEmitter (20,               // maxNofParticles
                                           position,         // position
                                           4,                // particlesPerFrame,
   						                            size*20,          // width
@@ -126,12 +127,12 @@ Emitter* ParticleSystemHelper::createFireBall (const Vec3f&    position,
                                           size*50.0f,       // min size
                                           size*80.0f,       // max size
                                           speed,            // baseVelocity
-                                          size*2.0f);       // randVelocity
+                                          size*2.0f));       // randVelocity
 
   emitter->makeAnimated (libItem.m_spriteData);
 
   emitter->setFramesToLive (2);
-  particleSystem->addEmitter  (emitter);
+  particleSystem->addEmitterRef  (emitter);
 
   DampingModifier *dampingModifier = new DampingModifier (0.005f);
   CommonModifier *commonModifier = new CommonModifier (1.5f, 1.0f, 1.0f);
@@ -151,23 +152,23 @@ Emitter* ParticleSystemHelper::createFireBall (const Vec3f&    position,
 }
 //----------------------------------------------------------------------------------------------------------------------
 
-Emitter* ParticleSystemHelper::createSparkExplosion (const Vec3f&   position,
+shared_ptr<Emitter> ParticleSystemHelper::createSparkExplosion (const Vec3f&   position,
                                                      const Vec3f&   speed,
                                                      const Colorf&  color,
                                                      const float    size)
 {
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
-  PointEmitter *emitter = new PointEmitter (100,            // maxNofParticles,
+  shared_ptr<Emitter> emitter (new PointEmitter (100,            // maxNofParticles,
                                             position,       // position, 
                                             size*15,        // particlesPerFrame, 
                                             size*2,         // minParticleSize,
                                             size*4,         // maxParticleSize,
                                             speed,          // baseVelocity,
-                                            size*10.0f);    // randVelocity
+                                            size*10.0f));    // randVelocity
   emitter->setFramesToLive (2);
 
-  particleSystem->addEmitter  (emitter);
+  particleSystem->addEmitterRef (emitter);
 
   DampingModifier *dampingModifier = new DampingModifier (0.005f);
   CommonModifier  *commonModifier = new CommonModifier (1.3f, 1.0f, 0.1f);
@@ -193,18 +194,18 @@ Emitter* ParticleSystemHelper::createSparkExplosion (const Vec3f&   position,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Emitter* ParticleSystemHelper::createSparks ()
+shared_ptr<Emitter> ParticleSystemHelper::createSparks ()
 {
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
-  PointEmitter *emitter = new PointEmitter (20,            // maxNofParticles,
+  shared_ptr<Emitter> emitter (new PointEmitter (20,            // maxNofParticles,
                                             Vec3f::zero (), // position, 
                                             1,              // particlesPerFrame, 
                                             4,              // minParticleSize,
                                             6,              // maxParticleSize,
                                             Vec3f::zero (), // baseVelocity,
-                                            2.f);           // randVelocity
-  particleSystem->addEmitter  (emitter);
+                                            2.f));           // randVelocity
+  particleSystem->addEmitterRef (emitter);
 
   CommonModifier *commonModifier = new CommonModifier (5.0f, 1.0f, 0.1f);
   ColorModifier  *colorModifier  = new ColorModifier  (ColorAf (0.8f,  0.8f,  1.0f,  1.0f),  //startColor 

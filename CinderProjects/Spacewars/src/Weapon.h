@@ -57,6 +57,8 @@ public:
 
   void fire ();
 
+  void setFireRate (const uint32_t fireRate) {m_fireRate = fireRate;}
+
   virtual void drawSolid () {};
 
   virtual void drawTransparent () {};
@@ -68,11 +70,11 @@ protected:
   uint32_t            m_nofShots;
 
   uint32_t            m_fireCounter;
-  const uint32_t      m_fireRate;
+  uint32_t            m_fireRate;
 
   vector<shared_ptr<Shot>> m_shots;
 
-  Emitter            *m_emitter;
+  shared_ptr<Emitter> m_emitter;
   const uint32_t      m_emitterTime;
 
   shared_ptr<Vessel>  m_vessel;

@@ -54,6 +54,10 @@ public:
 
   bool isDead () {return m_vessel->isDead ();}
 
+  void slowFire ();
+
+  void fastFire ();
+
 private:
 	Anim<PositionAndAngle>	      m_positionAndAngle;
 

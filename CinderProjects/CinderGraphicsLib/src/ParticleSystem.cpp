@@ -20,21 +20,28 @@ ParticleSystem::ParticleSystem (gl::Texture particleTexture)
 
 ParticleSystem::~ParticleSystem()
 {
-  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-    delete (*it);
   mEmitters.clear();
-
-  for (vector<Modifier*>::iterator it = mModifiers.begin(); it != mModifiers.end(); it++)
-    delete (*it);
   mModifiers.clear();
 }
 
 void ParticleSystem::addEmitter (Emitter *const emitter)
 {
+  shared_ptr<Emitter> e (emitter);
+  mEmitters.push_back (e);
+}
+
+void ParticleSystem::addEmitterRef (shared_ptr<Emitter> emitter)
+{
   mEmitters.push_back (emitter);
 }
-  
+
 void ParticleSystem::addModifier (Modifier *const modifier)
+{
+  shared_ptr<Modifier> m (modifier);
+  mModifiers.push_back (m);
+}
+
+void ParticleSystem::addModifierRef (shared_ptr<Modifier> modifier)
 {
   mModifiers.push_back (modifier);
 }
@@ -43,7 +50,7 @@ size_t ParticleSystem::getCount()
 {
   size_t count = 0;
 
-  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     count += (*it)->getCount();
     
   return count;
@@ -51,16 +58,13 @@ size_t ParticleSystem::getCount()
   
 void ParticleSystem::updateEmitters()
 {
-  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end();)
+  for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end();)
   {
-    Emitter *e = *it;
+    Emitter *e = it->get ();
     e->updateEmitter();
 
   	if (e->dead())
-    {
   	  it = mEmitters.erase (it);
-      delete e;
-    }
     else
       it++;
   }
@@ -69,14 +73,14 @@ void ParticleSystem::updateEmitters()
 void ParticleSystem::updateModifiers()
 {
   // Update modifiers
-  for (vector<Modifier*>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
+  for (vector<shared_ptr<Modifier>>::iterator mit = mModifiers.begin(); mit != mModifiers.end(); mit++)
   {
-    Modifier *m = *mit;
+    Modifier *m = mit->get ();
     m->updateModifier();
 
-    for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+    for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
     {
-      Emitter *e = *it;
+      Emitter *e = it->get ();
       e->applyModifierToParticles (m);
     }
   }
@@ -86,9 +90,9 @@ void ParticleSystem::killSystemAndEmitters ()
 {
   mKilled = true;
 
-  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
   {
-    Emitter *e = *it;
+    Emitter *e = it->get ();
     e->kill();
   }
 }
@@ -116,8 +120,11 @@ void ParticleSystem::draw()
 	glEnable (GL_TEXTURE_2D);
   mParticleTexture.bind ();
 
-  for (vector<Emitter*>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
-    (*it)->draw (&mParticleTexture);
+  for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
+  {
+    Emitter *e = it->get ();
+    e->draw (&mParticleTexture);
+  }
 
   mParticleTexture.unbind ();
 }

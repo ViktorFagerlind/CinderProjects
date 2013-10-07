@@ -90,7 +90,7 @@ World::World ()
 
 World::~World ()
 {
-  m_backgroundMusicTrack->stop ();
+//  m_backgroundMusicTrack->stop ();
 }
 
 void World::setup ()
@@ -106,8 +106,7 @@ void World::setup ()
 
   audio::SourceRef backgroundMusic = audio::load (LOAD_AUDIO_RESOURCE ("SpaceGame.mp3"));
   m_backgroundMusicTrack = audio::Output::addTrack (backgroundMusic, false);
-
-  m_backgroundMusicTrack->play ();
+//  m_backgroundMusicTrack->play ();
 }
 
 void World::keyDown(KeyEvent event) 

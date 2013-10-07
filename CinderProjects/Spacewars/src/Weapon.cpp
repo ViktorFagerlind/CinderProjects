@@ -129,12 +129,12 @@ Weapon::~Weapon ()
 
 void Weapon::update (const float dt)
 {
-  if (m_fireCounter == m_fireRate) // Fire if it is time
+  if (m_fireCounter >= m_fireRate) // Fire if it is time (use >= since the fire rate may change)
   {
     fire ();
     m_fireCounter = 0;
   }
-  if (m_fireCounter == m_emitterTime) // Stops the fire sparks
+  if (m_fireCounter >= m_emitterTime) // Stops the fire sparks (use >= since the fire rate may change)
     m_emitter->pause (); 
   m_fireCounter++;
 
