@@ -106,6 +106,28 @@ Vec3f Vessel::vesselRotationToWorld (const Vec3f& vec) const
   return rotatedVec;
 }
 
+void Vessel::eliminate () 
+{
+  m_state = State_Dead_E;
+
+  clearVesselEmitters ();
+}
+
+void Vessel::addVesselEmitter (const VesselEmitter& vesselEmitter) 
+{
+  m_vesselEmitters.push_back (vesselEmitter);
+}
+
+void Vessel::clearVesselEmitters ()
+{
+  for (uint32_t i=0; i<m_vesselEmitters.size (); i++)
+  {
+    VesselEmitter *ve = &m_vesselEmitters[i];
+    ve->m_emitter->kill ();
+  }
+}
+
+
 void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
 {
   switch (m_state)
@@ -145,7 +167,7 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
       for (uint32_t i=0; i<m_vesselEmitters.size (); i++)
       {
         VesselEmitter *ve = &m_vesselEmitters[i];
-        ve->m_emitter->setPosition (vesselPositionToWorld (ve->m_relativePos + Vec3f (0.f,   0.f, 20.f)));
+        ve->m_emitter->setPosition (vesselPositionToWorld (ve->m_relativePos + Vec3f (0.f, 0.f, 20.f)));
         ve->m_emitter->setRotation (getRotation ());
       }
 
@@ -155,12 +177,7 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
         m_state = State_Dying_E;
         m_timeOfDeath = timeline ().getCurrentTime ();
 
-        // Kill the emitters
-        for (uint32_t i=0; i<m_vesselEmitters.size (); i++)
-        {
-          VesselEmitter *ve = &m_vesselEmitters[i];
-          ve->m_emitter->kill ();
-        }
+        clearVesselEmitters ();
 
         startedDying ();
       }

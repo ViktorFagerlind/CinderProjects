@@ -41,8 +41,8 @@ Protagonist::Protagonist ()
   m_vessel.reset (new ProtagonistVessel (vesselDef));
 
   // -------------- create weapons ----------
-  m_leftLaser.reset  (new Lazer (Vec3f (-15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f)));
-  m_rightLaser.reset (new Lazer (Vec3f ( 15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f)));
+  m_leftLaser.reset  (new Lazer (Vec3f (-15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f), m_vessel, EntityCategory_OurShots_E, 20));
+  m_rightLaser.reset (new Lazer (Vec3f ( 15.f, 60.f, 0.f), ColorAf (.2f, .5f, 1.f), m_vessel, EntityCategory_OurShots_E, 20));
 
   m_vessel->addVesselEmitter (VesselEmitter (ParticleSystemHelper::createThrustSystem (),
                                              Vec3f (0.f, -25.f, 0.f)));
@@ -57,8 +57,8 @@ void Protagonist::update (const float dt, const Vec2f& touchPos)
   m_vessel->update (dt, PositionAndAngle (touchPos.x, touchPos.y, 0.f));
 
   //------------ Update sub components----------------
-  m_leftLaser->update  (dt, m_vessel.get ());
-  m_rightLaser->update (dt, m_vessel.get ());
+  m_leftLaser->update  (dt);
+  m_rightLaser->update (dt);
 }
 
 void Protagonist::drawSolid ()

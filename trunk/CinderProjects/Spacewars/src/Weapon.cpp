@@ -37,16 +37,20 @@ Shot::Shot ()
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape               = &dynamicBox;
-	//fixtureDef.isSensor            = true;
   fixtureDef.filter.categoryBits = 0; // deactivated from the start
-  fixtureDef.filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
+  fixtureDef.filter.maskBits     = 0; // -"-
 
 	m_body->CreateFixture (&fixtureDef);
 
   m_body->SetUserData (this);
 }
 
-void Shot::define (const Vec2f& position, const Vec2f& speed, float rotation)
+Shot::~Shot ()
+{
+  World::getPhysicsWorld ().DestroyBody (m_body);
+}
+
+void Shot::define (const Vec2f& position, const Vec2f& speed, const float rotation, const EntityCategory category)
 {
   m_isDead   = false;
 
@@ -54,8 +58,11 @@ void Shot::define (const Vec2f& position, const Vec2f& speed, float rotation)
 
   // Turn on collision detection
   b2Filter filter;
-  filter.categoryBits = EntityCategory_OurShots_E; // deactivated from the start
-  filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
+  filter.categoryBits = category;
+  if (category == EntityCategory_OurShots_E)
+    filter.maskBits = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
+  else
+    filter.maskBits = EntityCategory_OurShip_E;
 
   m_body->GetFixtureList ()->SetFilterData (filter);
 
@@ -70,7 +77,7 @@ void Shot::kill ()
   // Turn off collision detection
   b2Filter filter;
   filter.categoryBits = 0;
-  filter.maskBits     = EntityCategory_Enemies_E | EntityCategory_EnemySwarm_E;
+  filter.maskBits     = 0;
   m_body->GetFixtureList ()->SetFilterData (filter);
 }
 
@@ -96,13 +103,15 @@ void Shot::update (const float dt)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Weapon::Weapon (const Vec3f& relativePos)
+Weapon::Weapon (const Vec3f& relativePos, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots)
 : m_relativePos (relativePos),
   m_fireCounter (0),
   m_fireRate    (10),
   m_emitterTime (5),
-  m_maxNofShots (100),
-  m_nofShots    (0)
+  m_maxNofShots (maxNofShots),
+  m_nofShots    (0),
+  m_vessel      (vessel),
+  m_shotCategory (shotCategory)
 {
   for (uint32_t i=0; i<m_maxNofShots; i++)
   {
@@ -115,13 +124,14 @@ Weapon::Weapon (const Vec3f& relativePos)
 
 Weapon::~Weapon ()
 {
+  m_emitter->kill ();
 }
 
-void Weapon::update (const float dt, const Vessel *vessel)
+void Weapon::update (const float dt)
 {
   if (m_fireCounter == m_fireRate) // Fire if it is time
   {
-    fire (vessel);
+    fire ();
     m_fireCounter = 0;
   }
   if (m_fireCounter == m_emitterTime) // Stops the fire sparks
@@ -151,19 +161,19 @@ void Weapon::update (const float dt, const Vessel *vessel)
   }
 
   // Move emitter
-  m_emitter->setPosition (vessel->vesselPositionToWorld (m_relativePos));
+  m_emitter->setPosition (m_vessel->vesselPositionToWorld (m_relativePos));
 }
 
-void Weapon::fire (const Vessel *vessel)
+void Weapon::fire ()
 {
   if (m_nofShots >= m_maxNofShots)
     return;
 
-  Vec2f worldPosition = Conversions::Vec3fTo2f (vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f, 20.f, 0.f)));
-  Vec2f worldSpeed    = Conversions::Vec3fTo2f (vessel->vesselRotationToWorld (Vec3f (0.f, 2000.f, 0.f)));
+  Vec2f worldPosition = Conversions::Vec3fTo2f (m_vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f, 20.f, 0.f)));
+  Vec2f worldSpeed    = Conversions::Vec3fTo2f (m_vessel->vesselRotationToWorld (Vec3f (0.f, 2000.f, 0.f)));
 
   // Create new shot
-  m_shots[m_nofShots]->define (worldPosition, worldSpeed, vessel->getRotation ().z);
+  m_shots[m_nofShots]->define (worldPosition, worldSpeed, m_vessel->getRotation ().z, m_shotCategory);
 
   // Emit sparks
   m_emitter->unpause ();
@@ -173,8 +183,8 @@ void Weapon::fire (const Vessel *vessel)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Lazer::Lazer (const Vec3f& relativePos, ColorAf color)
-: Weapon (relativePos),
+Lazer::Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots)
+: Weapon (relativePos, vessel, shotCategory, maxNofShots),
   m_color (color)
 {
   m_shotTexture = ImageLibrary::getSingleton ().getTexture ("basic particle 1.png");

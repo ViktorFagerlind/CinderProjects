@@ -6,6 +6,7 @@
 #include "cinder/app/App.h"
 #include "cinder/CinderMath.h"
 
+#include "Macros.h"
 #include "MovingCamera.h"
 #include "Protagonist.h"
 #include "Parallax.h"
@@ -89,6 +90,7 @@ World::World ()
 
 World::~World ()
 {
+  m_backgroundMusicTrack->stop ();
 }
 
 void World::setup ()
@@ -101,6 +103,11 @@ void World::setup ()
   m_previousTime = m_currentTime = timeline ().getCurrentTime ()*1000.f;
 
   m_parallax.reset (new Parallax ());
+
+  audio::SourceRef backgroundMusic = audio::load (LOAD_AUDIO_RESOURCE ("SpaceGame.mp3"));
+  m_backgroundMusicTrack = audio::Output::addTrack (backgroundMusic, false);
+
+  m_backgroundMusicTrack->play ();
 }
 
 void World::keyDown(KeyEvent event) 
@@ -174,7 +181,7 @@ void World::issueNewObjects ()
   {
     if ((m_currentTime - timeEnemyBot) > 0.03f)
     {
-      m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
+     // m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
       timeEnemyBot = m_currentTime;
     }
   }
@@ -187,7 +194,7 @@ void World::update (const float dt, const Vec2f& touchPos)
 	// --- update background ---------
   m_parallax->update (dt);
 
-	// --- issue new object ----------
+	// --- issue new objects ---------
   issueNewObjects ();
 
 	// --- update ship ---------------
@@ -239,7 +246,6 @@ void World::draw ()
 
 	// draw ship 
   m_protagonist->drawSolid ();
-
 	// draw world objects
   for (list<shared_ptr<WorldObject>>::iterator it=m_objects.begin (); it != m_objects.end (); it++)
   {

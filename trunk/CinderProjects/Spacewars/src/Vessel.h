@@ -80,12 +80,7 @@ public:
 
   void drawSolid ();
 
-  void eliminate () {m_state = State_Dead_E;}
-
-  virtual void startedDying () {};
-
-  virtual void died () {};
-
+  void eliminate ();
   bool isDead () const {return m_state == State_Dead_E;}
 
   shared_ptr<Model> getModel () {return m_model;}
@@ -94,15 +89,18 @@ public:
 
   const Vec3f& getRotation () const {return m_rotation;}
   void setRotation (const Vec3f& rotation) {m_rotation = rotation;}
-
   Vec3f vesselPositionToWorld (const Vec3f& vec) const;
-
   Vec3f vesselRotationToWorld (const Vec3f& vec) const;
 
-  void  addVesselEmitter (const VesselEmitter& vesselEmitter) {m_vesselEmitters.push_back (vesselEmitter);}
+  void  addVesselEmitter (const VesselEmitter& vesselEmitter);
+  void  clearVesselEmitters ();
 
   // Collider methods
   virtual void collide (float damage, const Vec2f& contactPoint)  {m_life -= damage;}
+
+  // Methods for dying, like explosions etc
+  virtual void startedDying () {};
+  virtual void died () {};
 
 protected:
   enum State

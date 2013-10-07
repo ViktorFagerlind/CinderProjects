@@ -497,6 +497,9 @@
     <ClInclude Include="..\..\CinderGraphicsLib\include\MovingCamera.h">
       <Filter>Blocks\Mine\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\AudioLibrary.h">
+      <Filter>Source Files\world</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

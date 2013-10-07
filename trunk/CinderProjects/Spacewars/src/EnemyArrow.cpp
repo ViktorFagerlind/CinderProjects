@@ -60,8 +60,11 @@ EnemyArrow::EnemyArrow ()
 
   m_vessel.reset (new EnemyArrowVessel (vesselDef));
 
+  // -------------- create weapons ----------
+  m_lazer.reset  (new Lazer (Vec3f (-15.f, 60.f, 0.f), ColorAf (1.f, .4f, .2f), m_vessel, EntityCategory_EnemyShots_E, 5));
+
   // -------------- setup animation ----------
-  timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone());
+  timeline().appendTo (&m_positionAndAngle, PositionAndAngle (-300,-400, toRadians (180.f)), 2.0f, EaseNone()).finishFn (bind (&Weapon::fire, m_lazer));
 	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (   0, 200, toRadians (220.f)), 2.5f, EaseNone());
 	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50, 200, toRadians (180.f)), 0.5f, EaseNone());
 	timeline().appendTo (&m_positionAndAngle, PositionAndAngle (  50,-300, toRadians (180.f)), 1.0f, EaseNone());
@@ -76,11 +79,22 @@ EnemyArrow::EnemyArrow ()
 void EnemyArrow::update (const float dt)
 {
   m_vessel->update (dt, m_positionAndAngle);
+
+  m_lazer->update (dt);
 }
 
 void EnemyArrow::drawSolid ()
 {
   m_vessel->drawSolid ();
+
+  m_lazer->drawSolid ();
 }
+
+void EnemyArrow::drawTransparent ()
+{
+  m_lazer->drawTransparent ();
+}
+
+
 
 //----------------------------------------------------------------------------------------------------------------------

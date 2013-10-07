@@ -9,6 +9,7 @@
 #include "Vessel.h"
 #include "Collider.h"
 #include "PositionAndAngle.h"
+#include "Weapon.h"
 
 
 class AreaEmitter;
@@ -49,12 +50,16 @@ public:
 
   void drawSolid ();
 
+  void drawTransparent ();
+
   bool isDead () {return m_vessel->isDead ();}
 
 private:
 	Anim<PositionAndAngle>	      m_positionAndAngle;
 
   shared_ptr<EnemyArrowVessel>  m_vessel;
+
+  shared_ptr<Lazer>             m_lazer;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
