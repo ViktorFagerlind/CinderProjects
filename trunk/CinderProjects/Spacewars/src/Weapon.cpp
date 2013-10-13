@@ -9,6 +9,7 @@
 #include "Emitter.h"
 #include "ImageLibrary.h"
 #include "Vessel.h"
+#include "AudioLibrary.h"
 
 #include "Macros.h"
 #include "World.h"
@@ -103,15 +104,20 @@ void Shot::update (const float dt)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Weapon::Weapon (const Vec3f& relativePos, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots)
-: m_relativePos (relativePos),
-  m_fireCounter (0),
-  m_fireRate    (10),
-  m_emitterTime (5),
-  m_maxNofShots (maxNofShots),
-  m_nofShots    (0),
-  m_vessel      (vessel),
-  m_shotCategory (shotCategory)
+Weapon::Weapon (const Vec3f&              relativePos, 
+                const shared_ptr<Vessel>  vessel, 
+                const EntityCategory      shotCategory, 
+                const uint32_t            maxNofShots, 
+                const AudioClip           audioClip)
+: m_relativePos  (relativePos),
+  m_fireCounter  (0),
+  m_fireRate     (10),
+  m_emitterTime  (5),
+  m_maxNofShots  (maxNofShots),
+  m_nofShots     (0),
+  m_vessel       (vessel),
+  m_shotCategory (shotCategory),
+  m_audioClip    (audioClip)
 {
   for (uint32_t i=0; i<m_maxNofShots; i++)
   {
@@ -179,12 +185,14 @@ void Weapon::fire ()
   m_emitter->unpause ();
 
   m_nofShots++;
+
+  AudioLibrary::getSingleton ().play (m_audioClip);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Lazer::Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots)
-: Weapon (relativePos, vessel, shotCategory, maxNofShots),
+Lazer::Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots, const bool noSound)
+: Weapon (relativePos, vessel, shotCategory, maxNofShots, noSound ? AudioClip_NoSound_E : AudioClip_Lazer_E),
   m_color (color)
 {
   m_shotTexture = ImageLibrary::getSingleton ().getTexture ("basic particle 1.png");

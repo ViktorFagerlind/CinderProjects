@@ -402,6 +402,9 @@
     <ClCompile Include="..\src\Parallax.cpp">
       <Filter>Source Files\world</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\AudioLibrary.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">

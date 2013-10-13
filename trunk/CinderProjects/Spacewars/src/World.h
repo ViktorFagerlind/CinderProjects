@@ -9,6 +9,7 @@
 #include <Box2D/Box2d.h>
 
 #include "ContactListener.h"
+#include "AudioLibrary.h"
 
 #include <list>
 #include <vector>

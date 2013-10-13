@@ -3,6 +3,7 @@
 #include "cinder/app/App.h"
 
 #include "ParticleSystemHelper.h"
+#include "AudioLibrary.h"
 
 
 using namespace ci;
@@ -32,6 +33,8 @@ void EnemyArrowVessel::died ()
                                               speed,
                                               Color(0.5f,  0.7f, 1.0f),
                                               2.0f);
+	
+  AudioLibrary::getSingleton ().play (AudioClip_Explosion_E);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -61,7 +64,7 @@ EnemyArrow::EnemyArrow ()
   m_vessel.reset (new EnemyArrowVessel (vesselDef));
 
   // -------------- create weapons ----------
-  m_lazer.reset  (new Lazer (Vec3f (0.f, 60.f, 0.f), ColorAf (1.f, .8f, .4f), m_vessel, EntityCategory_EnemyShots_E, 5));
+  m_lazer.reset  (new Lazer (Vec3f (0.f, 60.f, 0.f), ColorAf (1.f, .8f, .4f), m_vessel, EntityCategory_EnemyShots_E, 5, true));
 
   // -------------- setup animation ----------
   slowFire ();

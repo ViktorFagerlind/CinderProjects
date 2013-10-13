@@ -7,6 +7,7 @@
 
 #include "Collider.h"
 #include "ContactListener.h"
+#include "AudioLibrary.h"
 
 using namespace ci;
 using namespace std;
@@ -49,7 +50,11 @@ public:
 class Weapon
 {
 public:
-  Weapon (const Vec3f& relativePos, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots);
+  Weapon (const Vec3f&              relativePos, 
+          const shared_ptr<Vessel>  vessel, 
+          const EntityCategory      shotCategory, 
+          const uint32_t            maxNofShots, 
+          const AudioClip           audioClip);
 
   virtual ~Weapon ();
 
@@ -80,6 +85,8 @@ protected:
   shared_ptr<Vessel>  m_vessel;
 
   EntityCategory      m_shotCategory;
+
+  const AudioClip     m_audioClip;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -87,7 +94,7 @@ protected:
 class Lazer : public Weapon
 {
 public:
-  Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots);
+  Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots, const bool noSound=false);
 
   virtual ~Lazer ();
 
