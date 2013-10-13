@@ -90,7 +90,6 @@ World::World ()
 
 World::~World ()
 {
-//  m_backgroundMusicTrack->stop ();
 }
 
 void World::setup ()
@@ -104,9 +103,7 @@ void World::setup ()
 
   m_parallax.reset (new Parallax ());
 
-  audio::SourceRef backgroundMusic = audio::load (LOAD_AUDIO_RESOURCE ("SpaceGame.mp3"));
-  m_backgroundMusicTrack = audio::Output::addTrack (backgroundMusic, false);
-//  m_backgroundMusicTrack->play ();
+  AudioLibrary::getSingleton ().play (AudioClip_ThemeSong_E);
 }
 
 void World::keyDown(KeyEvent event) 
@@ -180,7 +177,7 @@ void World::issueNewObjects ()
   {
     if ((m_currentTime - timeEnemyBot) > 0.03f)
     {
-     // m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
+      m_objects.push_back (shared_ptr<WorldObject> (new EnemyBot));
       timeEnemyBot = m_currentTime;
     }
   }

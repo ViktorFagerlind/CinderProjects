@@ -98,6 +98,9 @@
 		BFE3C02617CBE5F800E47CF9 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02217CBE5F800E47CF9 /* Particle.cpp */; };
 		BFE3C02717CBE5F800E47CF9 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02317CBE5F800E47CF9 /* ParticleSystem.cpp */; };
 		BFE3C02817CBE5F800E47CF9 /* SpriteDataParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE3C02417CBE5F800E47CF9 /* SpriteDataParser.cpp */; };
+		BFEC788A180AC9AF00303366 /* AudioLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFEC7888180AC9AF00303366 /* AudioLibrary.cpp */; };
+		BFEC788D180AC9CA00303366 /* Explosion 01 lower.wav in Resources */ = {isa = PBXBuildFile; fileRef = BFEC788B180AC9CA00303366 /* Explosion 01 lower.wav */; };
+		BFEC788E180AC9CA00303366 /* Lazer 01 lower.wav in Resources */ = {isa = PBXBuildFile; fileRef = BFEC788C180AC9CA00303366 /* Lazer 01 lower.wav */; };
 		BFEF542217F38856001A6289 /* space_background_2_02_02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BFEF542117F38856001A6289 /* space_background_2_02_02.jpg */; };
 		C406E793CDE146B2B5BBEF14 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BC2DE7BBB0447AD92D59324 /* b2BroadPhase.cpp */; };
 		C5200E6C1ED34BF78F7DE506 /* b2Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 545938A145D243579CE88F38 /* b2Timer.cpp */; };
@@ -283,6 +286,10 @@
 		BFE3C03C17CBE64000E47CF9 /* SpriteDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteDataParser.h; path = ../../CinderGraphicsLib/include/SpriteDataParser.h; sourceTree = "<group>"; };
 		BFE3C03D17CBE64000E47CF9 /* VideoEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoEmitter.h; path = ../../CinderGraphicsLib/include/VideoEmitter.h; sourceTree = "<group>"; };
 		BFE3C03E17CBE64000E47CF9 /* VortexModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VortexModifier.h; path = ../../CinderGraphicsLib/include/VortexModifier.h; sourceTree = "<group>"; };
+		BFEC7888180AC9AF00303366 /* AudioLibrary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioLibrary.cpp; path = ../src/AudioLibrary.cpp; sourceTree = "<group>"; };
+		BFEC7889180AC9AF00303366 /* AudioLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioLibrary.h; path = ../src/AudioLibrary.h; sourceTree = "<group>"; };
+		BFEC788B180AC9CA00303366 /* Explosion 01 lower.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "Explosion 01 lower.wav"; path = "../../Media/Audio/Explosion 01 lower.wav"; sourceTree = "<group>"; };
+		BFEC788C180AC9CA00303366 /* Lazer 01 lower.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "Lazer 01 lower.wav"; path = "../../Media/Audio/Lazer 01 lower.wav"; sourceTree = "<group>"; };
 		BFEF542117F38856001A6289 /* space_background_2_02_02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = space_background_2_02_02.jpg; path = ../../Media/Images/space_background_2_02_02.jpg; sourceTree = "<group>"; };
 		C141EE93A24B4A0388B6B712 /* b2ContactManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2ContactManager.cpp; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/Box2D/src/Box2D/Dynamics/b2ContactManager.cpp; sourceTree = "<group>"; };
 		C193FE4FCEEB42C98D7750EF /* b2Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2Settings.h; path = ../../../../../Users/MacViktor/Documents/Programming/Cinder/cinder/blocks/Box2D/src/Box2D/Common/b2Settings.h; sourceTree = "<group>"; };
@@ -388,6 +395,8 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BFEC7888180AC9AF00303366 /* AudioLibrary.cpp */,
+				BFEC7889180AC9AF00303366 /* AudioLibrary.h */,
 				BF1161F217F35781003EB38A /* EnemyArrow.cpp */,
 				BF1161F017F35733003EB38A /* Parallax.cpp */,
 				BF1161EF17F35403003EB38A /* Parallax.h */,
@@ -418,6 +427,8 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BFEC788B180AC9CA00303366 /* Explosion 01 lower.wav */,
+				BFEC788C180AC9CA00303366 /* Lazer 01 lower.wav */,
 				BF0AF9271801BE480014F36A /* SpaceGame.mp3 */,
 				BFDBF8B517F8A9210033A7AB /* basic particle 1.png */,
 				BFDBF8AF17F8A6C10033A7AB /* planet_01.png */,
@@ -798,6 +809,8 @@
 				BFDBF8B417F8A6C10033A7AB /* space_background_1.jpg in Resources */,
 				BFDBF8B617F8A9210033A7AB /* basic particle 1.png in Resources */,
 				BF0AF9281801BE480014F36A /* SpaceGame.mp3 in Resources */,
+				BFEC788D180AC9CA00303366 /* Explosion 01 lower.wav in Resources */,
+				BFEC788E180AC9CA00303366 /* Lazer 01 lower.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -872,6 +885,7 @@
 				BF1161D617EF47CF003EB38A /* EnemyBot.cpp in Sources */,
 				BF1161F117F35733003EB38A /* Parallax.cpp in Sources */,
 				BF1161F317F35781003EB38A /* EnemyArrow.cpp in Sources */,
+				BFEC788A180AC9AF00303366 /* AudioLibrary.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

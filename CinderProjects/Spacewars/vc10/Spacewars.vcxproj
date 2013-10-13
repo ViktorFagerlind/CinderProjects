@@ -111,6 +111,7 @@
     <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystem.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\ParticleSystemHelper.cpp" />
     <ClCompile Include="..\..\CinderGraphicsLib\src\SpriteDataParser.cpp" />
+    <ClCompile Include="..\src\AudioLibrary.cpp" />
     <ClCompile Include="..\src\ContactListener.cpp" />
     <ClCompile Include="..\src\EnemyArrow.cpp" />
     <ClCompile Include="..\src\EnemyBot.cpp" />
