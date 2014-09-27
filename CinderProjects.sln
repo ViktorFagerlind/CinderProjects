@@ -1,5 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleTest", "ParticleTest\vc10\ParticleTest.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
@@ -58,9 +60,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iOS_TestAgain", "iOS_TestAg
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsBox2d", "PhysicsBox2d\vc10\PhysicsBox2d.vcxproj", "{9590AEEA-6FCF-4BD7-B6BC-833439686C13}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\cinder\vc10\cinder.vcxproj", "{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Spacewars", "Spacewars\vc10\Spacewars.vcxproj", "{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GpuParticles", "GpuParticles\vc2013\GpuParticles.vcxproj", "{24616E1F-5A94-4E45-862A-4631B7C69A2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,14 +126,14 @@ Global
 		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Debug|Win32.Build.0 = Debug|Win32
 		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Release|Win32.ActiveCfg = Release|Win32
 		{9590AEEA-6FCF-4BD7-B6BC-833439686C13}.Release|Win32.Build.0 = Release|Win32
-		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Debug|Win32.Build.0 = Debug|Win32
-		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Release|Win32.ActiveCfg = Release|Win32
-		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}.Release|Win32.Build.0 = Release|Win32
 		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Debug|Win32.ActiveCfg = Debug|Win32
 		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Debug|Win32.Build.0 = Debug|Win32
 		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Release|Win32.ActiveCfg = Release|Win32
 		{AAE34F43-A08E-4975-8F39-A7C5BCDB40AF}.Release|Win32.Build.0 = Release|Win32
+		{24616E1F-5A94-4E45-862A-4631B7C69A2B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24616E1F-5A94-4E45-862A-4631B7C69A2B}.Debug|Win32.Build.0 = Debug|Win32
+		{24616E1F-5A94-4E45-862A-4631B7C69A2B}.Release|Win32.ActiveCfg = Release|Win32
+		{24616E1F-5A94-4E45-862A-4631B7C69A2B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

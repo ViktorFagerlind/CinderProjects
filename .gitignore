@@ -1,0 +1,4 @@
+*.exe
+ipch/
+Release/**
+Debug/**
