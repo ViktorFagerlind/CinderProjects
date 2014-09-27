@@ -1,4 +1,7 @@
 *.exe
+*.sdf
+*.opensdf
+
 ipch/
-Release/**
-Debug/**
+Release/
+Debug/
