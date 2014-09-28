@@ -13,24 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Blocks">
+      <UniqueIdentifier>{71055487-c57c-49e9-955d-baeec0928082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\MeshHelper">
+      <UniqueIdentifier>{bf7de561-8279-4c45-a18f-22fa96c3f3b3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{65fb33a6-c19e-4754-9072-bad9622f5c13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\GpuParticlesApp.cpp">
+    <ClCompile Include="..\src\GpuFlockingApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GpuParticlesApp.cpp">
+    <ClCompile Include="..\src\GpuFlockingApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClCompile Include="..\blocks\MeshHelper\src\MeshHelper.cpp">
+      <Filter>Blocks\MeshHelper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\MeshHelper\src\MeshHelper.h">
+      <Filter>Blocks\MeshHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -39,16 +51,19 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Media\Shaders\GpuParticles\posFragShader.glsl">
+    <None Include="..\..\Media\Shaders\GpuFlocking\draw_frag.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\Media\Shaders\GpuParticles\posVertShader.glsl">
+    <None Include="..\..\Media\Shaders\GpuFlocking\draw_vert.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\Media\Shaders\GpuParticles\velFragShader.glsl">
+    <None Include="..\..\Media\Shaders\GpuFlocking\gpgpu_vert.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\Media\Shaders\GpuParticles\velVertShader.glsl">
+    <None Include="..\..\Media\Shaders\GpuFlocking\gpgpu0_frag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Media\Shaders\GpuFlocking\gpgpu1_frag.glsl">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

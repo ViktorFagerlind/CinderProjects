@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{24616E1F-5A94-4E45-862A-4631B7C69A2B}</ProjectGuid>
-    <RootNamespace>GpuParticles</RootNamespace>
+    <ProjectGuid>{00E517A0-53E6-4E1F-87D6-0BF433131879}</ProjectGuid>
+    <RootNamespace>GpuFlocking</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -107,16 +107,19 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\GpuParticlesApp.cpp" />
+    <ClCompile Include="..\blocks\MeshHelper\src\MeshHelper.cpp" />
+    <ClCompile Include="..\src\GpuFlockingApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\blocks\MeshHelper\src\MeshHelper.h" />
     <ClInclude Include="..\include\Resources.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Media\Shaders\GpuParticles\posFragShader.glsl" />
-    <None Include="..\..\Media\Shaders\GpuParticles\posVertShader.glsl" />
-    <None Include="..\..\Media\Shaders\GpuParticles\velFragShader.glsl" />
-    <None Include="..\..\Media\Shaders\GpuParticles\velVertShader.glsl" />
+    <None Include="..\..\Media\Shaders\GpuFlocking\draw_frag.glsl" />
+    <None Include="..\..\Media\Shaders\GpuFlocking\draw_vert.glsl" />
+    <None Include="..\..\Media\Shaders\GpuFlocking\gpgpu0_frag.glsl" />
+    <None Include="..\..\Media\Shaders\GpuFlocking\gpgpu1_frag.glsl" />
+    <None Include="..\..\Media\Shaders\GpuFlocking\gpgpu_vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

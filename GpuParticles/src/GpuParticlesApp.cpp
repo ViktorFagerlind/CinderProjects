@@ -1,446 +1,469 @@
-#include  "cinder/app/AppBasic.h"
-#include  "cinder/Arcball.h"
-#include  "cinder/Camera.h"
-#include  "cinder/gl/GlslProg.h"
-#include  "cinder/gl/Fbo.h"
-#include  "cinder/gl/Texture.h"
-#include  "cinder/gl/Vbo.h"
-#include  "cinder/params/Params.h"
-#include  "cinder/CinderMath.h"
+#include "cinder/app/AppNative.h"
 
-#include  "MeshHelper.h"
+#include "cinder/Rand.h"
+#include "cinder/Surface.h"
+#include "cinder/Text.h"
+#include "cinder/Utilities.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Perlin.h"
+#include "cinder/CinderMath.h"
+
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/Vbo.h"
+#include "cinder/gl/GlslProg.h"
 
 #include  "ShaderHelper.h"
 
-using  namespace  ci;
+using namespace ci;
+using namespace ci::app;
+using namespace std;
 
-class  GpuParticlesApp : public  app::AppBasic
+#define WIDTH     1024
+#define HEIGHT    1024
+
+#define PARTICLES 2048
+
+class GpuParticles : public AppNative 
 {
-public:
-  void						draw ();
-  void						mouseDown (app::MouseEvent  event);
-  void						mouseUp (app::MouseEvent  event);
-  void						mouseDrag (app::MouseEvent  event);
-  void						mouseWheel (app::MouseEvent  event);
-  void						prepareSettings (app::AppBasic::Settings*  settings);
-  void						resize ();
-  void						setup ();
-  void						update ();
-
 private:
-  Vec2i					  mSize;
-  Vec2i					  mSizePrev;
+  int           mPos;
+  int           mBufferIn;
+  int           mBufferOut;
+  int           mFrameCounter;
 
-  Arcball					mArcball;
-  CameraPersp			mCamera;
-  Vec3f					  mEyePoint;
+  bool          mDrawTextures;
+  bool          mIsFullScreen;
+  bool          mCreateParticles;
 
-  float						mLightAttenuationConstant;
-  float						mLightAttenuationLinear;
-  float						mLightAttenuationQuadratic;
+  Perlin        mPerlin;
 
-  ColorAf					mLightAmbient;
-  ColorAf					mLightDiffuse;
-  Vec3f					  mLightPosition;
-  ColorAf					mLightSpecular;
-  float						mLightShine;
+  Vec3f         mVertPos;
 
-  float						mMaterialAmbient;
-  float						mMaterialDiffuse;
-  float						mMaterialEmissive;
-  float						mMaterialSpecular;
+  gl::VboMesh   mVbo;
+  gl::Fbo       mFbo[2];
 
-  Vec2f					  mMouse;
-  Vec2f					  mMouseVelocity;
-  bool						mMouseDown;
+  gl::GlslProg  mPosShader;
+  gl::GlslProg  mVelShader;
 
-  gl::Fbo					mFbo[2];
-  size_t					mFboIndex;
+  gl::Texture   mPosTex;
+  gl::Texture   mVelTex;
+  gl::Texture   mInfoTex;
+  gl::Texture   mNoiseTex;
 
-  void						drawInstanced (const  gl::VboMeshRef&  vbo, size_t  count);
-  gl::VboMeshRef	mMesh;
+  gl::Texture   mSpriteTex;
 
-  gl::GlslProg		mGlslProgDraw;
-  gl::GlslProg		mGlslProgGpuParticles0;
-  gl::GlslProg		mGlslProgGpuParticles1;
+  Vec2i         m_mousePos;
+  bool          m_mouseDown;
 
-  float						mBrushSize;
-  gl::TextureRef	mTextureBrush;
+public:
+  void setup ();
+  void prepareSettings (Settings *settings);
 
-  float						mFrameRate;
-  bool						mFullScreen;
-  bool						mFullScreenPrev;
+  void mouseDown  (MouseEvent event);
+  void mouseUp    (MouseEvent  event);
 
-  params::InterfaceGlRef	mParams;
+  void mouseDrag  (MouseEvent event);
+  void mouseMove  (MouseEvent event);
+
+  void keyDown    (KeyEvent event);
+  void keyUp      (KeyEvent event);
+
+  void update   ();
+  void draw     ();
+  void initFBO  ();
+  void drawText ();
 };
 
-/////////////////////////////
-
-#include  "cinder/ImageIo.h"
-#include  "Resources.h"
-
-using  namespace  ci;
-using  namespace  app;
-using  namespace  std;
-
-//  Color  attachments  to  hold  scene  data
-static  const  GLenum  kColorAttachments[3] =
+void GpuParticles::initFBO ()
 {
-  GL_COLOR_ATTACHMENT0,	//  Position
-  GL_COLOR_ATTACHMENT1,	//  Velocity
-  GL_COLOR_ATTACHMENT2	//  Acceleration
-};
+  mPos = 0;
+  mBufferIn = 0;
+  mBufferOut = 1;
 
-void  GpuParticlesApp::draw ()
+  mFbo[0].bindFramebuffer ();
+  mFbo[1].bindFramebuffer ();
+
+  //Positionen
+  glDrawBuffer (GL_COLOR_ATTACHMENT0_EXT);
+
+  gl::setMatricesWindow (mFbo[0].getSize (), false);
+  gl::setViewport (mFbo[0].getBounds ());
+
+  glClearColor (0.0f, 0.0f, 0.0f, 1.0f);
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  mPosTex.enableAndBind ();
+  gl::draw (mPosTex, mFbo[0].getBounds ());
+  mPosTex.unbind ();
+
+  //velocity buffer
+  glDrawBuffer (GL_COLOR_ATTACHMENT1_EXT);
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  mVelTex.enableAndBind ();
+  gl::draw (mVelTex, mFbo[0].getBounds ());
+  mVelTex.unbind ();
+
+  //particle information buffer
+  glDrawBuffer (GL_COLOR_ATTACHMENT2_EXT);
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  mInfoTex.enableAndBind ();
+  gl::draw (mInfoTex, mFbo[0].getBounds ());
+  mInfoTex.unbind ();
+
+  mFbo[1].unbindFramebuffer ();
+  mFbo[0].unbindFramebuffer ();
+
+  mPosTex.disable ();
+  mVelTex.disable ();
+  mInfoTex.disable ();
+}
+
+void GpuParticles::prepareSettings (Settings *settings)
 {
-  //  We're  going  to  draw  new  data  onto  the  "ping"  FBO,
-  //  using  the  "pong"  FBO's  textures  as  input
-  size_t  pong = (mFboIndex + 1) % 2;
+  settings->setWindowSize (WIDTH, HEIGHT);
+  settings->setFrameRate (30.0f);
+}
 
-  //  Set  up  OpenGL  for  data
-  gl::disableDepthRead ();
-  gl::disableDepthWrite ();
-  gl::setViewport (mFbo[mFboIndex].getBounds ());
-  gl::color (ColorAf::white ());
+Vec3f randPointFromSphere (float r)
+{
+  float U = Rand::randFloat (1.f);
 
-  //  Draw  any  new  input  onto  the  acceleration  texture
-  mFbo[pong].bindFramebuffer ();
-  glDrawBuffer (GL_COLOR_ATTACHMENT2);
-  if (mMouseDown)  
+  Vec3f  V = Vec3f (Rand::randFloat (-1.f, 1.f),
+                    Rand::randFloat (-1.f, 1.f),
+                    Rand::randFloat (-1.f, 1.f));
+
+  return r * cbrt (U) * V / V.length ();
+}
+
+void GpuParticles::setup ()
+{
+  gl::clear ();
+
+  mPosShader = ShaderHelper::loadShader ("../Media/Shaders/GpuParticles/posVertShader.glsl",
+                                         "../Media/Shaders/GpuParticles/posFragShader.glsl");
+
+  mVelShader = ShaderHelper::loadShader ("../Media/Shaders/GpuParticles/velVertShader.glsl",
+                                         "../Media/Shaders/GpuParticles/velFragShader.glsl");
+
+  //controls
+  mDrawTextures = false;
+  mIsFullScreen = false;
+
+  mFrameCounter = 0;
+
+  mPerlin = Perlin (32, clock () * .1f);
+
+  //initialize buffer
+  Surface32f mPosSurface    = Surface32f (PARTICLES, PARTICLES, true);
+  Surface32f mVelSurface    = Surface32f (PARTICLES, PARTICLES, true);
+  Surface32f mInfoSurface   = Surface32f (PARTICLES, PARTICLES, true);
+  Surface32f mNoiseSurface  = Surface32f (PARTICLES, PARTICLES, true);
+
+  Surface32f::Iter iterator = mPosSurface.getIter ();
+
+
+  while (iterator.line ())
   {
-    Vec2f  fboSize = Vec2f (mFbo[mFboIndex].getSize ());
-    Vec2f  winSize = Vec2f (app::getWindowSize ());
+    while (iterator.pixel ())
+    {
 
-    gl::setMatricesWindow (fboSize, true);
+//      mVertPos = Vec3f (Rand::randFloat (getWindowWidth ()) / (float)getWindowWidth (),
+//        Rand::randFloat (getWindowHeight ()) / (float)getWindowHeight (), 0.0f);
 
-    Vec2f  brushSize = Vec2f::one ()  *  mBrushSize  *  fboSize;
-    Vec2f  pos = (mMouse / winSize);
-    pos.y = 1.0f - pos.y;
-    pos *= fboSize;
+      mVertPos = randPointFromSphere (0.5f) + Vec3f (0.5f, 0.5f, 0.f);
+      mVertPos.z = 0.f;
 
-    mGlslProgGpuParticles0.bind ();
-    mGlslProgGpuParticles0.uniform ("color", ColorAf (mMouseVelocity.x, (mMouseVelocity.x + mMouseVelocity.y)/2, 1.0f - mMouseVelocity.y, 1.0f));
-    mGlslProgGpuParticles0.uniform ("tex", 0);
+      //velocity
+      Vec2f vel = Vec2f (Rand::randFloat (-.005f, .005f), Rand::randFloat (-.005f, .005f));
 
-    gl::enable (GL_TEXTURE_2D);
-    mTextureBrush->bind ();
-    gl::drawSolidRect (Rectf (pos - brushSize, pos + brushSize));
-    mTextureBrush->unbind ();
-    gl::disable (GL_TEXTURE_2D);
+      float nX = iterator.x () * 0.005f;
+      float nY = iterator.y () * 0.005f;
+      float nZ = app::getElapsedSeconds () * 0.1f;
+      Vec3f v (nX, nY, nZ);
+      float noise = mPerlin.fBm (v);
 
-    mGlslProgGpuParticles0.unbind ();
-  }
-  mFbo[pong].unbindFramebuffer ();
+      float angle = noise * 15.0f;
 
-  //  Now  let's  do  an  update  pass  in  GLSL
-  mFbo[mFboIndex].bindFramebuffer ();
-  gl::setMatricesWindow (mFbo[mFboIndex].getSize (), false);
+      //vel = Vec3f (cos (angle) * 6.28f, cos (angle) * 6.28f, 0.0f);
 
-  //  Bind  the  "pong"  textures  to  use  as  input  data
-  for (int32_t i = 0; i < 3; ++i)  {
-    mFbo[pong].bindTexture (i, i);
-  }
+      //noise
+      mNoiseSurface.setPixel (iterator.getPos (),
+        Color (cos (angle) * Rand::randFloat (.00005f, .0002f), sin (angle) * Rand::randFloat (.00005f, .0002f), 0.0f));
 
-  //  Set  up  shader  to  read  data  textures
-  mGlslProgGpuParticles1.bind ();
-  mGlslProgGpuParticles1.uniform ("offsets", 0);
-  mGlslProgGpuParticles1.uniform ("velocities", 1);
-  mGlslProgGpuParticles1.uniform ("acceleration", 2);
+      //position + mass
+      mPosSurface.setPixel (iterator.getPos (),
+        ColorA (mVertPos.x, mVertPos.y, mVertPos.z,
+        Rand::randFloat (.00005f, .0002f)));
+      //forces + decay
+      mVelSurface.setPixel (iterator.getPos (), Color (vel.x, vel.y, Rand::randFloat (.01f, 1.00f)));
 
-  //  Draw  a  rect  to  process  data
-  glDrawBuffers (3, kColorAttachments);
-  gl::drawSolidRect (mFbo[pong].getBounds ());
+      //particle age
+      mInfoSurface.setPixel (iterator.getPos (),
+        ColorA (Rand::randFloat (.007f, 1.0f), 1.0f, 0.00f, 1.00f));
 
-  //  Unbind  everything
-  mFbo[pong].unbindTexture ();
-  mGlslProgGpuParticles1.unbind ();
-  mFbo[mFboIndex].unbindFramebuffer ();
-
-  //  Swap  FBOs
-  mFboIndex = pong;
-
-
-  /////////////////////////////////
-
-  //  Make  sure  we  have  data  to  work  with  before  we  draw  geometry
-  if (mFbo[mFboIndex]                &&
-      mFbo[mFboIndex].getTexture (0) &&
-      mFbo[mFboIndex].getTexture (1))  
-  {
-    //  Set  up  window  for  3D  drawing
-    gl::clear (Colorf (0.5f, 0.45f, 0.4f));
-    gl::setViewport (getWindowBounds ());
-    gl::setMatrices (mCamera);
-    gl::enableDepthRead ();
-    gl::enableDepthWrite ();
-    gl::multModelView (mArcball.getQuat ());
-    gl::color (ColorAf::black ());
-
-    //  Set  up  shader  to  render  scene
-    mGlslProgDraw.bind ();
-    mGlslProgDraw.uniform ("Ax", mLightAmbient);
-    mGlslProgDraw.uniform ("Ac", mLightAttenuationConstant);
-    mGlslProgDraw.uniform ("Al", mLightAttenuationLinear);
-    mGlslProgDraw.uniform ("Aq", mLightAttenuationQuadratic);
-    mGlslProgDraw.uniform ("Dx", mLightDiffuse);
-    mGlslProgDraw.uniform ("eyePoint", mEyePoint);
-    mGlslProgDraw.uniform ("Ka", mMaterialAmbient);
-    mGlslProgDraw.uniform ("Kd", mMaterialDiffuse);
-    mGlslProgDraw.uniform ("Ke", mMaterialEmissive);
-    mGlslProgDraw.uniform ("Ks", mMaterialSpecular);
-    mGlslProgDraw.uniform ("lightPos", mLightPosition);
-    mGlslProgDraw.uniform ("n", mLightShine);
-    mGlslProgDraw.uniform ("offsets", 0);
-    mGlslProgDraw.uniform ("projection", mCamera.getProjectionMatrix ());
-    mGlslProgDraw.uniform ("size", Vec2f (mSize));
-    mGlslProgDraw.uniform ("Sx", mLightSpecular);
-    mGlslProgDraw.uniform ("t", (float)getElapsedSeconds ());
-
-    //  Bind  textures  to  use  as  input  data
-    for (int32_t i = 0; i <= 2; ++i)  {
-      mFbo[mFboIndex].bindTexture (i, i);
     }
-
-    //  Draw  instanced
-    drawInstanced (mMesh, mSize.x  *  mSize.y);
-
-    //  Finished  drawing
-    mFbo[mFboIndex].unbindTexture ();
-    mGlslProgDraw.unbind ();
-
-    //  Draw  textures  so  we  can  see  what's  going  on  under  the  hood
-    gl::setMatricesWindow (getWindowSize ());
-    gl::disableDepthRead ();
-    gl::disableDepthWrite ();
-    gl::color (ColorAf::white ());
-    gl::pushMatrices ();
-
-    float  x = 20.0f;
-    float  y = 440.0f;
-
-    float  width = 64.0f;
-    Area  srcArea (Vec2i::zero (), mSize);
-    Rectf  destRect (x, y, x + width, y + width);
-
-    gl::draw (mFbo[0].getTexture (0), srcArea, destRect);
-    destRect.x1 += width;
-    destRect.x2 += width;
-    gl::draw (mFbo[1].getTexture (0), srcArea, destRect);
-
-    destRect.y1 += width;
-    destRect.y2 += width;
-    destRect.x1 = x;
-    destRect.x2 = x + width;
-    gl::draw (mFbo[0].getTexture (1), srcArea, destRect);
-    destRect.x1 += width;
-    destRect.x2 += width;
-    gl::draw (mFbo[1].getTexture (1), srcArea, destRect);
-
-    destRect.y1 += width;
-    destRect.y2 += width;
-    destRect.x1 = x;
-    destRect.x2 = x + width;
-    gl::draw (mFbo[0].getTexture (2), srcArea, destRect);
-    destRect.x1 += width;
-    destRect.x2 += width;
-    gl::draw (mFbo[1].getTexture (2), srcArea, destRect);
-    gl::popMatrices ();
   }
 
-  //  Draw  parameters
-  if (getElapsedFrames () > 1) //  This  condition  prevents  a  memory  leak
-    mParams->draw ();
-}
+  //gl texture settings
+  gl::Texture::Format tFormat;
+  tFormat.setInternalFormat (GL_RGBA16F_ARB);
 
-void  GpuParticlesApp::drawInstanced (const  gl::VboMeshRef  &vbo, size_t  count)
-{
-  vbo->enableClientStates ();
-  vbo->bindAllData ();
-  glDrawElementsInstancedARB (vbo->getPrimitiveType (), vbo->getNumIndices (), GL_UNSIGNED_INT, (GLvoid*)(sizeof (uint32_t) * 0), count);
-  gl::VboMesh::unbindBuffers ();
-  vbo->disableClientStates ();
-}
+  gl::Texture::Format tFormatSmall;
+  tFormat.setInternalFormat (GL_RGBA8);
 
-void  GpuParticlesApp::mouseDown (MouseEvent  event)
-{
-  if (event.isControlDown ())  
-  {
-    mArcball.mouseDown (event.getPos ());
-  }
-  else  
-  {
-    mMouseVelocity = Vec2f::zero ();
-    mMouse = Vec2f (event.getPos ());
-    mMouseDown = true;
-  }
-}
+  mSpriteTex = gl::Texture (loadImage (loadFile ("../Media/Images/SoftBall.png")));
 
-void  GpuParticlesApp::mouseDrag (MouseEvent  event)
-{
-  if (event.isControlDown ())  
-  {
-    mArcball.mouseDrag (event.getPos ());
-  }
-  else  
-  {
-    Vec2f  pos = Vec2f (event.getPos ());
-    mMouseVelocity = pos - mMouse;
-    mMouse = pos;
-  }
-}
+  mNoiseTex = gl::Texture (mNoiseSurface, tFormatSmall);
+  mNoiseTex.setWrap (GL_REPEAT, GL_REPEAT);
+  mNoiseTex.setMinFilter (GL_NEAREST);
+  mNoiseTex.setMagFilter (GL_NEAREST);
 
-void  GpuParticlesApp::mouseUp (MouseEvent  event)
-{
-  mMouseDown = false;
-}
+  mPosTex = gl::Texture (mPosSurface, tFormat);
+  mPosTex.setWrap (GL_REPEAT, GL_REPEAT);
+  mPosTex.setMinFilter (GL_NEAREST);
+  mPosTex.setMagFilter (GL_NEAREST);
 
-void  GpuParticlesApp::mouseWheel (MouseEvent  event)
-{
-  mEyePoint.z += -event.getWheelIncrement ()  *  5.0f;
-}
+  mVelTex = gl::Texture (mVelSurface, tFormat);
+  mVelTex.setWrap (GL_REPEAT, GL_REPEAT);
+  mVelTex.setMinFilter (GL_NEAREST);
+  mVelTex.setMagFilter (GL_NEAREST);
 
-void  GpuParticlesApp::prepareSettings (Settings*  settings)
-{
-  settings->setFrameRate (60.0f);
-  settings->setWindowSize (1280, 720);
-}
+  mInfoTex = gl::Texture (mInfoSurface, tFormatSmall);
+  mInfoTex.setWrap (GL_REPEAT, GL_REPEAT);
+  mInfoTex.setMinFilter (GL_NEAREST);
+  mInfoTex.setMagFilter (GL_NEAREST);
 
-void  GpuParticlesApp::resize ()
-{
-  mCamera.setAspectRatio (getWindowAspectRatio ());
-}
+  //initialize fbo
+  gl::Fbo::Format format;
+  format.enableDepthBuffer (false);
+  format.enableColorBuffer (true, 3);
+  format.setMinFilter (GL_NEAREST);
+  format.setMagFilter (GL_NEAREST);
+  format.setWrap (GL_CLAMP, GL_CLAMP);
+  format.setColorInternalFormat (GL_RGBA16F_ARB);
 
+  mFbo[0] = gl::Fbo (PARTICLES, PARTICLES, format);
+  mFbo[1] = gl::Fbo (PARTICLES, PARTICLES, format);
 
-int64_t fact (int64_t x)
-{
-  int64_t r = 1LL;
-  for (int64_t i = 1LL; i <= x; i++)
-    r *= i;
+  initFBO ();
 
-  return r;
-}
+  //fill dummy fbo
+  vector<Vec2f> texCoords;
+  vector<Vec3f> vertCoords, normCoords;
+  vector<uint32_t> indices;
 
-void  GpuParticlesApp::setup ()
-{
+  gl::VboMesh::Layout layout;
+  layout.setStaticIndices ();
+  layout.setStaticPositions ();
+  layout.setStaticTexCoords2d ();
+  layout.setStaticNormals ();
 
-  //  Load  shaders
-  mGlslProgDraw = ShaderHelper::loadShader ("../Media/Shaders/GpuParticles/draw_vert.glsl",
-                                            "../Media/Shaders/GpuParticles/draw_frag.glsl");
+  mVbo = gl::VboMesh (PARTICLES*PARTICLES, PARTICLES*PARTICLES, layout, GL_POINTS);
 
-  mGlslProgGpuParticles0 = ShaderHelper::loadShader ("../Media/Shaders/GpuParticles/gpgpu_vert.glsl",
-                                                     "../Media/Shaders/GpuParticles/gpgpu0_frag.glsl");
-
-  mGlslProgGpuParticles1 = ShaderHelper::loadShader ("../Media/Shaders/GpuParticles/gpgpu_vert.glsl",
-                                                     "../Media/Shaders/GpuParticles/gpgpu1_frag.glsl");
-
-  //  Define  all  properties
-  mArcball = Arcball (getWindowSize ());
-  mBrushSize = 0.1f;
-  mCamera = CameraPersp (getWindowWidth (), getWindowHeight (), 60.0f, 1.0f, 100000.0f);
-  mEyePoint = Vec3f (0.0f, 20.0f, 256.0f);
-  mFullScreen = isFullScreen ();
-  mFullScreenPrev = mFullScreen;
-  mLightAmbient = ColorAf::gray (0.1f);
-  mLightAttenuationConstant = 0.1f;
-  mLightAttenuationLinear = 0.01f;
-  mLightAttenuationQuadratic = 0.001f;
-  mLightDiffuse = ColorAf (0.9f, 0.3f, 0.667f);
-  mLightPosition = Vec3f (11.38f, -1.39f, 59.74f);
-  mLightSpecular = ColorAf::white ();
-  mLightShine = 1.0f;
-  mMaterialAmbient = 1.0f;
-  mMaterialDiffuse = 1.0f;
-  mMaterialEmissive = 0.0f;
-  mMaterialSpecular = 1.0f;
-  mMesh = gl::VboMesh::create (MeshHelper::createCube ());
-  mMouseDown = false;
-  mMouse = Vec2f::zero ();
-  mMouseVelocity = Vec2f::zero ();
-  mParams = params::InterfaceGl::create ("Params", Vec2i (250, 400));
-  mSize = Vec2i (512, 512);
-  mSizePrev = Vec2i::zero ();
-  mTextureBrush = gl::Texture::create (loadImage (loadFile ("../Media/Images/SoftBall.png")));
-
-  //  Set  up  arcball
-  mArcball.setRadius ((float)getWindowHeight ()  *  0.5f);
-
-  //  Set  up  parameters
-  mParams->addParam ("Frame  rate", &mFrameRate, "", true);
-  mParams->addParam ("Full  screen", &mFullScreen, "key=f");
-  mParams->addButton ("Quit", bind (&GpuParticlesApp::quit, this), "key=q");
-
-  mParams->addSeparator ("");
-  mParams->addParam ("Brush  size", &mBrushSize, "min=0.0  max=1.0  step=0.001");
-  mParams->addParam ("Size  X", &mSize.x, "min=1  max=1024  step=1");
-  mParams->addParam ("Size  Y", &mSize.y, "min=1  max=1024  step=1");
-
-  mParams->addSeparator ("");
-  mParams->addParam ("Light  ambient", &mLightAmbient);
-  mParams->addParam ("Light  att  const", &mLightAttenuationConstant, "min=0.0  max=1.0  step=0.001");
-  mParams->addParam ("Light  att  line", &mLightAttenuationLinear, "min=0.0  max=1.0  step=0.0001");
-  mParams->addParam ("Light  att  quad", &mLightAttenuationQuadratic, "min=0.0  max=1.0  step=0.00001");
-  mParams->addParam ("Light  diffuse", &mLightDiffuse);
-  mParams->addParam ("Light  position", &mLightPosition);
-  mParams->addParam ("Light  specular", &mLightSpecular);
-  mParams->addParam ("Light  shine", &mLightShine, "min=0.0  max=100000.0  step=1.0");
-
-  mParams->addSeparator ("");
-  mParams->addParam ("Material  ambient", &mMaterialAmbient, "min=0.0  max=1.0  step=0.001");
-  mParams->addParam ("Material  diffuse", &mMaterialDiffuse, "min=0.0  max=1.0  step=0.001");
-  mParams->addParam ("Material  emissive", &mMaterialEmissive, "min=0.0  max=1.0  step=0.001");
-  mParams->addParam ("Material  specular", &mMaterialSpecular, "min=0.0  max=1.0  step=0.001");
-}
-
-void  GpuParticlesApp::update ()
-{
-  mFrameRate = getAverageFps ();
-
-  //  Toggle  full  screen  mode
-  if (mFullScreenPrev != mFullScreen)  {
-    setFullScreen (mFullScreen);
-    mFullScreenPrev = mFullScreen;
-  }
-
-  //  Reset  the  FBOs  if  our  grid  size  changes
-  if (mSizePrev != mSize)  {
-
-    //  Reset  FBO  index
-    mFboIndex = 0;
-
-    //  We're  going  to  create  two  FBOs,  each  with  three  color  attachments
-    gl::Fbo::Format  format;
-    format.enableColorBuffer (true, 3);
-    format.setColorInternalFormat (GL_RGBA32F_ARB);
-    for (size_t i = 0; i < 2; ++i)  {
-
-      //  Create  the  FBO
-      mFbo[i] = gl::Fbo (mSize.x, mSize.y, format);
-      Area  bounds = mFbo[i].getBounds ();
-
-      //  Bind  the  FBO  so  we  can  draw  on  it
-      mFbo[i].bindFramebuffer ();
-
-      //  Configure  the  view
-      gl::setViewport (bounds);
-      gl::setMatricesWindow (mSize);
-
-      //  This  lets  us  target  the  three  color  attachments  together
-      glDrawBuffers (3, kColorAttachments);
-
-      //  Fill  in  all  attachments  with  grey
-      gl::color (ColorAf::gray (0.5f));
-      gl::drawSolidRect (bounds);
-
-      //  Unbind  the  FBO  so  we  are  no  longer  drawing  to  it
-      mFbo[i].unbindFramebuffer ();
+  for (int x = 0; x < PARTICLES; ++x) {
+    for (int y = 0; y < PARTICLES; ++y) {
+      indices.push_back (x * PARTICLES + y);
+      texCoords.push_back (Vec2f (x / (float)PARTICLES, y / (float)PARTICLES));
     }
-
-    mSizePrev = mSize;
   }
 
-  //  Update  camera  position
-  mCamera.lookAt (mEyePoint, Vec3f::zero ());
+  mVbo.bufferIndices (indices);
+  mVbo.bufferTexCoords2d (0, texCoords);
+
+  setFrameRate (60.f);
+  gl::disableVerticalSync ();
+
+  m_mousePos = Vec2i (0, 0);
+}
+
+void GpuParticles::mouseDown (MouseEvent event)
+{
+  m_mousePos = event.getPos ();
+
+  m_mouseDown = true;
+}
+
+void GpuParticles::mouseUp (MouseEvent  event)
+{
+  m_mouseDown = false;
+}
+
+
+void GpuParticles::mouseMove (MouseEvent event)
+{
+}
+
+void GpuParticles::mouseDrag (MouseEvent event)
+{
+  m_mousePos = event.getPos ();
+}
+
+void GpuParticles::keyUp (KeyEvent event)
+{
 
 }
 
-CINDER_APP_BASIC (GpuParticlesApp, RendererGl (RendererGl::AA_MSAA_32))
+void GpuParticles::keyDown (KeyEvent event)
+{
+
+  if (event.getChar () == 't') {
+    mDrawTextures = !mDrawTextures;
+  }
+  else if (event.getChar () == 'f') {
+    setFullScreen (!isFullScreen ());
+  }
+  else if (event.getChar () == event.KEY_SPACE) {
+    mCreateParticles = true;
+  }
+}
+/**
+here's where the magic happens
+all calculations are done in update
+**/
+void GpuParticles::update ()
+{
+
+  mFbo[mBufferIn].bindFramebuffer ();
+
+  //set viewport to fbo size
+  gl::setMatricesWindow (mFbo[0].getSize (), false); // false to prevent vertical flipping
+  gl::setViewport (mFbo[0].getBounds ());
+
+  GLenum buffer[3] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT };
+  glDrawBuffers (3, buffer);
+
+  mFbo[mBufferOut].bindTexture (0, 0);
+  mFbo[mBufferOut].bindTexture (1, 1);
+  mFbo[mBufferOut].bindTexture (2, 2);
+
+  mVelTex.bind (3);
+  mPosTex.bind (4);
+  mNoiseTex.bind (5);
+
+  Vec2f emissionPos = Vec2f ((float)m_mousePos.x / (float)getWindowWidth (),
+                             (float)m_mousePos.y / (float)getWindowHeight ());
+
+  mVelShader.bind ();
+  mVelShader.uniform ("positions",    0);
+  mVelShader.uniform ("velocities",   1);
+  mVelShader.uniform ("information",  2);
+  mVelShader.uniform ("oVelocities",  3);
+  mVelShader.uniform ("oPositions",   4);
+  mVelShader.uniform ("noiseTex",     5);
+  mVelShader.uniform ("emissionPos", emissionPos);
+
+  glBegin (GL_QUADS);
+  glTexCoord2f (0.0f, 0.0f); glVertex2f (0.0f, 0.0f);
+  glTexCoord2f (0.0f, 1.0f); glVertex2f (0.0f, PARTICLES);
+  glTexCoord2f (1.0f, 1.0f); glVertex2f (PARTICLES, PARTICLES);
+  glTexCoord2f (1.0f, 0.0f); glVertex2f (PARTICLES, 0.0f);
+  glEnd ();
+
+  mVelShader.unbind ();
+
+  mFbo[mBufferOut].unbindTexture ();
+
+  mVelTex.unbind ();
+  mPosTex.unbind ();
+
+  mFbo[mBufferIn].unbindFramebuffer ();
+
+  mBufferIn = (mBufferIn + 1) % 2;
+  mBufferOut = (mBufferIn + 1) % 2;
+
+  //for recording
+  //    if (getElapsedFrames() == 600)
+  //        exit(0);
+
+}
+
+/**
+the draw method displays the last filled buffer
+**/
+void GpuParticles::draw ()
+{
+  gl::setMatricesWindow (getWindowSize ());
+  gl::setViewport (getWindowBounds ());
+
+  gl::clear (ColorA (0.0f, 0.0f, 0.0f, 1.0f));
+
+  gl::enableAlphaBlending ();
+  gl::enableAdditiveBlending ();
+
+  glDisable (GL_DEPTH_TEST);
+
+  glEnable (GL_VERTEX_PROGRAM_POINT_SIZE);
+
+  mFbo[mBufferIn].bindTexture (0, 0);
+  mFbo[mBufferIn].bindTexture (1, 1);
+  mFbo[mBufferIn].bindTexture (2, 2);
+
+  mSpriteTex.bind (3);
+
+  //Bewegungsshader
+  mPosShader.bind ();
+  mPosShader.uniform ("posTex", 0);
+  mPosShader.uniform ("velTex", 1);
+  mPosShader.uniform ("infTex", 2);
+  mPosShader.uniform ("spriteTex", 3);
+
+  mPosShader.uniform ("scale", (float)PARTICLES);
+
+  gl::color (ColorA (1.0f, 1.0f, 1.0f, 1.0f));
+  //glTranslatef(Vec3f(getWindowWidth() / 4  - PARTICLES,0.0f,0.0f));
+  gl::pushMatrices ();
+
+  glScalef (getWindowHeight () / (float)PARTICLES, getWindowHeight () / (float)PARTICLES, 1.0f);
+
+  // draw particles
+  gl::draw (mVbo);
+
+  gl::popMatrices ();
+
+  mPosShader.unbind ();
+
+  mSpriteTex.unbind ();
+
+  mFbo[mBufferIn].unbindTexture ();
+
+  gl::disableAlphaBlending ();
+
+  gl::color(Color(1,1,1));
+  gl::setMatricesWindow (getWindowSize());
+  drawText ();
+}
+
+void GpuParticles::drawText ()
+{
+  glClearColor (0.0f, 0.0f, 0.0f, 1.0f);
+
+  TextLayout layout;
+  layout.setFont (Font ("Courier New", 14));
+  layout.setColor (Color (1.0f, 1.0f, 1.0f));
+  layout.addLine ("1 Million Particles");
+  layout.addLine (" ");
+
+  layout.setColor (Color (0.9f, 0.9f, 0.9f));
+
+  layout.addLine ("F - switch to fullscreen");
+  layout.addLine ("t - draw textures");
+
+  char fps[50];
+  sprintf (fps, "FPS: %.2f", getAverageFps ());
+
+  char particleCount[50];
+  sprintf (particleCount, "Particles: %d", PARTICLES*PARTICLES);
+
+  layout.addLine (fps);
+  layout.addLine (particleCount);
+
+  glEnable (GL_TEXTURE_2D);
+  gl::draw (layout.render (true), Vec2f (getWindowWidth () - 150, 25));
+  glDisable (GL_TEXTURE_2D);
+}
+
+CINDER_APP_BASIC (GpuParticles, RendererGl)
