@@ -17,8 +17,9 @@ public:
 							 float 	maxVelocity,
 							 float  width,
 							 float  height,
-							 float  depth) 
-  : Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity),
+               float  depth,
+               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new BillboardParticleDrawer ()))
+  : Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity, drawer),
 		mMinParticleSize(minParticleSize),
 		mMaxParticleSize(maxParticleSize),
 		mWidth(width),

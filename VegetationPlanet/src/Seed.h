@@ -29,7 +29,8 @@ public:
                                       0.5f,   // min size
                                       1.0f,   // max size
                                       Vec3f (0, 0, 0),     // baseVelocity
-                                      0.1f);    // randVelocity
+                                      0.f,            // minRandVelocity
+                                      0.1f);    // maxRandVelocity
 
     CommonModifier *cmnMod = new CommonModifier (0.9f,   // lifeChange
                                                  1,      // relativeStartSize

@@ -49,7 +49,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost\boost;..\..\CinderGraphicsLib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\cinder\include;..\..\..\cinder\boost;..\..\CinderGraphicsLib\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -63,8 +63,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;CinderGraphicsLib.lib;QTMLClient.lib;CVClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\..\QuickTimeSDK-7.3\Libraries;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-v120_d.lib;CinderGraphicsLib.lib;QTMLClient.lib;CVClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw\x86;..\..\..\QuickTimeSDK-7.3\Libraries;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -120,7 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Media\Shaders\amoeba_frag.glsl" />
-    <None Include="..\..\Media\Shaders\amoeba_vert.glsl" />
     <None Include="..\..\Media\Shaders\tube_geom.glsl" />
     <None Include="..\..\Media\Shaders\tube_vert.glsl" />
   </ItemGroup>

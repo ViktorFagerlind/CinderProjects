@@ -63,8 +63,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;QTMLClient.lib;CVClient.lib;CinderGraphicsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw;..\..\..\QuickTimeSDK-7.3\Libraries;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-v120_d.lib;QTMLClient.lib;CVClient.lib;CinderGraphicsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\cinder\lib;..\..\..\cinder\lib\msw\x86;..\..\..\QuickTimeSDK-7.3\Libraries;..\..\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>

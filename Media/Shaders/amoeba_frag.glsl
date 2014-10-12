@@ -8,12 +8,12 @@ varying vec3 eyeVec;
 
 void main()
 {	
-  float PI = 3.14159f;
+    float PI = 3.14159f;
 
 	vec4 final_color = (gl_FrontLightModelProduct.sceneColor * gl_FrontMaterial.ambient) + 
 	                   (gl_LightSource[0].ambient * gl_FrontMaterial.ambient);
 							
-  vec3 E = normalize(eyeVec);
+    vec3 E = normalize(eyeVec);
 	vec3 N = normalize(normal);
 	vec3 L = normalize(lightDir);
 	
@@ -22,7 +22,7 @@ void main()
 	if(eyeTerm > 0.0)
 	{
 		final_color += gl_LightSource[0].diffuse * gl_FrontMaterial.diffuse * eyeTerm * eyeTerm;	
-  }
+    }
 
 	float lambertTerm = dot(N,L);
 	
@@ -34,5 +34,5 @@ void main()
 	}
 
 	gl_FragColor   = final_color;
-  gl_FragColor.a = 0.5;
+    gl_FragColor.a = gl_FrontMaterial.diffuse.a;
 }

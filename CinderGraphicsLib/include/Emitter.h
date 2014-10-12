@@ -13,6 +13,8 @@
 
 #include "SpriteData.h"
 #include "SpriteDataParser.h"
+#include "BillboardParticleDrawer.h"
+#include "AnimParticleDrawer.h"
 
 #include <list>
 
@@ -35,12 +37,10 @@ public:
            const Vec3f position,
            const Vec3f baseVelocity,
 	         const float minRandVelocity, 
-	         const float maxRandVelocity);
+	         const float maxRandVelocity,
+           shared_ptr<ParticleDrawerInterface> drawer);
 
   virtual ~Emitter();
-
-  // For animated emitters
-  void makeAnimated (shared_ptr<vector<SpriteData>> spriteData);
 
   // A method to test if the particle system still has particles
   bool dead() {return mKilled && mParticleCount == 0;}
@@ -58,7 +58,7 @@ public:
   
   virtual void updateEmitter();
 
-  void draw (ci::gl::Texture *texture);
+  void draw (const Vec2f &textureSize);
 
 
   void setPosition (const Vec3f& position)
@@ -74,26 +74,6 @@ public:
   virtual void defineParticle (Particle* particle) = 0; 
 
 
-  static void drawBillboardTex (const Vec3f&   pos, 
-                                const Vec2f&   scale, 
-                                const GLfloat *texCoords,
-                                const ColorAf& color           = ColorAf::white (),
-                                const float    rotationDegrees = 0.f, 
-                                const Vec3f&   bbRight         = Vec3f (1,0,0), 
-                                const Vec3f&   bbUp            = Vec3f (0,1,0));
-
-  static void drawBillboard (const Vec3f&   pos, 
-                             const Vec2f&   scale, 
-                             const ColorAf& color           = ColorAf::white (), 
-                             const float    rotationDegrees = 0.f, 
-                             const Vec3f&   bbRight         = Vec3f (1,0,0), 
-                             const Vec3f&   bbUp            = Vec3f (0,1,0));
-
-private:
-  void drawNormal ();
-  void drawPointSprite ();
-  void drawAnimated (ci::gl::Texture *texture);
-
 protected:
   Vec3f getParticleVelocity ();
 
@@ -105,7 +85,7 @@ protected:
 	float           mMaxRandVelocity; 
 
 private:
-  Particle       *mParticles;
+  vector<Particle*> mParticles;
 
   float 					mParticlesPerFrame;
   float 					mParticlesToCreate;
@@ -129,5 +109,7 @@ private:
 
   uint32_t        mFramesToLive;
   shared_ptr<vector<SpriteData>> m_spriteData;
+
+  shared_ptr<ParticleDrawerInterface> mDrawer;
 };
 

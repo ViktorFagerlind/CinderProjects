@@ -12,6 +12,12 @@ Particle::Particle()
 
 // --------------------------------------------------------------------------------------------------------------------
 
+Particle::~Particle ()
+{
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
 void Particle::define(const Vec3f& position, float size, Vec3f velocity)
 {
   mLife         = Particle_fullLife_C;
@@ -34,3 +40,13 @@ void Particle::applyForce(const Vec3f& force)
 
 // --------------------------------------------------------------------------------------------------------------------
 
+void Particle::update ()
+{
+  mVelocity += mAcceleration;
+
+  mPosition += mVelocity;
+
+  mAcceleration = Vec3f::zero (); // Kill the acceleration for each update
+
+  mIsDead = mLife <= 0.0;
+}

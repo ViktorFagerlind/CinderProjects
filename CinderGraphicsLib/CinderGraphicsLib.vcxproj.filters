@@ -52,6 +52,9 @@
     <Filter Include="Header Files\Bullet">
       <UniqueIdentifier>{ec57c2d5-ce1a-4709-a80d-0232325ed57c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Particles\Drawing">
+      <UniqueIdentifier>{c6a08fd3-46ad-446b-aa7f-e266d207eb08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -1017,6 +1020,24 @@
     <ClInclude Include="include\DampingModifier.h">
       <Filter>Source Files\Particles\Modifiers</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleDrawerInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ParticleDrawerInterface.h">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BillboardParticleDrawer.h">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AnimParticleDrawer.h">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TubeParticleDrawer.h">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Billboard.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SpriteDataParser.cpp">
@@ -1077,6 +1098,18 @@
       <Filter>Source Files\Particles\System</Filter>
     </ClCompile>
     <ClCompile Include="src\ImageLibrary.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BillboardParticleDrawer.cpp">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimParticleDrawer.cpp">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TubeParticleDrawer.cpp">
+      <Filter>Source Files\Particles\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Billboard.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>

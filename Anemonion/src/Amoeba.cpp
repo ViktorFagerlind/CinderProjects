@@ -9,9 +9,9 @@ Amoeba::Amoeba (const float radius, const Vec3f position)
 : m_radius (radius),
   m_position (position)
 {
-  ColorAf ambient  = ColorAf (0.05f, 0.05f,  0.15f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
-  ColorAf diffuse  = ColorAf (0.15f, 0.35f,  0.50f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
-  ColorAf specular = ColorAf (0.50f, 0.70f,  0.90f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0);
+  ColorAf ambient  = ColorAf (0.05f, 0.05f,  0.15f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0, 0);
+  ColorAf diffuse  = ColorAf (0.15f, 0.35f,  0.50f, .5f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0, 0);
+  ColorAf specular = ColorAf (0.50f, 0.70f,  0.90f, 1.f) + ColorAf (Rand::randFloat(-0.1f, 0.1f), Rand::randFloat(-0.1f, 0.1f), 0, 0);
   float   shininess = Rand::randFloat(5.f, 20.f);
   gl::GlslProg shader;
 

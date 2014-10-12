@@ -1,4 +1,3 @@
-
 #include "Emitter.h"
 #include "ShaderHelper.h"
 
@@ -36,7 +35,8 @@ Emitter::Emitter (const size_t maxNofParticles,
                   const Vec3f position,
                   const Vec3f baseVelocity,
 	                const float minRandVelocity, 
-	                const float maxRandVelocity)
+	                const float maxRandVelocity,
+                  shared_ptr<ParticleDrawerInterface> drawer)
 : mMaxNofParticles(maxNofParticles),
   mPosition (position),
   mRotation (Vec3f::zero ()),
@@ -49,40 +49,25 @@ Emitter::Emitter (const size_t maxNofParticles,
   mKilled(false),
   mParticlesToCreate(0.f),
   mParticlesPerFrame(particlesPerFrame),
-  mFramesToLive(0xFFFFFFFF)
+  mFramesToLive(0xFFFFFFFF),
+  mDrawer(drawer)
 {
-  mParticles = new Particle[mMaxNofParticles];
+  mParticles.resize (mMaxNofParticles);
+
+  mDrawer->createParticles (mParticles);
 
 /*
   mSizes              = new float[mMaxNofParticles];
   mColors             = new ColorAf[mMaxNofParticles];
   mVerticies          = new Vec3f[mMaxNofParticles];
   mTextureCoordinates = new float[mMaxNofParticles*2];
-*/
 
 #if !defined (CINDER_COCOA_TOUCH)
   mShader =  ShaderHelper::loadShader("../Media/Shaders/pointSprite_vert.glsl", "../Media/Shaders/colorAndTextureBlend_frag.glsl");
 #endif
+  */
 }
 
-void Emitter::makeAnimated (shared_ptr<vector<SpriteData>> spriteData)
-{
-  mIsAnimated   = true;
-  m_spriteData  = spriteData;
-
-  // Delete and reallocate attributes to send when drawing without point prites
-  /*
-  delete [] mSizes;
-  delete [] mColors;
-  delete [] mVerticies;
-  delete [] mTextureCoordinates;
-
-  mSizes              = NULL;
-  mColors             = new ColorAf[mMaxNofParticles * 4];
-  mVerticies          = new Vec3f[mMaxNofParticles   * 4];
-  mTextureCoordinates = new float[mMaxNofParticles   * 8];
-*/
-}
 
 Emitter::~Emitter()
 {
@@ -93,16 +78,17 @@ Emitter::~Emitter()
   delete [] mTextureCoordinates;
 */
 
-  delete [] mParticles;
+  // Delete all particles
+  for (uint32_t i = 0; i < mParticles.size (); i++)
+    delete mParticles[i];
+
+ // delete [] mParticles;
 }
 
 void Emitter::applyModifierToParticles(Modifier *modifier)
 {
   for (size_t pi = 0; pi < mParticleCount; pi++)
-  {
-    Particle *p = &mParticles[pi];
-    modifier->apply(p);
-  }
+    modifier->apply (mParticles[pi]);
 }
 
 void Emitter::updateEmitter ()
@@ -129,7 +115,7 @@ void Emitter::updateEmitter ()
     // Create new particles
     for (size_t pi = 0; pi < nofParticlesToCreateThisFrame; pi++)
     {
-      defineParticle (&mParticles[mParticleCount+pi]);
+      defineParticle (mParticles[mParticleCount+pi]);
     }
     mParticleCount += nofParticlesToCreateThisFrame;
   }
@@ -137,152 +123,34 @@ void Emitter::updateEmitter ()
   // Update particles
   for (size_t pi = 0; pi < mParticleCount; pi++)
   {
-    Particle *p = &mParticles[pi];
-
-    while (p->mIsDead)
+    // Move particles from back of the list if dead ones are found
+    while (mParticles[pi]->mIsDead)
     {
-      *p = mParticles[mParticleCount-1];
+      Particle *tmp = mParticles[pi];
+      mParticles[pi] = mParticles[mParticleCount - 1];
+      mParticles[mParticleCount - 1] = tmp;
+
       mParticleCount--;
 
       if (mParticleCount == 0)
         return;
     }
 
-    p->update();
+    mParticles[pi]->update ();
   }
     
 }
 
-void Emitter::draw (ci::gl::Texture *texture)
+void Emitter::draw (const Vec2f &textureSize)
 {
-//#if defined (CINDER_COCOA_TOUCH)
-  if (mIsAnimated)
-    drawAnimated (texture);
-  else
-    drawNormal ();
-/*
-#else
-  if (mIsAnimated)
-    drawAnimated (texture);
-  else
-    drawPointSprite ();
-#endif
-*/
+  mDrawer->beforeDraw ();
+
+  for (uint32_t i = 0; i<mParticleCount; i++)
+    mDrawer->drawParticle (*mParticles[i], textureSize);
+
+  mDrawer->afterDraw ();
 }
 
-void Emitter::drawBillboardTex (const Vec3f   &pos, 
-                                const Vec2f   &scale, 
-                                const GLfloat *texCoords,
-                                const ColorAf &color, 
-                                const float   rotationDegrees, 
-                                const Vec3f   &bbRight, 
-                                const Vec3f   &bbUp)
-{
-	Vec3f   verts[4];
-  ColorAf colors[4] = {color, color, color, color};
-
-	glVertexPointer   (3, GL_FLOAT, 0, verts);
-	glTexCoordPointer (2, GL_FLOAT, 0, texCoords);
-	glColorPointer    (4, GL_FLOAT, 0, colors);
-
-	float sinA = math<float>::sin (rotationDegrees);
-	float cosA = math<float>::cos (rotationDegrees);
-
-	verts[0] = pos + bbRight * ( -1.f * scale.x * cosA -  1.f * sinA * scale.y ) + bbUp * ( -1.f * scale.x * sinA +  1.f * cosA * scale.y );
-	verts[1] = pos + bbRight * ( -1.f * scale.x * cosA - -1.f * sinA * scale.y ) + bbUp * ( -1.f * scale.x * sinA + -1.f * cosA * scale.y );
-	verts[2] = pos + bbRight * (  1.f * scale.x * cosA -  1.f * sinA * scale.y ) + bbUp * (  1.f * scale.x * sinA +  1.f * cosA * scale.y );
-	verts[3] = pos + bbRight * (  1.f * scale.x * cosA - -1.f * sinA * scale.y ) + bbUp * (  1.f * scale.x * sinA + -1.f * cosA * scale.y );
-
-	glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
-}
-
-void Emitter::drawBillboard (const Vec3f   &pos, 
-                             const Vec2f   &scale, 
-                             const ColorAf &color, 
-                             const float   rotationDegrees, 
-                             const Vec3f   &bbRight, 
-                             const Vec3f   &bbUp)
-{
-	GLfloat texCoords[8] = { 0, 0, 0, 1, 1, 0, 1, 1};
-
-  drawBillboardTex (pos, scale, texCoords, color, rotationDegrees, bbRight, bbUp);
-}
-
-
-void Emitter::drawNormal ()
-{
-  // Enable arrays
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState (GL_COLOR_ARRAY);
-
-  for (uint32_t i=0; i<mParticleCount; i++)
-  {
-    Particle *p   = &mParticles[i];
-
-    drawBillboard (p->mPosition, 
-                   Vec2f (p->mCurrentSize, p->mCurrentSize), 
-                   p->mColor);
-  }
-
-  // Disable arrays
-	glDisableClientState (GL_VERTEX_ARRAY);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState (GL_COLOR_ARRAY);
-}
-
-void Emitter::drawAnimated (ci::gl::Texture *texture)
-{
-  GLfloat texCoords[8];
-
-  uint32_t animationNofFrames = m_spriteData->size();
-
-  // Enable arrays
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState (GL_COLOR_ARRAY);
-
-  for (uint32_t i=0; i<mParticleCount; i++)
-  {
-    Particle *p   = &mParticles[i];
-
-    // Calculate current frame --------------
-    uint32_t frameNr = (uint32_t)((1.0f - (p->getLife () / Particle_fullLife_C)) * animationNofFrames);
-    if (frameNr >= animationNofFrames)
-      frameNr = animationNofFrames - 1;
-
-    SpriteData *frame = &m_spriteData->operator[] (frameNr);
-
-    float xl = (float) frame->x             / (float)texture->getWidth ();
-    float xr = (float)(frame->x + frame->w) / (float)texture->getWidth ();
-	  float yu = (float) frame->y             / (float)texture->getHeight ();
-    float yd = (float)(frame->y + frame->h) / (float)texture->getHeight ();
-
-    // Calculate texture coordinates --------------
-    // top left
-    texCoords[0] = xl;
-    texCoords[1] = yu;
-    // top right
-    texCoords[2] = xl;
-    texCoords[3] = yd;
-    // bottom right
-    texCoords[4] = xr;
-    texCoords[5] = yu;
-    // bottom left
-    texCoords[6] = xr;
-    texCoords[7] = yd;
-
-    drawBillboardTex (p->mPosition, 
-                      Vec2f (p->mCurrentSize, p->mCurrentSize),
-                      texCoords,
-                      p->mColor);
-  }
-
-  // Disable arrays
-	glDisableClientState (GL_VERTEX_ARRAY);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState (GL_COLOR_ARRAY);
-}
 
 //#if !defined (CINDER_COCOA_TOUCH)
 #if 0

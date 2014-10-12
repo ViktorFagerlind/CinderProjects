@@ -20,6 +20,7 @@ shared_ptr<Emitter> ParticleSystemHelper::createThrustSystem ()
 {
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
+
   shared_ptr<Emitter> emitter (new AreaEmitter (100,                // maxNofParticles,
                                           Vec3f::zero (),     // position, 
                                           2,                  // particlesPerFrame, 
@@ -59,7 +60,8 @@ shared_ptr<Emitter> ParticleSystemHelper::createFlareSystem ()
                                             40,             // minParticleSize,
                                             40,             // maxParticleSize,
                                             Vec3f::zero (), // baseVelocity,
-                                            0.f));           // randVelocity
+                                            0.f,            // minRandVelocity
+                                            0.f));           // maxRandVelocity
   particleSystem->addEmitterRef  (emitter);
 
   CommonModifier *commonModifier = new CommonModifier (20.0f, 1.0f, 0.6f);
@@ -87,7 +89,8 @@ shared_ptr<Emitter> ParticleSystemHelper::createMiniExplosion ()
                                             4,              // minParticleSize,
                                             8,              // maxParticleSize,
                                             Vec3f::zero (), // baseVelocity,
-                                            1.5f));          // randVelocity
+                                            0.f,            // minRandVelocity
+                                            1.5f));          // maxRandVelocity
   emitter->setFramesToLive (2);
   particleSystem->addEmitterRef  (emitter);
 
@@ -118,18 +121,20 @@ shared_ptr<Emitter> ParticleSystemHelper::createFireBall (const Vec3f&    positi
 
   ParticleSystem *particleSystem = new ParticleSystem (libItem.m_texture);
 
-  shared_ptr<Emitter> emitter (new AreaEmitter (20,               // maxNofParticles
-                                          position,         // position
-                                          4,                // particlesPerFrame,
-  						                            size*20,          // width
-  						                            size*20,          // height 
-                                          size*20,          // depth,
-                                          size*50.0f,       // min size
-                                          size*80.0f,       // max size
-                                          speed,            // baseVelocity
-                                          size*2.0f));       // randVelocity
+  shared_ptr<AnimParticleDrawer> animDrawer = shared_ptr<AnimParticleDrawer> (new AnimParticleDrawer (libItem.m_spriteData));
 
-  emitter->makeAnimated (libItem.m_spriteData);
+  shared_ptr<Emitter> emitter (new AreaEmitter (20,               // maxNofParticles
+                                                position,         // position
+                                                4,                // particlesPerFrame,
+                                                size * 20,          // width
+                                                size * 20,          // height 
+                                                size * 20,          // depth,
+                                                size*50.0f,       // min size
+                                                size*80.0f,       // max size
+                                                speed,            // baseVelocity
+                                                size*2.0f,        // randVelocity
+                                                animDrawer));
+
 
   emitter->setFramesToLive (2);
   particleSystem->addEmitterRef  (emitter);
@@ -165,7 +170,8 @@ shared_ptr<Emitter> ParticleSystemHelper::createSparkExplosion (const Vec3f&   p
                                             size*2,         // minParticleSize,
                                             size*4,         // maxParticleSize,
                                             speed,          // baseVelocity,
-                                            size*10.0f));    // randVelocity
+                                            0.f,            // minRandVelocity
+                                            size*10.0f));    // maxRandVelocity
   emitter->setFramesToLive (2);
 
   particleSystem->addEmitterRef (emitter);
@@ -204,7 +210,8 @@ shared_ptr<Emitter> ParticleSystemHelper::createSparks ()
                                             4,              // minParticleSize,
                                             6,              // maxParticleSize,
                                             Vec3f::zero (), // baseVelocity,
-                                            2.f));           // randVelocity
+                                            0.f,            // minRandVelocity
+                                            2.f));           // maxRandVelocity
   particleSystem->addEmitterRef (emitter);
 
   CommonModifier *commonModifier = new CommonModifier (5.0f, 1.0f, 0.1f);

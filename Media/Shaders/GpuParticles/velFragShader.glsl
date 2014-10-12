@@ -7,13 +7,16 @@ uniform sampler2D oVelocities;
 uniform sampler2D oPositions;
 uniform sampler2D noiseTex;
 
-uniform vec2 emissionPos;
+uniform vec2 emissionPositions[2];
 
 varying vec4 texCoord;
 
-float tStep = .013;
+float tStep = .02;
 
-
+float rand(vec2 co)
+{
+  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 
 void main()
 {
@@ -28,15 +31,20 @@ void main()
 	float age = texture2D (information, texCoord.st).r;
 	float maxAge = texture2D (information, texCoord.st).g;
 
-    vec2 noise = texture2D (noiseTex, pos.xy).rg;
+
+    vec3 noise   = texture2D (noiseTex, pos.xy).rgb;
+	vec3 gravity = -0.0001 * pos / clamp (pow (length(pos), 3.0), 0.001, 1.0);
+	vec3 acceleration = noise + gravity;
+
+
     
-    age += tStep;
-    
-	vel += vec3 (noise.x,noise.y,0.0);
+	vel += acceleration;
     
     pos.x += vel.x;
     pos.y += vel.y;
 	
+    age += tStep;
+    
 	if (age >= maxAge)
     {
         vec3 origVel = texture2D(oVelocities, texCoord.st).rgb;
@@ -44,7 +52,15 @@ void main()
 
         age = 0.0;
 
-        pos = vec3(emissionPos,0) + 0.06 * origPos;
+		if (fract (pos.x * 100) < 0.5) // 50% 
+	        pos = vec3(emissionPositions[0],0);
+		else
+	        pos = vec3(emissionPositions[1],0);
+		
+		pos += 0.1 * (origPos - vec3(rand (vec2 (3,6)), 
+									  rand (vec2 (3,6)), 
+								      0));
+
         vel = origVel;
     }
 	

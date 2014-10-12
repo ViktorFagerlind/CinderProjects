@@ -26,7 +26,8 @@ public:
 							 float 	maxVelocity,
 							 float  width,
 							 float  height,
-							 float  depth);
+               float  depth,
+               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new BillboardParticleDrawer ()));
 
 	~VideoEmitter();
 

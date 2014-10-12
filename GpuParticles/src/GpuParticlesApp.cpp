@@ -23,7 +23,7 @@ using namespace std;
 #define WIDTH     1024
 #define HEIGHT    1024
 
-#define PARTICLES 2048
+#define PARTICLES 1024
 
 class GpuParticles : public AppNative 
 {
@@ -178,7 +178,10 @@ void GpuParticles::setup ()
       mVertPos.z = 0.f;
 
       //velocity
-      Vec2f vel = Vec2f (Rand::randFloat (-.005f, .005f), Rand::randFloat (-.005f, .005f));
+//      Vec2f vel = Vec2f (Rand::randFloat (-.005f, .005f), Rand::randFloat (-.005f, .005f));
+
+      Vec3f velTmp = randPointFromSphere (0.005f);
+      Vec2f vel = Vec2f (velTmp.x, velTmp.y);
 
       float nX = iterator.x () * 0.005f;
       float nY = iterator.y () * 0.005f;
@@ -215,7 +218,8 @@ void GpuParticles::setup ()
   gl::Texture::Format tFormatSmall;
   tFormat.setInternalFormat (GL_RGBA8);
 
-  mSpriteTex = gl::Texture (loadImage (loadFile ("../Media/Images/SoftBall.png")));
+  //mSpriteTex = gl::Texture (loadImage (loadFile ("../Media/Images/SoftBall.png")));
+  mSpriteTex = gl::Texture (loadImage (loadFile ("../Media/Images/ring_flare.png")));
 
   mNoiseTex = gl::Texture (mNoiseSurface, tFormatSmall);
   mNoiseTex.setWrap (GL_REPEAT, GL_REPEAT);
@@ -344,8 +348,10 @@ void GpuParticles::update ()
   mPosTex.bind (4);
   mNoiseTex.bind (5);
 
-  Vec2f emissionPos = Vec2f ((float)m_mousePos.x / (float)getWindowWidth (),
-                             (float)m_mousePos.y / (float)getWindowHeight ());
+  Vec2f emissionPositions[2];
+  emissionPositions[0] = Vec2f ((float)m_mousePos.x / (float)getWindowWidth (),
+                                (float)m_mousePos.y / (float)getWindowHeight ());
+  emissionPositions[1] = Vec2f(1.f, 1.f) - emissionPositions[0];
 
   mVelShader.bind ();
   mVelShader.uniform ("positions",    0);
@@ -354,7 +360,7 @@ void GpuParticles::update ()
   mVelShader.uniform ("oVelocities",  3);
   mVelShader.uniform ("oPositions",   4);
   mVelShader.uniform ("noiseTex",     5);
-  mVelShader.uniform ("emissionPos", emissionPos);
+  mVelShader.uniform ("emissionPositions", emissionPositions, 2);
 
   glBegin (GL_QUADS);
   glTexCoord2f (0.0f, 0.0f); glVertex2f (0.0f, 0.0f);
@@ -375,10 +381,6 @@ void GpuParticles::update ()
   mBufferIn = (mBufferIn + 1) % 2;
   mBufferOut = (mBufferIn + 1) % 2;
 
-  //for recording
-  //    if (getElapsedFrames() == 600)
-  //        exit(0);
-
 }
 
 /**
@@ -389,7 +391,7 @@ void GpuParticles::draw ()
   gl::setMatricesWindow (getWindowSize ());
   gl::setViewport (getWindowBounds ());
 
-  gl::clear (ColorA (0.0f, 0.0f, 0.0f, 1.0f));
+  gl::clear (ColorA (0.0f, 0.0f, 0.0f, 0.1f));
 
   gl::enableAlphaBlending ();
   gl::enableAdditiveBlending ();
@@ -439,7 +441,7 @@ void GpuParticles::draw ()
 
 void GpuParticles::drawText ()
 {
-  glClearColor (0.0f, 0.0f, 0.0f, 1.0f);
+  glClearColor (0.0f, 0.0f, 0.0f, 1.f);
 
   TextLayout layout;
   layout.setFont (Font ("Courier New", 14));

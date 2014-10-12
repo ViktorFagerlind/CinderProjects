@@ -13,8 +13,9 @@ VideoEmitter::VideoEmitter (const size_t maxNofParticles,
 							              float 	maxVelocity,
 							              float   width,
 							              float   height,
-							              float   depth) 
-: Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity),
+                            float   depth,
+                            shared_ptr<ParticleDrawerInterface> drawer)
+                            : Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity, drawer),
 	mMinParticleSize(minParticleSize),
 	mMaxParticleSize(maxParticleSize),
 	mWidth(width),

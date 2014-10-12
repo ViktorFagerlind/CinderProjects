@@ -1,6 +1,7 @@
 #include "Emitter.h"
 
 #include "cinder/Rand.h"
+#include "BillboardParticleDrawer.h"
 
 using namespace ci;
 
@@ -16,8 +17,9 @@ public:
 							 const float 	minParticleSize,
 							 const float 	maxParticleSize,
 							 const Vec3f& baseVelocity,
-							 const float  maxRandVelocity) 
-  : Emitter (maxNofParticles, particlesPerFrame, position, baseVelocity, 0.f, maxRandVelocity),
+               const float  maxRandVelocity,
+               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new BillboardParticleDrawer ()))
+               : Emitter (maxNofParticles, particlesPerFrame, position, baseVelocity, 0.f, maxRandVelocity, drawer),
     mWidth              (width),
     mHeight             (height),
     mDepth              (depth),

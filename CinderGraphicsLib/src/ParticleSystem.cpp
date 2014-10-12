@@ -123,7 +123,7 @@ void ParticleSystem::draw()
   for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
   {
     Emitter *e = it->get ();
-    e->draw (&mParticleTexture);
+    e->draw (Vec2f ((float)mParticleTexture.getWidth (), (float)mParticleTexture.getHeight ()));
   }
 
   mParticleTexture.unbind ();

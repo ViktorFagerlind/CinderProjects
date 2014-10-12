@@ -359,8 +359,11 @@
     <ClInclude Include="..\..\bullet\src\vectormath\sse\vectormath_aos.h" />
     <ClInclude Include="..\..\bullet\src\vectormath\sse\vec_aos.h" />
     <ClInclude Include="..\..\bullet\src\vectormath\vmInclude.h" />
+    <ClInclude Include="include\AnimParticleDrawer.h" />
     <ClInclude Include="include\AreaEmitter.h" />
     <ClInclude Include="include\BaseMaterial.h" />
+    <ClInclude Include="include\Billboard.h" />
+    <ClInclude Include="include\BillboardParticleDrawer.h" />
     <ClInclude Include="include\BloomEffect.h" />
     <ClInclude Include="include\BSpline.h" />
     <ClInclude Include="include\BumpMaterial.h" />
@@ -379,6 +382,7 @@
     <ClInclude Include="include\MovingCamera.h" />
     <ClInclude Include="include\MyStrings.h" />
     <ClInclude Include="include\Particle.h" />
+    <ClInclude Include="include\ParticleDrawerInterface.h" />
     <ClInclude Include="include\ParticleSystem.h" />
     <ClInclude Include="include\ParticleSystemHelper.h" />
     <ClInclude Include="include\ParticleSystemManager.h" />
@@ -391,9 +395,11 @@
     <ClInclude Include="include\SpriteDataParser.h" />
     <ClInclude Include="include\SpriteSheet.h" />
     <ClInclude Include="include\TubeDrawer.h" />
+    <ClInclude Include="include\TubeParticleDrawer.h" />
     <ClInclude Include="include\VfBaseApp.h" />
     <ClInclude Include="include\VideoEmitter.h" />
     <ClInclude Include="include\VortexModifier.h" />
+    <ClInclude Include="ParticleDrawerInterface.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\MSA\MSABulletPhysics\MSABulletPhysics.h" />
     <ClInclude Include="src\MSA\MSABulletPhysics\MSABulletPhysicsUtils.h" />
@@ -409,6 +415,9 @@
     <ClInclude Include="src\MSA\MSACore\MSACoreMath.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AnimParticleDrawer.cpp" />
+    <ClCompile Include="src\Billboard.cpp" />
+    <ClCompile Include="src\BillboardParticleDrawer.cpp" />
     <ClCompile Include="src\BloomEffect.cpp" />
     <ClCompile Include="src\BumpMaterial.cpp" />
     <ClCompile Include="src\Emitter.cpp" />
@@ -427,6 +436,7 @@
     <ClCompile Include="src\SpriteDataParser.cpp" />
     <ClCompile Include="src\SpriteSheet.cpp" />
     <ClCompile Include="src\TubeDrawer.cpp" />
+    <ClCompile Include="src\TubeParticleDrawer.cpp" />
     <ClCompile Include="src\VfBaseApp.cpp" />
     <ClCompile Include="src\VideoEmitter.cpp" />
   </ItemGroup>

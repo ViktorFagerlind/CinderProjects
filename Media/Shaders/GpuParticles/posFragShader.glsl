@@ -10,14 +10,13 @@ varying float age;
 
 void main()
 {
-	vec4 colFac = vec4(1.0);//texture2D(spriteTex, gl_PointCoord);
-    colFac.rgb *= texture2D (posTex, gl_TexCoord[0].st).rgb;
+	vec4 colFac;// = texture2D(spriteTex, gl_PointCoord);
+
+    colFac.rgb = texture2D (infTex, gl_TexCoord[0].st).rgb;
 
 	colFac.rgb += vec3(0.2, 0.2, 0.2);
 	
-
-//    colFac.a *= .35;
-	colFac.a = 1 - 1 * age; //*= age;
+	colFac.a = 1.0 - age;
     
 	gl_FragColor = colFac;
 }
