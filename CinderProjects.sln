@@ -66,6 +66,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GpuParticles", "GpuParticle
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GpuFlocking", "GpuFlocking\vc2013\GpuFlocking.vcxproj", "{00E517A0-53E6-4E1F-87D6-0BF433131879}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpaceVisualiser", "SpaceVisualiser\vc10\SpaceVisualiser.vcxproj", "{A4A106EC-D0F1-4A3F-81DC-12592509EB7A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1206F27-AA25-4012-A280-18A76F197F46} = {D1206F27-AA25-4012-A280-18A76F197F46}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -140,6 +145,10 @@ Global
 		{00E517A0-53E6-4E1F-87D6-0BF433131879}.Debug|Win32.Build.0 = Debug|Win32
 		{00E517A0-53E6-4E1F-87D6-0BF433131879}.Release|Win32.ActiveCfg = Release|Win32
 		{00E517A0-53E6-4E1F-87D6-0BF433131879}.Release|Win32.Build.0 = Release|Win32
+		{A4A106EC-D0F1-4A3F-81DC-12592509EB7A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4A106EC-D0F1-4A3F-81DC-12592509EB7A}.Debug|Win32.Build.0 = Debug|Win32
+		{A4A106EC-D0F1-4A3F-81DC-12592509EB7A}.Release|Win32.ActiveCfg = Release|Win32
+		{A4A106EC-D0F1-4A3F-81DC-12592509EB7A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

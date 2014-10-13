@@ -60,6 +60,7 @@ public:
 
   void draw (const Vec2f &textureSize);
 
+  void burst (size_t nofParticles);
 
   void setPosition (const Vec3f& position)
   {

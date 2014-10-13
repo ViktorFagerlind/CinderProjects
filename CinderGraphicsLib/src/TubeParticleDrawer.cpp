@@ -64,17 +64,17 @@ void TubeParticle::update ()
 }
 
 
-TubeParticleDrawer::TubeParticleDrawer (uint32_t tubeMaxNofPoints, uint32_t tubeSegmentLength)
+TubeParticleDrawer::TubeParticleDrawer (uint32_t tubeMaxNofPoints,
+                                        uint32_t tubeSegmentLength,
+                                        ColorAf  ambient,
+                                        ColorAf  diffuse,
+                                        ColorAf  specular,
+                                        float    shininess)
 : m_tubeMaxNofPoints (tubeMaxNofPoints), 
   m_tubeSegmentLength (tubeSegmentLength)
 {
-  ColorAf ambient  = ColorAf (0.25f, 0.25f, 0.25f, 1.f);
-  ColorAf diffuse  = ColorAf (0.35f, 0.55f, 0.70f, 1.f);
-  ColorAf specular = ColorAf (0.70f, 0.90f, 0.90f, 1.f);
-  float   shininess = 10.f;
-
   gl::GlslProg shader = ShaderHelper::loadShader ("../Media/Shaders/tube_vert.glsl",
-                                                  "../Media/Shaders/amoeba_frag.glsl",
+                                                  "../Media/Shaders/tube_frag.glsl",
                                                   "../Media/Shaders/tube_geom.glsl",
                                                   GL_POINTS,
                                                   GL_TRIANGLE_STRIP,
@@ -101,7 +101,9 @@ void TubeParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSi
 {
   TubeParticle *tp = (TubeParticle *)&p;
 
-  m_material->setDiffuse (p.mColor);
+  ColorAf c = m_material->getDiffuse ();
+  c.a = p.mColor.a;
+  m_material->setDiffuse (c);
 
   m_material->bind ();
 
@@ -115,7 +117,7 @@ void TubeParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSi
     TubeDrawer::draw (m_material->getShader (),
                       up,
                       false,
-                      5,
+                      3,
                       tp->m_points.data (),
                       tp->m_normals.data (),
                       tp->m_radie.data (),

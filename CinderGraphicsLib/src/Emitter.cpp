@@ -91,6 +91,12 @@ void Emitter::applyModifierToParticles(Modifier *modifier)
     modifier->apply (mParticles[pi]);
 }
 
+void Emitter::burst (size_t nofParticles)
+{
+  if (!mKilled)
+    mParticlesToCreate += nofParticles;
+}
+
 void Emitter::updateEmitter ()
 {
   if (!mPaused)

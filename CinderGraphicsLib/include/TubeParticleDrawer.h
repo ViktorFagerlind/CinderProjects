@@ -36,7 +36,13 @@ private:
 class TubeParticleDrawer : public ParticleDrawerInterface
 {
 public:
-  TubeParticleDrawer (uint32_t tubeMaxNofPoints, uint32_t tubeSegmentLength);
+  TubeParticleDrawer (uint32_t tubeMaxNofPoints, 
+                      uint32_t tubeSegmentLength, 
+                      ColorAf  ambient            = ColorAf (0.25f, 0.25f, 0.25f, 1.f),
+                      ColorAf  diffuse            = ColorAf (0.35f, 0.55f, 0.70f, .5f),
+                      ColorAf  specular           = ColorAf (0.70f, 0.90f, 0.90f, 1.f),
+                      float    shininess          = 10.f);
+
   virtual ~TubeParticleDrawer ();
 
 

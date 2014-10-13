@@ -10,7 +10,7 @@ using namespace std;
 class ParticleSystem
 {
 public:
-  ParticleSystem(std::string particleImageFile);
+  ParticleSystem (std::string particleImageFile);
 
   ParticleSystem (ImageSourceRef particleImage);
 

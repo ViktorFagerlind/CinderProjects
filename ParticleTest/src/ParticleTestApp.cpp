@@ -662,8 +662,8 @@ SystemAttributes ParticleApp::createParticleSystem (size_t index)
                               2.0f,                   // min size
                               4.0f,                   // max size
                               Vec3f (0, 0, 0),        // baseVelocity
-                              5.f,                    // minRandVelocity
-                              10.f,                   // maxRandVelocity
+                              10.f,                    // minRandVelocity
+                              15.f,                   // maxRandVelocity
                               tubeDrawer);
     sa.ps->addEmitter (sa.pe);
 
@@ -672,13 +672,13 @@ SystemAttributes ParticleApp::createParticleSystem (size_t index)
                                 1.0);     // relativeEndSize
     sa.ps->addModifier (sa.cm);
 
-    sa.colorModifier = new ColorModifier (ColorAf (0.35f, 0.55f, 0.70f, 1.f),   // startColor
-                                          ColorAf (0.35f, 0.55f, 0.70f, 1.f),   // middleColor
-                                          ColorAf (0.35f, 0.55f, 0.70f, 0.f),   // endColor
-                                          0.6f);                              // middleTime
+    sa.colorModifier = new ColorModifier (ColorAf (.6f, .5f, .9f, 1.f),   // startColor
+                                          ColorAf (.5f, .6f, .9f, 1.f),   // middleColor
+                                          ColorAf (.2f, .8f, .9f, 0.f),   // endColor
+                                          0.7f);                          // middleTime
     sa.ps->addModifier (sa.colorModifier);
 
-    sa.pm = new PerlinModifier (10.0f, 0.1, 0.001);
+    sa.pm = new PerlinModifier (10.0f, 0.1, 0.003);
     sa.ps->addModifier (sa.pm);
 
     break;
