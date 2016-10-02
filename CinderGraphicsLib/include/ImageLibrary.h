@@ -15,7 +15,7 @@ using namespace std;
 class ImageLibraryItem
 {
 public:
-  gl::Texture     m_texture;
+  gl::TextureRef  m_texture;
   ImageSourceRef  m_image;
 };
 
@@ -34,7 +34,7 @@ public:
       return instance;
   }
 
-  gl::Texture    getTexture (const string& name);
+  gl::TextureRef getTexture (const string& name);
   ImageSourceRef getImage   (const string& name);
 
 private:
@@ -49,7 +49,7 @@ private:
 class TextureAnimLibraryItem
 {
 public:
-  gl::Texture                    m_texture;
+  gl::TextureRef                 m_texture;
   shared_ptr<vector<SpriteData>> m_spriteData;
 };
 

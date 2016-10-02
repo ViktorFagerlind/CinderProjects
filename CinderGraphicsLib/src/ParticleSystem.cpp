@@ -2,17 +2,18 @@
 
 ParticleSystem::ParticleSystem(std::string particleImageFile)
 {
-  mParticleTexture = gl::Texture (loadImage (loadFile (particleImageFile)));
+  mParticleTexture = gl::Texture::create (loadImage (loadFile (particleImageFile)));
+  
   mKilled          = false;
 }
 
 ParticleSystem::ParticleSystem (ImageSourceRef particleImage)
 {
-  mParticleTexture = gl::Texture (particleImage);
+  mParticleTexture = gl::Texture::create (particleImage);
   mKilled          = false;
 }
 
-ParticleSystem::ParticleSystem (gl::Texture particleTexture)
+ParticleSystem::ParticleSystem (gl::TextureRef particleTexture)
 {
   mParticleTexture = particleTexture;
   mKilled          = false;
@@ -118,15 +119,15 @@ void ParticleSystem::update()
 void ParticleSystem::draw()
 {
 	glEnable (GL_TEXTURE_2D);
-  mParticleTexture.bind ();
+  mParticleTexture->bind ();
 
   for (vector<shared_ptr<Emitter>>::iterator it = mEmitters.begin(); it != mEmitters.end(); it++)
   {
     Emitter *e = it->get ();
-    e->draw (Vec2f ((float)mParticleTexture.getWidth (), (float)mParticleTexture.getHeight ()));
+    e->draw (vec2 ((float)mParticleTexture->getWidth (), (float)mParticleTexture->getHeight ()));
   }
 
-  mParticleTexture.unbind ();
+  mParticleTexture->unbind ();
 }
 
 

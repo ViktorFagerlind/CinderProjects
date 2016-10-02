@@ -11,7 +11,7 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-gl::Texture ImageLibrary::getTexture (const string& name)
+gl::TextureRef ImageLibrary::getTexture (const string& name)
 {
   return getOrAddItem (name).m_texture;
 }
@@ -31,7 +31,7 @@ ImageLibraryItem& ImageLibrary::getOrAddItem (const string& name)
   // Load image if not found in library
   ImageLibraryItem item;
   item.m_image    = loadImage (LOAD_IMAGE_FILE_OR_RESOURCE (name));
-  item.m_texture  = gl::Texture (item.m_image);
+  item.m_texture  = gl::Texture::create(item.m_image);
 
   m_items[name]   = item;
 
@@ -54,7 +54,7 @@ TextureAnimLibraryItem& TextureAnimLibrary::getOrAddItem (const string& textureN
     new vector<SpriteData> (SpriteDataParser::parseSpriteData (LOAD_MOVIE_FILE_OR_RESOURCE (xmlName),
                                                                SpriteSheet::FORMAT_TEXTUREPACKER_GENERIC_XML)));
 
-  item.m_texture  = gl::Texture (loadImage (LOAD_MOVIE_FILE_OR_RESOURCE (textureName)));
+  item.m_texture  = gl::Texture::create(loadImage (LOAD_MOVIE_FILE_OR_RESOURCE (textureName)));
 
 
   m_items[textureName] = item;

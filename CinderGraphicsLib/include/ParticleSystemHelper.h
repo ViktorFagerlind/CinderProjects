@@ -29,14 +29,14 @@ public:
 
   static shared_ptr<Emitter> createMiniExplosion ();
 
-  static shared_ptr<Emitter> createFireBall (const Vec3f&   position, 
-                                  const Vec3f&   speed, 
+  static shared_ptr<Emitter> createFireBall (const vec3&   position, 
+                                  const vec3&   speed, 
                                   const ColorAf& startColor, 
                                   const ColorAf& endColor,
                                   const float    size);
 
-  static shared_ptr<Emitter> createSparkExplosion (const Vec3f&   position, 
-                                        const Vec3f&   speed, 
+  static shared_ptr<Emitter> createSparkExplosion (const vec3&   position, 
+                                        const vec3&   speed, 
                                         const Colorf&  color,
                                         const float    size);
 

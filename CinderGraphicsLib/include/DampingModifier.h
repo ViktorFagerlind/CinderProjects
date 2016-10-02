@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Modifier.h"
 
 #include "cinder/Color.h"
@@ -14,9 +16,9 @@ public:
 	
   void apply(Particle *const particle) 
 	{
-    const Vec3f velocity = particle->getVelocity();
+    const vec3 velocity = particle->getVelocity();
 
-    particle->applyForce (-velocity * velocity.length() * m_damping);
+    particle->applyForce (-velocity * glm::length (velocity) * m_damping);
   }
 
 private:

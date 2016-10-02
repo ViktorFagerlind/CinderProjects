@@ -2,7 +2,7 @@
 
 #include "cinder/Rand.h"
 
-FluidModifier::FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const bool bounded, const float width, const float height)
+FluidModifier::FluidModifier (size_t resolution, const vec3& position, const float viscosity, const bool bounded, const float width, const float height)
 : mResolution (resolution),
   mDiffusionConstant(100.0f),
 	mViscosity (viscosity),
@@ -45,7 +45,7 @@ FluidModifier::~FluidModifier ()
 	delete [] mPrevDensity;
 }
 
-void FluidModifier::applyMovement (const Vec2f& position, const Vec2f& speed)
+void FluidModifier::applyMovement (const vec2& position, const vec2& speed)
 {
   int xCenter = (int)((position.x - mPosition.x + mHalfWidth) / mVolumeWidth);
   int yCenter = (int)((position.y - mPosition.y + mHalfHeight) / mVolumeHeight);
@@ -89,15 +89,19 @@ inline void FluidModifier::updateModifier()
 
 inline void FluidModifier::apply(Particle *const particle) 
 {
-  int x = (int)((particle->mPosition.x + mHalfWidth) / mVolumeWidth);
-  int y = (int)((particle->mPosition.y + mHalfHeight) / mVolumeHeight);
+  const int x = (int)((particle->mPosition.x + mHalfWidth) / mVolumeWidth);
+  const int y = (int)((particle->mPosition.y + mHalfHeight) / mVolumeHeight);
 
   if (x < 0 || x >= mResolution)
     return;
   if (y < 0 || y >= mResolution)
     return;
 
-  particle->setVelocity( Vec3f (mVelocityX[IX(x+1, y+1)]*100.0f, mVelocityY[IX(x+1, y+1)]*100.0f, 0.0f));
+  const float vx = mVelocityX[IX(x+1, y+1)]*100.0f;
+  const float vy = mVelocityY[IX(x+1, y+1)]*100.0f;
+  vec3 velocity (vx, vy, 0.f);
+  
+  particle->setVelocity (velocity);
 
 /*
   particle->setColor (ColorAf(mDensity[IX(x+1, y+1)]/100.0f, 

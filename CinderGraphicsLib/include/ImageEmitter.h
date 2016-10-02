@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Emitter.h"
 
 #include "cinder/Vector.h"
@@ -10,7 +12,7 @@ public:
 	ImageEmitter(const size_t maxNofParticles,
                const float particlesPerFrame,
                std::string emitterImageFile, 
-               const Vec3f& position,
+               const vec3& position,
 							 float 	minParticleSize,
 							 float 	maxParticleSize,
 							 float 	minVelocity,
@@ -19,7 +21,7 @@ public:
 							 float  height,
                float  depth,
                shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new BillboardParticleDrawer ()))
-  : Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity, drawer),
+  : Emitter (maxNofParticles, particlesPerFrame, position, vec3::zero (), minVelocity, maxVelocity, drawer),
 		mMinParticleSize(minParticleSize),
 		mMaxParticleSize(maxParticleSize),
 		mWidth(width),
@@ -40,7 +42,7 @@ public:
 		
 		getImagePos (imagePosition);
 		
-		Vec3f relativeParticlePos(((float)imagePosition.x / (float)mEmitterImage->getWidth())  * mWidth  - mWidth/2,
+		vec3 relativeParticlePos(((float)imagePosition.x / (float)mEmitterImage->getWidth())  * mWidth  - mWidth/2,
 											        ((float)imagePosition.y / (float)mEmitterImage->getHeight()) * mHeight - mHeight/2,
 											        Rand::randFloat(-mDepth, mDepth));
 		

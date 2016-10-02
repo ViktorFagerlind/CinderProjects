@@ -26,16 +26,16 @@ using std::list;
 class Emitter
 {
 public:
-  static Vec3f getRandomVelocity  (const float minVelocity, const float maxVelocity);
+  static vec3 getRandomVelocity  (const float minVelocity, const float maxVelocity);
 
-  static Vec3f getRandomDirection ();
+  static vec3 getRandomDirection ();
 
 public:
   // For normal emitters
   Emitter (const size_t maxNofParticles, 
            const float particlesPerFrame, 
-           const Vec3f position,
-           const Vec3f baseVelocity,
+           const vec3 position,
+           const vec3 baseVelocity,
 	         const float minRandVelocity, 
 	         const float maxRandVelocity,
            shared_ptr<ParticleDrawerInterface> drawer);
@@ -58,35 +58,37 @@ public:
   
   virtual void updateEmitter();
 
-  void draw (const Vec2f &textureSize);
+  void draw (const vec2 &textureSize);
 
   void burst (size_t nofParticles);
 
-  void setPosition (const Vec3f& position)
+  void setPosition (const vec3& position)
   {
     mPosition = position;
   }
 
-  void setRotation (const Vec3f& rotation)
+  void setRotation (const vec3& rotation)
   {
     mRotation = rotation;
   }
+  
+  const vector<Particle>& getParticles () {return mParticles;}
 
   virtual void defineParticle (Particle* particle) = 0; 
 
 
 protected:
-  Vec3f getParticleVelocity ();
+  vec3 getParticleVelocity ();
 
 protected:
-  Vec3f           mPosition;
-  Vec3f           mRotation;
-	Vec3f           mBaseVelocity;
+  vec3           mPosition;
+  vec3           mRotation;
+	vec3           mBaseVelocity;
 	float           mMinRandVelocity; 
 	float           mMaxRandVelocity; 
 
 private:
-  vector<Particle*> mParticles;
+  vector<Particle> mParticles;
 
   float 					mParticlesPerFrame;
   float 					mParticlesToCreate;
@@ -99,12 +101,12 @@ private:
 
 /*
   float          *mSizes;
-  Vec3f          *mVerticies;
+  vec3          *mVerticies;
   GLfloat        *mTextureCoordinates;
   ColorAf        *mColors;
 */
 
-  gl::GlslProg    mShader;
+  // gl::GlslProg    mShader;
 
   bool            mIsAnimated;
 

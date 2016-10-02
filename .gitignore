@@ -1,6 +1,7 @@
 *.exe
 *.sdf
 *.opensdf
+.DS_Store
 
 ipch/
 Release/

@@ -1,4 +1,6 @@
-#include "cinder/app/AppBasic.h"
+#pragma once
+
+#include "cinder/app/App.h"
 #include "Modifier.h"
 
 #include "cinder/Vector.h"
@@ -26,20 +28,20 @@ public:
 
   inline void apply(Particle *const particle)
 	{
-    Vec3f partlicePosition = particle->getPosition();
-    Vec3f particleVelocity = particle->getVelocity();
+    vec3 partlicePosition = particle->getPosition();
+    vec3 particleVelocity = particle->getVelocity();
 
-    Vec3f force = mPerlin.dfBm (Vec3f (partlicePosition.x, partlicePosition.y, mAnimationCounter) * mScale);
+    vec3 force = mPerlin.dfBm (vec3 (partlicePosition.x, partlicePosition.y, mAnimationCounter) * mScale);
 
     force.z = 0;
 
-    force.normalize();
+    normalize(force);
     force = force * mForceStrength;
 
     particle->applyForce (force);  
 
     // apply damping
-    force -= particleVelocity * particleVelocity.length() * mDampStrength;
+    force -= particleVelocity * length (particleVelocity) * mDampStrength;
 
     particle->applyForce(force);
   }

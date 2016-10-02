@@ -8,14 +8,14 @@ class PointEmitter : public Emitter
 {
 public:
 	PointEmitter(const size_t maxNofParticles,
-               const Vec3f&  position, 
+               const vec3&  position, 
   						 const float  particlesPerFrame, 
 							 const float 	minParticleSize,
 							 const float 	maxParticleSize,
-							 const Vec3f& baseVelocity,
+							 const vec3& baseVelocity,
                const float  minRandVelocity,
                const float  maxRandVelocity,
-               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new BillboardParticleDrawer ()))
+               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new NewParticleDrawer ()))
                : Emitter (maxNofParticles, particlesPerFrame, position, baseVelocity, minRandVelocity, maxRandVelocity, drawer),
 	  mMinParticleSize    (minParticleSize),
 	  mMaxParticleSize    (maxParticleSize)
