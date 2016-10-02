@@ -18,12 +18,12 @@ class Conversions
 public: 
   static float getScaling() {static float scaling = 50.0f; return scaling;}
 			
-	static Vec2f toScreen (b2Vec2 fin)
+	static vec2 toScreen (b2Vec2 fin)
 	{
-		return Vec2f(fin.x, fin.y) * getScaling();
+		return vec2(fin.x, fin.y) * getScaling();
 	}
 			
-	static b2Vec2 toPhysics (Vec2f fin)
+	static b2Vec2 toPhysics (vec2 fin)
 	{
 		return b2Vec2( fin.x/getScaling(), fin.y/getScaling() );
 	}

@@ -9,14 +9,14 @@ using namespace std;
 class MiscMath
 {
 public:
-  static void ComputeTangent(const Vec3f& P1,  const Vec3f& P2,  const Vec3f& P3, 
-                             const Vec2f& UV1, const Vec2f& UV2, const Vec2f& UV3,
-                             Vec3f &tangent);
+  static void ComputeTangent(const vec3& P1,  const vec3& P2,  const vec3& P3, 
+                             const vec2& UV1, const vec2& UV2, const vec2& UV3,
+                             vec3 &tangent);
 
-  static Vec3f getRandomDirection ();
+  static vec3 getRandomDirection ();
 
   // Projects v onto a plane with normal n
   // n must be of unity length
-  static Vec3f projectOnPlane (const Vec3f& n, const Vec3f& v);
+  static vec3 projectOnPlane (const vec3& n, const vec3& v);
 
 };

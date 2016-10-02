@@ -20,7 +20,7 @@ public:
                 shared_ptr<TriMesh>   mesh, 
                 gl::Texture          *texture           = NULL, 
                 const float           scale             = 1.f, 
-                const Vec3f&          relativePosition  = Vec3f (0.f,0.f,0.f));
+                const vec3&          relativePosition  = vec3 (0.f,0.f,0.f));
 
   virtual ~ModelElement ();
 
@@ -38,7 +38,7 @@ private:
 
   float               m_scale;
 
-  Vec3f               m_relativePosition;
+  vec3               m_relativePosition;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public:
 
   void getMinMax (float& xMin, float& xMax, float& yMin, float& yMax);
 
-  void draw (Vec2f position, const Vec3f& rotation);
+  void draw (vec2 position, const vec3& rotation);
 
 private:
   vector<ModelElement> m_elements;

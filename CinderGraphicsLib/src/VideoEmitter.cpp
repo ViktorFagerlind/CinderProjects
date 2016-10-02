@@ -6,7 +6,7 @@
 
 VideoEmitter::VideoEmitter (const size_t maxNofParticles,
                             const float particlesPerFrame,
-                            const Vec3f& position,
+                            const vec3& position,
 							              float 	minParticleSize,
 							              float 	maxParticleSize,
 							              float 	minVelocity,
@@ -15,7 +15,7 @@ VideoEmitter::VideoEmitter (const size_t maxNofParticles,
 							              float   height,
                             float   depth,
                             shared_ptr<ParticleDrawerInterface> drawer)
-                            : Emitter (maxNofParticles, particlesPerFrame, position, Vec3f::zero (), minVelocity, maxVelocity, drawer),
+                            : Emitter (maxNofParticles, particlesPerFrame, position, vec3::zero (), minVelocity, maxVelocity, drawer),
 	mMinParticleSize(minParticleSize),
 	mMaxParticleSize(maxParticleSize),
 	mWidth(width),
@@ -48,10 +48,10 @@ void VideoEmitter::updateEmitter()
 
 void VideoEmitter::defineParticle (Particle* particle)
 {
-	Vec2i imagePosition;
+	ivec2 imagePosition;
 	getImagePos (imagePosition);
 		
-  Vec3f relativeParticlePos(((float)imagePosition.x / (float)mMovieWidth)  * mWidth  - mWidth/2,
+  vec3 relativeParticlePos(((float)imagePosition.x / (float)mMovieWidth)  * mWidth  - mWidth/2,
                             ((float)imagePosition.y / (float)mMovieHeight) * mHeight - mHeight/2,
 											      Rand::randFloat(-mDepth, mDepth));
 		
@@ -77,7 +77,7 @@ ColorAf VideoEmitter::getColorAtParticle (Particle *const particle)
   uint32_t x = (uint32_t)(((particle->mPosition.x + mWidth/2.0f)  / mWidth)  * (float)mMovieWidth)  % mMovieWidth;
   uint32_t y = (uint32_t)(((-particle->mPosition.y + mHeight/2.0f) / mHeight) * (float)mMovieHeight) % mMovieHeight; // Flip y-axis
 
-  return mSurface.getPixel (Vec2i (x, y));
+  return mSurface.getPixel (ivec2 (x, y));
 }
 
 
@@ -101,7 +101,7 @@ void VideoEmitter::apply (Particle *const particle)
 }
 
 	
-void VideoEmitter::getImagePos (Vec2i& imagePosition)
+void VideoEmitter::getImagePos (ivec2& imagePosition)
 {
 #if 1
   const uint32_t add = 13;//Rand::randInt (10,13);

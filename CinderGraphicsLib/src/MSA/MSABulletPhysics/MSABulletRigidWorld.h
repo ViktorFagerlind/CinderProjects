@@ -28,7 +28,7 @@ public:
   void drawLine(const btVector3& from,const btVector3& to,const btVector3& color)
   {
     gl::color (color.getX(), color.getY(), color.getZ());
-    gl::drawLine (btVector3_To_Vec3f (from), btVector3_To_Vec3f (to));
+    gl::drawLine (btVector3_To_vec3 (from), btVector3_To_vec3 (to));
   }
 
 	void drawContactPoint(const btVector3& PointOnB,const btVector3& normalOnB,btScalar distance,int lifeTime,const btVector3& color)

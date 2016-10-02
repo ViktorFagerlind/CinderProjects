@@ -48,6 +48,7 @@ void PureShaderApp::mouseDown (MouseEvent event)
 
 void PureShaderApp::keyDown (KeyEvent event)
 {
+  VfBaseApp::keyDown (event);
 }
 
 void PureShaderApp::update()
@@ -63,7 +64,7 @@ void PureShaderApp::draw()
 
   m_shader.bind ();
 
-  m_shader.uniform ("iResolution", Vec3f ((float)getWindowWidth (), (float)getWindowHeight (), 0.f));
+  m_shader.uniform ("iResolution", vec3 ((float)getWindowWidth (), (float)getWindowHeight (), 0.f));
   m_shader.uniform ("iGlobalTime", (float)m_frameCount / 60.f);
 
   gl::begin (GL_TRIANGLE_STRIP);

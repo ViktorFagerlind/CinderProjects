@@ -111,7 +111,7 @@ void World::keyDown(KeyEvent event)
   m_camera->keyDown (event);
 }
 
-Vec2f World::pixelToWorld (const Vec2f& mousePos)
+vec2 World::pixelToWorld (const vec2& mousePos)
 {
   float left, top, right, bottom, nearz, farz;
 
@@ -126,24 +126,24 @@ Vec2f World::pixelToWorld (const Vec2f& mousePos)
   const float worldWidth  = cam.getEyePoint().z*distanceWidthScaler;
   const float worldHeight = worldWidth / getWindowAspectRatio ();
 
-  return Vec2f ((float)mousePos.x  / (float)getWindowWidth ()  * worldWidth - worldWidth/2.f,
+  return vec2 ((float)mousePos.x  / (float)getWindowWidth ()  * worldWidth - worldWidth/2.f,
                 (float)-mousePos.y / (float)getWindowHeight () * worldHeight + worldHeight/2.f);
 /*
   float u = ((float) mousePos.x) / getWindowWidth ();
   float v = ((float) (getWindowHeight () - mousePos.y)) / getWindowHeight ();
   Ray ray = m_camera->getCam ().generateRay (u, v, getWindowAspectRatio ());
-    return Conversions::Vec3fTo2f (ray.calcPosition (1200.f));
+    return Conversions::vec3To2f (ray.calcPosition (1200.f));
 */
 }
 
-Vec2f World::getTopLeft () 
+vec2 World::getTopLeft () 
 {
-  return pixelToWorld (Vec2f (0, 0));
+  return pixelToWorld (vec2 (0, 0));
 }
 
-Vec2f World::getDownRight () 
+vec2 World::getDownRight () 
 {
-  return pixelToWorld (Vec2f ((float)getWindowWidth (), (float)getWindowHeight ()));
+  return pixelToWorld (vec2 ((float)getWindowWidth (), (float)getWindowHeight ()));
 }
 
 
@@ -185,7 +185,7 @@ void World::issueNewObjects ()
   m_previousTime = m_currentTime;
 }
 
-void World::update (const float dt, const Vec2f& touchPos)
+void World::update (const float dt, const vec2& touchPos)
 {
 	// --- update background ---------
   m_parallax->update (dt);

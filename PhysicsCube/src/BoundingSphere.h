@@ -9,7 +9,7 @@ using namespace std;
 class BoundingSphere : public BoundingGeometry
 {
 public:
-  BoundingSphere(float radius, Vec3f position, Matrix44f orientation);
+  BoundingSphere(float radius, vec3 position, Matrix44f orientation);
 	void update();
 	void draw();
 

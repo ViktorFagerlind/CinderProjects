@@ -53,7 +53,7 @@ void GameWorld::setup ()
   mMovingCamera = new MovingCamera (500.0f);
 
   // Setup gravity field
-  mGravityField = new GravityField (Vec3f (1000, 600, 200), Vec3i (51, 31, 13));
+  mGravityField = new GravityField (vec3 (1000, 600, 200), ivec3 (51, 31, 13));
 
   // --- Initialise particle system ---------------------------------
 
@@ -62,14 +62,14 @@ void GameWorld::setup ()
   ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
 
   AreaEmitter *areaEmitter     = new AreaEmitter  (50000,          // maxNofParticles,
-                                                   Vec3f (0, 0, 0), // position, 
+                                                   vec3 (0, 0, 0), // position, 
                                                    10.0f,          // particlesPerFrame,
   						                                     650,             // width, 
 							                                     600,             // height,
 							                                     200,             // depth,
 							                                     0.7f,               // minParticleSize,
 							                                     0.7f,               // maxParticleSize,
-                                                   Vec3f (0, 0, 0),     // baseVelocity
+                                                   vec3 (0, 0, 0),     // baseVelocity
                                                    0.0f);    // randVelocity
   particleSystem->addEmitter (areaEmitter); 
 
@@ -99,7 +99,7 @@ void GameWorld::setup ()
   loader.load (&planetMesh);
 	gl::VboMesh planetVbo = gl::VboMesh (planetMesh);
 
-  mSun = new Sun (100.0f*1000.0f*1000.0f, Vec3f (100, 0, 0), 40, planetVbo);
+  mSun = new Sun (100.0f*1000.0f*1000.0f, vec3 (100, 0, 0), 40, planetVbo);
   mObjects.push_back (mSun);
 
   shared_ptr<BumpMaterial> earthMaterial = getBumpMaterial (planetMesh, 
@@ -203,11 +203,11 @@ void GameWorld::update ()
   if (Rand::randFloat(1) < 0.2f)
   {
     Meteor *meteor = new Meteor(10000.0f, 
-                                Vec3f(Rand::randFloat(-300, 300), 300, 0),
+                                vec3(Rand::randFloat(-300, 300), 300, 0),
                                 Rand::randFloat(1, 7),
                                 mMeteorMaterial);
-    meteor->setVelocity(Vec3f(0, -1, 0));
-    meteor->setRotationVelocity (Vec3f(Rand::randFloat(3), Rand::randFloat(3), Rand::randFloat(3)));
+    meteor->setVelocity(vec3(0, -1, 0));
+    meteor->setRotationVelocity (vec3(Rand::randFloat(3), Rand::randFloat(3), Rand::randFloat(3)));
     mObjects.push_back (meteor);
   }
 

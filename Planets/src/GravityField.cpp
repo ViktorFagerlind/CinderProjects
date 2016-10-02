@@ -7,10 +7,10 @@ using namespace ci;
 
 static const float G = 0.000002f;
 
-GravityField::GravityField (const Vec3f& size, const Vec3i& nofElements)
+GravityField::GravityField (const vec3& size, const ivec3& nofElements)
 : mSize(size),
   mNofElements (nofElements),
-  mElementSize(Vec3f (size.x/(float)(nofElements.x-1), 
+  mElementSize(vec3 (size.x/(float)(nofElements.x-1), 
                       size.y/(float)(nofElements.y-1), 
                       size.z/(float)(nofElements.z-1)))
 {
@@ -54,7 +54,7 @@ void GravityField::resetField ()
     {
       for (uint32_t z=0; z<mNofElements.z; z++)
       {
-        mGravityPotential[x][y][z] = Vec3f (0, 0, 0);
+        mGravityPotential[x][y][z] = vec3 (0, 0, 0);
       }
     }
   }
@@ -123,22 +123,22 @@ bool GravityField::isCollision (PhysicsObject *object)
   return isStaticCollision (object) || isDynamicCollision (object);
 }
 
-Vec3f GravityField::calculateGravityForce  (const Vec3f& subjectPosition, 
+vec3 GravityField::calculateGravityForce  (const vec3& subjectPosition, 
                                             float subjectMass, 
-                                            const Vec3f& objectPosition, 
+                                            const vec3& objectPosition, 
                                             float objectMass)
 {
   // F = G * m1 * m2 / r^2
-  Vec3f distance  = objectPosition - subjectPosition;
+  vec3 distance  = objectPosition - subjectPosition;
   float forceSize = G * subjectMass * objectMass / distance.lengthSquared ();
   return forceSize * distance.normalized ();
 }
 
 /*
-const Vec3f GravityField::getGravityPotentialForObject (const Vec3f& objectPositon)
+const vec3 GravityField::getGravityPotentialForObject (const vec3& objectPositon)
 {
   if (!Collisions::isPointWithinCube (objectPositon, mPosition, mSize))
-    return Vec3f (0, 0, 0);
+    return vec3 (0, 0, 0);
 
   // Calculate which gravity slot the object belongs to
   uint32_t x = (uint32_t)((objectPositon.x - mPosition.x) / mElementSize.x);
@@ -159,7 +159,7 @@ void GravityField::applyGravity ()
     {
       PhysicsObject *gravityObject = *jt;
   
-      Vec3f force = calculateGravityForce (dynamicObject->getPosition (), dynamicObject->getMass (),
+      vec3 force = calculateGravityForce (dynamicObject->getPosition (), dynamicObject->getMass (),
                                            gravityObject->getPosition (), gravityObject->getMass ());
 
       dynamicObject->applyForce (force);
@@ -171,7 +171,7 @@ void GravityField::applyGravity ()
   {
     DynamicObject *dynamicObject = *it;
 
-    Vec3f force = dynamicObject->getMass () * getGravityPotentialForObject (dynamicObject->getPosition ());
+    vec3 force = dynamicObject->getMass () * getGravityPotentialForObject (dynamicObject->getPosition ());
 
     dynamicObject->applyForce (force);
   }
@@ -189,7 +189,7 @@ void GravityField::update ()
     {
       for (uint32_t z=0; z<mNofElements.z; z++)
       {
-        const Vec3f center = Vec3f ((float)x * mElementSize.x,
+        const vec3 center = vec3 ((float)x * mElementSize.x,
                                     (float)y * mElementSize.y,
                                     (float)z * mElementSize.z) + 0.5f * mElementSize + mPosition;
 
@@ -262,7 +262,7 @@ void GravityField::initMesh()
 {
 	std::vector<uint32_t> vboIndices;
 	gl::VboMesh::Layout   vboLayout;
-	std::vector<Vec3f>    vboVertices;
+	std::vector<vec3>    vboVertices;
 
   float halfX = ((float)(mNofElements.x-1) * mElementSize.x)/2.0f;
   float halfY = ((float)(mNofElements.y-1) * mElementSize.y)/2.0f;
@@ -275,7 +275,7 @@ void GravityField::initMesh()
     {
       for (uint32_t x=0; x<mNofElements.x; x++)
       {
-        Vec3f position = Vec3f ((float)x * mElementSize.x - halfX, 
+        vec3 position = vec3 ((float)x * mElementSize.x - halfX, 
                                 (float)y * mElementSize.y - halfY, 
                                 (float)z * mElementSize.z - halfZ);
   			vboVertices.push_back (position);
@@ -352,9 +352,9 @@ void GravityField::initMesh()
       {
         cy = (float)y * mElementSize.y;
 
-        const Vec3f center = Vec3f (cx, cy, cz) + 0.5f * mElementSize + mPosition;
-        const Vec3f& potential  = mGravityPotential[x][y][z];
-        Vec3f fieldDisplacement = 150.0f * potential;
+        const vec3 center = vec3 (cx, cy, cz) + 0.5f * mElementSize + mPosition;
+        const vec3& potential  = mGravityPotential[x][y][z];
+        vec3 fieldDisplacement = 150.0f * potential;
 
         float f = potential.length ();
 
@@ -380,9 +380,9 @@ void GravityField::initMesh()
       {
         cx = (float)x * mElementSize.x;
 
-        const Vec3f center = Vec3f (cx, cy, cz) + 0.5f * mElementSize + mPosition;
-        const Vec3f& potential  = mGravityPotential[x][y][z];
-        Vec3f fieldDisplacement = 150.0f * potential;
+        const vec3 center = vec3 (cx, cy, cz) + 0.5f * mElementSize + mPosition;
+        const vec3& potential  = mGravityPotential[x][y][z];
+        vec3 fieldDisplacement = 150.0f * potential;
 
         float f = potential.length ();
 

@@ -8,14 +8,14 @@ using namespace std;
 class PhysicsObject
 {
 public:
-  PhysicsObject (const float mass, const Vec3f& position, float radius);
+  PhysicsObject (const float mass, const vec3& position, float radius);
 
-  const Vec3f& getPosition () const {return mPosition;}
+  const vec3& getPosition () const {return mPosition;}
   float getMass () const {return mMass;}
   float getRadius () const {return mRadius;}
 
 protected:
-  Vec3f mPosition;
+  vec3 mPosition;
 
   float mRadius;
 

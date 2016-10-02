@@ -5,7 +5,7 @@
 using namespace ci;
 using namespace std;
 
-BoundingSphere::BoundingSphere(float radius, Vec3f position, Matrix44f orientation)
+BoundingSphere::BoundingSphere(float radius, vec3 position, Matrix44f orientation)
   : BoundingGeometry(eSphere, position, orientation)
 {
   mRadius = radius;
@@ -24,7 +24,7 @@ void BoundingSphere::draw()
   gl::multModelView(mOrientation);
 
   // Draw sphere
-  gl::drawSphere(Vec3f(0, 0, 0), mRadius, 12);
+  gl::drawSphere(vec3(0, 0, 0), mRadius, 12);
 
   glPopMatrix();
 }

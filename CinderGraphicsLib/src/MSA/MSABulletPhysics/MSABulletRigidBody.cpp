@@ -25,7 +25,7 @@ namespace MSA {
       DelPointer(m_collisionShape);
 	}
 	
-	void BulletRigidBody::setup (Vec3f &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass, float restitution)
+	void BulletRigidBody::setup (vec3 &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass, float restitution)
   {
 		m_ownsCollisionShape = ownsCollisionShape;
 		m_collisionShape = collisionShape;
@@ -37,7 +37,7 @@ namespace MSA {
 		btVector3 localInertia(0,0,0);
 		if (isDynamic) m_collisionShape->calculateLocalInertia(mass,localInertia);
 		
-		startTransform.setOrigin(Vec3f_To_btVector3(startPosition));	
+		startTransform.setOrigin(vec3_To_btVector3(startPosition));	
 		
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);

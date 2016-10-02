@@ -28,12 +28,12 @@ public:
   void						update ();
 
 private:
-  Vec2i					  mSize;
-  Vec2i					  mSizePrev;
+  ivec2					  mSize;
+  ivec2					  mSizePrev;
 
   Arcball					mArcball;
   CameraPersp			mCamera;
-  Vec3f					  mEyePoint;
+  vec3					  mEyePoint;
 
   float						mLightAttenuationConstant;
   float						mLightAttenuationLinear;
@@ -41,7 +41,7 @@ private:
 
   ColorAf					mLightAmbient;
   ColorAf					mLightDiffuse;
-  Vec3f					  mLightPosition;
+  vec3					  mLightPosition;
   ColorAf					mLightSpecular;
   float						mLightShine;
 
@@ -50,8 +50,8 @@ private:
   float						mMaterialEmissive;
   float						mMaterialSpecular;
 
-  Vec2f					  mMouse;
-  Vec2f					  mMouseVelocity;
+  vec2					  mMouse;
+  vec2					  mMouseVelocity;
   bool						mMouseDown;
 
   gl::Fbo					mFbo[2];
@@ -108,13 +108,13 @@ void  GpuFlockingApp::draw ()
   glDrawBuffer (GL_COLOR_ATTACHMENT2);
   if (mMouseDown)  
   {
-    Vec2f  fboSize = Vec2f (mFbo[mFboIndex].getSize ());
-    Vec2f  winSize = Vec2f (app::getWindowSize ());
+    vec2  fboSize = vec2 (mFbo[mFboIndex].getSize ());
+    vec2  winSize = vec2 (app::getWindowSize ());
 
     gl::setMatricesWindow (fboSize, true);
 
-    Vec2f  brushSize = Vec2f::one ()  *  mBrushSize  *  fboSize;
-    Vec2f  pos = (mMouse / winSize);
+    vec2  brushSize = vec2::one ()  *  mBrushSize  *  fboSize;
+    vec2  pos = (mMouse / winSize);
     pos.y = 1.0f - pos.y;
     pos *= fboSize;
 
@@ -192,7 +192,7 @@ void  GpuFlockingApp::draw ()
     mGlslProgDraw.uniform ("n", mLightShine);
     mGlslProgDraw.uniform ("offsets", 0);
     mGlslProgDraw.uniform ("projection", mCamera.getProjectionMatrix ());
-    mGlslProgDraw.uniform ("size", Vec2f (mSize));
+    mGlslProgDraw.uniform ("size", vec2 (mSize));
     mGlslProgDraw.uniform ("Sx", mLightSpecular);
     mGlslProgDraw.uniform ("t", (float)getElapsedSeconds ());
 
@@ -219,7 +219,7 @@ void  GpuFlockingApp::draw ()
     float  y = 440.0f;
 
     float  width = 64.0f;
-    Area  srcArea (Vec2i::zero (), mSize);
+    Area  srcArea (ivec2::zero (), mSize);
     Rectf  destRect (x, y, x + width, y + width);
 
     gl::draw (mFbo[0].getTexture (0), srcArea, destRect);
@@ -269,8 +269,8 @@ void  GpuFlockingApp::mouseDown (MouseEvent  event)
   }
   else  
   {
-    mMouseVelocity = Vec2f::zero ();
-    mMouse = Vec2f (event.getPos ());
+    mMouseVelocity = vec2::zero ();
+    mMouse = vec2 (event.getPos ());
     mMouseDown = true;
   }
 }
@@ -283,7 +283,7 @@ void  GpuFlockingApp::mouseDrag (MouseEvent  event)
   }
   else  
   {
-    Vec2f  pos = Vec2f (event.getPos ());
+    vec2  pos = vec2 (event.getPos ());
     mMouseVelocity = pos - mMouse;
     mMouse = pos;
   }
@@ -337,7 +337,7 @@ void  GpuFlockingApp::setup ()
   mArcball = Arcball (getWindowSize ());
   mBrushSize = 0.1f;
   mCamera = CameraPersp (getWindowWidth (), getWindowHeight (), 60.0f, 1.0f, 100000.0f);
-  mEyePoint = Vec3f (0.0f, 20.0f, 256.0f);
+  mEyePoint = vec3 (0.0f, 20.0f, 256.0f);
   mFullScreen = isFullScreen ();
   mFullScreenPrev = mFullScreen;
   mLightAmbient = ColorAf::gray (0.1f);
@@ -345,7 +345,7 @@ void  GpuFlockingApp::setup ()
   mLightAttenuationLinear = 0.01f;
   mLightAttenuationQuadratic = 0.001f;
   mLightDiffuse = ColorAf (0.9f, 0.3f, 0.667f);
-  mLightPosition = Vec3f (11.38f, -1.39f, 59.74f);
+  mLightPosition = vec3 (11.38f, -1.39f, 59.74f);
   mLightSpecular = ColorAf::white ();
   mLightShine = 1.0f;
   mMaterialAmbient = 1.0f;
@@ -354,11 +354,11 @@ void  GpuFlockingApp::setup ()
   mMaterialSpecular = 1.0f;
   mMesh = gl::VboMesh::create (MeshHelper::createCube ());
   mMouseDown = false;
-  mMouse = Vec2f::zero ();
-  mMouseVelocity = Vec2f::zero ();
-  mParams = params::InterfaceGl::create ("Params", Vec2i (250, 400));
-  mSize = Vec2i (512, 512);
-  mSizePrev = Vec2i::zero ();
+  mMouse = vec2::zero ();
+  mMouseVelocity = vec2::zero ();
+  mParams = params::InterfaceGl::create ("Params", ivec2 (250, 400));
+  mSize = ivec2 (512, 512);
+  mSizePrev = ivec2::zero ();
   mTextureBrush = gl::Texture::create (loadImage (loadFile ("../Media/Images/SoftBall.png")));
 
   //  Set  up  arcball
@@ -439,7 +439,7 @@ void  GpuFlockingApp::update ()
   }
 
   //  Update  camera  position
-  mCamera.lookAt (mEyePoint, Vec3f::zero ());
+  mCamera.lookAt (mEyePoint, vec3::zero ());
 
 }
 

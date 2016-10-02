@@ -25,7 +25,7 @@ Protagonist::Protagonist ()
 
   // define vessel
   VesselDef vesselDef;
-  vesselDef.position            = Vec2f (0.f, 0.f);
+  vesselDef.position            = vec2 (0.f, 0.f);
   vesselDef.angle               = 0.f;
   vesselDef.category            = EntityCategory_OurShip_E;
   vesselDef.initialLife         = 500.f;
@@ -41,18 +41,18 @@ Protagonist::Protagonist ()
   m_vessel.reset (new ProtagonistVessel (vesselDef));
 
   // -------------- create weapons ----------
-  m_leftLaser.reset  (new Lazer (Vec3f (-25.f, 20.f, 0.f), ColorAf (.4f, .7f, 1.f), m_vessel, EntityCategory_OurShots_E, 20, true));
-  m_rightLaser.reset (new Lazer (Vec3f ( 25.f, 20.f, 0.f), ColorAf (.4f, .7f, 1.f), m_vessel, EntityCategory_OurShots_E, 20, true));
+  m_leftLaser.reset  (new Lazer (vec3 (-25.f, 20.f, 0.f), ColorAf (.4f, .7f, 1.f), m_vessel, EntityCategory_OurShots_E, 20, true));
+  m_rightLaser.reset (new Lazer (vec3 ( 25.f, 20.f, 0.f), ColorAf (.4f, .7f, 1.f), m_vessel, EntityCategory_OurShots_E, 20, true));
 
   m_vessel->addVesselEmitter (VesselEmitter (ParticleSystemHelper::createThrustSystem (),
-                                             Vec3f (0.f, -25.f, 20.f)));
+                                             vec3 (0.f, -25.f, 20.f)));
 }
 
 Protagonist::~Protagonist ()
 {
 }
 
-void Protagonist::update (const float dt, const Vec2f& touchPos)
+void Protagonist::update (const float dt, const vec2& touchPos)
 {
   m_vessel->update (dt, PositionAndAngle (touchPos.x, touchPos.y, 0.f));
 

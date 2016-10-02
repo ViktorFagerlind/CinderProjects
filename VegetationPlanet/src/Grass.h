@@ -18,11 +18,11 @@ using namespace ci;
 class Grass
 {
 public:
-  class Grass (const float radius, const Vec3f& direction);
+  class Grass (const float radius, const vec3& direction);
   
   void rotate (const Matrix44<float>& rotationMatrix);
 
-  void move   (const Vec3f& offset);
+  void move   (const vec3& offset);
 	
   void update ();
 	

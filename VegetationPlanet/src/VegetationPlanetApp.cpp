@@ -32,7 +32,7 @@ public:
 	void update ();
 	void draw ();
 
-	void spawnPatch (const Vec3f& spawnDirection);
+	void spawnPatch (const vec3& spawnDirection);
 	void clearPatches ();
 
 private:
@@ -48,7 +48,7 @@ private:
 
   gl::VboMesh                    m_planetMesh;
 
-  Vec3f                          m_sceneRotation;
+  vec3                          m_sceneRotation;
 
   shared_ptr<Seed>               m_seed;
 };
@@ -103,7 +103,7 @@ void VegetationPlanetApp::setup()
 
   m_planetRadius = 20.f;
 
-  m_sceneRotation = Vec3f (0,0,0);
+  m_sceneRotation = vec3 (0,0,0);
 
   m_seed.reset (new Seed());
 
@@ -240,7 +240,7 @@ void VegetationPlanetApp::draw()
   VfBaseApp::drawToScreen ();
 }
 
-void VegetationPlanetApp::spawnPatch (const Vec3f& spawnDirection)
+void VegetationPlanetApp::spawnPatch (const vec3& spawnDirection)
 {
   for (uint32_t i=0; i<15; i++)
   {
@@ -251,7 +251,7 @@ void VegetationPlanetApp::spawnPatch (const Vec3f& spawnDirection)
     
   for (uint32_t i=0; i<10; i++)
   {
-    Vec3f direction = (spawnDirection*3.0f + MiscMath::getRandomDirection ()).normalized ();
+    vec3 direction = (spawnDirection*3.0f + MiscMath::getRandomDirection ()).normalized ();
     shared_ptr<Tree> tree(new Tree (direction*m_planetRadius*0.9f,                                           // Position
                                     (direction + MiscMath::getRandomDirection ()*Rand::randFloat (.3f,.6f)).normalized ())); // Direction
     m_trees.push_back (tree);

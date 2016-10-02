@@ -11,8 +11,8 @@ using namespace ci;
 class Sprout 
 {
 public:
-	Sprout (const Vec2f &aOrigin);
-	Sprout (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
+	Sprout (const vec2 &aOrigin);
+	Sprout (const vec2 &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
                 float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, float aScale);
 
   float getAgeLerp () {return 1.0f - mLifespan / (float)mTotalLifespan;}
@@ -33,7 +33,7 @@ protected:
 	static int sWindowWidth, sWindowHeight;
 
 	int		  mLifespan, mTotalLifespan;
-	Vec2f	  mOrigin, mPos;
+	vec2	  mOrigin, mPos;
 	float	  mSpeed;
 
 	float	  mAngle, mAngleDelta;
@@ -47,8 +47,8 @@ protected:
 class Branch : public Sprout 
 {
 public:
-	Branch (const Vec2f &aOrigin, float flowerHue);
-	Branch (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aChangeProb, float aFlowerProb,
+	Branch (const vec2 &aOrigin, float flowerHue);
+	Branch (const vec2 &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aChangeProb, float aFlowerProb,
 		  float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, ColorA aFlowerColor, float aScale, float aBranchProb);
   ~Branch ();
 
@@ -65,7 +65,7 @@ public:
 	virtual bool isGrowing ();
 	virtual bool isAlive ();
 
-	void createInitialBranch (const Vec2f &aOrigin, float baseHue, ColorA flowerColor);
+	void createInitialBranch (const vec2 &aOrigin, float baseHue, ColorA flowerColor);
 	void createBranch ();
 	
 protected:
@@ -84,7 +84,7 @@ protected:
 class Leaf : public Sprout 
 {
 public:
-	Leaf (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
+	Leaf (const vec2 &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
         float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, float aScale, int aLaunchDelay);
 
 	virtual bool isGrowing();

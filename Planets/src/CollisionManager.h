@@ -12,7 +12,7 @@ public:
 class Collisions
 {
 public:
-  static bool isPointWithinCube (const Vec3f& point, const Vec3f& cubeCorner, const Vec3f& cubeSize)
+  static bool isPointWithinCube (const vec3& point, const vec3& cubeCorner, const vec3& cubeSize)
   {
     return (point.x > cubeCorner.x && point.x < cubeCorner.x + cubeSize.x) &&
            (point.y > cubeCorner.y && point.y < cubeCorner.y + cubeSize.y) &&

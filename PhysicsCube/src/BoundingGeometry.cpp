@@ -5,19 +5,19 @@
 using namespace ci;
 using namespace std;
 
-BoundingGeometry::BoundingGeometry(Type shape, Vec3f position, Matrix44f orientation)
+BoundingGeometry::BoundingGeometry(Type shape, vec3 position, Matrix44f orientation)
 {
   mShape        = shape;
   mPosition     = position;
   mOrientation  = orientation;
 };
 
-void BoundingGeometry::setPosition(Vec3f position)
+void BoundingGeometry::setPosition(vec3 position)
 {
   mPosition = position;
 }
 
-Vec3f BoundingGeometry::getPosition()
+vec3 BoundingGeometry::getPosition()
 {
   return mPosition;
 }

@@ -24,10 +24,10 @@ IsoSurface::IsoSurface (const uint32_t  gridNofX,
 }
 
 
-void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh, const Vec3f& GridSize, const Vec3i& GridResolution)
+void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh, const vec3& GridSize, const ivec3& GridResolution)
 {
   std::vector<uint32_t> vboIndices;
-  std::vector<Vec3f>    vboVertices;
+  std::vector<vec3>    vboVertices;
 
   setupTetraGrid (vboIndices, vboVertices, GridSize, GridResolution);
 
@@ -35,10 +35,10 @@ void IsoSurface::getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh&
   float *evals = new float[vboVertices.size ()];
 
   std::vector<uint32_t> indices;
-  std::vector<Vec3f>    vertices;
-  std::vector<Vec3f>    normals;
+  std::vector<vec3>    vertices;
+  std::vector<vec3>    normals;
 
-  Vec3f     intersectVerts[4];
+  vec3     intersectVerts[4];
   uint32_t  nofIntersectVerts;
 
   indices.clear ();
@@ -110,7 +110,7 @@ void IsoSurface::draw ()
 
 /*
   glColor3f (1,1,0);
-  gl::drawSphere (Vec3f (-100, 0, 0), tmpRadius);
+  gl::drawSphere (vec3 (-100, 0, 0), tmpRadius);
 
   glColor3f (1,0,0);
   gl::draw (mVboMesh);
@@ -120,9 +120,9 @@ void IsoSurface::draw ()
 */
 }
 
-void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<Vec3f>& vboVertices, const Vec3f& GridSize, const Vec3i& GridResolution)
+void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<vec3>& vboVertices, const vec3& GridSize, const ivec3& GridResolution)
 {
-  Vec3f startPoint = -GridSize / 2.0f;
+  vec3 startPoint = -GridSize / 2.0f;
 
   float xs = GridSize.x  / (float)GridResolution.x;
   float ys = GridSize.y  / (float)GridResolution.y;
@@ -135,7 +135,7 @@ void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<
     {
       for (uint32_t x=0; x<(uint32_t)GridResolution.x+1; x++)
       {
-        Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
+        vec3 p = vec3 (x*xs,y*ys,z*zs) + startPoint;
         vboVertices.push_back (p);
       }
     }
@@ -156,7 +156,7 @@ void IsoSurface::setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<
 
 void IsoSurface::setupTetraVbo ()
 {
-  setupTetraGrid (mVboIndices, mVboVertices, Vec3f (mGridWidth, mGridHeight, mGridDepth), Vec3i (mGridNofX, mGridNofY, mGridNofZ));
+  setupTetraGrid (mVboIndices, mVboVertices, vec3 (mGridWidth, mGridHeight, mGridDepth), ivec3 (mGridNofX, mGridNofY, mGridNofZ));
 
 	gl::VboMesh::Layout layout;
   // Vbo settings
@@ -207,7 +207,7 @@ void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const 
 }
 
 //   Linjärinterpolera för att hitta punkt på en linje där iso-värdet har sin gräns
-Vec3f IsoSurface::VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+vec3 IsoSurface::VertexInterp (float isolevel, vec3 p1, vec3 p2, float valp1, float valp2)
 {
   float dist = abs (valp2-valp1);
 
@@ -217,14 +217,14 @@ Vec3f IsoSurface::VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1,
 }
 
 // Använd extra punkt i mitten
-Vec3f IsoSurface::VertexInterp (DensityInterface& densityFunction, float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2)
+vec3 IsoSurface::VertexInterp (DensityInterface& densityFunction, float isolevel, vec3 p1, vec3 p2, float valp1, float valp2)
 {
   return VertexInterp (isolevel, p1, p2, valp1, valp2);
 
 //  if (abs (valp2-valp1) < 10.0f)
 //    return VertexInterp (isolevel, p1, p2, valp1, valp2);
 
-  Vec3f pm = (p1 + p2) / 2.0f;
+  vec3 pm = (p1 + p2) / 2.0f;
 
   bool b1 = valp1 > isolevel;
   float valm = densityFunction.f (pm);
@@ -237,8 +237,8 @@ Vec3f IsoSurface::VertexInterp (DensityInterface& densityFunction, float isoleve
 }
 
 
-void IsoSurface::getIntersection (DensityInterface& densityFunction, const Vec3f* verts, const float* evals, const uint32_t* indices, 
-                      Vec3f* outVerts, uint32_t& nofVerts)
+void IsoSurface::getIntersection (DensityInterface& densityFunction, const vec3* verts, const float* evals, const uint32_t* indices, 
+                      vec3* outVerts, uint32_t& nofVerts)
 {
    const uint32_t i0 = indices[0];
    const uint32_t i1 = indices[1];
@@ -250,10 +250,10 @@ void IsoSurface::getIntersection (DensityInterface& densityFunction, const Vec3f
    const float e2 = evals[i2];
    const float e3 = evals[i3];
 
-   const Vec3f p0 = verts[i0];
-   const Vec3f p1 = verts[i1];
-   const Vec3f p2 = verts[i2];
-   const Vec3f p3 = verts[i3];
+   const vec3 p0 = verts[i0];
+   const vec3 p1 = verts[i1];
+   const vec3 p2 = verts[i2];
+   const vec3 p3 = verts[i3];
 
    uint32_t triIndex;
 
@@ -333,26 +333,26 @@ void IsoSurface::getIntersection (DensityInterface& densityFunction, const Vec3f
 #if 0
 // Function declarations ///////////////////////////////////////////////////////////////////////////////////
 
-float f (const Vec3f& p);
+float f (const vec3& p);
 
 // Funciton implementations ////////////////////////////////////////////////////////////////////////////////
-Vec3f fNormal (const Vec3f& p)
+vec3 fNormal (const vec3& p)
 {
-  Vec3f d1 = Vec3f (-100, 0, 0) - p;
-//  Vec3f d2 = Vec3f ( 100, 0, 0) - p;
+  vec3 d1 = vec3 (-100, 0, 0) - p;
+//  vec3 d2 = vec3 ( 100, 0, 0) - p;
 
-  Vec3f force = d1.normalized() / d1.lengthSquared () /*+ d2.normalized () / d2.lengthSquared ()*/;
+  vec3 force = d1.normalized() / d1.lengthSquared () /*+ d2.normalized () / d2.lengthSquared ()*/;
 
-  Vec3f ret = -force.normalized ();
+  vec3 ret = -force.normalized ();
   return ret;
 }
 
 const float tmpRadius = 80.0f;
 
-float f (const Vec3f& p)
+float f (const vec3& p)
 {
-  Vec3f d1 = Vec3f (-100, 0, 0) - p;
-//  Vec3f d2 = Vec3f ( 100, 0, 0) - p;
+  vec3 d1 = vec3 (-100, 0, 0) - p;
+//  vec3 d2 = vec3 ( 100, 0, 0) - p;
 
   float potential = 1.0f / d1.length () /*+ 1.0f / d2.lengthSquared ()*/;
 
@@ -363,7 +363,7 @@ float f (const Vec3f& p)
 #if 0
 void IsoSurface::drawAllCubes ()
 {
-  Vec3f startPoint = Vec3f (-mGridWidth  / 2.0f, 
+  vec3 startPoint = vec3 (-mGridWidth  / 2.0f, 
                             -mGridHeight / 2.0f, 
                             -mGridDepth  / 2.0f);
 
@@ -377,7 +377,7 @@ void IsoSurface::drawAllCubes ()
     {
       for (uint32_t z=0; z<mGridNofZ; z++)
       {
-        Vec3f p = Vec3f (x*xs,y*ys,z*zs) + startPoint;
+        vec3 p = vec3 (x*xs,y*ys,z*zs) + startPoint;
 
         drawTetraCube (p, xs);
       }
@@ -385,19 +385,19 @@ void IsoSurface::drawAllCubes ()
   }
 }
 
-void IsoSurface::drawTetraCube (const Vec3f& pos, const float s)
+void IsoSurface::drawTetraCube (const vec3& pos, const float s)
 {
   // cube corners
-  const Vec3f cubeCorners[8] = 
+  const vec3 cubeCorners[8] = 
   {
-    Vec3f (0, 0, 0), // 0
-    Vec3f (s, 0, 0), // 1
-    Vec3f (s, s, 0), // 2
-    Vec3f (0, s, 0), // 3
-    Vec3f (0, 0, s), // 4
-    Vec3f (s, 0, s), // 5
-    Vec3f (s, s, s), // 6
-    Vec3f (0, s, s)  // 7
+    vec3 (0, 0, 0), // 0
+    vec3 (s, 0, 0), // 1
+    vec3 (s, s, 0), // 2
+    vec3 (0, s, 0), // 3
+    vec3 (0, 0, s), // 4
+    vec3 (s, 0, s), // 5
+    vec3 (s, s, s), // 6
+    vec3 (0, s, s)  // 7
   };
 
   // The 6 tetrahedrons that make up a cube
@@ -411,7 +411,7 @@ void IsoSurface::drawTetraCube (const Vec3f& pos, const float s)
     {6, 2, 1, 0}
   };
 
-  Vec3f verts[8];
+  vec3 verts[8];
   float evals[8];
 
   for (uint32_t i=0; i<8; i++)
@@ -424,10 +424,10 @@ void IsoSurface::drawTetraCube (const Vec3f& pos, const float s)
     drawTetrahedron (verts, evals, tetraIndices[i]);
 }
 
-void IsoSurface::drawTetrahedron (const Vec3f* verts, const float* evals, const uint32_t* indices)
+void IsoSurface::drawTetrahedron (const vec3* verts, const float* evals, const uint32_t* indices)
 
 {
-  Vec3f vertices[4];
+  vec3 vertices[4];
   uint32_t nofVertices;
    
   getIntersection (verts, evals, indices, vertices, nofVertices);
@@ -435,7 +435,7 @@ void IsoSurface::drawTetrahedron (const Vec3f* verts, const float* evals, const 
   glBegin (GL_TRIANGLE_STRIP);
     for (uint32_t i=0; i < nofVertices; i++)
     {
-      Vec3f n = fNormal (vertices[i]);
+      vec3 n = fNormal (vertices[i]);
       glNormal3fv (n);
       glVertex3fv (vertices[i]);
     }

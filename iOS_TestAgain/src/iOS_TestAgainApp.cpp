@@ -39,11 +39,11 @@ void iOS_TestAgainApp::draw()
    
   gl::pushMatrices();
     
-  gl::translate (Vec3f (getWindowWidth()/2.f, getWindowHeight()/2.f, 0.f));
+  gl::translate (vec3 (getWindowWidth()/2.f, getWindowHeight()/2.f, 0.f));
     
-  gl::rotate (Vec3f (angle, angle, angle));
+  gl::rotate (vec3 (angle, angle, angle));
     
-  gl::drawCube (Vec3f (0, 0, 0), Vec3f(50.f, 50.f, 50.f));
+  gl::drawCube (vec3 (0, 0, 0), vec3(50.f, 50.f, 50.f));
  
   gl::popMatrices();
     

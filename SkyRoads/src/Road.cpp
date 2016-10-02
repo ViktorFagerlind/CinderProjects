@@ -21,14 +21,14 @@ void Road::setupParticles ()
   ParticleSystem *particleSystem = new ParticleSystem("../Media/Images/smoke.png");
   
   mHeadEmitter = new AreaEmitter (4000,                  // maxNofParticles,
-                                   Vec3f(0,0,0),         // position, 
+                                   vec3(0,0,0),         // position, 
   						                     20,                   // particlesPerFrame, 
   						                     15,                   // width
   						                     15,                   // height 
                                    15,                   // depth,
-							                     40,                   // minParticleSize,
-							                     60,                   // maxParticleSize,
-							                     Vec3f (0, 0, 0),      // baseVelocity,
+							                     5,                   // minParticleSize,
+							                     10,                   // maxParticleSize,
+							                     vec3 (0, 0, 0),      // baseVelocity,
 							                     3.0f);                // randVelocity
 
 
@@ -47,16 +47,16 @@ void Road::setupParticles ()
 Road::Road ()
 {
   // Init center points and normals
-  mPreviousCenter = Vec3f::zero();
-  mCurrentCenter  = Vec3f::zero();
-  mNextCenter     = Vec3f::zero();
-  mPreviousNormal = Vec3f(0, 1, 0);
+  mPreviousCenter = vec3::zero();
+  mCurrentCenter  = vec3::zero();
+  mNextCenter     = vec3::zero();
+  mPreviousNormal = vec3(0, 1, 0);
     
   // Create initial steer points
-  mSteerPoints = new Vec3f[4];
+  mSteerPoints = new vec3[4];
   for (int i=0; i<4; i++)
   {
-    mSteerPoints[i] = Vec3f::zero ();
+    mSteerPoints[i] = vec3::zero ();
   }
     
   mSplineTime    = 0.0f;
@@ -70,11 +70,11 @@ Road::Road ()
   roadBlocks.clear ();
 }
   
-void Road::updateVectors (const Vec3f& center)
+void Road::updateVectors (const vec3& center)
 {
-  Vec3f previousToCurrent;
-  Vec3f nextToCurrent;
-  Vec3f tmp;
+  vec3 previousToCurrent;
+  vec3 nextToCurrent;
+  vec3 tmp;
 
   mPreviousCenter  = mCurrentCenter;
   mCurrentCenter   = mNextCenter;
@@ -98,9 +98,9 @@ void Road::updateVectors (const Vec3f& center)
 }
 
 // Requires at least one previous block...
-void Road::addRoadBlock (const Vec3f& center)
+void Road::addRoadBlock (const vec3& center)
 {
-  Vec3f normal;
+  vec3 normal;
     
   updateVectors (center);
     
@@ -116,7 +116,7 @@ void Road::addRoadBlock (const Vec3f& center)
   
 void Road::update()
 {
-  Vec3f newSteerPoint; 
+  vec3 newSteerPoint; 
     
   mSplineTime += splineTimeAdd;
     
@@ -142,7 +142,7 @@ void Road::update()
   }
     
   // Calculate next point and add road block
-  Vec3f nextPoint = VfBSpline::calc3D (mSteerPoints[0], mSteerPoints[1], mSteerPoints[2], mSteerPoints[3], mSplineTime);
+  vec3 nextPoint = VfBSpline::calc3D (mSteerPoints[0], mSteerPoints[1], mSteerPoints[2], mSteerPoints[3], mSplineTime);
     
   addRoadBlock (nextPoint);
 
@@ -173,7 +173,7 @@ void Road::draw ()
   }
 }
 	
-const Vec3f& Road::getCurrentRoadEnd ()
+const vec3& Road::getCurrentRoadEnd ()
 {
 	return mCurrentCenter;
 }

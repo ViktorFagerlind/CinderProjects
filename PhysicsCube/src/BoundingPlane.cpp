@@ -5,7 +5,7 @@
 using namespace ci;
 using namespace std;
 
-BoundingPlane::BoundingPlane(float width, float height, Vec3f position, Matrix44f orientation)
+BoundingPlane::BoundingPlane(float width, float height, vec3 position, Matrix44f orientation)
   : BoundingGeometry(ePlane, position, orientation)
 {
   mWidth  = width;
@@ -17,9 +17,9 @@ void BoundingPlane::update()
 
 }
 
-Vec3f BoundingPlane::getNormal() const
+vec3 BoundingPlane::getNormal() const
 {
-  Vec3f tempNormal;
+  vec3 tempNormal;
   Vec4f tempOrientationZAxis =  mOrientation.getColumn(2);
 
   tempNormal.x = tempOrientationZAxis.x;
@@ -32,7 +32,7 @@ Vec3f BoundingPlane::getNormal() const
 
 float BoundingPlane::getOffset() const
 {
-  Vec3f normal = getNormal();
+  vec3 normal = getNormal();
   float offset = normal.dot(mPosition);
   return offset;
 }
@@ -63,6 +63,6 @@ void BoundingPlane::draw()
 
   //Draw "offset"
   gl::color(0.8f, 0.8f, 0.1f);
-  Vec3f offsetVec = getOffset()*getNormal();
-  gl::drawVector(Vec3f(0, 0, 0), offsetVec, 5.0f, 2.5f);
+  vec3 offsetVec = getOffset()*getNormal();
+  gl::drawVector(vec3(0, 0, 0), offsetVec, 5.0f, 2.5f);
 }

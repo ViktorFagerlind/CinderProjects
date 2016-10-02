@@ -12,6 +12,6 @@ public:
 
   // ParticleDrawerInterface operations
   void beforeDraw ();
-  void drawParticle (const Particle &p, const Vec2f &textureSize);
+  void drawParticle (const Particle &p, const vec2 &textureSize);
   void afterDraw ();
 };

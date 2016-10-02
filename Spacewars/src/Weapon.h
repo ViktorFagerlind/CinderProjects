@@ -24,7 +24,7 @@ public:
 
   virtual ~Shot ();
 
-  void define (const Vec2f& position, const Vec2f& speed, const float rotation, const EntityCategory category);
+  void define (const vec2& position, const vec2& speed, const float rotation, const EntityCategory category);
 
   void update (const float dt);
 
@@ -35,7 +35,7 @@ public:
   // Collider methods
   virtual bool performSolve () const {return false;}
   virtual float getDamageOutput () const {return 20.f;}
-  virtual void collide (float damage, const Vec2f& contactPoint);
+  virtual void collide (float damage, const vec2& contactPoint);
 
 public:
   bool    m_isDead;
@@ -50,7 +50,7 @@ public:
 class Weapon
 {
 public:
-  Weapon (const Vec3f&              relativePos, 
+  Weapon (const vec3&              relativePos, 
           const shared_ptr<Vessel>  vessel, 
           const EntityCategory      shotCategory, 
           const uint32_t            maxNofShots, 
@@ -69,7 +69,7 @@ public:
   virtual void drawTransparent () {};
 
 protected:
-  Vec3f               m_relativePos;
+  vec3               m_relativePos;
 
   const uint32_t      m_maxNofShots;
   uint32_t            m_nofShots;
@@ -94,7 +94,7 @@ protected:
 class Lazer : public Weapon
 {
 public:
-  Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots, const bool noSound=false);
+  Lazer (const vec3& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots, const bool noSound=false);
 
   virtual ~Lazer ();
 

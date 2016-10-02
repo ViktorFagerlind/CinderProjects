@@ -18,9 +18,9 @@ void BillboardParticleDrawer::beforeDraw ()
   glEnableClientState (GL_COLOR_ARRAY);
 }
 
-void BillboardParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSize)
+void BillboardParticleDrawer::drawParticle (const Particle &p, const vec2 &textureSize)
 {
-  Billboard::drawBillboard (p.mPosition, Vec2f (p.mCurrentSize, p.mCurrentSize), p.mColor);
+  Billboard::drawBillboard (p.mPosition, vec2 (p.mCurrentSize, p.mCurrentSize), p.mColor);
 }
 
 void BillboardParticleDrawer::afterDraw ()

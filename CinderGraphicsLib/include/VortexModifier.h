@@ -7,8 +7,8 @@ using namespace ci;
 class VortexModifier : public Modifier 
 {
 public:
-	VortexModifier (const Vec3f& position, const float strength, const float damping, const float radius, const float angle)
-  : mDirection (Vec3f(0,0,-1)),
+	VortexModifier (const vec3& position, const float strength, const float damping, const float radius, const float angle)
+  : mDirection (vec3(0,0,-1)),
     mPosition (position),
     mStrength (strength),
     mDamping (damping),
@@ -19,11 +19,11 @@ public:
 	
   void apply(Particle *const particle) 
 	{
-    const Vec3f particlePosition    = particle->getPosition();
-    Vec3f relativeParticlePosition  = particlePosition - mPosition;
-    const Vec3f particleVelocity    = particle->getVelocity();
+    const vec3 particlePosition    = particle->getPosition();
+    vec3 relativeParticlePosition  = particlePosition - mPosition;
+    const vec3 particleVelocity    = particle->getVelocity();
     float distance = relativeParticlePosition.length();
-    Vec3f force;
+    vec3 force;
     float forceStrength;
 
     if (distance > mRadius)
@@ -44,14 +44,14 @@ public:
     particle->applyForce(force);
   }
 
-  void setPosition (const Vec3f& position) 
+  void setPosition (const vec3& position) 
 	{
     mPosition = position;
   }
 
 private:
-  Vec3f       mPosition;
-  const Vec3f mDirection;
+  vec3       mPosition;
+  const vec3 mDirection;
   const float mAngle;
   const float mStrength;
   const float mRadius;

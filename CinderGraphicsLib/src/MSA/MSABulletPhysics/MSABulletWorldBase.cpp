@@ -26,10 +26,10 @@ namespace MSA {
 	
 	
 	void BulletWorldBase::setup() {
-		setup(Vec3f(-10000,-10000,-10000), Vec3f(10000, 10000, 10000));
+		setup(vec3(-10000,-10000,-10000), vec3(10000, 10000, 10000));
 	}
 	
-	void BulletWorldBase::setup(Vec3f worldMin, Vec3f worldMax) {
+	void BulletWorldBase::setup(vec3 worldMin, vec3 worldMax) {
 		if(!collisionConfiguration) collisionConfiguration = new btDefaultCollisionConfiguration();
 		
 		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
@@ -39,8 +39,8 @@ namespace MSA {
 		///the maximum size of the collision bulletWorld. Make sure objects stay within these boundaries
 		///Don't make the bulletWorld AABB size too large, it will harm simulation quality and performance
 		if(!broadphase) {
-			btVector3 worldAabbMin = Vec3f_To_btVector3(worldMin);
-			btVector3 worldAabbMax = Vec3f_To_btVector3(worldMax);
+			btVector3 worldAabbMin = vec3_To_btVector3(worldMin);
+			btVector3 worldAabbMax = vec3_To_btVector3(worldMax);
 			int	maxProxies = 1024;
 			broadphase = new btAxisSweep3(worldAabbMin, worldAabbMax, maxProxies);
 		}
@@ -88,7 +88,7 @@ namespace MSA {
 	
 	//
 	//
-	//BulletObjectBox *createBox(Vec3f &position) {
+	//BulletObjectBox *createBox(vec3 &position) {
 	//	BulletObjectBox *box = new BulletObjectBox;
 	//}
 	

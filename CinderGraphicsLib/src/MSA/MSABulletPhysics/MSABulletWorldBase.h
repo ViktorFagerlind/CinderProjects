@@ -25,17 +25,17 @@ namespace MSA {
 		virtual ~BulletWorldBase();
 		
 		void setup();
-		void setup(Vec3f worldMin, Vec3f worldMax);
+		void setup(vec3 worldMin, vec3 worldMax);
 		void destroy();
 		
-		void setGravity(Vec3f &p);
+		void setGravity(vec3 &p);
 		void setGravity(btScalar gx, btScalar gy, btScalar gz);
 		
 		
 		// creates a rigid body and adds to the world (and returns pointer to newly created object)
 		// object will be released automatically when world is destroyed
-		BulletRigidBody *createRigidBox(Vec3f &startPosition, Vec3f &size, float mass=1, float restitution=0.f);
-		BulletRigidBody *createRigidSphere(Vec3f &startPosition, float radius, float mass=1, float restitution=0.f);
+		BulletRigidBody *createRigidBox(vec3 &startPosition, vec3 &size, float mass=1, float restitution=0.f);
+		BulletRigidBody *createRigidSphere(vec3 &startPosition, float radius, float mass=1, float restitution=0.f);
 		
 		// create a rigid body out of given collisionShape and add to the world
 		// will be released automatically when world is destroyed
@@ -44,7 +44,7 @@ namespace MSA {
 		// (reusing collisionShapes is very much advised if possible)
 		// ownsCollisionShape:	if the body owns (and should delete) the collision shape upon destruction set this true
 		//						if the body is sharing this collision shape set to false
-		BulletRigidBody *createRigidBody(Vec3f &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass = 1, float restitution=0.f);
+		BulletRigidBody *createRigidBody(vec3 &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass = 1, float restitution=0.f);
 		
 		// add an existing rigid body to the world
 		// will be released automatically when world is destroyed
@@ -85,7 +85,7 @@ namespace MSA {
 	}
 	
 	
-	inline 	BulletRigidBody *BulletWorldBase::createRigidBody(Vec3f &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass, float restitution) {
+	inline 	BulletRigidBody *BulletWorldBase::createRigidBody(vec3 &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass, float restitution) {
 		BulletRigidBody *body = new BulletRigidBody();
 		body->setup(startPosition, collisionShape, ownsCollisionShape, mass, restitution);
 		addRigidBody(body);
@@ -94,12 +94,12 @@ namespace MSA {
 	}
 	
 	
-	inline BulletRigidBody *BulletWorldBase::createRigidBox(Vec3f &startPosition, Vec3f &size, float mass, float restitution) {
-    btCollisionShape *collisionShape = new btBoxShape (Vec3f_To_btVector3 (size));
+	inline BulletRigidBody *BulletWorldBase::createRigidBox(vec3 &startPosition, vec3 &size, float mass, float restitution) {
+    btCollisionShape *collisionShape = new btBoxShape (vec3_To_btVector3 (size));
 		return createRigidBody(startPosition, collisionShape, true, mass, restitution); // body will own this collision shape
 	}	
 	
-	inline BulletRigidBody *BulletWorldBase::createRigidSphere(Vec3f &startPosition, float radius, float mass, float restitution) {
+	inline BulletRigidBody *BulletWorldBase::createRigidSphere(vec3 &startPosition, float radius, float mass, float restitution) {
 		btCollisionShape *collisionShape = new btSphereShape(btScalar(radius));
     return createRigidBody(startPosition, collisionShape, true, mass, restitution); // body will own this collision shape
 	}	
@@ -114,8 +114,8 @@ namespace MSA {
 		return *bulletWorld;
 	}
 	
-	inline void BulletWorldBase::setGravity(Vec3f &p) {
-		bulletWorld->setGravity(Vec3f_To_btVector3(p));
+	inline void BulletWorldBase::setGravity(vec3 &p) {
+		bulletWorld->setGravity(vec3_To_btVector3(p));
 	}
 	
 	inline void BulletWorldBase::setGravity(btScalar gx, btScalar gy, btScalar gz) {

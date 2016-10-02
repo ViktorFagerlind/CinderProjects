@@ -27,9 +27,9 @@ public:
 		return cubicWeight4 + t * (cubicWeight3 + t * (cubicWeight2 + (t * cubicWeight1)));
 	}
 	
-	static Vec3f calc3D (Vec3f p1, Vec3f p2, Vec3f p3, Vec3f p4, float t)
+	static vec3 calc3D (vec3 p1, vec3 p2, vec3 p3, vec3 p4, float t)
 	{
-		return Vec3f (calc1D (p1.x, p2.x, p3.x, p4.x, t),
+		return vec3 (calc1D (p1.x, p2.x, p3.x, p4.x, t),
 		              calc1D (p1.y, p2.y, p3.y, p4.y, t),
 		              calc1D (p1.z, p2.z, p3.z, p4.z, t));
 	}

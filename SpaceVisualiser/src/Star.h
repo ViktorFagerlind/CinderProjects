@@ -9,23 +9,26 @@
 #include "cinder/Matrix44.h"
 #include <vector>
 
-using std::list;
+using namespace std;
 
 using namespace ci;
 
 class ParticleSystem;
 class PointEmitter;
+class TubeParticleDrawer;
 
 class Star
 {
 public:
-  class Star (ParticleSystem *particleSystem, const float radius, const Vec3f position = Vec3f (0, 0, 0));
+  class Star (ParticleSystem *particleSystem, const float radius, const vec3 position = vec3 (0, 0, 0));
   
   void rotate (const Matrix44<float>& rotationMatrix);
 
-  void move   (const Vec3f& offset);
+  void move (const vec3& offset);
 
-  const Vec3f& getPosition () {return m_position;}
+  void setBands (const vector<float>& bands);
+
+  const vec3& getPosition () { return m_position; }
 	
   void bounce ();
 
@@ -37,13 +40,17 @@ private:
 	void animate ();
 
 private:
+  ColorAf                         m_originalDiffuse;
+
+  shared_ptr<TubeParticleDrawer> m_tubeDrawer;
+
   PointEmitter                   *m_emitter;
 
   const float                     m_radius;
 
   gl::VboMesh                     m_bodyMesh;
 
-  Vec3f                           m_position;
+  vec3                           m_position;
 
   Matrix44<float>                 m_rotation;
 

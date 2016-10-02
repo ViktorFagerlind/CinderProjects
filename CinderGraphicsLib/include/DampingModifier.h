@@ -14,7 +14,7 @@ public:
 	
   void apply(Particle *const particle) 
 	{
-    const Vec3f velocity = particle->getVelocity();
+    const vec3 velocity = particle->getVelocity();
 
     particle->applyForce (-velocity * velocity.length() * m_damping);
   }

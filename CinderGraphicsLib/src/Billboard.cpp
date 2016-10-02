@@ -2,15 +2,15 @@
 
 #include "cinder/gl/gl.h"
 
-void Billboard::drawBillboardTex (const Vec3f   &pos,
-                                  const Vec2f   &scale,
+void Billboard::drawBillboardTex (const vec3   &pos,
+                                  const vec2   &scale,
                                   const float *texCoords,
                                   const ColorAf &color,
                                   const float   rotationDegrees,
-                                  const Vec3f   &bbRight,
-                                  const Vec3f   &bbUp)
+                                  const vec3   &bbRight,
+                                  const vec3   &bbUp)
 {
-  Vec3f   verts[4];
+  vec3   verts[4];
   ColorAf colors[4] = { color, color, color, color };
 
   glVertexPointer (3, GL_FLOAT, 0, verts);
@@ -28,12 +28,12 @@ void Billboard::drawBillboardTex (const Vec3f   &pos,
   glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
 }
 
-void Billboard::drawBillboard (const Vec3f   &pos,
-                               const Vec2f   &scale,
+void Billboard::drawBillboard (const vec3   &pos,
+                               const vec2   &scale,
                                const ColorAf &color,
                                const float   rotationDegrees,
-                               const Vec3f   &bbRight,
-                               const Vec3f   &bbUp)
+                               const vec3   &bbRight,
+                               const vec3   &bbUp)
 {
   GLfloat texCoords[8] = { 0, 0, 0, 1, 1, 0, 1, 1 };
 

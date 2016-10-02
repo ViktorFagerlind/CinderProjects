@@ -32,7 +32,7 @@ public:
 
   MeteorDensity ();
 
-  float f (const Vec3f& p);
+  float f (const vec3& p);
 
 private:
   Perlin mPerlin;
@@ -44,7 +44,7 @@ private:
 class Meteor : public DynamicObject, public BasicObject
 {
 public:
-  Meteor (float mass, const Vec3f& position, float size, shared_ptr<BaseMaterial> material);
+  Meteor (float mass, const vec3& position, float size, shared_ptr<BaseMaterial> material);
 
   void update ();
 

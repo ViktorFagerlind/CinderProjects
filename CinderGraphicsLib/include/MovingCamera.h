@@ -20,7 +20,7 @@ public:
 
   const CameraPersp& getCam () {return mCam;}
 
-  void setEyePos (const Vec3f& pos) {mEye = pos;}
+  void setEyePos (const vec3& pos) {mEye = pos;}
 
   void mouseMove (MouseEvent event);
 
@@ -37,12 +37,12 @@ private:
 
 	float			mStartingDistance;
 
-	Vec2f			mLastMouse;
-	Vec2f			mCurrentMouse;
+	vec2			mLastMouse;
+	vec2			mCurrentMouse;
 
-  Vec3f mEye;
-  Vec3f mTargetVec;
-  Vec3f mUpVector;
+  vec3 mEye;
+  vec3 mTargetVec;
+  vec3 mUpVector;
 
   float mStepSize;
 };

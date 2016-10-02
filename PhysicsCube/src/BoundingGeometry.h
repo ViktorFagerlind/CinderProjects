@@ -13,17 +13,17 @@ public:
     eBox, eSphere, ePlane 
   };
 
-  BoundingGeometry(Type shape, Vec3f position, Matrix44f orientation);
+  BoundingGeometry(Type shape, vec3 position, Matrix44f orientation);
 	virtual void update()=0;
 	virtual void draw()=0;
-  void setPosition(Vec3f position);
-  Vec3f getPosition();
+  void setPosition(vec3 position);
+  vec3 getPosition();
   void setOrientation(Matrix44f orientation);
   Matrix44f getOrientation();
   
   Type      mShape;
 
 protected:
-  Vec3f     mPosition;
+  vec3     mPosition;
   Matrix44f mOrientation;
 };

@@ -38,5 +38,5 @@ public:
 
 public:
   float m_angle;
-  Vec2f m_position;
+  vec2 m_position;
 };

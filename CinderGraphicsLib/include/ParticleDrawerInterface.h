@@ -18,7 +18,7 @@ public:
 
   virtual void beforeDraw () = 0;
 
-  virtual void drawParticle (const Particle &p, const Vec2f &textureSize) = 0;
+  virtual void drawParticle (const Particle &p, const vec2 &textureSize) = 0;
 
   virtual void afterDraw () = 0;
 };

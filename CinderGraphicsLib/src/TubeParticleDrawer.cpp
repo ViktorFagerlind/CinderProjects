@@ -19,7 +19,7 @@ TubeParticle::~TubeParticle ()
 {
 }
 
-void TubeParticle::define (const Vec3f& position, float size, Vec3f velocity)
+void TubeParticle::define (const vec3& position, float size, vec3 velocity)
 {
   Particle::define (position, size, velocity);
 
@@ -97,7 +97,7 @@ void TubeParticleDrawer::beforeDraw ()
 {
 }
 
-void TubeParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSize)
+void TubeParticleDrawer::drawParticle (const Particle &p, const vec2 &textureSize)
 {
   TubeParticle *tp = (TubeParticle *)&p;
 
@@ -112,7 +112,7 @@ void TubeParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSi
     // Choose a general direction for the "up" vector so that it is perpendicular to the 
     // general layout of the entire line, in that way the face normals are less likely 
     // to be aligned to the direction (which is not good when projecting on that plane)
-    Vec3f up = Vec3f (0, 0, 1).cross (tp->m_points[tp->m_nofPoints - 1] - tp->m_points[0]).normalized ();
+    vec3 up = vec3 (0, 0, 1).cross (tp->m_points[tp->m_nofPoints - 1] - tp->m_points[0]).normalized ();
 
     TubeDrawer::draw (m_material->getShader (),
                       up,

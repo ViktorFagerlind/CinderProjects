@@ -25,7 +25,7 @@ void ContactListener::BeginContact(b2Contact* contact)
   // Get contact point
   b2WorldManifold worldManifold;
   contact->GetWorldManifold(&worldManifold);
-  Vec2f contactPoint = Conversions::fromPhysics (worldManifold.points[0]);
+  vec2 contactPoint = Conversions::fromPhysics (worldManifold.points[0]);
 
   if (colliderA != NULL && colliderB != NULL)
   {

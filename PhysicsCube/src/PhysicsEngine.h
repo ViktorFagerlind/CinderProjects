@@ -18,14 +18,14 @@ public:
 
 	void update ();
 	void draw();
-  void applyForce(PhysicsObject physicsObject, Vec3f force);
-  void applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack, Vec3f force);
+  void applyForce(PhysicsObject physicsObject, vec3 force);
+  void applyTorque(PhysicsObject physicsObject, vec3 pointOfAttack, vec3 force);
 
 	void resolveCollisions ();
 
 
   //Collision detection methods
-  Vec3f getCollisionPoint();
+  vec3 getCollisionPoint();
 
   DynamicObject *cube;
   StaticObject  *plane;

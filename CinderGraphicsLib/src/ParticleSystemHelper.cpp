@@ -22,14 +22,14 @@ shared_ptr<Emitter> ParticleSystemHelper::createThrustSystem ()
 
 
   shared_ptr<Emitter> emitter (new AreaEmitter (100,                // maxNofParticles,
-                                          Vec3f::zero (),     // position, 
+                                          vec3::zero (),     // position, 
                                           2,                  // particlesPerFrame, 
  						                              8,                  // width
  						                              5,                  // height 
                                           8,                  // depth,
 							                            10,                 // minParticleSize,
 							                            15,                 // maxParticleSize,
-							                            Vec3f (0, -10, 0),  // baseVelocity,
+							                            vec3 (0, -10, 0),  // baseVelocity,
 							                            0.5f));              // randVelocity
   particleSystem->addEmitterRef  (emitter);
 
@@ -55,11 +55,11 @@ shared_ptr<Emitter> ParticleSystemHelper::createFlareSystem ()
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
   shared_ptr<Emitter> emitter (new PointEmitter (20,             // maxNofParticles,
-                                            Vec3f::zero (), // position, 
+                                            vec3::zero (), // position, 
                                             2,              // particlesPerFrame, 
                                             40,             // minParticleSize,
                                             40,             // maxParticleSize,
-                                            Vec3f::zero (), // baseVelocity,
+                                            vec3::zero (), // baseVelocity,
                                             0.f,            // minRandVelocity
                                             0.f));           // maxRandVelocity
   particleSystem->addEmitterRef  (emitter);
@@ -84,11 +84,11 @@ shared_ptr<Emitter> ParticleSystemHelper::createMiniExplosion ()
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
   shared_ptr<Emitter> emitter (new PointEmitter (100,            // maxNofParticles,
-                                            Vec3f::zero (), // position, 
+                                            vec3::zero (), // position, 
                                             5,              // particlesPerFrame, 
                                             4,              // minParticleSize,
                                             8,              // maxParticleSize,
-                                            Vec3f::zero (), // baseVelocity,
+                                            vec3::zero (), // baseVelocity,
                                             0.f,            // minRandVelocity
                                             1.5f));          // maxRandVelocity
   emitter->setFramesToLive (2);
@@ -111,8 +111,8 @@ shared_ptr<Emitter> ParticleSystemHelper::createMiniExplosion ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-shared_ptr<Emitter> ParticleSystemHelper::createFireBall (const Vec3f&    position, 
-                                                const Vec3f&   speed, 
+shared_ptr<Emitter> ParticleSystemHelper::createFireBall (const vec3&    position, 
+                                                const vec3&   speed, 
                                                 const ColorAf& startColor, 
                                                 const ColorAf& endColor,
                                                 const float    size)
@@ -157,8 +157,8 @@ shared_ptr<Emitter> ParticleSystemHelper::createFireBall (const Vec3f&    positi
 }
 //----------------------------------------------------------------------------------------------------------------------
 
-shared_ptr<Emitter> ParticleSystemHelper::createSparkExplosion (const Vec3f&   position,
-                                                     const Vec3f&   speed,
+shared_ptr<Emitter> ParticleSystemHelper::createSparkExplosion (const vec3&   position,
+                                                     const vec3&   speed,
                                                      const Colorf&  color,
                                                      const float    size)
 {
@@ -205,11 +205,11 @@ shared_ptr<Emitter> ParticleSystemHelper::createSparks ()
   ParticleSystem *particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("basic particle 2.png"));
 
   shared_ptr<Emitter> emitter (new PointEmitter (20,            // maxNofParticles,
-                                            Vec3f::zero (), // position, 
+                                            vec3::zero (), // position, 
                                             1,              // particlesPerFrame, 
                                             4,              // minParticleSize,
                                             6,              // maxParticleSize,
-                                            Vec3f::zero (), // baseVelocity,
+                                            vec3::zero (), // baseVelocity,
                                             0.f,            // minRandVelocity
                                             2.f));           // maxRandVelocity
   particleSystem->addEmitterRef (emitter);

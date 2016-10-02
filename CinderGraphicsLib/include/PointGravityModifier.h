@@ -7,7 +7,7 @@ using namespace ci;
 class PointGravityModifier : public Modifier 
 {
 public:
-	PointGravityModifier (const Vec3f& position, const float strength, const float maxStrength, const float radius)
+	PointGravityModifier (const vec3& position, const float strength, const float maxStrength, const float radius)
   : mPosition(position),
     mStrength(strength),
     mMaxStrength(maxStrength),
@@ -17,7 +17,7 @@ public:
 	
   inline void apply(Particle *const particle) 
 	{
-    const Vec3f distance = mPosition - particle->mPosition;
+    const vec3 distance = mPosition - particle->mPosition;
     const float distanceSquared = distance.lengthSquared();
 
     if (distanceSquared > mRadiusSquared)
@@ -29,13 +29,13 @@ public:
     particle->applyForce (distance.normalized() * forceStrength);
   }
 
-  void setPosition (const Vec3f& position) 
+  void setPosition (const vec3& position) 
 	{
     mPosition = position;
   }
 
 private:
-  Vec3f         mPosition;
+  vec3         mPosition;
   const float   mStrength;
   const float   mRadiusSquared;
   const float   mMaxStrength;

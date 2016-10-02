@@ -6,14 +6,14 @@ using namespace ci;
 using namespace std;
 
 //Static object using bounding box
-StaticObject::StaticObject(float mass, Vec3f& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
+StaticObject::StaticObject(float mass, vec3& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
   : PhysicsObject(mass, cog, boundingBoxWidth, boundingBoxHeight, boundingBoxLength)
 {
   StaticObject::init(mass, cog);
 };
 
 //Static object using bounding plane (init plane using 3 vertecies)
-StaticObject::StaticObject(float mass, Vec3f& cog,  float boundingPlaneWidth, float boundingPlaneHeight, Vec3f vertex1, Vec3f vertex2, Vec3f vertex3)
+StaticObject::StaticObject(float mass, vec3& cog,  float boundingPlaneWidth, float boundingPlaneHeight, vec3 vertex1, vec3 vertex2, vec3 vertex3)
   : PhysicsObject(mass, cog, boundingPlaneWidth, boundingPlaneHeight, vertex1, vertex2, vertex3)
 {
   StaticObject::init(mass, cog);
@@ -21,23 +21,23 @@ StaticObject::StaticObject(float mass, Vec3f& cog,  float boundingPlaneWidth, fl
 
 
 //Static object using bounding plane (init plane using position of centre of plane and orientation matrix)
-StaticObject::StaticObject(float mass, Vec3f& cog,  float boundingPlaneWidth, float boundingPlaneHeight)
+StaticObject::StaticObject(float mass, vec3& cog,  float boundingPlaneWidth, float boundingPlaneHeight)
   : PhysicsObject(mass, cog, boundingPlaneWidth, boundingPlaneHeight)
 {
   StaticObject::init(mass, cog);
 };
 
 //Static object using bounding sphere
-StaticObject::StaticObject(float mass, Vec3f& cog,  float sphereRadius)
+StaticObject::StaticObject(float mass, vec3& cog,  float sphereRadius)
   : PhysicsObject(mass, cog, sphereRadius)
 {
   StaticObject::init(mass, cog);
 };
 
 
-void StaticObject::init(float mass, Vec3f& cog)
+void StaticObject::init(float mass, vec3& cog)
 {
-  mState.mLinearMomentum = Vec3f(0, 0, 0);
+  mState.mLinearMomentum = vec3(0, 0, 0);
   mState.mAngularMomentum = Vec4f(0, 0, 0, 0);
 };
 

@@ -7,7 +7,7 @@ using namespace ci;
 class GravityModifier : public Modifier 
 {
 public:
-	GravityModifier (const Vec3f& gravity)
+	GravityModifier (const vec3& gravity)
   : mGravity(gravity)
 	{
 	}
@@ -18,5 +18,5 @@ public:
   }
 
 private:
-	const Vec3f mGravity;
+	const vec3 mGravity;
 };

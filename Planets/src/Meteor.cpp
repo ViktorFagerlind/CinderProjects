@@ -15,7 +15,7 @@ MeteorDensity::MeteorDensity ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-float MeteorDensity::f (const Vec3f& p)
+float MeteorDensity::f (const vec3& p)
 {
   float baseFreq = 0.07f;
 
@@ -36,7 +36,7 @@ float MeteorDensity::f (const Vec3f& p)
 //---- Meteor ----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 
-Meteor::Meteor (float mass, const Vec3f& position, float size, shared_ptr<BaseMaterial> material)
+Meteor::Meteor (float mass, const vec3& position, float size, shared_ptr<BaseMaterial> material)
 : DynamicObject (mass, position, size),
   mMesh (getMesh (Rand::randInt (20)))
 {
@@ -84,7 +84,7 @@ void Meteor::draw()
   gl::rotate (mRotation);
 
   //glColor3f (0.6f, 0.4f, 0.3f);
-  //gl::drawCube (Vec3f (0, 0, 0), Vec3f (mRadius, mRadius, mRadius));
+  //gl::drawCube (vec3 (0, 0, 0), vec3 (mRadius, mRadius, mRadius));
 
   mMaterial->bind ();
   gl::draw (*mMesh);
@@ -114,7 +114,7 @@ gl::VboMesh* Meteor::getMesh (uint32_t index)
     return meshes[index];
 
   gl::VboMesh *mesh = new gl::VboMesh ();
-  IsoSurface::getSurfaceMesh (densityFunction, *mesh, Vec3f (20, 20, 20), Vec3i (20, 20, 20));
+  IsoSurface::getSurfaceMesh (densityFunction, *mesh, vec3 (20, 20, 20), ivec3 (20, 20, 20));
   meshes.push_back (mesh);
 
   return meshes.back ();

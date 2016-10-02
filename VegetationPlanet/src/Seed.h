@@ -19,16 +19,16 @@ class Seed
 public:
   Seed ()
   {
-    m_position.value () = Vec3f (1000, 1000, 1000);
+    m_position.value () = vec3 (1000, 1000, 1000);
 
     ParticleSystem *seedSystem  = new ParticleSystem ("../Media/Images/Particle1.jpg");
 
     m_seedEmitter = new PointEmitter (10000,
-                                      Vec3f(0, 0, 0), //position
+                                      vec3(0, 0, 0), //position
                                       1.0f,  // particles per frame
                                       0.5f,   // min size
                                       1.0f,   // max size
-                                      Vec3f (0, 0, 0),     // baseVelocity
+                                      vec3 (0, 0, 0),     // baseVelocity
                                       0.f,            // minRandVelocity
                                       0.1f);    // maxRandVelocity
 
@@ -41,7 +41,7 @@ public:
                                                ColorAf(0.3f, 1.0f, 0.2f, 0.5f),   // endColor
                                                0.5f);                     // middleTime
 
-    PointGravityModifier *pgMod = new PointGravityModifier (Vec3f(0, 0, 0),  // position
+    PointGravityModifier *pgMod = new PointGravityModifier (vec3(0, 0, 0),  // position
                                                             5.0f,            // strength
                                                             0.5f,            // max strength
                                                             100.0f);         // radius
@@ -58,10 +58,10 @@ public:
   {
     app::App *app = app::App::get ();
 
-    m_position.value () = Vec3f (100,100,100);
+    m_position.value () = vec3 (100,100,100);
     app->timeline ().apply (&m_position, 
                             MiscMath::getRandomDirection ().normalized () * 80.f, 
-                            Vec3f (0,0,0), 
+                            vec3 (0,0,0), 
                             13.00f, 
                             EaseInCubic());
   }
@@ -86,7 +86,7 @@ public:
   }
 
 public:
-  Anim<Vec3f>     m_position;
+  Anim<vec3>     m_position;
 
   PointEmitter   *m_seedEmitter;
 };

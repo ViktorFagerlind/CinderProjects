@@ -23,10 +23,10 @@ using namespace std;
 class VesselEmitter
 {
 public:
-  VesselEmitter (shared_ptr<Emitter> emitter, const Vec3f& relativePos);
+  VesselEmitter (shared_ptr<Emitter> emitter, const vec3& relativePos);
 
 public:
-  Vec3f               m_relativePos;
+  vec3               m_relativePos;
   shared_ptr<Emitter> m_emitter;
 };
 
@@ -36,7 +36,7 @@ class VesselDef
 {
 public:
   VesselDef ()
-  : position            (Vec2f::zero ()),
+  : position            (vec2::zero ()),
     angle               (toRadians (180.f)),
     category            (EntityCategory_Enemies_E),
     initialLife         (100.f),
@@ -50,7 +50,7 @@ public:
   }
 
 public:
-  Vec2f           position;
+  vec2           position;
   float           angle;
   EntityCategory  category;
   float           initialLife;
@@ -85,18 +85,18 @@ public:
 
   shared_ptr<Model> getModel () {return m_model;}
 
-  Vec3f getPosition () const {return Conversions::fromPhysics3f (m_body->GetPosition ());}
+  vec3 getPosition () const {return Conversions::fromPhysics3f (m_body->GetPosition ());}
 
-  const Vec3f& getRotation () const {return m_rotation;}
-  void setRotation (const Vec3f& rotation) {m_rotation = rotation;}
-  Vec3f vesselPositionToWorld (const Vec3f& vec) const;
-  Vec3f vesselRotationToWorld (const Vec3f& vec) const;
+  const vec3& getRotation () const {return m_rotation;}
+  void setRotation (const vec3& rotation) {m_rotation = rotation;}
+  vec3 vesselPositionToWorld (const vec3& vec) const;
+  vec3 vesselRotationToWorld (const vec3& vec) const;
 
   void  addVesselEmitter (const VesselEmitter& vesselEmitter);
   void  clearVesselEmitters ();
 
   // Collider methods
-  virtual void collide (float damage, const Vec2f& contactPoint)  {m_life -= damage;}
+  virtual void collide (float damage, const vec2& contactPoint)  {m_life -= damage;}
 
   // Methods for dying, like explosions etc
   virtual void startedDying () {};
@@ -120,7 +120,7 @@ protected:
 
   b2Body*                 m_body;
 
-  Vec3f                   m_rotation;
+  vec3                   m_rotation;
 
   shared_ptr<Model>       m_model;
 
@@ -132,7 +132,7 @@ protected:
 
 
 #if _DEBUG
-  Vec2f                   m_previousDesiredPosition;
+  vec2                   m_previousDesiredPosition;
 #endif
 };
 

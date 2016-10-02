@@ -16,7 +16,7 @@ ModelElement::ModelElement (gl::Material          material,
                             shared_ptr<TriMesh>   mesh, 
                             gl::Texture          *texture, 
                             const float           scale, 
-                            const Vec3f&          relativePosition)
+                            const vec3&          relativePosition)
 {
   m_material          = material;
 
@@ -39,14 +39,14 @@ ModelElement::~ModelElement ()
 
 void ModelElement::getMinMax (float& xMin, float& xMax, float& yMin, float& yMax)
 {
-  const vector<Vec3f>& verts = m_mesh->getVertices ();
+  const vector<vec3>& verts = m_mesh->getVertices ();
 
   xMin = xMax = verts[0].x;
   yMin = yMax = verts[0].y;
 
   for (uint32_t i=1; i<verts.size (); i++)
   {
-    const Vec3f *v = &verts[i];
+    const vec3 *v = &verts[i];
 
     if (v->x < xMin)
       xMin = v->x;
@@ -123,14 +123,14 @@ void Model::getMinMax (float& xMin, float& xMax, float& yMin, float& yMax)
   }
 }
 
-void Model::draw (Vec2f position, const Vec3f& rotation)
+void Model::draw (vec2 position, const vec3& rotation)
 {
   gl::pushModelView ();
 
   gl::translate (position);
-  gl::rotate (Vec3f (0, 0, toDegrees (rotation.z)));
-  gl::rotate (Vec3f (0, toDegrees (rotation.y), 0));
-  gl::rotate (Vec3f (toDegrees (rotation.x), 0, 0));
+  gl::rotate (vec3 (0, 0, toDegrees (rotation.z)));
+  gl::rotate (vec3 (0, toDegrees (rotation.y), 0));
+  gl::rotate (vec3 (toDegrees (rotation.x), 0, 0));
 
   gl::enable  (GL_RESCALE_NORMAL);
 

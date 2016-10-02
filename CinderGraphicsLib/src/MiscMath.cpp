@@ -2,14 +2,14 @@
 
 #include "MiscMath.h"
 
-void MiscMath::ComputeTangent(const Vec3f& P1,  const Vec3f& P2,  const Vec3f& P3, 
-                              const Vec2f& UV1, const Vec2f& UV2, const Vec2f& UV3,
-                              Vec3f &tangent)
+void MiscMath::ComputeTangent(const vec3& P1,  const vec3& P2,  const vec3& P3, 
+                              const vec2& UV1, const vec2& UV2, const vec2& UV3,
+                              vec3 &tangent)
 {
-   Vec3f Edge1 = P2 - P1;
-   Vec3f Edge2 = P3 - P1;
-   Vec2f Edge1uv = UV2 - UV1;
-   Vec2f Edge2uv = UV3 - UV1;
+   vec3 Edge1 = P2 - P1;
+   vec3 Edge2 = P3 - P1;
+   vec2 Edge1uv = UV2 - UV1;
+   vec2 Edge2uv = UV3 - UV1;
 
    float cp = Edge1uv.y * Edge2uv.x - Edge1uv.x * Edge2uv.y;
 
@@ -22,18 +22,18 @@ void MiscMath::ComputeTangent(const Vec3f& P1,  const Vec3f& P2,  const Vec3f& P
    }
 }
 
-Vec3f MiscMath::getRandomDirection ()
+vec3 MiscMath::getRandomDirection ()
 {
   float randomNormedZ = Rand::randFloat (-1, 1);
   float xyPlaneAngle = asin (randomNormedZ); 
   float zAxisAngle = Rand::randFloat (0, 2.0f * (float)M_PI);
 
-  return Vec3f (cos (xyPlaneAngle) * cos (zAxisAngle),
+  return vec3 (cos (xyPlaneAngle) * cos (zAxisAngle),
                 cos (xyPlaneAngle) * sin (zAxisAngle),
                 randomNormedZ);
 }
 
-Vec3f MiscMath::projectOnPlane (const Vec3f& n, const Vec3f& v)
+vec3 MiscMath::projectOnPlane (const vec3& n, const vec3& v)
 {
   return v - n * n.dot (v);
 }

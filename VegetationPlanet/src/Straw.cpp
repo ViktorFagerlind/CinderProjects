@@ -9,8 +9,8 @@
 #include "cinder/Rand.h"
 #include "cinder/CinderMath.h"
 
-Straw::Straw (const Vec3f&    startNormal, 
-            const Vec3f&    position,
+Straw::Straw (const vec3&    startNormal, 
+            const vec3&    position,
             const uint32_t  nofCircularSegments,
             const uint32_t  nofSegmentsPerJoint, 
             const uint32_t  nofJoints, 
@@ -27,7 +27,7 @@ Straw::Straw (const Vec3f&    startNormal,
   for (uint32_t i=1; i<nofJoints; i++)
   {
     m_Joints.push_back (Joint (m_Joints[i-1].getEndPosition (),
-                               (m_Joints[i-1].m_normal*0.5f + Vec3f (Rand::randFloat(-1,1), 
+                               (m_Joints[i-1].m_normal*0.5f + vec3 (Rand::randFloat(-1,1), 
                                                                      Rand::randFloat(-1,1), 
                                                                      Rand::randFloat(-1,1))).normalized (), 
                                jointLength));
@@ -41,7 +41,7 @@ void Straw::setRotation (const Matrix44<float>& rotationMatrix)
   m_rotation = rotationMatrix;
 }
 
-void Straw::setPosition (const Vec3f& position)
+void Straw::setPosition (const vec3& position)
 {
   m_position = position;
 }
@@ -50,7 +50,7 @@ void Straw::update ()
 {
   // Note that the first joint is never updated, it is stuck on the body
 
-  m_Joints[0].m_position = m_position; //Matrix44<float>::createTranslation (m_position) * m_rotation * Vec3f(0,0,0);
+  m_Joints[0].m_position = m_position; //Matrix44<float>::createTranslation (m_position) * m_rotation * vec3(0,0,0);
   m_Joints[0].m_normal   = m_rotation * m_startNormal;
 
   for (uint32_t i=1; i<m_Joints.size (); i++)
@@ -83,8 +83,8 @@ void Straw::draw (gl::GlslProg& shader)
 
   for (uint32_t i=0; i<nofPoints - 2; i++)
   {
-    Vec3f currentToNext  = m_drawPoints[i+1] - m_drawPoints[i];
-    Vec3f nextToNextNext = m_drawPoints[i+2] - m_drawPoints[i+1];
+    vec3 currentToNext  = m_drawPoints[i+1] - m_drawPoints[i];
+    vec3 nextToNextNext = m_drawPoints[i+2] - m_drawPoints[i+1];
 
     m_radie[i+1]   = VfBSpline::calc1D (m_radius*2.f, m_radius, 0.f, 0.f, (float)i/((float)nofPoints-3.f));
     m_normals[i+1] = (currentToNext + nextToNextNext).normalized ();
@@ -93,7 +93,7 @@ void Straw::draw (gl::GlslProg& shader)
   // Choose a general direction for the "up" vector so that it is perpendicular to the 
   // general layout of the entire line, in that way the face normals are less likely 
   // to be aligned to the direction (which is not good when projecting on that plane)
-  Vec3f upDirection = Vec3f (0,0,1).cross (m_Joints[m_Joints.size()-1].m_position - m_Joints[0].m_position);
+  vec3 upDirection = vec3 (0,0,1).cross (m_Joints[m_Joints.size()-1].m_position - m_Joints[0].m_position);
 
   TubeDrawer::draw (shader, 
                     upDirection,

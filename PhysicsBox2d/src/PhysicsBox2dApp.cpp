@@ -47,15 +47,15 @@ public:
 	void update();
 	void draw();
 
-  //Vec2f mouseToWorld (int mouseX, int mouseY);
+  //vec2 mouseToWorld (int mouseX, int mouseY);
 
 private:
 	float m_width;
 	float m_height;
 
 	bool  m_pressed;
-	Vec2f m_position;
-	Vec2f m_velocity;
+	vec2 m_position;
+	vec2 m_velocity;
 
   unique_ptr<Bucket> m_bucket;
 
@@ -120,7 +120,7 @@ public:
   }
 
 private:
-  Vec2f m_pos;
+  vec2 m_pos;
   float m_width;
   float m_height;
 };
@@ -156,14 +156,14 @@ void PhysicsBox2dApp::setup()
 #endif
 
   mHeadEmitter = new AreaEmitter (100,                  // maxNofParticles,
-                                   Vec3f(app::getWindowWidth()/2.f, app::getWindowHeight()/2.f,0),         // position, 
+                                   vec3(app::getWindowWidth()/2.f, app::getWindowHeight()/2.f,0),         // position, 
   						                     1,                   // particlesPerFrame, 
   						                     20,                  // width
   						                     20,                  // height 
                                    20,                  // depth,
 							                     4,                   // minParticleSize,
 							                     6,                   // maxParticleSize,
-							                     Vec3f (0, 0, 0),     // baseVelocity,
+							                     vec3 (0, 0, 0),     // baseVelocity,
 							                     4.0f);               // randVelocity
 
   CommonModifier *commonModifier = new CommonModifier (2.0f, 1.0f, 5.0f);
@@ -211,7 +211,7 @@ void PhysicsBox2dApp::touchesBegan( TouchEvent event )
 
   vector<TouchEvent::Touch>::const_iterator firstTouch = event.getTouches().begin();
 	m_position = firstTouch->getPos ();
-  m_velocity = Vec2f (0,0);
+  m_velocity = vec2 (0,0);
 }
 
 
@@ -244,9 +244,9 @@ void PhysicsBox2dApp::keyDown(KeyEvent event) {
 }
 
 /*
-Vec2f PhysicsBox2dApp::mouseToWorld (int mouseX, int mouseY)
+vec2 PhysicsBox2dApp::mouseToWorld (int mouseX, int mouseY)
 {
-  return Vec2f ((float)mouseX  / (float)getWindowWidth ()  * 2000.f - 1000.f,
+  return vec2 ((float)mouseX  / (float)getWindowWidth ()  * 2000.f - 1000.f,
                 (float)-mouseY / (float)getWindowHeight () * 1000.f + 500.f);
 }
 */
@@ -264,7 +264,7 @@ void PhysicsBox2dApp::update()
 	int32 positionIterations = 2;
 	world.Step (timeStep, velocityIterations, positionIterations);
 
-  mHeadEmitter->setPosition (Vec3f (m_position.x, m_position.y, 0.f));
+  mHeadEmitter->setPosition (vec3 (m_position.x, m_position.y, 0.f));
 
   ParticleSystemManager::getSingleton().update ();
 }
@@ -280,24 +280,24 @@ void PhysicsBox2dApp::draw()
 
   // Get the gravity.
 #if defined (CINDER_COCOA_TOUCH)
-  Vec3f gravity3dDirection = MotionManager::getGravityDirection ();
+  vec3 gravity3dDirection = MotionManager::getGravityDirection ();
   gravity3dDirection.x = -gravity3dDirection.x;
   gravity3dDirection.invert ();
-  Vec2f gravity2dDirection = Vec2f (gravity3dDirection.x, gravity3dDirection.y).normalized();		
+  vec2 gravity2dDirection = vec2 (gravity3dDirection.x, gravity3dDirection.y).normalized();		
 #else
-  Vec2f gravity2dDirection = Vec2f (0.f, 1.f);		
+  vec2 gravity2dDirection = vec2 (0.f, 1.f);		
 #endif
   
   world.SetGravity (10.f * b2Vec2 (gravity2dDirection.x, gravity2dDirection.y));
   
-  Vec3f center = Vec3f (getWindowWidth()/2.f, getWindowHeight()/2.f, 0.f);
+  vec3 center = vec3 (getWindowWidth()/2.f, getWindowHeight()/2.f, 0.f);
 
 #if defined (CINDER_COCOA_TOUCH)
   gl::color (1, 0, 0);
   gl::drawVector (center, center + 100.f * gravity3dDirection, 20.f, 10.f);
 
   gl::color (0, 1, 0);
-  gl::drawVector (center, center + 100.f * Vec3f (gravity2dDirection.x, gravity2dDirection.y, 0.f), 20.f, 10.f);
+  gl::drawVector (center, center + 100.f * vec3 (gravity2dDirection.x, gravity2dDirection.y, 0.f), 20.f, 10.f);
 #endif
 
   m_bucket->draw ();

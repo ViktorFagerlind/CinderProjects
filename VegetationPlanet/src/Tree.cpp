@@ -13,14 +13,14 @@
 #include "cinder/Timeline.h"
 
 
-Flower::Flower (const float size, const Vec3f& through, const Vec3f& left, const Vec3f& position)
+Flower::Flower (const float size, const vec3& through, const vec3& left, const vec3& position)
 : m_position (position),
   m_through  (through),
   m_left     (left)
 {
   app::App *app = app::App::get ();
 
-  Vec3f up   = through.cross (left);
+  vec3 up   = through.cross (left);
   m_orientation = Matrix44f::createRotationOnb (left, through, up);
 
   app->timeline ().apply (&m_size, size/4.f, size, 0.2f, EaseNone());
@@ -38,41 +38,41 @@ gl::VboMesh& Flower::getVboMesh ()
 
   //-- Create leaf VBO ------------------------------------------
  	std::vector<uint32_t> vboIndices;
-	std::vector<Vec3f>    vboVertices;
-	std::vector<Vec3f>    vboNormals;
+	std::vector<vec3>    vboVertices;
+	std::vector<vec3>    vboNormals;
 
   // Create indicies
   for (uint32_t i=0; i<11; i++)
     vboIndices.push_back (i);
 
   // Create verticies and normals
-  vboNormals.push_back  (Vec3f ( .1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f ( 1.f,  0.f, -2.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-1.f,  0.f, -2.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.2f, 1));
+  vboVertices.push_back (vec3 ( 1.f,  0.f, -2.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-1.f,  0.f, -2.f));
 
-  vboNormals.push_back  (Vec3f ( .1f, -0.1f, 1));
-  vboVertices.push_back (Vec3f ( 1.f,  4.f, -2.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-1.f,  4.f, -2.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.1f, 1));
+  vboVertices.push_back (vec3 ( 1.f,  4.f, -2.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-1.f,  4.f, -2.f));
 
-  vboNormals.push_back  (Vec3f ( .1f, -0.0f, 1));
-  vboVertices.push_back (Vec3f ( 6.f,  6.f,  -1.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-6.f,  6.f,  -1.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.0f, 1));
+  vboVertices.push_back (vec3 ( 6.f,  6.f,  -1.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-6.f,  6.f,  -1.f));
 
-  vboNormals.push_back  (Vec3f ( .1f, -0.1f, 1));
-  vboVertices.push_back (Vec3f ( 8.f, 10.f,   0.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-8.f, 10.f,   0.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.1f, 1));
+  vboVertices.push_back (vec3 ( 8.f, 10.f,   0.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-8.f, 10.f,   0.f));
 
-  vboNormals.push_back  (Vec3f ( .1f,  0.2f, 1));
-  vboVertices.push_back (Vec3f ( 6.f, 16.f,  -2.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-6.f, 16.f,  -2.f));
+  vboNormals.push_back  (vec3 ( .1f,  0.2f, 1));
+  vboVertices.push_back (vec3 ( 6.f, 16.f,  -2.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-6.f, 16.f,  -2.f));
   
-  vboNormals.push_back  (Vec3f (0,  0.3f, 1));
-  vboVertices.push_back (Vec3f ( 0.f, 22.f,  -3.f));
+  vboNormals.push_back  (vec3 (0,  0.3f, 1));
+  vboVertices.push_back (vec3 ( 0.f, 22.f,  -3.f));
 
   // Vbo settings
 	gl::VboMesh::Layout layout;
@@ -108,11 +108,11 @@ void Flower::draw ()
   gl::enable  (GL_RESCALE_NORMAL);
 
   // lean down leaf
-  Matrix44f layRotation = Matrix44f::createRotation (Vec3f (1,0,0), -70.f * (float)M_PI / 180.f);
+  Matrix44f layRotation = Matrix44f::createRotation (vec3 (1,0,0), -70.f * (float)M_PI / 180.f);
 
   // rotate leaf around center
   const uint32_t nofFlowerLeaves = 5;
-  Matrix44f manyRotation = Matrix44f::createRotation (Vec3f (0,1,0), 2.f * (float)M_PI / (float) nofFlowerLeaves);
+  Matrix44f manyRotation = Matrix44f::createRotation (vec3 (0,1,0), 2.f * (float)M_PI / (float) nofFlowerLeaves);
   for (uint32_t i=0; i<nofFlowerLeaves; i++)
   {
     gl::pushModelView ();
@@ -133,10 +133,10 @@ void Flower::draw ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Leaf::Leaf (const float size, const Vec3f& through, const Vec3f& left, const Vec3f& position)
+Leaf::Leaf (const float size, const vec3& through, const vec3& left, const vec3& position)
 : m_position (position)
 {
-  Vec3f up = through.cross (left);
+  vec3 up = through.cross (left);
 
   m_orientation = Matrix44f::createRotationOnb (left, through, up);
 
@@ -157,41 +157,41 @@ gl::VboMesh& Leaf::getVboMesh ()
 
   //-- Create leaf VBO ------------------------------------------
  	std::vector<uint32_t> vboIndices;
-	std::vector<Vec3f>    vboVertices;
-	std::vector<Vec3f>    vboNormals;
+	std::vector<vec3>    vboVertices;
+	std::vector<vec3>    vboNormals;
 
   // Create indicies
   for (uint32_t i=0; i<11; i++)
     vboIndices.push_back (i);
 
   // Create verticies and normals
-  vboNormals.push_back  (Vec3f ( .1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f ( 1.f,  0.f, -2.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-1.f,  0.f, -2.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.2f, 1));
+  vboVertices.push_back (vec3 ( 1.f,  0.f, -2.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-1.f,  0.f, -2.f));
 
-  vboNormals.push_back  (Vec3f ( .1f, -0.1f, 1));
-  vboVertices.push_back (Vec3f ( 1.f,  4.f, -2.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-1.f,  4.f, -2.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.1f, 1));
+  vboVertices.push_back (vec3 ( 1.f,  4.f, -2.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-1.f,  4.f, -2.f));
 
-  vboNormals.push_back  (Vec3f ( .1f, -0.0f, 1));
-  vboVertices.push_back (Vec3f ( 6.f,  6.f,  -1.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-6.f,  6.f,  -1.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.0f, 1));
+  vboVertices.push_back (vec3 ( 6.f,  6.f,  -1.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-6.f,  6.f,  -1.f));
 
-  vboNormals.push_back  (Vec3f ( .1f, -0.1f, 1));
-  vboVertices.push_back (Vec3f ( 8.f, 10.f,   0.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-8.f, 10.f,   0.f));
+  vboNormals.push_back  (vec3 ( .1f, -0.1f, 1));
+  vboVertices.push_back (vec3 ( 8.f, 10.f,   0.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-8.f, 10.f,   0.f));
 
-  vboNormals.push_back  (Vec3f ( .1f,  0.2f, 1));
-  vboVertices.push_back (Vec3f ( 6.f, 16.f,  -2.f));
-  vboNormals.push_back  (Vec3f (-.1f, -0.2f, 1));
-  vboVertices.push_back (Vec3f (-6.f, 16.f,  -2.f));
+  vboNormals.push_back  (vec3 ( .1f,  0.2f, 1));
+  vboVertices.push_back (vec3 ( 6.f, 16.f,  -2.f));
+  vboNormals.push_back  (vec3 (-.1f, -0.2f, 1));
+  vboVertices.push_back (vec3 (-6.f, 16.f,  -2.f));
   
-  vboNormals.push_back  (Vec3f (0,  0.3f, 1));
-  vboVertices.push_back (Vec3f ( 0.f, 22.f,  -3.f));
+  vboNormals.push_back  (vec3 (0,  0.3f, 1));
+  vboVertices.push_back (vec3 ( 0.f, 22.f,  -3.f));
 
   // Vbo settings
 	gl::VboMesh::Layout layout;
@@ -238,9 +238,9 @@ void Leaf::draw ()
 //----------------------------------------------------------------------------------------------------------------------
 
 Branch::Branch (const float               radius, 
-                const Vec3f&              position, 
-                const Vec3f&              previusNormal, 
-                const Vec3f&              normal, 
+                const vec3&              position, 
+                const vec3&              previusNormal, 
+                const vec3&              normal, 
                 const uint32_t            fullLife,
                 const float               jointLength)
 : m_radius        (radius),
@@ -279,7 +279,7 @@ void Branch::updateSelf ()
   if ((Tree::getAnimationCounter () % 2) != 0) // Speed up by only animate at half the framerate
     return;
 
-  Vec3f newPoint = VfBSpline::calc3D (m_joints[m_currentJoint  ].m_position,
+  vec3 newPoint = VfBSpline::calc3D (m_joints[m_currentJoint  ].m_position,
                                       m_joints[m_currentJoint+1].m_position,
                                       m_joints[m_currentJoint+2].m_position,
                                       m_joints[m_currentJoint+3].m_position,
@@ -290,12 +290,12 @@ void Branch::updateSelf ()
 
   float growPercent = ((float)m_life + m_jointLife) / (float)m_fullLife;
 
-  const Vec3f& currentNormal = m_joints[m_currentJoint+1].m_normal; // Current dírection of the branch
+  const vec3& currentNormal = m_joints[m_currentJoint+1].m_normal; // Current dírection of the branch
 
   if (growPercent > 0.4f && Rand::randFloat(0.f, growPercent) > 0.1f) // Create leaf?
   {
-    Vec3f through = (currentNormal + MiscMath::getRandomDirection()*0.5f).normalized ();
-    Vec3f left    = (through.cross(-newPoint) + MiscMath::getRandomDirection()*0.5f).normalized ();
+    vec3 through = (currentNormal + MiscMath::getRandomDirection()*0.5f).normalized ();
+    vec3 left    = (through.cross(-newPoint) + MiscMath::getRandomDirection()*0.5f).normalized ();
 
     m_leaves.push_back (Leaf (Rand::randFloat (0.02f, 0.04f),   // Size
                               through,                          // Through
@@ -305,8 +305,8 @@ void Branch::updateSelf ()
 
   if (growPercent > 0.7f && Rand::randFloat(0.f, growPercent) > 0.5f) // Create flower?
   {
-    Vec3f through = (currentNormal + MiscMath::getRandomDirection()*1.0f).normalized ();
-    Vec3f left    = (through.cross(-newPoint) + MiscMath::getRandomDirection()*0.5f).normalized ();
+    vec3 through = (currentNormal + MiscMath::getRandomDirection()*1.0f).normalized ();
+    vec3 left    = (through.cross(-newPoint) + MiscMath::getRandomDirection()*0.5f).normalized ();
 
     m_flowers.push_back (Flower (Rand::randFloat (0.01f, 0.02f),   // Size
                                  through,                          // Normal
@@ -326,8 +326,8 @@ void Branch::updateSelf ()
     {
       float radius       = VfBSpline::calc1D (2.f*m_radius, m_radius, 0.f, -m_radius, growPercent);
 
-      Vec3f rotationAxis = currentNormal.cross (MiscMath::getRandomDirection());
-      Vec3f branchNormal = currentNormal;
+      vec3 rotationAxis = currentNormal.cross (MiscMath::getRandomDirection());
+      vec3 branchNormal = currentNormal;
       branchNormal.rotate (rotationAxis, Rand::randFloat (toRadians (30.f), toRadians (90.f)));
 
       m_subBranches.push_back (Branch (radius,                      // radius
@@ -365,8 +365,8 @@ void Branch::drawSelf (gl::GlslProg& shader)
 
   for (uint32_t i=0; i<nofPoints - 2; i++)
   {
-    Vec3f currentToNext  = m_drawPoints[i+1] - m_drawPoints[i];
-    Vec3f nextToNextNext = m_drawPoints[i+2] - m_drawPoints[i+1];
+    vec3 currentToNext  = m_drawPoints[i+1] - m_drawPoints[i];
+    vec3 nextToNextNext = m_drawPoints[i+2] - m_drawPoints[i+1];
 
     m_radie[i+1]   = VfBSpline::calc1D (2.f*m_radius, m_radius, 0.f, -m_radius, (float)i/(float)(nofPoints-3));
     m_normals[i+1] = (currentToNext + nextToNextNext).normalized ();
@@ -375,7 +375,7 @@ void Branch::drawSelf (gl::GlslProg& shader)
   // Choose a general direction for the "up" vector so that it is perpendicular to the 
   // general layout of the entire line, in that way the face normals are less likely 
   // to be aligned to the direction (which is not good when projecting on that plane)
-  Vec3f upDirection = Vec3f (0,0,1).cross (m_joints.back().m_position - m_joints.front().m_position);
+  vec3 upDirection = vec3 (0,0,1).cross (m_joints.back().m_position - m_joints.front().m_position);
 
   TubeDrawer::draw (shader, 
                     upDirection,
@@ -426,8 +426,8 @@ uint32_t Tree::m_animationCounter = 0;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Tree::Tree (const Vec3f&        position, 
-            const Vec3f&        direction)
+Tree::Tree (const vec3&        position, 
+            const vec3&        direction)
 : m_branchMaterial (VegetationMaterials::getSingleton ().getBranchMaterial  ()),
   m_leafMaterial   (VegetationMaterials::getSingleton ().getLeafMaterial    ()),
   m_flowerMaterial (VegetationMaterials::getSingleton ().getFlowerMaterial  ()),

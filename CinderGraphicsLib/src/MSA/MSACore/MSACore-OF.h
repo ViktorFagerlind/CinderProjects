@@ -74,8 +74,8 @@ namespace MSA {
 	inline int getWindowWidth()										{	return ofGetWidth(); }
 	inline int getWindowHeight()									{	return ofGetHeight(); }
 	inline float getWindowAspectRatio()								{	return getWindowWidth() * 1.0f / getWindowHeight(); }
-	inline Vec2f getWindowSize()									{	return Vec2f(getWindowWidth(), getWindowHeight()); }
-	inline Vec2f getWindowCenter()									{	return Vec2f(getWindowWidth() * 0.5f, getWindowHeight() * 0.5f ); } 
+	inline vec2 getWindowSize()									{	return vec2(getWindowWidth(), getWindowHeight()); }
+	inline vec2 getWindowCenter()									{	return vec2(getWindowWidth() * 0.5f, getWindowHeight() * 0.5f ); } 
 	
 	inline void drawString(string s, float x, float y)				{	ofDrawBitmapString(s, x, y); }
 	
@@ -87,8 +87,8 @@ namespace MSA {
 		static float randFloat(float f)								{	return ofRandom(0, f);	}
 		static float randFloat(float a, float b)					{	return ofRandom(a, b);	}
 		
-		//! returns a random Vec3f that represents a point on the unit circle
-		static Vec3f randVec3f() {
+		//! returns a random vec3 that represents a point on the unit circle
+		static vec3 randvec3() {
 			float phi = randFloat( (float)M_PI * 2.0f );
 			float costheta = randFloat( -1.0f, 1.0f );
 			
@@ -97,13 +97,13 @@ namespace MSA {
 			float y = rho * sin( phi );
 			float z = costheta;
 			
-			return Vec3f( x, y, z );
+			return vec3( x, y, z );
 		}
 		
-		//! returns a random Vec2f that represents a point on the unit circle
-		static Vec2f randVec2f() {
+		//! returns a random vec2 that represents a point on the unit circle
+		static vec2 randvec2() {
 			float theta = randFloat( (float)M_PI * 2.0f );
-			return Vec2f( cos( theta ), sin( theta ) );
+			return vec2( cos( theta ), sin( theta ) );
 		}
 	};
 	

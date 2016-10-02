@@ -21,7 +21,7 @@ public:
   virtual void keyDown (KeyEvent event);
   virtual void mouseMove (MouseEvent event);
 
-  void setup(const float cameraDistance=100.f, const float cameraStepSize=1.f);
+  void setup (const float cameraDistance = 100.f, const float cameraStepSize = 1.f, gl::Fbo::Format fboFormat = gl::Fbo::Format ());
 	void drawToScreen ();
 
 protected:

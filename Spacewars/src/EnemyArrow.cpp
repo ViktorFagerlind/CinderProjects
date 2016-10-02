@@ -14,8 +14,8 @@ using namespace ci::app;
 
 void EnemyArrowVessel::startedDying ()
 {
-  Vec3f position = Conversions::fromPhysics3f (m_body->GetPosition ());
-  Vec3f speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
+  vec3 position = Conversions::fromPhysics3f (m_body->GetPosition ());
+  vec3 speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
 
   ParticleSystemHelper::createFireBall (position,
                                         speed,
@@ -26,8 +26,8 @@ void EnemyArrowVessel::startedDying ()
 
 void EnemyArrowVessel::died ()
 {
-  Vec3f position = Conversions::fromPhysics3f (m_body->GetPosition ());
-  Vec3f speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
+  vec3 position = Conversions::fromPhysics3f (m_body->GetPosition ());
+  vec3 speed    = Conversions::fromPhysics3f (m_body->GetLinearVelocity ()) / 60.f;  // Convert to 1/60s 
 
   ParticleSystemHelper::createSparkExplosion (position,
                                               speed,
@@ -64,7 +64,7 @@ EnemyArrow::EnemyArrow ()
   m_vessel.reset (new EnemyArrowVessel (vesselDef));
 
   // -------------- create weapons ----------
-  m_lazer.reset  (new Lazer (Vec3f (0.f, 60.f, 0.f), ColorAf (1.f, .8f, .4f), m_vessel, EntityCategory_EnemyShots_E, 5, true));
+  m_lazer.reset  (new Lazer (vec3 (0.f, 60.f, 0.f), ColorAf (1.f, .8f, .4f), m_vessel, EntityCategory_EnemyShots_E, 5, true));
 
   // -------------- setup animation ----------
   slowFire ();
@@ -77,7 +77,7 @@ EnemyArrow::EnemyArrow ()
     .finishFn (bind (&Vessel::eliminate, m_vessel));
 
   m_vessel->addVesselEmitter (VesselEmitter (ParticleSystemHelper::createThrustSystem (),
-                                             Vec3f (0.f, -60.f, 0.f)));
+                                             vec3 (0.f, -60.f, 0.f)));
 }
 
 

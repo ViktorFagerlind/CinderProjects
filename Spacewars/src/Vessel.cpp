@@ -22,7 +22,7 @@ using namespace ci::app;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-VesselEmitter::VesselEmitter (shared_ptr<Emitter> emitter, const Vec3f& relativePos)
+VesselEmitter::VesselEmitter (shared_ptr<Emitter> emitter, const vec3& relativePos)
 : m_emitter     (emitter),
   m_relativePos (relativePos)
 {
@@ -64,7 +64,7 @@ Vessel::Vessel (const VesselDef& vesselDef)
   float shrinkFactor = 0.7f;
 	boxShape.SetAsBox (shrinkFactor * Conversions::toPhysics (halfW), 
                      shrinkFactor * Conversions::toPhysics (halfH), 
-                     shrinkFactor * Conversions::toPhysics (Vec2f (xMax-halfW, yMax-halfH)), 
+                     shrinkFactor * Conversions::toPhysics (vec2 (xMax-halfW, yMax-halfH)), 
                      0.f);
 
   // create fixture
@@ -90,14 +90,14 @@ Vessel::~Vessel ()
   World::getPhysicsWorld ().DestroyBody (m_body);
 }
 
-Vec3f Vessel::vesselPositionToWorld (const Vec3f& vec) const
+vec3 Vessel::vesselPositionToWorld (const vec3& vec) const
 {
   return vesselRotationToWorld (vec) + getPosition ();
 }
 
-Vec3f Vessel::vesselRotationToWorld (const Vec3f& vec) const
+vec3 Vessel::vesselRotationToWorld (const vec3& vec) const
 {
-  Vec3f rotatedVec = vec;
+  vec3 rotatedVec = vec;
 
   rotatedVec.rotateX (m_rotation.x);
   rotatedVec.rotateY (m_rotation.y);
@@ -143,7 +143,7 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
         force = m_moveCapForce * force;
       }
       m_body->ApplyForceToCenter (force);
-      Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
+      vec2 position = Conversions::fromPhysics (m_body->GetPosition ());
 
       #if _DEBUG
         m_previousDesiredPosition = positionAndAngle.m_position;
@@ -202,10 +202,10 @@ void Vessel::update (const float dt, const PositionAndAngle& positionAndAngle)
   // Calculate rotation from physics object
   const float leanConst = m_leanConst;
 
-  Vec2f rightForVehicle = Vec2f (1.f, 0.f);
+  vec2 rightForVehicle = vec2 (1.f, 0.f);
   rightForVehicle.rotate (m_body->GetAngle ());
 
-  Vec2f speed   = Conversions::fromPhysics (m_body->GetLinearVelocity ());
+  vec2 speed   = Conversions::fromPhysics (m_body->GetLinearVelocity ());
   m_rotation.y  = speed.dot (rightForVehicle) * leanConst;
 
   if (m_body->IsFixedRotation ())
@@ -225,7 +225,7 @@ void Vessel::drawSolid ()
 
   gl::drawSolidCircle (m_previousDesiredPosition, 10);
 
-  Vec3f drawDir = Vec3f(0.f, 120.f, 0.f);
+  vec3 drawDir = vec3(0.f, 120.f, 0.f);
   drawDir.rotateX (m_rotation.x);
   drawDir.rotateY (m_rotation.y);
   drawDir.rotateZ (m_rotation.z);

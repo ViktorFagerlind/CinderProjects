@@ -9,17 +9,17 @@ class TubeDrawer
 {
 public:
   static void draw (gl::GlslProg&   shader, 
-                    const Vec3f&    upDirection,
+                    const vec3&    upDirection,
                     const bool      blendFirst,
                     const uint32_t  nofCircularSegments,
-                          Vec3f    *points,
-                          Vec3f    *normals,
+                          vec3    *points,
+                          vec3    *normals,
                           float    *radie,
                     const uint32_t  nofPoints);
 
-  static void debugDraw (const Vec3f&     upDirection,
-                         Vec3f           *points,
-                         Vec3f           *normals,
+  static void debugDraw (const vec3&     upDirection,
+                         vec3           *points,
+                         vec3           *normals,
                          float           *radie,
                          const uint32_t   nofPoints);
 

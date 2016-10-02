@@ -6,36 +6,36 @@ using namespace ci;
 using namespace std;
 
 //Dynamic object using bounding box
-DynamicObject::DynamicObject(float mass, Vec3f& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
+DynamicObject::DynamicObject(float mass, vec3& cog,  float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
   : PhysicsObject(mass, cog, boundingBoxWidth, boundingBoxHeight, boundingBoxLength)
 {
   DynamicObject::init(cog);
 };
 
 //Dynamic object using bounding plane
-DynamicObject::DynamicObject(float mass, Vec3f& cog,  float boundingPlaneWidth, float boundingPlaneHeight)
+DynamicObject::DynamicObject(float mass, vec3& cog,  float boundingPlaneWidth, float boundingPlaneHeight)
   : PhysicsObject(mass, cog, boundingPlaneWidth, boundingPlaneHeight)
 {
   DynamicObject::init(cog);
 };
 
 //Dynamic object using bounding sphere
-DynamicObject::DynamicObject(float mass, Vec3f& cog,  float sphereRadius)
+DynamicObject::DynamicObject(float mass, vec3& cog,  float sphereRadius)
   : PhysicsObject(mass, cog, sphereRadius)
 {
   DynamicObject::init(cog);
 };
 
 
-void DynamicObject::init(Vec3f& cog)
+void DynamicObject::init(vec3& cog)
 {
-  mState.mLinearMomentum = Vec3f(0, 0, 0);
+  mState.mLinearMomentum = vec3(0, 0, 0);
 
   Matrix44f globalInertia = mState.mOrientation*mLocalInertia*mState.mOrientation.transposed();
   Vec4f tempRot = Vec4f(0, 0, 0, 0);
   Vec4f mAngularMomentum = globalInertia*tempRot;
-  mForceSum   = Vec3f(0.0f, 0.0f, 0.0f);
-  mTorqueSum  = Vec3f(0.0f, 0.0f, 0.0f);
+  mForceSum   = vec3(0.0f, 0.0f, 0.0f);
+  mTorqueSum  = vec3(0.0f, 0.0f, 0.0f);
 };
 
 
@@ -63,23 +63,23 @@ void DynamicObject::draw()
 }
 
 
-void DynamicObject::applyForce(Vec3f force)
+void DynamicObject::applyForce(vec3 force)
 {
   mForceSum += force;
 }
 
 void DynamicObject::resetForce()
 {
-  mForceSum = Vec3f(0, 0, 0);
+  mForceSum = vec3(0, 0, 0);
 }
 
-void DynamicObject::applyTorque(Vec3f pointOfAttack, Vec3f force)
+void DynamicObject::applyTorque(vec3 pointOfAttack, vec3 force)
 {
-  Vec3f lever = pointOfAttack - mState.mPosition;
+  vec3 lever = pointOfAttack - mState.mPosition;
   mTorqueSum += cross(lever, force);
 }
 
 void DynamicObject::resetTorque()
 {
-  mTorqueSum = Vec3f(0, 0, 0);
+  mTorqueSum = vec3(0, 0, 0);
 }

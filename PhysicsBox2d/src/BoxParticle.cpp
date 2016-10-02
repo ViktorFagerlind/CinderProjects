@@ -16,7 +16,7 @@ BoxParticle::~BoxParticle()
 }
 	
 	
-void BoxParticle::setup(Vec2f boxSize) 
+void BoxParticle::setup(vec2 boxSize) 
 {
 
 	size = boxSize;
@@ -35,7 +35,7 @@ void BoxParticle::draw()
 {
   gl::color (color);
 
-	Vec2f pos = Conversions::toScreen( body->GetPosition() );
+	vec2 pos = Conversions::toScreen( body->GetPosition() );
 	float t = Conversions::radiansToDegrees( body->GetAngle() );
 	
 	glPushMatrix();

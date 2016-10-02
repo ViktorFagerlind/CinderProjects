@@ -77,7 +77,7 @@ namespace MSA {
 		return x;
 	}
 	
-	//	inline void fastNormalize(Vec3f &p) {
+	//	inline void fastNormalize(vec3 &p) {
 	//		float f = fastInvSquareRoot(p.lengthSquared());
 	//		p *= f;
 	//	}

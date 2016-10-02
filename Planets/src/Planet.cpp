@@ -19,7 +19,7 @@ Planet::Planet (const float           a,
                       shared_ptr<BaseMaterial>   material,
                       gl::VboMesh     vbo)
 : PhysicsObject  (4.0f/3.0f * (float)M_PI * radius * radius * radius * density,
-                  Vec3f(0, 0, 0),
+                  vec3(0, 0, 0),
                   radius)
 {
   float trackRadius = a * (1.0f - e);
@@ -51,7 +51,7 @@ void Planet::update()
   float deltaTheta  = v / r;                               // (3)
 
   mTheta    = mTheta + deltaTheta;
-  mPosition = mGravityCenter->getPosition () + Vec3f(r * cos(mTheta), r * sin(mTheta), 0.0f);
+  mPosition = mGravityCenter->getPosition () + vec3(r * cos(mTheta), r * sin(mTheta), 0.0f);
 
   mAxisAngle += 0.5f;
 }
@@ -63,8 +63,8 @@ void Planet::draw()
   // Matrix transforms
   gl::pushModelView();
   gl::translate(mPosition);
-  gl::rotate(Vec3f(45.0f,       0.0f, 20.0f));
-  gl::rotate(Vec3f( 0.0f, mAxisAngle,  0.0f));
+  gl::rotate(vec3(45.0f,       0.0f, 20.0f));
+  gl::rotate(vec3( 0.0f, mAxisAngle,  0.0f));
 
   mMaterial->bind ();
 
@@ -81,13 +81,13 @@ void Planet::draw()
 
 #if 0
   // Draw normals and tangents
-  const std::vector<Vec3f>&	    meshNormals   = mMesh.getNormals ();
+  const std::vector<vec3>&	    meshNormals   = mMesh.getNormals ();
 	const std::vector<uint32_t>&	meshIndices   = mMesh.getIndices();
-	const std::vector<Vec3f>&	    meshVertices  = mMesh.getVertices ();
+	const std::vector<vec3>&	    meshVertices  = mMesh.getVertices ();
   
   for (int i=0; i<mMesh.getNumTriangles (); i++)
   {
-    Vec3f tangent;
+    vec3 tangent;
 
     const int i1 = meshIndices[3*i];
     const int i2 = meshIndices[3*i+1];
@@ -97,7 +97,7 @@ void Planet::draw()
     gl::drawVector (meshVertices[i1], meshVertices[i1]+meshNormals[i1]);
 
     glColor3f (0, 1, 0);
-    tangent = Vec3f (mTangentBuffer[3*i1], mTangentBuffer[3*i1+1], mTangentBuffer[3*i1+2]);
+    tangent = vec3 (mTangentBuffer[3*i1], mTangentBuffer[3*i1+1], mTangentBuffer[3*i1+2]);
     gl::drawVector (meshVertices[i1], meshVertices[i1]+tangent);
   }
 #endif

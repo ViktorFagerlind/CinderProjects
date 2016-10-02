@@ -57,7 +57,7 @@ public:
 
   void setup ();
 
-  void update (const float dt, const Vec2f& touchPos);
+  void update (const float dt, const vec2& touchPos);
 
   void issueNewObjects ();
 
@@ -69,9 +69,9 @@ public:
 
   const MovingCamera& getCamera () {return *m_camera.get ();}
 
-  Vec2f pixelToWorld (const Vec2f& mousePos);
-  Vec2f getTopLeft ();
-  Vec2f getDownRight ();
+  vec2 pixelToWorld (const vec2& mousePos);
+  vec2 getTopLeft ();
+  vec2 getDownRight ();
 
 private:
   bool isCloseToTime (const float t) const {return m_previousTime < t && t <= m_currentTime;}

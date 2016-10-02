@@ -10,7 +10,7 @@ class BoxParticleController {
 		void setup(b2World &w);
 		void update();
 		void draw();
-		void addParticle(const ci::Vec2i &mousePos);
+		void addParticle(const ci::ivec2 &mousePos);
 		void removeAll();
 	
 	private:

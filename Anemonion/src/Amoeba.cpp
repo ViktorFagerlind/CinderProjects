@@ -5,7 +5,7 @@
 #include "cinder/Rand.h"
 #include "cinder/ObjLoader.h"
 
-Amoeba::Amoeba (const float radius, const Vec3f position)
+Amoeba::Amoeba (const float radius, const vec3 position)
 : m_radius (radius),
   m_position (position)
 {
@@ -33,10 +33,10 @@ Amoeba::Amoeba (const float radius, const Vec3f position)
 
   for (uint32_t i=0; i<30; i++)
   {
-    Vec3f direction;
+    vec3 direction;
     
     if (i==0) 
-      direction = Vec3f(1,0,0);
+      direction = vec3(1,0,0);
     else // Do not allow new tube to close to another
     {
       bool found = false;
@@ -78,7 +78,7 @@ void Amoeba::rotate (const Matrix44<float>& rotationMatrix)
   m_rotation *= rotationMatrix;
 }
 
-void Amoeba::move (const Vec3f& offset)
+void Amoeba::move (const vec3& offset)
 {
   m_position += offset;
 }
@@ -89,13 +89,13 @@ void Amoeba::animate ()
   const float gravityStrength = 0.002f;
   const float rotationsSpeed  = 0.001f;
 
-	Vec3f direction = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter) * 0.005f, 
+	vec3 direction = m_perlin.dfBm (vec3 ((m_position.x + m_animationCounter) * 0.005f, 
                                           (m_position.y + m_animationCounter) * 0.005f,
                                           (m_position.z + m_animationCounter) * 0.005f));
 
   move ((direction - m_position * gravityStrength) * speed);
 
-	Vec3f rotation  = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter/2.f) * 0.005f, 
+	vec3 rotation  = m_perlin.dfBm (vec3 ((m_position.x + m_animationCounter/2.f) * 0.005f, 
                                           (m_position.y + m_animationCounter/2.f) * 0.005f,
                                           (m_position.z + m_animationCounter/2.f) * 0.005f));
 

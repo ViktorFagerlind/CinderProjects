@@ -20,7 +20,7 @@ void AnimParticleDrawer::beforeDraw ()
   glEnableClientState (GL_COLOR_ARRAY);
 }
 
-void AnimParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSize)
+void AnimParticleDrawer::drawParticle (const Particle &p, const vec2 &textureSize)
 {
   GLfloat texCoords[8];
 
@@ -53,7 +53,7 @@ void AnimParticleDrawer::drawParticle (const Particle &p, const Vec2f &textureSi
   texCoords[7] = yd;
 
   Billboard::drawBillboardTex (p.mPosition,
-                               Vec2f (p.mCurrentSize, p.mCurrentSize),
+                               vec2 (p.mCurrentSize, p.mCurrentSize),
                                texCoords,
                                p.mColor);
 }

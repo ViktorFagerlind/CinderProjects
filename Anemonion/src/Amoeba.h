@@ -18,13 +18,13 @@ using namespace ci;
 class Amoeba
 {
 public:
-  class Amoeba (const float radius, const Vec3f position = Vec3f(0,0,0));
+  class Amoeba (const float radius, const vec3 position = vec3(0,0,0));
   
   void rotate (const Matrix44<float>& rotationMatrix);
 
-  void move   (const Vec3f& offset);
+  void move   (const vec3& offset);
 
-  const Vec3f& getPosition () {return m_position;}
+  const vec3& getPosition () {return m_position;}
 	
   void update ();
 	
@@ -42,7 +42,7 @@ private:
 
   gl::VboMesh                     m_bodyMesh;
 
-  Vec3f                           m_position;
+  vec3                           m_position;
 
   Matrix44<float>                 m_rotation;
 

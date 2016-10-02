@@ -5,7 +5,7 @@
 using namespace ci;
 using namespace std;
 
-BoundingBox::BoundingBox(float width, float height, float length, Vec3f position, Matrix44f orientation)
+BoundingBox::BoundingBox(float width, float height, float length, vec3 position, Matrix44f orientation)
   : BoundingGeometry(eBox, position, orientation)
 {
   mWidth  = width;
@@ -63,22 +63,22 @@ void BoundingBox::draw()
   glPopMatrix();
 }
 
-void BoundingBox::getVertecies (Vec3f *vertices) const
+void BoundingBox::getVertecies (vec3 *vertices) const
 {
-  Vec3f localVertecies[8];
+  vec3 localVertecies[8];
 
   float halfWidth = mWidth/2.0f;
   float halfHeight = mHeight/2.0f;
   float halfLength = mLength/2.0f;
 
-  localVertecies[0] = Vec3f(-halfWidth, -halfHeight, halfLength);
-  localVertecies[1] = Vec3f( halfWidth, -halfHeight, halfLength);
-  localVertecies[2] = Vec3f( halfWidth,  halfHeight, halfLength);
-  localVertecies[3] = Vec3f(-halfWidth,  halfHeight, halfLength);
-  localVertecies[4] = Vec3f(-halfWidth, -halfHeight, -halfLength);
-  localVertecies[5] = Vec3f(-halfWidth, halfHeight, -halfLength);
-  localVertecies[6] = Vec3f( halfWidth,  halfHeight, -halfLength);
-  localVertecies[7] = Vec3f(halfWidth,  -halfHeight, -halfLength);
+  localVertecies[0] = vec3(-halfWidth, -halfHeight, halfLength);
+  localVertecies[1] = vec3( halfWidth, -halfHeight, halfLength);
+  localVertecies[2] = vec3( halfWidth,  halfHeight, halfLength);
+  localVertecies[3] = vec3(-halfWidth,  halfHeight, halfLength);
+  localVertecies[4] = vec3(-halfWidth, -halfHeight, -halfLength);
+  localVertecies[5] = vec3(-halfWidth, halfHeight, -halfLength);
+  localVertecies[6] = vec3( halfWidth,  halfHeight, -halfLength);
+  localVertecies[7] = vec3(halfWidth,  -halfHeight, -halfLength);
 
   for(int i=0; i<8; i++)
   {

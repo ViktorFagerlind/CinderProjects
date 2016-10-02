@@ -9,16 +9,16 @@ using namespace std;
 class BoundingPlane : public BoundingGeometry
 {
 public:
-  BoundingPlane(float width, float heigth, Vec3f position, Matrix44f orientation);
+  BoundingPlane(float width, float heigth, vec3 position, Matrix44f orientation);
 	void update();
 	void draw();
-  Vec3f getNormal() const;
+  vec3 getNormal() const;
   float getOffset() const;
 
 protected:
   //plane equation: normal.*vector + offset = 0
   float mWidth;
   float mHeigth;
-  Vec3f mNormal;
+  vec3 mNormal;
   float mOffset;
 };

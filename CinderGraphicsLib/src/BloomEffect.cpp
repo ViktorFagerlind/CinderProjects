@@ -33,7 +33,7 @@ BloomEffect::~BloomEffect ()
 {
 }
 
-void BloomEffect::blurStep (gl::Fbo& fromFbo, gl::Fbo& toFbo, const Vec2f& blur)
+void BloomEffect::blurStep (gl::Fbo& fromFbo, gl::Fbo& toFbo, const vec2& blur)
 {
   gl::setViewport (toFbo.getBounds ());
   gl::setMatricesWindow (toFbo.getSize (), false);
@@ -57,10 +57,10 @@ gl::Fbo& BloomEffect::render (gl::Fbo& original)
 	mBlurShader.uniform("tex0", 0); // use texture unit 0
 
 	// draw horizontal blur
-  blurStep (original, mHorizontalBlurFbo, Vec2f(mBlurSize/mHorizontalBlurFbo.getWidth (), 0.0f));
+  blurStep (original, mHorizontalBlurFbo, vec2(mBlurSize/mHorizontalBlurFbo.getWidth (), 0.0f));
 
 	// draw vertical blur (of horizontal blur)
-  blurStep (mHorizontalBlurFbo, mBothBlurFbo, Vec2f(0.0f, mBlurSize/mBothBlurFbo.getHeight ()));
+  blurStep (mHorizontalBlurFbo, mBothBlurFbo, vec2(0.0f, mBlurSize/mBothBlurFbo.getHeight ()));
 
   mBlurShader.unbind ();
 

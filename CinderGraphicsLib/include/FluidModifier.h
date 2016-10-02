@@ -11,7 +11,7 @@ using namespace ci;
 class FluidModifier : public Modifier 
 {
 public:
-	FluidModifier (size_t resolution, const Vec3f& position, const float viscosity, const bool bounded, const float width, const float height);
+	FluidModifier (size_t resolution, const vec3& position, const float viscosity, const bool bounded, const float width, const float height);
 	
 	virtual ~FluidModifier ();
 
@@ -19,7 +19,7 @@ public:
 
   inline void apply(Particle *const particle);
 
-  void applyMovement (const Vec2f& position, const Vec2f& speed);
+  void applyMovement (const vec2& position, const vec2& speed);
 
 private:
   void vel_step (float *u, float *v, float *u0, float *v0, float visc, float dt);
@@ -54,7 +54,7 @@ private:
 	float *mDensity;
 	float *mPrevDensity;
 
-  const Vec3f mPosition;
+  const vec3 mPosition;
   const float mHalfWidth;
   const float mHalfHeight;
   const float mVolumeWidth;

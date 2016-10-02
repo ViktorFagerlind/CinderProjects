@@ -9,14 +9,16 @@
 #include "cinder/Rand.h"
 #include "cinder/ObjLoader.h"
 
-Star::Star (ParticleSystem *particleSystem, const float radius, const Vec3f position)
+Star::Star (ParticleSystem *particleSystem, const float radius, const vec3 position)
 : m_radius (radius),
   m_position (position)
 {
-  ColorAf ambient   = ColorAf (0.05f, 0.05f, 0.15f, 1.f) + ColorAf (Rand::randFloat (-0.3f, 0.3f), Rand::randFloat (-0.3f, 0.3f), 0, 0);
-  ColorAf diffuse   = ColorAf (0.55f, 0.35f, 0.50f, 1.f) + ColorAf (Rand::randFloat (-0.3f, 0.3f), Rand::randFloat (-0.3f, 0.3f), 0, 0);
-  ColorAf specular  = ColorAf (0.80f, 0.70f, 0.90f, 1.f) + ColorAf (Rand::randFloat (-0.3f, 0.3f), Rand::randFloat (-0.3f, 0.3f), 0, 0);
+  ColorAf ambient  = /*ColorAf (0.05f, 0.05f, 0.15f, 1.f) +*/ ColorAf (Rand::randFloat (0, 0.2f), Rand::randFloat (0, 0.2f), Rand::randFloat (0, 0.2f), 0);
+  ColorAf diffuse  = /*ColorAf (0.55f, 0.35f, 0.50f, 1.f) +*/ ColorAf (Rand::randFloat (0, 0.2f), Rand::randFloat (0, 0.2f), Rand::randFloat (0, 0.2f), 0);
+  ColorAf specular = /*ColorAf (0.80f, 0.70f, 0.90f, 1.f) +*/ ColorAf (Rand::randFloat (0, 0.2f), Rand::randFloat (0, 0.2f), Rand::randFloat (0, 0.2f), 0);
   float   shininess = Rand::randFloat (5.f, 20.f);
+
+  m_originalDiffuse = diffuse;
 
   // Load mesh
   ObjLoader    loader (loadFile ("../Media/Meshes/Sphere.obj"));
@@ -33,17 +35,17 @@ Star::Star (ParticleSystem *particleSystem, const float radius, const Vec3f posi
   m_bodyMaterial.reset (new PhongMaterial (shader, ambient, diffuse, specular, shininess));
 
 
-  shared_ptr<TubeParticleDrawer> tubeDrawer = shared_ptr<TubeParticleDrawer> (new TubeParticleDrawer (20, 1, ambient, diffuse, specular, shininess));
+  m_tubeDrawer = shared_ptr<TubeParticleDrawer> (new TubeParticleDrawer (20, 1, ambient, diffuse, specular, shininess));
 
   m_emitter = new PointEmitter (50000,
-                                Vec3f (0, 0, 0),       // position 
-                                6.0f,                  // particles per frame
+                                vec3 (0, 0, 0),       // position 
+                                5.0f,                  // particles per frame
                                 .1f,                   // min size
                                 .1f,                   // max size
-                                Vec3f (0, 0, 0),       // baseVelocity
-                                1.f,                   // minRandVelocity
-                                2.f,                   // maxRandVelocity
-                                tubeDrawer);
+                                vec3 (0, 0, 0),       // baseVelocity
+                                2.f,                   // minRandVelocity
+                                4.f,                   // maxRandVelocity
+                                m_tubeDrawer);
 
   particleSystem->addEmitter (m_emitter);
 
@@ -54,9 +56,14 @@ void Star::rotate (const Matrix44<float>& rotationMatrix)
   m_rotation *= rotationMatrix;
 }
 
-void Star::move (const Vec3f& offset)
+void Star::move (const vec3& offset)
 {
   m_position += offset;
+}
+
+void Star::setBands (const vector<float>& bands)
+{
+  m_tubeDrawer->setDiffuse (m_originalDiffuse + ColorAf (bands[0], bands[1], bands[2]));
 }
 
 void Star::animate ()
@@ -65,19 +72,19 @@ void Star::animate ()
   const float gravityStrength = 0.002f;
   const float rotationsSpeed  = 0.001f;
 
-	Vec3f direction = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter) * 0.005f, 
+	vec3 direction = m_perlin.dfBm (vec3 ((m_position.x + m_animationCounter) * 0.005f, 
                                           (m_position.y + m_animationCounter) * 0.005f,
                                           (m_position.z + m_animationCounter) * 0.005f));
 
   move ((direction - m_position * gravityStrength) * speed);
 
-	Vec3f rotation  = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter/2.f) * 0.005f, 
+	vec3 rotation  = m_perlin.dfBm (vec3 ((m_position.x + m_animationCounter/2.f) * 0.005f, 
                                           (m_position.y + m_animationCounter/2.f) * 0.005f,
                                           (m_position.z + m_animationCounter/2.f) * 0.005f));
 
   rotate (Matrix44<float>::createRotation (rotation * rotationsSpeed));
 
-  m_animationCounter += 1.f;
+  m_animationCounter += 2.f; // Compensate for 30 fps...
 }
 
 void Star::bounce ()

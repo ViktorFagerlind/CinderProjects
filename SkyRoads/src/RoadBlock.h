@@ -9,7 +9,7 @@ using namespace ci;
 class RoadBlock
 {
 public:
-  RoadBlock(const Vec3f& center, const Vec3f& up, const Vec3f& left)
+  RoadBlock(const vec3& center, const vec3& up, const vec3& left)
 	{
     mCenter = center;
 		mUp = up;
@@ -27,8 +27,8 @@ public:
     const float width   = 3.0f * (whereWeight + 0.5f);
     const float height  = 8.0f * (whereWeight + 0.5f);
 
-    Vec3f p1 = mCenter + width * mLeft * cos(angle1) + height * mUp * sin(angle1);
-    Vec3f p2 = mCenter + width * mLeft * cos(angle2) + height * mUp * sin(angle2);
+    vec3 p1 = mCenter + width * mLeft * cos(angle1) + height * mUp * sin(angle1);
+    vec3 p2 = mCenter + width * mLeft * cos(angle2) + height * mUp * sin(angle2);
 
     glNormal3f ((p1-mCenter).normalized());
     glVertex3f (p1);
@@ -38,8 +38,8 @@ public:
   }
 
 public:
-  Vec3f   mCenter;
-  Vec3f   mUp;
-  Vec3f   mLeft;
+  vec3   mCenter;
+  vec3   mUp;
+  vec3   mLeft;
 };
 

@@ -32,7 +32,7 @@ void BoxParticleController::draw()
 	}
 }
 
-void BoxParticleController::addParticle(const Vec2i &mousePos)
+void BoxParticleController::addParticle(const ivec2 &mousePos)
 {
 	BoxParticle p = BoxParticle();
 
@@ -62,7 +62,7 @@ void BoxParticleController::addParticle(const Vec2i &mousePos)
 	p.body->CreateFixture(&fixtureDef);
 
 	// rest of initialization particle can do for itself
-	p.setup(Vec2f(boxSizeX, boxSizeY));
+	p.setup(vec2(boxSizeX, boxSizeY));
 	particles.push_back(p);
 
 }

@@ -1,27 +1,27 @@
 #include "Emitter.h"
 #include "ShaderHelper.h"
 
-Vec3f Emitter::getRandomDirection ()
+vec3 Emitter::getRandomDirection ()
 {
   float randomNormedZ = Rand::randFloat (-1, 1);
   float xyPlaneAngle = asin (randomNormedZ); 
   float zAxisAngle = Rand::randFloat (0, 2.0f * (float)M_PI);
 
-  return Vec3f (cos (xyPlaneAngle) * cos (zAxisAngle),
+  return vec3 (cos (xyPlaneAngle) * cos (zAxisAngle),
                 cos (xyPlaneAngle) * sin (zAxisAngle),
                 randomNormedZ);
 }
 
-Vec3f Emitter::getRandomVelocity (const float minVelocity, const float maxVelocity)
+vec3 Emitter::getRandomVelocity (const float minVelocity, const float maxVelocity)
 {
   float randomVelocity = Rand::randFloat (minVelocity, maxVelocity);
 
   return randomVelocity * getRandomDirection ();
 }
 
-Vec3f Emitter::getParticleVelocity ()
+vec3 Emitter::getParticleVelocity ()
 {
-  Vec3f rotatedBaseVelocity = mBaseVelocity;
+  vec3 rotatedBaseVelocity = mBaseVelocity;
 
   rotatedBaseVelocity.rotateZ (mRotation.z);
   rotatedBaseVelocity.rotateY (mRotation.y);
@@ -32,14 +32,14 @@ Vec3f Emitter::getParticleVelocity ()
 
 Emitter::Emitter (const size_t maxNofParticles, 
                   const float particlesPerFrame, 
-                  const Vec3f position,
-                  const Vec3f baseVelocity,
+                  const vec3 position,
+                  const vec3 baseVelocity,
 	                const float minRandVelocity, 
 	                const float maxRandVelocity,
                   shared_ptr<ParticleDrawerInterface> drawer)
 : mMaxNofParticles(maxNofParticles),
   mPosition (position),
-  mRotation (Vec3f::zero ()),
+  mRotation (vec3::zero ()),
 	mBaseVelocity (baseVelocity),
 	mMinRandVelocity (minRandVelocity),
 	mMaxRandVelocity (maxRandVelocity),
@@ -59,7 +59,7 @@ Emitter::Emitter (const size_t maxNofParticles,
 /*
   mSizes              = new float[mMaxNofParticles];
   mColors             = new ColorAf[mMaxNofParticles];
-  mVerticies          = new Vec3f[mMaxNofParticles];
+  mVerticies          = new vec3[mMaxNofParticles];
   mTextureCoordinates = new float[mMaxNofParticles*2];
 
 #if !defined (CINDER_COCOA_TOUCH)
@@ -147,7 +147,7 @@ void Emitter::updateEmitter ()
     
 }
 
-void Emitter::draw (const Vec2f &textureSize)
+void Emitter::draw (const vec2 &textureSize)
 {
   mDrawer->beforeDraw ();
 
