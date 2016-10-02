@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Modifier.h"
 
 class CommonModifier : public Modifier 

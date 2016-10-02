@@ -14,10 +14,10 @@ class Particle
 {
   friend class ParticleDrawerInterface;
 
-protected:
-  Particle ();
 
 public:
+  Particle ();
+  
   virtual ~Particle ();
 
   const   vec3&    getPosition   () 						                   {return mPosition;};
@@ -46,7 +46,7 @@ public:
 
 public:
   bool    mIsDead;
-  vec3   mPosition;
+  vec3    mPosition;
   ColorAf mColor;
   float   mCurrentSize;
 

@@ -1,4 +1,6 @@
-#include "cinder/app/AppBasic.h"
+#pragma once
+
+#include "cinder/app/App.h"
 #include "Modifier.h"
 
 #include "cinder/Vector.h"
@@ -33,13 +35,13 @@ public:
 
     force.z = 0;
 
-    force.normalize();
+    normalize(force);
     force = force * mForceStrength;
 
     particle->applyForce (force);  
 
     // apply damping
-    force -= particleVelocity * particleVelocity.length() * mDampStrength;
+    force -= particleVelocity * length (particleVelocity) * mDampStrength;
 
     particle->applyForce(force);
   }

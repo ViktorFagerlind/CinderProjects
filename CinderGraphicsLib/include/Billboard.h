@@ -1,3 +1,5 @@
+#pragma once
+
 #include "cinder/Color.h"
 #include "cinder/Vector.h"
 

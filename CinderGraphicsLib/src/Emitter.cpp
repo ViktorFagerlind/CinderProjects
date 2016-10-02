@@ -1,5 +1,4 @@
 #include "Emitter.h"
-#include "ShaderHelper.h"
 
 vec3 Emitter::getRandomDirection ()
 {
@@ -22,10 +21,9 @@ vec3 Emitter::getRandomVelocity (const float minVelocity, const float maxVelocit
 vec3 Emitter::getParticleVelocity ()
 {
   vec3 rotatedBaseVelocity = mBaseVelocity;
-
-  rotatedBaseVelocity.rotateZ (mRotation.z);
-  rotatedBaseVelocity.rotateY (mRotation.y);
-  rotatedBaseVelocity.rotateX (mRotation.x);
+  rotatedBaseVelocity = glm::rotate (rotatedBaseVelocity, mRotation.z, vec3 (0,0,1));
+  rotatedBaseVelocity = glm::rotate (rotatedBaseVelocity, mRotation.y, vec3 (0,1,0));
+  rotatedBaseVelocity = glm::rotate (rotatedBaseVelocity, mRotation.x, vec3 (1,0,0));
 
   return rotatedBaseVelocity + getRandomVelocity (mMinRandVelocity, mMaxRandVelocity);
 }
@@ -39,7 +37,7 @@ Emitter::Emitter (const size_t maxNofParticles,
                   shared_ptr<ParticleDrawerInterface> drawer)
 : mMaxNofParticles(maxNofParticles),
   mPosition (position),
-  mRotation (vec3::zero ()),
+  mRotation (vec3(0)),
 	mBaseVelocity (baseVelocity),
 	mMinRandVelocity (minRandVelocity),
 	mMaxRandVelocity (maxRandVelocity),
@@ -54,7 +52,9 @@ Emitter::Emitter (const size_t maxNofParticles,
 {
   mParticles.resize (mMaxNofParticles);
 
-  mDrawer->createParticles (mParticles);
+  drawer->setup(mParticles);
+  
+  //mDrawer->createParticles (mParticles);
 
 /*
   mSizes              = new float[mMaxNofParticles];
@@ -79,8 +79,8 @@ Emitter::~Emitter()
 */
 
   // Delete all particles
-  for (uint32_t i = 0; i < mParticles.size (); i++)
-    delete mParticles[i];
+//  for (uint32_t i = 0; i < mParticles.size (); i++)
+//    delete mParticles[i];
 
  // delete [] mParticles;
 }
@@ -88,7 +88,7 @@ Emitter::~Emitter()
 void Emitter::applyModifierToParticles(Modifier *modifier)
 {
   for (size_t pi = 0; pi < mParticleCount; pi++)
-    modifier->apply (mParticles[pi]);
+    modifier->apply (&mParticles[pi]);
 }
 
 void Emitter::burst (size_t nofParticles)
@@ -121,7 +121,7 @@ void Emitter::updateEmitter ()
     // Create new particles
     for (size_t pi = 0; pi < nofParticlesToCreateThisFrame; pi++)
     {
-      defineParticle (mParticles[mParticleCount+pi]);
+      defineParticle (&mParticles[mParticleCount+pi]);
     }
     mParticleCount += nofParticlesToCreateThisFrame;
   }
@@ -130,9 +130,9 @@ void Emitter::updateEmitter ()
   for (size_t pi = 0; pi < mParticleCount; pi++)
   {
     // Move particles from back of the list if dead ones are found
-    while (mParticles[pi]->mIsDead)
+    while (mParticles[pi].mIsDead)
     {
-      Particle *tmp = mParticles[pi];
+      Particle tmp   = mParticles[pi];
       mParticles[pi] = mParticles[mParticleCount - 1];
       mParticles[mParticleCount - 1] = tmp;
 
@@ -142,7 +142,7 @@ void Emitter::updateEmitter ()
         return;
     }
 
-    mParticles[pi]->update ();
+    mParticles[pi].update ();
   }
     
 }
@@ -151,8 +151,8 @@ void Emitter::draw (const vec2 &textureSize)
 {
   mDrawer->beforeDraw ();
 
-  for (uint32_t i = 0; i<mParticleCount; i++)
-    mDrawer->drawParticle (*mParticles[i], textureSize);
+  //for (uint32_t i = 0; i<mParticleCount; i++)
+  mDrawer->drawParticles (mParticles, mParticleCount, textureSize);
 
   mDrawer->afterDraw ();
 }

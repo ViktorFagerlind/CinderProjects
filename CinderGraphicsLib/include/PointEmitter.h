@@ -15,7 +15,7 @@ public:
 							 const vec3& baseVelocity,
                const float  minRandVelocity,
                const float  maxRandVelocity,
-               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new BillboardParticleDrawer ()))
+               shared_ptr<ParticleDrawerInterface> drawer = shared_ptr<ParticleDrawerInterface> (new NewParticleDrawer ()))
                : Emitter (maxNofParticles, particlesPerFrame, position, baseVelocity, minRandVelocity, maxRandVelocity, drawer),
 	  mMinParticleSize    (minParticleSize),
 	  mMaxParticleSize    (maxParticleSize)

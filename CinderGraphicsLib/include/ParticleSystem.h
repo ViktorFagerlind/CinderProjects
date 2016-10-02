@@ -14,7 +14,7 @@ public:
 
   ParticleSystem (ImageSourceRef particleImage);
 
-  ParticleSystem (gl::Texture particleTexture);
+  ParticleSystem (gl::TextureRef particleTexture);
 
   virtual ~ParticleSystem();
 
@@ -38,7 +38,7 @@ public:
 
   void draw();
 
-  gl::Texture *getTexture () {return &mParticleTexture;}
+  gl::TextureRef getTexture () {return mParticleTexture;}
 
 
 private:
@@ -52,6 +52,6 @@ private:
 
 	vector<shared_ptr<Modifier>> mModifiers;
 
-  gl::Texture       mParticleTexture;
+  gl::TextureRef       mParticleTexture;
 };
 

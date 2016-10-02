@@ -13,6 +13,8 @@ void Billboard::drawBillboardTex (const vec3   &pos,
   vec3   verts[4];
   ColorAf colors[4] = { color, color, color, color };
 
+  gl::vertexAttribPointer(<#GLuint index#>, <#GLint size#>, <#GLenum type#>, <#GLboolean normalized#>, <#GLsizei stride#>, <#const GLvoid *pointer#>)
+  
   glVertexPointer (3, GL_FLOAT, 0, verts);
   glTexCoordPointer (2, GL_FLOAT, 0, texCoords);
   glColorPointer (4, GL_FLOAT, 0, colors);

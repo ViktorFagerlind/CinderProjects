@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Emitter.h"
 
 #include "cinder/Vector.h"

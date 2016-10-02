@@ -71,6 +71,8 @@ public:
   {
     mRotation = rotation;
   }
+  
+  const vector<Particle>& getParticles () {return mParticles;}
 
   virtual void defineParticle (Particle* particle) = 0; 
 
@@ -86,7 +88,7 @@ protected:
 	float           mMaxRandVelocity; 
 
 private:
-  vector<Particle*> mParticles;
+  vector<Particle> mParticles;
 
   float 					mParticlesPerFrame;
   float 					mParticlesToCreate;
@@ -104,7 +106,7 @@ private:
   ColorAf        *mColors;
 */
 
-  gl::GlslProg    mShader;
+  // gl::GlslProg    mShader;
 
   bool            mIsAnimated;
 
