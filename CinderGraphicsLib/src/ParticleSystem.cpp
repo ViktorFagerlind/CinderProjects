@@ -1,21 +1,23 @@
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem(std::string particleImageFile)
+ParticleSystem::ParticleSystem(std::string particleImageFile, bool addativeBlend)
 {
-  mParticleTexture = gl::Texture::create (loadImage (loadFile (particleImageFile)));
-  
-  mKilled          = false;
+  mParticleTexture  = gl::Texture::create (loadImage (loadFile (particleImageFile)));
+  mAddativeBlend    = addativeBlend;
+  mKilled           = false;
 }
 
-ParticleSystem::ParticleSystem (ImageSourceRef particleImage)
+ParticleSystem::ParticleSystem (ImageSourceRef particleImage, bool addativeBlend)
 {
   mParticleTexture = gl::Texture::create (particleImage);
+  mAddativeBlend    = addativeBlend;
   mKilled          = false;
 }
 
-ParticleSystem::ParticleSystem (gl::TextureRef particleTexture)
+ParticleSystem::ParticleSystem (gl::TextureRef particleTexture, bool addativeBlend)
 {
   mParticleTexture = particleTexture;
+  mAddativeBlend    = addativeBlend;
   mKilled          = false;
 }
 
@@ -118,6 +120,11 @@ void ParticleSystem::update()
 
 void ParticleSystem::draw()
 {
+  if (mAddativeBlend)
+    gl::enableAdditiveBlending();
+  else
+    gl::enableAlphaBlending (true);
+  
 	glEnable (GL_TEXTURE_2D);
   mParticleTexture->bind ();
 

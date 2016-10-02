@@ -20,12 +20,13 @@ void NewParticleDrawer::setup (const vector<Particle> &particles)
   particleLayout.append (geom::Attrib::POSITION, 3, sizeof( Particle ), offsetof( Particle, mPosition ) );
   particleLayout.append (geom::Attrib::COLOR,    4, sizeof( Particle ), offsetof( Particle, mColor ) );
   particleLayout.append (geom::Attrib::CUSTOM_0, 1, sizeof( Particle ), offsetof( Particle, mCurrentSize ) );
+  particleLayout.append (geom::Attrib::CUSTOM_1, 1, sizeof( Particle ), offsetof( Particle, mLife ) );
   
   m_particleVbo = gl::Vbo::create (GL_ARRAY_BUFFER, particles, GL_STREAM_DRAW );
   auto mesh = gl::VboMesh::create ((uint32_t) particles.size (), GL_POINTS, { { particleLayout, m_particleVbo } } );
   
   gl::GlslProgRef shader = gl::GlslProg::create(app::loadAsset("pointsprite_es3.vert"), app::loadAsset("pointsprite_es3.frag"));
-  m_particleBatch = gl::Batch::create( mesh, shader, { { geom::Attrib::CUSTOM_0, "vfSize" } }  );
+  m_particleBatch = gl::Batch::create( mesh, shader, { { geom::Attrib::CUSTOM_0, "vfSize" }, { geom::Attrib::CUSTOM_1, "vfLife" } }  );
 }
 
 void NewParticleDrawer::beforeDraw ()
@@ -37,22 +38,11 @@ void NewParticleDrawer::drawParticles (const vector<Particle> &particles, const 
   // Copy particle data onto the GPU.
   // Map the GPU memory and write over it.
   void *gpuMem = m_particleVbo->mapReplace();
-  memcpy (gpuMem, particles.data (), nofParticles * sizeof(Particle) );
+  // Also copy dead particles to erase them...
+  memcpy (gpuMem, particles.data (), particles.size() * sizeof(Particle) );
   m_particleVbo->unmap();
   
   m_particleBatch->draw();
-  
-  /*
-  
-  gl::ScopedGlslProg GlslProgScope (m_shader);
-  
-  for (size_t i=0UL; i<nofParticles; i++)
-  {
-    const Particle *p = &particles[i];
-    gl::color (p->mColor);
-    myDrawBillboard (p->mPosition, vec2 (p->mCurrentSize, p->mCurrentSize), 0, vec3(1,0,0), vec3(0,1,0));
-  }
-   */
 }
 
 void NewParticleDrawer::afterDraw ()

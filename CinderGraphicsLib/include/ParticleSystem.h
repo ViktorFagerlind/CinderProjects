@@ -10,11 +10,11 @@ using namespace std;
 class ParticleSystem
 {
 public:
-  ParticleSystem (std::string particleImageFile);
+  ParticleSystem (std::string particleImageFile, bool addativeBlend = true);
 
-  ParticleSystem (ImageSourceRef particleImage);
+  ParticleSystem (ImageSourceRef particleImage, bool addativeBlend = true);
 
-  ParticleSystem (gl::TextureRef particleTexture);
+  ParticleSystem (gl::TextureRef particleTexture, bool addativeBlend = true);
 
   virtual ~ParticleSystem();
 
@@ -53,5 +53,7 @@ private:
 	vector<shared_ptr<Modifier>> mModifiers;
 
   gl::TextureRef       mParticleTexture;
+  
+  bool                 mAddativeBlend;
 };
 

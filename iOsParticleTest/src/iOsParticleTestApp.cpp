@@ -3,17 +3,10 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Log.h"
 
-#include "Macros.h"
 #include "ParticleSystemManager.h"
-#include "ParticleSystem.h"
-#include "ImageLibrary.h"
-#include "Emitter.h"
-#include "AreaEmitter.h"
-#include "PointEmitter.h"
-#include "CommonModifier.h"
-#include "ColorModifier.h"
-#include "PerlinModifier.h"
-#include "DampingModifier.h"
+
+#include "FireComet.h"
+#include "Explosion.h"
 
 
 using namespace ci;
@@ -29,8 +22,9 @@ class iOsParticleTestApp : public App {
 	void draw() override;
   
 private:
-  vector<shared_ptr<Emitter>>  m_emitters;
+  shared_ptr<FireComet> fireComet;
 };
+
 
 void iOsParticleTestApp::setup()
 {
@@ -40,111 +34,18 @@ void iOsParticleTestApp::setup()
 //                vec3 ((float)getWindowWidth()/2.f, (float)getWindowHeight()/2.f, 0.f));
   
   
-  ParticleSystem  *particleSystem;
-  CommonModifier  *commonModifier;
-  ColorModifier   *colorModifier;
-  PerlinModifier  *perlinModifier;
-  DampingModifier *dampingModifier;
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //  Fire
-  ///////////
-  particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("fire_alpha.png"));
-  
-  commonModifier = new CommonModifier (2.5f, 1.0f, 2.0f);
-  colorModifier  = new ColorModifier  (ColorAf(0.8f,  0.8f,  1.0f,  1.0f),  //startColor
-                                       ColorAf(1.0f,  0.2f,  0.2f,  0.3f),  //middleColor
-                                       ColorAf(1.0f,  0.2f,  0.2f,  0.0f),  //endColor
-                                       0.7f);                               //middleTime
-  dampingModifier = new DampingModifier (0.025f);
-  
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  particleSystem->addModifier (dampingModifier);
-  
-  m_emitters.push_back ((shared_ptr<Emitter>) new PointEmitter (700,                 // maxNofParticles,
-                                     vec3((float)getWindowWidth()/2.f, (float)getWindowHeight()/2.f, 0.f), // position,
-                                     15.f,                 // particlesPerFrame,
-                                     60.f,                // minParticleSize,
-                                     80.f,                // maxParticleSize,
-                                     vec3(0),             // baseVelocity,
-                                     4.f,                 // minRandVelocity
-                                     5.f));                // maxRandVelocity
-  
-  particleSystem->addEmitterRef (m_emitters.back());
-  
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
-  
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //  Sparks
-  ///////////
-  particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("flare.png"));
-  
-  commonModifier = new CommonModifier (1.5f, 1.0f, 0.8f);
-  colorModifier  = new ColorModifier  (ColorAf(1.0f,  1.0f,  1.0f,  1.0f),  //startColor
-                                       ColorAf(1.0f,  1.0f,  0.2f,  1.0f),  //middleColor
-                                       ColorAf(1.0f,  0.2f,  0.2f,  0.0f),  //endColor
-                                       0.8f);                               //middleTime
-  
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  
-  m_emitters.push_back ((shared_ptr<Emitter>) new PointEmitter (100,                 // maxNofParticles,
-                                                                vec3((float)getWindowWidth()/2.f, (float)getWindowHeight()/2.f, 0.f), // position,
-                                                                .5f,                 // particlesPerFrame,
-                                                                10.f,                // minParticleSize,
-                                                                20.f,                // maxParticleSize,
-                                                                vec3(0),             // baseVelocity,
-                                                                1.f,                 // minRandVelocity
-                                                                2.f));                // maxRandVelocity
-  
-  particleSystem->addEmitterRef (m_emitters.back());
-  
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //  Smoke
-  ///////////
-  particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("smoke1.jpg"));
-  
-  commonModifier = new CommonModifier (.8f, 1.0f, 5.0f);
-  colorModifier  = new ColorModifier  (ColorAf(1.0f,  1.0f,  1.0f,  0.04f),  //startColor
-                                       ColorAf(1.0f,  1.0f,  1.0f,  0.07f),  //middleColor
-                                       ColorAf(1.0f,  1.0f,  1.0f,  0.0f),  //endColor
-                                       0.5f);                               //middleTime
-  perlinModifier = new PerlinModifier (10.0f, 0.1, 0.003, 0.002f);
-  
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  particleSystem->addModifier (perlinModifier);
-  
-  m_emitters.push_back ((shared_ptr<Emitter>) new AreaEmitter (1200,                 // maxNofParticles,
-                                     vec3((float)getWindowWidth()/2.f, (float)getWindowHeight()/2.f, 0.f), // position,
-                                     3.f,                 // particlesPerFrame,
-                                     50.f,  // width,
-                                     50.f, 	// height,
-                                     0.f,   // depth
-                                     50.f,                // minParticleSize,
-                                     100.f,                // maxParticleSize,
-                                     vec3(0,-2.5f,0),             // baseVelocity,
-                                     3.0f));                // maxRandVelocity
-  
-  particleSystem->addEmitterRef (m_emitters.back());
-  
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
-  
+  fireComet.reset (new FireComet());
+ 
 }
 
 void iOsParticleTestApp::mouseDown (MouseEvent event)
 {
-  mouseDrag (event);
+  Explosion::create (vec3 ((float)event.getX(), (float)event.getY(), 0.f));
 }
 
 void iOsParticleTestApp::mouseDrag (MouseEvent event)
 {
-  for (const auto e : m_emitters)
-    e->setPosition(vec3 ((float)event.getX(), (float)event.getY(), 0.f));
+  fireComet->setPosition (vec3 ((float)event.getX(), (float)event.getY(), 0.f));
 }
 
 void iOsParticleTestApp::update()
@@ -168,7 +69,8 @@ void iOsParticleTestApp::draw()
   
   // Draw particle system
   gl::disableDepthWrite ();
-  gl::enableAdditiveBlending ();
+  //gl::enableAdditiveBlending ();
+  //gl::enableAlphaBlending ();
   
   gl::drawSphere(vec3(0,0,0), 1.f);
   
@@ -182,4 +84,5 @@ CINDER_APP (iOsParticleTestApp, RendererGl, [] (App::Settings *settings)
   settings->setMultiTouchEnabled (false);
 }
 )
+
 

@@ -44,8 +44,8 @@ void ContactListener::createContactEffect (vec3 point, float32 strength)
   shared_ptr<Emitter> emitter (new PointEmitter (50,                  // maxNofParticles,
                                                  point,               // position,
                                                  2.f + strength,      // particlesPerFrame,
-                                                 0.4f+strength/10.f,  // minParticleSize,
-                                                 0.4f+strength/10.f,  // maxParticleSize,
+                                                 20.f+strength*10.f,  // minParticleSize,
+                                                 20.f+strength*10.f,  // maxParticleSize,
                                                  vec3(0),             // baseVelocity,
                                                  0.f,                 // minRandVelocity
                                                  0.1f*strength));     // maxRandVelocity
@@ -82,7 +82,7 @@ void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impu
   
   float32 effectStrength = impulse->normalImpulses[0] - threasholdImpact;
   
-  if (effectStrength > 0.f)
+  if (effectStrength > 1.f)
     createContactEffect (vec3 (worldManifold.points[0].x, worldManifold.points[0].y, 0.f), effectStrength);
 }
 

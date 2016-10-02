@@ -49,11 +49,11 @@ public:
   vec3    mPosition;
   ColorAf mColor;
   float   mCurrentSize;
+  float   mLife;
 
 private:
   vec3   mVelocity;
   vec3   mAcceleration;
   
-  float   mLife;
   float   mOriginalSize;
 };

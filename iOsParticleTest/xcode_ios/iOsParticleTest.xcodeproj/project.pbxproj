@@ -52,6 +52,9 @@
 		7784C7D81D9C447F00707C35 /* flare.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7D21D9C447F00707C35 /* flare.png */; };
 		7784C7D91D9C447F00707C35 /* smoke1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7D31D9C447F00707C35 /* smoke1.jpg */; };
 		7784C7DC1DA0EB0E00707C35 /* Fireball 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7DB1DA0EB0E00707C35 /* Fireball 1.png */; };
+		7784C7DF1DA0F49700707C35 /* FireComet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7DD1DA0F49700707C35 /* FireComet.cpp */; };
+		7784C7E21DA0F6A100707C35 /* Explosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7E01DA0F6A100707C35 /* Explosion.cpp */; };
+		7784C7E81DA1151A00707C35 /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7E71DA1151A00707C35 /* smoke.png */; };
 		799D085B35E04B03929C0EB1 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CDB580066A430CA9C54467 /* b2BroadPhase.cpp */; };
 		80CF075052314AC5BB6659F3 /* b2DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6EB5067E78A4ED19BBFB867 /* b2DistanceJoint.cpp */; };
 		8153BA5378C0441FA9A637D4 /* b2Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D9983F55F60429CBDA34785 /* b2Timer.cpp */; };
@@ -167,6 +170,11 @@
 		7784C7D31D9C447F00707C35 /* smoke1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = smoke1.jpg; path = ../../Media/Images/smoke1.jpg; sourceTree = "<group>"; };
 		7784C7DA1D9FC83E00707C35 /* ParticleSystemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleSystemManager.h; path = ../../CinderGraphicsLib/include/ParticleSystemManager.h; sourceTree = "<group>"; };
 		7784C7DB1DA0EB0E00707C35 /* Fireball 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fireball 1.png"; path = "../../Media/Images/Fireball 1.png"; sourceTree = "<group>"; };
+		7784C7DD1DA0F49700707C35 /* FireComet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FireComet.cpp; path = ../src/FireComet.cpp; sourceTree = "<group>"; };
+		7784C7DE1DA0F49700707C35 /* FireComet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FireComet.h; path = ../src/FireComet.h; sourceTree = "<group>"; };
+		7784C7E01DA0F6A100707C35 /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Explosion.cpp; path = ../src/Explosion.cpp; sourceTree = "<group>"; };
+		7784C7E11DA0F6A100707C35 /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explosion.h; path = ../src/Explosion.h; sourceTree = "<group>"; };
+		7784C7E71DA1151A00707C35 /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
 		77EE67AD95424FB18194D2CA /* b2EdgeShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2EdgeShape.h; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Collision/Shapes/b2EdgeShape.h; sourceTree = "<group>"; };
 		78CBB518C4D64CB887A1E000 /* b2World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2World.cpp; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Dynamics/b2World.cpp; sourceTree = "<group>"; };
 		7A1DD6DC94A34412B6FB106C /* b2Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2Math.cpp; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Common/b2Math.cpp; sourceTree = "<group>"; };
@@ -304,8 +312,12 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				7784C7AF1D9C412700707C35 /* Particles */,
+				7784C7E01DA0F6A100707C35 /* Explosion.cpp */,
+				7784C7E11DA0F6A100707C35 /* Explosion.h */,
+				7784C7DD1DA0F49700707C35 /* FireComet.cpp */,
+				7784C7DE1DA0F49700707C35 /* FireComet.h */,
 				20F1B806CDCB48429A365EF8 /* iOsParticleTestApp.cpp */,
+				7784C7AF1D9C412700707C35 /* Particles */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -313,6 +325,7 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7784C7E71DA1151A00707C35 /* smoke.png */,
 				7784C7DB1DA0EB0E00707C35 /* Fireball 1.png */,
 				7784C7D11D9C447F00707C35 /* fire_alpha.png */,
 				7784C7D21D9C447F00707C35 /* flare.png */,
@@ -624,6 +637,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00748058165D41390024B57A /* assets in Resources */,
+				7784C7E81DA1151A00707C35 /* smoke.png in Resources */,
 				7784C7D91D9C447F00707C35 /* smoke1.jpg in Resources */,
 				7784C7D81D9C447F00707C35 /* flare.png in Resources */,
 				7784C7DC1DA0EB0E00707C35 /* Fireball 1.png in Resources */,
@@ -648,6 +662,7 @@
 				5797FFAA79854F8A81B589F0 /* b2CollidePolygon.cpp in Sources */,
 				2B49EA9E6D514DD1BDC78BE4 /* b2Collision.cpp in Sources */,
 				7784C7B61D9C416000707C35 /* Emitter.cpp in Sources */,
+				7784C7DF1DA0F49700707C35 /* FireComet.cpp in Sources */,
 				FE70A1E34763474A8479A802 /* b2Distance.cpp in Sources */,
 				F815D7F1696B452EAF6DBE81 /* b2DynamicTree.cpp in Sources */,
 				6F294D075B0E426F9A24E2DD /* b2TimeOfImpact.cpp in Sources */,
@@ -687,6 +702,7 @@
 				034F1849E6F24FDF9876701D /* b2PulleyJoint.cpp in Sources */,
 				7784C7BB1D9C416000707C35 /* ParticleSystem.cpp in Sources */,
 				61D0BFD212BD423DBF9E08E3 /* b2RevoluteJoint.cpp in Sources */,
+				7784C7E21DA0F6A100707C35 /* Explosion.cpp in Sources */,
 				639C897304674221803EA9A8 /* b2RopeJoint.cpp in Sources */,
 				A0014C2553214829B3597EFE /* b2WeldJoint.cpp in Sources */,
 				7784C7BA1D9C416000707C35 /* Particle.cpp in Sources */,
