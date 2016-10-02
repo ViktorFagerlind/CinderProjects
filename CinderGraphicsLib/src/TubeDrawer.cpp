@@ -3,11 +3,11 @@
 #include "MiscMath.h"
 
 void TubeDrawer::draw (gl::GlslProg&   shader, 
-                       const Vec3f&    upDirection,
+                       const vec3&    upDirection,
                        const bool      blendFirst,
                        const uint32_t  nofCircularSegments,
-                             Vec3f    *points,
-                             Vec3f    *normals,
+                             vec3    *points,
+                             vec3    *normals,
                              float    *radie,
                        const uint32_t  nofPoints)
 {
@@ -60,16 +60,16 @@ void TubeDrawer::draw (gl::GlslProg&   shader,
 }
 
 
-void TubeDrawer::debugDraw (const Vec3f&     upDirection,
-                            Vec3f           *points,
-                            Vec3f           *normals,
+void TubeDrawer::debugDraw (const vec3&     upDirection,
+                            vec3           *points,
+                            vec3           *normals,
                             float           *radie,
                             const uint32_t   nofPoints)
 {
   for (uint32_t i=0; i<nofPoints - 1; i++)
   {
-    Vec3f up   = MiscMath::projectOnPlane (normals[i], upDirection).normalized ();
-    Vec3f side = normals[i].cross (up).normalized();
+    vec3 up   = MiscMath::projectOnPlane (normals[i], upDirection).normalized ();
+    vec3 side = normals[i].cross (up).normalized();
 
     gl::color (1,0,0);
     gl::drawLine (points[i], points[i] + normals[i]);

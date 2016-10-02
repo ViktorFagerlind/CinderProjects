@@ -35,7 +35,7 @@ private:
 	float m_height;
 
 	bool  m_touchPressed;
-	Vec2f m_touchPosition;
-	Vec2f m_touchVelocity;
+	vec2 m_touchPosition;
+	vec2 m_touchVelocity;
 };
 

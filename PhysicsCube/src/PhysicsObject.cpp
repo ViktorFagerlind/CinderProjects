@@ -11,19 +11,19 @@ using namespace std;
 
 State::State()
 {
-  mPosition     = Vec3f(0.0f, 0.0f, 0.0f);
-  //mVelocity     = Vec3f(0.0f, 0.0f, 0.0f);
+  mPosition     = vec3(0.0f, 0.0f, 0.0f);
+  //mVelocity     = vec3(0.0f, 0.0f, 0.0f);
   mAngularMomentum = Vec4f(0.0f, 0.0f, 0.0f, 0.0f);
-  //mAcceleration = Vec3f(0.0f, 0.0f, 0.0f);
+  //mAcceleration = vec3(0.0f, 0.0f, 0.0f);
 
-  //mRotationVect       = Vec3f(0.0f, 0.0f, 0.0f);
-  //mRotationSpeedVect  = Vec3f(0.0f, 0.0f, 0.0f);
+  //mRotationVect       = vec3(0.0f, 0.0f, 0.0f);
+  //mRotationSpeedVect  = vec3(0.0f, 0.0f, 0.0f);
   mOrientation        = Matrix44f::identity();
   mOrientationSpeed   = Matrix44f::identity();
 };
 
 //Physics object using bounding box
-PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
+PhysicsObject::PhysicsObject(float mass, vec3& cog, float boundingBoxWidth, float boundingBoxHeight, float boundingBoxLength)
 {
   init(mass, cog);
 
@@ -32,17 +32,17 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingBoxWidth, flo
 };
 
 //Physics object using bounding plane (init plane using 3 vertecies)
-PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, float boundingPlaneHeight, Vec3f vertex1, Vec3f vertex2, Vec3f vertex3)
+PhysicsObject::PhysicsObject(float mass, vec3& cog, float boundingPlaneWidth, float boundingPlaneHeight, vec3 vertex1, vec3 vertex2, vec3 vertex3)
 {
   init(mass, cog);
 
 
   //calc local coordinate basis vectors:
-  Vec3f e1 = vertex2-vertex1;
+  vec3 e1 = vertex2-vertex1;
   e1.normalize();
-  Vec3f e2 = vertex3-vertex1;
+  vec3 e2 = vertex3-vertex1;
   e2.normalize();
-  Vec3f normal = e1.cross(e2);
+  vec3 normal = e1.cross(e2);
 
   float offset = normal.dot(vertex1);
   mState.mPosition = normal*offset;
@@ -55,7 +55,7 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, f
 };
 
 //Physics object using bounding plane (init plane using position of centre of plane and orientation matrix)
-PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, float boundingPlaneHeight)
+PhysicsObject::PhysicsObject(float mass, vec3& cog, float boundingPlaneWidth, float boundingPlaneHeight)
 {
   init(mass, cog);
 
@@ -64,7 +64,7 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingPlaneWidth, f
 };
 
 //Physics object using bounding sphere
-PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingSphereRadius)
+PhysicsObject::PhysicsObject(float mass, vec3& cog, float boundingSphereRadius)
 {
   init(mass, cog);
 
@@ -72,7 +72,7 @@ PhysicsObject::PhysicsObject(float mass, Vec3f& cog, float boundingSphereRadius)
   mBoundingGeometry = (BoundingGeometry*) boundingSphere;
 };
 
-void PhysicsObject::init(float mass, Vec3f& cog)
+void PhysicsObject::init(float mass, vec3& cog)
 {
   mMass     = mass;
   mCoG      = cog;
@@ -125,18 +125,18 @@ void PhysicsObject::draw()
   mBoundingGeometry->draw();
 }
 
-void PhysicsObject::setPosition(Vec3f position)
+void PhysicsObject::setPosition(vec3 position)
 {
   mState.mPosition = position;
   mBoundingGeometry->setPosition(position); //Endast för testning.
 }
 
-void PhysicsObject::setVelocity(Vec3f velocity)
+void PhysicsObject::setVelocity(vec3 velocity)
 {
   setLinearMomentum(mMass * velocity);
 }
 
-void PhysicsObject::setLinearMomentum(Vec3f linearMomentum)
+void PhysicsObject::setLinearMomentum(vec3 linearMomentum)
 {
   mState.mLinearMomentum = linearMomentum;
 }
@@ -146,19 +146,19 @@ void PhysicsObject::setAngularMomentum(Vec4f angularMomentum)
   mState.mAngularMomentum = angularMomentum;
 }
 
-Vec3f PhysicsObject::getPosition()
+vec3 PhysicsObject::getPosition()
 {
   return mState.mPosition;
 }
 
-Vec3f PhysicsObject::getVelocity()
+vec3 PhysicsObject::getVelocity()
 {
   return mState.mLinearMomentum / mMass;
 }
 
-Vec3f PhysicsObject::getRotationVelocity()
+vec3 PhysicsObject::getRotationVelocity()
 {
-  Vec3f rotationVelolcity3D = Vec3f(0, 0, 0);
+  vec3 rotationVelolcity3D = vec3(0, 0, 0);
   Vec4f rotationVelolcity4D;
   rotationVelolcity4D = mState.mOrientation * mLocalInertiaInverted * mState.mOrientation.transposed() * mState.mAngularMomentum;
   rotationVelolcity3D[0] = rotationVelolcity4D[0];
@@ -168,9 +168,9 @@ Vec3f PhysicsObject::getRotationVelocity()
   return rotationVelolcity3D;
 }
 
-Vec3f PhysicsObject::getPointVelocity(Vec3f point)
+vec3 PhysicsObject::getPointVelocity(vec3 point)
 {
-  Vec3f lever = point - mState.mPosition;
+  vec3 lever = point - mState.mPosition;
   return getVelocity() + getRotationVelocity().cross(lever);
 }
 
@@ -233,7 +233,7 @@ float PhysicsObject::EulerForward(float f, float fPrim, float dt)
   return f + fPrim * dt;
 }
 
-Vec3f PhysicsObject::EulerForward(Vec3f f, Vec3f fPrim, float dt)
+vec3 PhysicsObject::EulerForward(vec3 f, vec3 fPrim, float dt)
 {
   return f + fPrim*dt;
 }

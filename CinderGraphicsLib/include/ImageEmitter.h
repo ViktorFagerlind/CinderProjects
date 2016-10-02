@@ -38,7 +38,7 @@ public:
 
   void defineParticle (Particle* particle) 
 	{
-		Vec2i imagePosition;
+		ivec2 imagePosition;
 		
 		getImagePos (imagePosition);
 		
@@ -54,7 +54,7 @@ public:
   }
 	
 private:
-	void getImagePos (Vec2i& imagePosition)
+	void getImagePos (ivec2& imagePosition)
 	{
     ColorAf color;
 		

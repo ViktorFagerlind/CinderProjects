@@ -21,7 +21,6 @@ vec3 Emitter::getRandomVelocity (const float minVelocity, const float maxVelocit
 vec3 Emitter::getParticleVelocity ()
 {
   vec3 rotatedBaseVelocity = mBaseVelocity;
-  
   rotatedBaseVelocity = glm::rotate (rotatedBaseVelocity, mRotation.z, vec3 (0,0,1));
   rotatedBaseVelocity = glm::rotate (rotatedBaseVelocity, mRotation.y, vec3 (0,1,0));
   rotatedBaseVelocity = glm::rotate (rotatedBaseVelocity, mRotation.x, vec3 (1,0,0));

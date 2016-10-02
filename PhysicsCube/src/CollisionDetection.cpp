@@ -11,7 +11,7 @@ bool CollisionDetection::isCollision (const BoundingGeometry *b1, const Bounding
   return false;
 }
 
-bool CollisionDetection::getCollisionPoint (const BoundingGeometry *b1, const BoundingGeometry *b2, Vec3f& point, Vec3f& normal)
+bool CollisionDetection::getCollisionPoint (const BoundingGeometry *b1, const BoundingGeometry *b2, vec3& point, vec3& normal)
 {
   if (b1->mShape == BoundingGeometry::eBox && b2->mShape == BoundingGeometry::ePlane)
     return getCollisionPoint ((BoundingBox *)b1, (BoundingPlane *)b2, point, normal);
@@ -23,17 +23,17 @@ bool CollisionDetection::getCollisionPoint (const BoundingGeometry *b1, const Bo
 
 bool CollisionDetection::isCollision (const BoundingBox *box, const BoundingPlane *plane)
 {
-  Vec3f dummyPoint;
-  Vec3f dummyNormal;
+  vec3 dummyPoint;
+  vec3 dummyNormal;
   return getCollisionPoint(box, plane, dummyPoint, dummyNormal);
 }
 
-bool CollisionDetection::getCollisionPoint (const BoundingBox *box, const BoundingPlane *plane, Vec3f& point, Vec3f& normal)
+bool CollisionDetection::getCollisionPoint (const BoundingBox *box, const BoundingPlane *plane, vec3& point, vec3& normal)
 {
-  Vec3f boxPoints[8];
+  vec3 boxPoints[8];
   box->getVertecies(boxPoints);
 
-  Vec3f planeNormal = plane->getNormal();
+  vec3 planeNormal = plane->getNormal();
   float offset = plane->getOffset();
 
   for (int i=0; i<8; i++)

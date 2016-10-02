@@ -19,7 +19,7 @@ class VideoEmitter : public Emitter, public Modifier
 public:
 	VideoEmitter(const size_t maxNofParticles,
                const float particlesPerFrame,
-               const Vec3f& position,
+               const vec3& position,
 							 float 	minParticleSize,
 							 float 	maxParticleSize,
 							 float 	minVelocity,
@@ -38,7 +38,7 @@ public:
   void defineParticle (Particle* particle);
 	
 private:
-	void getImagePos (Vec2i& imagePosition);
+	void getImagePos (ivec2& imagePosition);
 
   void loadMovieFile (const std::string &moviePath );
 

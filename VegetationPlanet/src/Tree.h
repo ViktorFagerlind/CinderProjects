@@ -23,7 +23,7 @@ using namespace ci;
 class Flower
 {
 public:
-  Flower (const float size, const Vec3f& through, const Vec3f& left, const Vec3f& position);
+  Flower (const float size, const vec3& through, const vec3& left, const vec3& position);
 
   void draw ();
 
@@ -35,9 +35,9 @@ private:
 
   Matrix44f m_orientation;
 
-  Vec3f m_position;
-  Vec3f m_through;
-  Vec3f m_left;
+  vec3 m_position;
+  vec3 m_through;
+  vec3 m_left;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ private:
 class Leaf
 {
 public:
-  Leaf (const float size, const Vec3f& through, const Vec3f& left, const Vec3f& position);
+  Leaf (const float size, const vec3& through, const vec3& left, const vec3& position);
 
   void draw ();
 
@@ -57,26 +57,26 @@ private:
 
   Matrix44f m_orientation;
 
-  Vec3f m_position;
+  vec3 m_position;
 };
 //----------------------------------------------------------------------------------------------------------------------
 
 class BranchJoint
 {
 public:
-  BranchJoint (const Vec3f& position, const Vec3f& normal, const float length)
+  BranchJoint (const vec3& position, const vec3& normal, const float length)
   : m_position (position),
     m_normal (normal),
     m_length (length)
   {
   }
 
-  Vec3f getEndPosition ()  {return m_position + m_length * m_normal;}
+  vec3 getEndPosition ()  {return m_position + m_length * m_normal;}
 
 public:
-  Vec3f       m_normal;
+  vec3       m_normal;
   const float m_length;
-  Vec3f       m_position;
+  vec3       m_position;
 };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -86,9 +86,9 @@ class Branch
 {
 public:
   class Branch (const float               radius, 
-                const Vec3f&              position, 
-                const Vec3f&              previusNormal, 
-                const Vec3f&              normal, 
+                const vec3&              position, 
+                const vec3&              previusNormal, 
+                const vec3&              normal, 
                 const uint32_t            fullLife,
                 const float               jointLength);
   
@@ -116,15 +116,15 @@ private:
   float                             m_jointLife;
   uint32_t                          m_currentJoint;
 
-  Vec3f                             m_position;
-  Vec3f                             m_normal;
+  vec3                             m_position;
+  vec3                             m_normal;
 
   std::vector<BranchJoint>          m_joints;
   
   std::list<Branch>                 m_subBranches;
   
-  std::vector<Vec3f>                m_drawPoints;
-  std::vector<Vec3f>                m_normals;
+  std::vector<vec3>                m_drawPoints;
+  std::vector<vec3>                m_normals;
   std::vector<float>                m_radie;
 
   std::list<Leaf>                   m_leaves;
@@ -136,8 +136,8 @@ private:
 class Tree
 {
 public:
-  Tree (const Vec3f&        position, 
-        const Vec3f&        direction);
+  Tree (const vec3&        position, 
+        const vec3&        direction);
 
   void update ();
 	

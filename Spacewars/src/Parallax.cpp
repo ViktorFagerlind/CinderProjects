@@ -60,13 +60,13 @@ void ParallaxLayer::draw (bool useBlending)
 
     if (useBlending == o->m_blend)
     {
-      Vec3f position = m_position + Conversions::Vec2fTo3f (o->m_relativePosition);
+      vec3 position = m_position + Conversions::vec2To3f (o->m_relativePosition);
 
       if (position.y + o->m_size >= m_bottomFrustum &&
           position.y - o->m_size <= m_topFrustum)
       {
         o->m_texture.bind ();
-        Emitter::drawBillboard (position, Vec2f (o->m_size, o->m_size));
+        Emitter::drawBillboard (position, vec2 (o->m_size, o->m_size));
         o->m_texture.unbind ();
       }
     }
@@ -122,7 +122,7 @@ void BottomLayer::update (const float dt, const float speed)
 
 void BottomLayer::drawSolid ()
 {
-  Vec2f halfScreenSize = Vec2f (1.f, -1.f) * World::getSingleton ().getDownRight ();
+  vec2 halfScreenSize = vec2 (1.f, -1.f) * World::getSingleton ().getDownRight ();
 
   // TODO remove!!!
 	//gl::enableAlphaBlending ();
@@ -140,14 +140,14 @@ void BottomLayer::drawSolid ()
 //  for (uint32_t i=0; i<20; i++) 
   {
     m_backgrounds[m_bottomIndex].bind ();
-    Emitter::drawBillboard (Vec3f (0.f, m_bottomPosition /*+ i*10.f*/, 0.f), 
-                            Vec2f (halfScreenSize.x, halfScreenSize.y),
+    Emitter::drawBillboard (vec3 (0.f, m_bottomPosition /*+ i*10.f*/, 0.f), 
+                            vec2 (halfScreenSize.x, halfScreenSize.y),
                             ColorAf (1,1,1,1));
     m_backgrounds[m_bottomIndex].unbind ();
 
     m_backgrounds[m_topIndex].bind ();
-    Emitter::drawBillboard (Vec3f (0.f, m_bottomPosition + 2.f*halfScreenSize.y /*+ i*10.f*/, 0.f), 
-                            Vec2f (halfScreenSize.x, halfScreenSize.y),
+    Emitter::drawBillboard (vec3 (0.f, m_bottomPosition + 2.f*halfScreenSize.y /*+ i*10.f*/, 0.f), 
+                            vec2 (halfScreenSize.x, halfScreenSize.y),
                             ColorAf (1,1,1,1));
     m_backgrounds[m_topIndex].unbind ();
   }
@@ -174,7 +174,7 @@ Parallax::Parallax ()
 
     for (uint32 i=0; i<10; i++)
     {
-      o.m_relativePosition = Vec2f (Rand::randFloat (-2000.f, 2000.f), 2000.f * (float)(i + 1));
+      o.m_relativePosition = vec2 (Rand::randFloat (-2000.f, 2000.f), 2000.f * (float)(i + 1));
       l.addObject (o);
     }
 
@@ -190,7 +190,7 @@ Parallax::Parallax ()
 
     for (uint32 i=0; i<10; i++)
     {
-      o.m_relativePosition = Vec2f (Rand::randFloat (-800.f, 800.f), 2000.f * (float)(i + 1));
+      o.m_relativePosition = vec2 (Rand::randFloat (-800.f, 800.f), 2000.f * (float)(i + 1));
       l.addObject (o);
     }
 
@@ -206,7 +206,7 @@ Parallax::Parallax ()
 
     for (uint32 i=0; i<20; i++)
     {
-      o.m_relativePosition = Vec2f (Rand::randFloat (-300.f, 300.f), 17000.f * (float)(i + 1));
+      o.m_relativePosition = vec2 (Rand::randFloat (-300.f, 300.f), 17000.f * (float)(i + 1));
       l.addObject (o);
     }
 

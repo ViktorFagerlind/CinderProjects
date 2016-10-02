@@ -16,7 +16,7 @@ class Sun : public PhysicsObject, public BasicObject
 {
 public:
   Sun (const float                    mass, 
-       const Vec3f&                   position, 
+       const vec3&                   position, 
        const float                    radius,   
              gl::VboMesh              vbo);
 

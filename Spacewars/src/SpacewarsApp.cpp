@@ -33,7 +33,7 @@ void SpacewarsApp::setup()
 
   setupLights ();
 
-  m_touchPosition = Vec2f ((float)getWindowWidth ()/2.f, (float)getWindowHeight () / 2.f);
+  m_touchPosition = vec2 ((float)getWindowWidth ()/2.f, (float)getWindowHeight () / 2.f);
 }
 
 void SpacewarsApp::setupLights ()
@@ -45,7 +45,7 @@ void SpacewarsApp::setupLights ()
   light->setAmbient  (Color::white ());
 	light->setDiffuse  (Color::white ());
 	light->setSpecular (Color::white ());
-  light->setPosition (Vec3f (-1000, 1000, 0));
+  light->setPosition (vec3 (-1000, 1000, 0));
   gl::enable (GL_LIGHT0);
 
   /*
@@ -54,7 +54,7 @@ void SpacewarsApp::setupLights ()
   light->setAmbient  (Color (1, 1, .5f));
 	light->setDiffuse  (Color (1, 1, .5f));
 	light->setSpecular (Color (1, 1, .5f));
-  light->setPosition (Vec3f (1000, 0, 0));
+  light->setPosition (vec3 (1000, 0, 0));
   gl::enable (GL_LIGHT1);*/
 
 }
@@ -97,7 +97,7 @@ void SpacewarsApp::touchesBegan( TouchEvent event )
   vector<TouchEvent::Touch>::const_iterator firstTouch = event.getTouches().begin();
 
 	m_touchPosition = firstTouch->getPos ();
-  m_touchVelocity = Vec2f (0,0);
+  m_touchVelocity = vec2 (0,0);
 }
 
 
@@ -134,7 +134,7 @@ void SpacewarsApp::update()
   if ((frameCount % 100) == 0)
 	  console() << "FPS: " << getAverageFps () << std::endl;
 
-  Vec2f touchPos = World::getSingleton ().pixelToWorld (m_touchPosition);
+  vec2 touchPos = World::getSingleton ().pixelToWorld (m_touchPosition);
 
   World::getSingleton ().update (dt, touchPos);
 

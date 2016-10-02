@@ -47,7 +47,7 @@ void BulletTestApp::prepareSettings (Settings *settings)
 
 void BulletTestApp::setup()
 {
-  world.setup(Vec3f(-10, -10, -10), Vec3f(10, 10, 10));
+  world.setup(vec3(-10, -10, -10), vec3(10, 10, 10));
 	{
 		//create a dynamic rigidbody
 		//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
@@ -76,23 +76,23 @@ void BulletTestApp::setup()
 		world.addBulletRigidBody(body);
 	}
 	
-//	Vec3f p(0, 0, 0);
-//  world.createRigidBox (Vec3f(0.f,-15.f,0.f), Vec3f(15.f, 0.3f, 15.f), 0.f);
+//	vec3 p(0, 0, 0);
+//  world.createRigidBox (vec3(0.f,-15.f,0.f), vec3(15.f, 0.3f, 15.f), 0.f);
 
-  const Vec3f normals[] = 
+  const vec3 normals[] = 
   {
-    Vec3f ( 0, 1, 0),
-    Vec3f ( 0,-1, 0),
-    Vec3f ( 1, 0, 0),
-    Vec3f (-1, 0, 0),
-    Vec3f ( 0, 0, 1),
-    Vec3f ( 0, 0,-1)};
+    vec3 ( 0, 1, 0),
+    vec3 ( 0,-1, 0),
+    vec3 ( 1, 0, 0),
+    vec3 (-1, 0, 0),
+    vec3 ( 0, 0, 1),
+    vec3 ( 0, 0,-1)};
 
   const float halfSize = 10.f;
 
   for (uint32_t i = 0; i < NOF_ELEMENTS(normals); i++)
   {
-    btCollisionShape* groundShape = new btStaticPlaneShape(Vec3f_To_btVector3 (normals[i]), -halfSize);
+    btCollisionShape* groundShape = new btStaticPlaneShape(vec3_To_btVector3 (normals[i]), -halfSize);
     btCollisionObject *groundObject = new btCollisionObject ();
     groundObject->setCollisionShape (groundShape);
     groundObject->setRestitution (1.f);
@@ -145,7 +145,7 @@ void BulletTestApp::mouseDown( MouseEvent event )
 
 	for(int i=0; i<20; i++) 
   {
-    Vec3f p(Rand::randFloat (-boxHalfSize, boxHalfSize), Rand::randFloat (-boxHalfSize, boxHalfSize), Rand::randFloat (-boxHalfSize, boxHalfSize));
+    vec3 p(Rand::randFloat (-boxHalfSize, boxHalfSize), Rand::randFloat (-boxHalfSize, boxHalfSize), Rand::randFloat (-boxHalfSize, boxHalfSize));
 
 		BulletRigidBody *rigidBody = world.createRigidSphere (p, Rand::randFloat(.2f, .5f), 1.f, 1.f);
 
@@ -212,7 +212,7 @@ void BulletTestApp::draw()
         switch (shape->getShapeType ())
         {
         case 0:
-          gl::drawCube (Vec3f(0,0,0), 2.f * btVector3_To_Vec3f (((btBoxShape*) shape)->getHalfExtentsWithoutMargin ())); 
+          gl::drawCube (vec3(0,0,0), 2.f * btVector3_To_vec3 (((btBoxShape*) shape)->getHalfExtentsWithoutMargin ())); 
           break;
         case 8:
           {
@@ -220,7 +220,7 @@ void BulletTestApp::draw()
 
             mMaterial->bind ();
 
-//            gl::drawSphere (Vec3f(0,0,0), radius);
+//            gl::drawSphere (vec3(0,0,0), radius);
 
             glEnable (GL_RESCALE_NORMAL);
             gl::scale (radius, radius, radius);

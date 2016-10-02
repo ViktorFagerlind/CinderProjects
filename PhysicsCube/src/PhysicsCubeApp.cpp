@@ -58,15 +58,15 @@ void PhysicsCubeApp::draw()
   
   //x-axis
   gl::color(1.0f, 0.1f, 0.1f);
-  gl::drawVector(Vec3f(0, 0, 0), Vec3f(50, 0, 0), 10.0f, 5.0f);
+  gl::drawVector(vec3(0, 0, 0), vec3(50, 0, 0), 10.0f, 5.0f);
 
   //y-axis
   gl::color(0.1f, 1.0f, 0.1f);
-  gl::drawVector(Vec3f(0, 0, 0), Vec3f(0, 50, 0), 10.0f, 5.0f);
+  gl::drawVector(vec3(0, 0, 0), vec3(0, 50, 0), 10.0f, 5.0f);
 
   //z-axis
   gl::color(0.3f, 0.3f, 1.0f);
-  gl::drawVector(Vec3f(0, 0, 0), Vec3f(0, 0, 50), 10.0f, 5.0f);
+  gl::drawVector(vec3(0, 0, 0), vec3(0, 0, 50), 10.0f, 5.0f);
   
   gl::drawCoordinateFrame(100.0f, 20.0f, 10.0f);
 

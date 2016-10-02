@@ -11,16 +11,16 @@ using namespace std;
 class DensityInterface
 {
 public:
-  virtual float f (const Vec3f& p) = 0;
+  virtual float f (const vec3& p) = 0;
 
-  Vec3f n (const Vec3f& p, float gridSize)
+  vec3 n (const vec3& p, float gridSize)
   {
     float d = gridSize * 2.0f;
 
-    Vec3f grad;  
-    grad.x = f (p + Vec3f (d, 0, 0)) - f (p + Vec3f (-d, 0, 0));  
-    grad.y = f (p + Vec3f (0, d, 0)) - f (p + Vec3f (0,-d, 0));  
-    grad.z = f (p + Vec3f (0, 0, d)) - f (p + Vec3f (0, 0,-d));  
+    vec3 grad;  
+    grad.x = f (p + vec3 (d, 0, 0)) - f (p + vec3 (-d, 0, 0));  
+    grad.y = f (p + vec3 (0, d, 0)) - f (p + vec3 (0,-d, 0));  
+    grad.z = f (p + vec3 (0, 0, d)) - f (p + vec3 (0, 0,-d));  
 
     return grad.normalized ();
   }
@@ -39,7 +39,7 @@ public:
 
   void draw ();
 
-  static void getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh, const Vec3f& GridSize, const Vec3i& GridResolution);
+  static void getSurfaceMesh (DensityInterface& densityFunction, gl::VboMesh& vboMesh, const vec3& GridSize, const ivec3& GridResolution);
 
   float getWidth ()  {return mGridWidth;}
   float getHeight () {return mGridHeight;}
@@ -49,24 +49,24 @@ private:
   static void IsoSurface::getTetraCubeIndices (const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t gridNofX, const uint32_t gridNofY,
                                                std::vector<uint32_t>& vboIndices);
 
-  static Vec3f VertexInterp (float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2);
+  static vec3 VertexInterp (float isolevel, vec3 p1, vec3 p2, float valp1, float valp2);
 
-  static Vec3f VertexInterp (DensityInterface& densityFunction, 
-                             float isolevel, Vec3f p1, Vec3f p2, float valp1, float valp2);
+  static vec3 VertexInterp (DensityInterface& densityFunction, 
+                             float isolevel, vec3 p1, vec3 p2, float valp1, float valp2);
 
   static void getIntersection (DensityInterface& densityFunction, 
-                               const Vec3f* verts, const float* evals, const uint32_t* indices, 
-                               Vec3f* outVerts, uint32_t& nofVerts);
+                               const vec3* verts, const float* evals, const uint32_t* indices, 
+                               vec3* outVerts, uint32_t& nofVerts);
 
   void drawAllCubes ();
 
-  void drawTetraCube (const Vec3f& pos, const float s);
+  void drawTetraCube (const vec3& pos, const float s);
 
-  void drawTetrahedron (const Vec3f* verts, const float* evals, const uint32_t* indices);
+  void drawTetrahedron (const vec3* verts, const float* evals, const uint32_t* indices);
 
   void setupTetraVbo ();
 
-  static void setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<Vec3f>& vboVertices, const Vec3f& GridSize, const Vec3i& GridResolution);
+  static void setupTetraGrid (std::vector<uint32_t>& vboIndices, std::vector<vec3>& vboVertices, const vec3& GridSize, const ivec3& GridResolution);
 
 private:
   gl::VboMesh mVboMesh;
@@ -81,5 +81,5 @@ private:
 
   // Borde inte vara del av klassen...
 	std::vector<uint32_t> mVboIndices;
-	std::vector<Vec3f>    mVboVertices;
+	std::vector<vec3>    mVboVertices;
 };

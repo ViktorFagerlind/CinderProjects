@@ -8,7 +8,7 @@
 #include "PointEmitter.h"
 
 Sun::Sun (const float                    mass, 
-          const Vec3f&                   position, 
+          const vec3&                   position, 
           const float                    radius,   
                 gl::VboMesh              vbo)
   : PhysicsObject (mass, position, radius)
@@ -49,7 +49,7 @@ Sun::Sun (const float                    mass,
   						                                   50,                   //particlesPerFrame, 
 							                                   5,                    //minParticleSize,
 							                                   15,                   //maxParticleSize,
-							                                   Vec3f (0, 0, 0),      //baseVelocity,
+							                                   vec3 (0, 0, 0),      //baseVelocity,
                                                  0.f,            // minRandVelocity
                                                  0.9f);  //maxRandVelocity
                                                  

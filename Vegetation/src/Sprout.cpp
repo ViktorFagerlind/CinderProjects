@@ -15,14 +15,14 @@ const float  Branch::BRANCH_LIFE   = 200;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Sprout::Sprout (const Vec2f &aOrigin)
+Sprout::Sprout (const vec2 &aOrigin)
 : mOrigin (aOrigin)
 {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Branch::Branch (const Vec2f &aOrigin, float flowerHue)
+Branch::Branch (const vec2 &aOrigin, float flowerHue)
 : Sprout (aOrigin)
 {
 	mIsRoot = true;
@@ -41,7 +41,7 @@ Branch::Branch (const Vec2f &aOrigin, float flowerHue)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Sprout::Sprout (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
+Sprout::Sprout (const vec2 &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
                 float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, float aScale)
 	: mOrigin( aOrigin ), mPos( aOrigin )
 { 
@@ -59,7 +59,7 @@ Sprout::Sprout (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Branch::Branch (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aChangeProb, 
+Branch::Branch (const vec2 &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aChangeProb, 
                 float aFlowerProb, float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, 
                 ColorA aEndColor, ColorA aFlowerColor, float aScale, float aBranchProb)
 : Sprout (aOrigin, aLifespan, aSpeed, aAngle, aAngleDelta, aStartEllipseRadius, aEndEllipseRadius, 
@@ -73,7 +73,7 @@ Branch::Branch (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle,
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-Leaf::Leaf (const Vec2f &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
+Leaf::Leaf (const vec2 &aOrigin, int aLifespan, float aSpeed, float aAngle, float aAngleDelta, float aStartEllipseRadius, 
             float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, float aScale, int aLaunchDelay)
 : Sprout (aOrigin, aLifespan, aSpeed, aAngle, aAngleDelta, aStartEllipseRadius, aEndEllipseRadius, 
           aStartColor, aEndColor, aScale)
@@ -140,7 +140,7 @@ void Sprout::update()
 	if (!isGrowing()) 
     return;
 
-	mPos += Vec2f( cos( mAngle ), sin( mAngle ) ) * ( mSpeed * 2.0f * mScale );
+	mPos += vec2( cos( mAngle ), sin( mAngle ) ) * ( mSpeed * 2.0f * mScale );
 	if( ! Area( 0, 0, sWindowWidth, sWindowHeight ).contains( mPos ) )
 		mLifespan = 0;
 
@@ -238,7 +238,7 @@ void Branch::draw (cairo::Context ctx)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void Branch::createInitialBranch (const Vec2f &origin, float baseHue, ColorA flowerColor)
+void Branch::createInitialBranch (const vec2 &origin, float baseHue, ColorA flowerColor)
 {
 	float changeProb = 0.05f + Rand::randFloat( 0.05f );
 	float flowerProb = Rand::randFloat( FLOWER_PROB/4.0f, FLOWER_PROB );

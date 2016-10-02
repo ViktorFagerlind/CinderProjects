@@ -14,14 +14,14 @@
 
 using namespace std;
 
-typedef std::vector<Vec3f>   Field1D;
+typedef std::vector<vec3>   Field1D;
 typedef std::vector<Field1D> Field2D;
 typedef std::vector<Field2D> Field3D;
 
 class GravityField : public Modifier
 {
 public:
-  GravityField (const Vec3f& size, const Vec3i& nofElements);
+  GravityField (const vec3& size, const ivec3& nofElements);
 
   void addGravityObject (PhysicsObject *object);
   void removeGravityObject (PhysicsObject *object);
@@ -37,9 +37,9 @@ public:
 
   // void resetField ();
 
-  static Vec3f calculateGravityForce (const Vec3f& subjectPosition, 
+  static vec3 calculateGravityForce (const vec3& subjectPosition, 
                                       float subjectMass, 
-                                      const Vec3f& objectPosition, 
+                                      const vec3& objectPosition, 
                                       float objectMass);
 
 //  void update ();
@@ -53,7 +53,7 @@ public:
   }    
 
 private:
-  const Vec3f getGravityPotentialForObject (const Vec3f& objectPositon);
+  const vec3 getGravityPotentialForObject (const vec3& objectPositon);
 
   void initMesh();
 
@@ -66,10 +66,10 @@ private:
 
   // Field3D mGravityPotential;
 
-  const Vec3f mPosition;
-  const Vec3f mSize;
-  const Vec3f mElementSize;
-  const Vec3i mNofElements;
+  const vec3 mPosition;
+  const vec3 mSize;
+  const vec3 mElementSize;
+  const ivec3 mNofElements;
 
 	// Shader
 	gl::GlslProg          mShader;
@@ -79,7 +79,7 @@ private:
 
   vector<float> mMasses;
   vector<float> mRadius;
-  vector<Vec3f> mPositions;
+  vector<vec3> mPositions;
 };
 
 

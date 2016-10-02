@@ -1,4 +1,5 @@
 #include "VfBaseApp.h"
+#include "MyStrings.h"
 
 
 using namespace ci;
@@ -8,14 +9,14 @@ using namespace std;
 
 void VfBaseApp::prepareSettings (Settings *settings)
 {
-  settings->setWindowSize (1920, 1080);
+  settings->setWindowSize (1280, 768);
+  settings->setFullScreen ();
 }
 
-void VfBaseApp::setup (const float cameraDistance, const float cameraStepSize)
+void VfBaseApp::setup (const float cameraDistance, const float cameraStepSize, gl::Fbo::Format fboFormat)
 {
-  gl::Fbo::Format format;
-	format.setSamples (16); // 8x antialiasing
-  m_frameBuffer.reset (new gl::Fbo (getWindowWidth(), getWindowHeight(), format));
+  fboFormat.setSamples (8); // 8x antialiasing
+  m_frameBuffer.reset (new gl::Fbo (getWindowWidth (), getWindowHeight (), fboFormat));
 
   mCamera.reset (new MovingCamera (cameraDistance, cameraStepSize));
 
@@ -40,12 +41,19 @@ void VfBaseApp::keyDown (KeyEvent event)
       m_paused = !m_paused;
       break;
 
+    case 's':
+    {
+      writeImage (MyString::getFrameNumber ("ScreenShot", m_frameCount) + ".png", copyWindowSurface ());
+
+      break;
+    }
+
     case 'v':
     {
       m_savingVideo = true;
 
 	    qtime::MovieWriter::Format format;
-      std::string dir = "D:\\Libraries\\Documents\\Programming\\CppGraphics\\Cinder\\CinderProjects\\Release\\";
+      std::string dir = "D:\\Libraries\\Documents\\Programming\\CppGraphics\\CinderDevelopment\\CinderProjects\\Release\\";
 
 	    if (qtime::MovieWriter::getUserCompressionSettings (&format, loadImage ("../Media/Images/flare.png")))
 		    m_movieWriter = qtime::MovieWriter (dir + "saveVideo.mov", 1280, 768, format);

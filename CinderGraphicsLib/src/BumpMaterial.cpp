@@ -24,13 +24,13 @@ BumpMaterial::BumpMaterial (      gl::Texture   diffuseTexture,
 
 void BumpMaterial::calculateTangents (const TriMesh& mesh)
 {
-	const std::vector<Vec3f>&	    meshVertices  = mesh.getVertices ();
-  const std::vector<Vec2f>&			meshTexCoords = mesh.getTexCoords();
+	const std::vector<vec3>&	    meshVertices  = mesh.getVertices ();
+  const std::vector<vec2>&			meshTexCoords = mesh.getTexCoords();
 	const std::vector<uint32_t>&  meshIndices   = mesh.getIndices();
 
   const uint32_t nofVertices  = meshVertices.size ();
 
-  vector<Vec3f>         addedTangents;
+  vector<vec3>         addedTangents;
   addedTangents.resize (nofVertices); // One tangent (3 floats) for each vertex
 
   vector<uint32_t>  nofAdditions;
@@ -43,15 +43,15 @@ void BumpMaterial::calculateTangents (const TriMesh& mesh)
     const int i2 = meshIndices[3*t+1];
     const int i3 = meshIndices[3*t+2];
 
-    const Vec3f& p1  = meshVertices[i1];
-    const Vec3f& p2  = meshVertices[i2];
-    const Vec3f& p3  = meshVertices[i3];
+    const vec3& p1  = meshVertices[i1];
+    const vec3& p2  = meshVertices[i2];
+    const vec3& p3  = meshVertices[i3];
 
-    const Vec2f& uv1 = meshTexCoords[i1];
-    const Vec2f& uv2 = meshTexCoords[i2];
-    const Vec2f& uv3 = meshTexCoords[i3];
+    const vec2& uv1 = meshTexCoords[i1];
+    const vec2& uv2 = meshTexCoords[i2];
+    const vec2& uv3 = meshTexCoords[i3];
 
-    Vec3f tmpTangent;
+    vec3 tmpTangent;
     MiscMath::ComputeTangent (p1, p2, p3, uv1, uv2, uv3, tmpTangent);
 
 

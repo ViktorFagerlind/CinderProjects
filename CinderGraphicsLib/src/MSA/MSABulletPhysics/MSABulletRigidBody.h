@@ -27,7 +27,7 @@ class BulletRigidBody
 		
 		// initialize the rigidbody with the given collisionShape and startPosition
 		// ownsCollisionShape is for advanced (and internal use) only
-		void					setup (Vec3f &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass=1.f, float restitution=0.f);
+		void					setup (vec3 &startPosition, btCollisionShape *collisionShape, bool ownsCollisionShape, float mass=1.f, float restitution=0.f);
 		btCollisionShape		*getCollisionShape();	
 		btRigidBody				*getBulletBody();
 		

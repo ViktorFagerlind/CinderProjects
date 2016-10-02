@@ -11,5 +11,5 @@ public:
 
   virtual float getDamageOutput () const                          = 0;
 
-  virtual void collide (float damage, const Vec2f& contactPoint)  = 0;
+  virtual void collide (float damage, const vec2& contactPoint)  = 0;
 };

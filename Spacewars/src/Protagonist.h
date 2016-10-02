@@ -35,7 +35,7 @@ public:
 
   virtual ~Protagonist ();
 
-  void update (const float dt, const Vec2f& touchPos);
+  void update (const float dt, const vec2& touchPos);
 
   void drawSolid ();
 

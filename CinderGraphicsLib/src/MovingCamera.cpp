@@ -12,15 +12,15 @@ MovingCamera::MovingCamera (float distance, float stepSize)
 
 void MovingCamera::reset ()
 {
-  mEye        = Vec3f(0,0, mStartingDistance);
-  mTargetVec  = Vec3f(0,0,-mStartingDistance);
-  mUpVector   = Vec3f(0,1,0);
+  mEye        = vec3(0,0, mStartingDistance);
+  mTargetVec  = vec3(0,0,-mStartingDistance);
+  mUpVector   = vec3(0,1,0);
 }
 
 void MovingCamera::mouseMove (MouseEvent event)
 {
-  Vec3f forward = mTargetVec.normalized ();
-  Vec3f right   = forward.cross (mUpVector);
+  vec3 forward = mTargetVec.normalized ();
+  vec3 right   = forward.cross (mUpVector);
 
 	static bool firstMouseMove = true;
 
@@ -44,10 +44,10 @@ void MovingCamera::mouseMove (MouseEvent event)
 
 void MovingCamera::keyDown (KeyEvent event)
 {
-  Vec3f forward = mTargetVec.normalized ();
-  Vec3f right   = forward.cross (mUpVector);
+  vec3 forward = mTargetVec.normalized ();
+  vec3 right   = forward.cross (mUpVector);
 
-  Vec3f move = Vec3f (0, 0, 0);
+  vec3 move = vec3 (0, 0, 0);
 
   switch (event.getChar ())
   {

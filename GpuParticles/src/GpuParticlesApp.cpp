@@ -39,7 +39,7 @@ private:
 
   Perlin        mPerlin;
 
-  Vec3f         mVertPos;
+  vec3         mVertPos;
 
   gl::VboMesh   mVbo;
   gl::Fbo       mFbo[2];
@@ -54,7 +54,7 @@ private:
 
   gl::Texture   mSpriteTex;
 
-  Vec2i         m_mousePos;
+  ivec2         m_mousePos;
   bool          m_mouseDown;
 
 public:
@@ -128,11 +128,11 @@ void GpuParticles::prepareSettings (Settings *settings)
   settings->setFrameRate (30.0f);
 }
 
-Vec3f randPointFromSphere (float r)
+vec3 randPointFromSphere (float r)
 {
   float U = Rand::randFloat (1.f);
 
-  Vec3f  V = Vec3f (Rand::randFloat (-1.f, 1.f),
+  vec3  V = vec3 (Rand::randFloat (-1.f, 1.f),
                     Rand::randFloat (-1.f, 1.f),
                     Rand::randFloat (-1.f, 1.f));
 
@@ -171,27 +171,27 @@ void GpuParticles::setup ()
     while (iterator.pixel ())
     {
 
-//      mVertPos = Vec3f (Rand::randFloat (getWindowWidth ()) / (float)getWindowWidth (),
+//      mVertPos = vec3 (Rand::randFloat (getWindowWidth ()) / (float)getWindowWidth (),
 //        Rand::randFloat (getWindowHeight ()) / (float)getWindowHeight (), 0.0f);
 
-      mVertPos = randPointFromSphere (0.5f) + Vec3f (0.5f, 0.5f, 0.f);
+      mVertPos = randPointFromSphere (0.5f) + vec3 (0.5f, 0.5f, 0.f);
       mVertPos.z = 0.f;
 
       //velocity
-//      Vec2f vel = Vec2f (Rand::randFloat (-.005f, .005f), Rand::randFloat (-.005f, .005f));
+//      vec2 vel = vec2 (Rand::randFloat (-.005f, .005f), Rand::randFloat (-.005f, .005f));
 
-      Vec3f velTmp = randPointFromSphere (0.005f);
-      Vec2f vel = Vec2f (velTmp.x, velTmp.y);
+      vec3 velTmp = randPointFromSphere (0.005f);
+      vec2 vel = vec2 (velTmp.x, velTmp.y);
 
       float nX = iterator.x () * 0.005f;
       float nY = iterator.y () * 0.005f;
       float nZ = app::getElapsedSeconds () * 0.1f;
-      Vec3f v (nX, nY, nZ);
+      vec3 v (nX, nY, nZ);
       float noise = mPerlin.fBm (v);
 
       float angle = noise * 15.0f;
 
-      //vel = Vec3f (cos (angle) * 6.28f, cos (angle) * 6.28f, 0.0f);
+      //vel = vec3 (cos (angle) * 6.28f, cos (angle) * 6.28f, 0.0f);
 
       //noise
       mNoiseSurface.setPixel (iterator.getPos (),
@@ -256,8 +256,8 @@ void GpuParticles::setup ()
   initFBO ();
 
   //fill dummy fbo
-  vector<Vec2f> texCoords;
-  vector<Vec3f> vertCoords, normCoords;
+  vector<vec2> texCoords;
+  vector<vec3> vertCoords, normCoords;
   vector<uint32_t> indices;
 
   gl::VboMesh::Layout layout;
@@ -271,7 +271,7 @@ void GpuParticles::setup ()
   for (int x = 0; x < PARTICLES; ++x) {
     for (int y = 0; y < PARTICLES; ++y) {
       indices.push_back (x * PARTICLES + y);
-      texCoords.push_back (Vec2f (x / (float)PARTICLES, y / (float)PARTICLES));
+      texCoords.push_back (vec2 (x / (float)PARTICLES, y / (float)PARTICLES));
     }
   }
 
@@ -281,7 +281,7 @@ void GpuParticles::setup ()
   setFrameRate (60.f);
   gl::disableVerticalSync ();
 
-  m_mousePos = Vec2i (0, 0);
+  m_mousePos = ivec2 (0, 0);
 }
 
 void GpuParticles::mouseDown (MouseEvent event)
@@ -348,10 +348,10 @@ void GpuParticles::update ()
   mPosTex.bind (4);
   mNoiseTex.bind (5);
 
-  Vec2f emissionPositions[2];
-  emissionPositions[0] = Vec2f ((float)m_mousePos.x / (float)getWindowWidth (),
+  vec2 emissionPositions[2];
+  emissionPositions[0] = vec2 ((float)m_mousePos.x / (float)getWindowWidth (),
                                 (float)m_mousePos.y / (float)getWindowHeight ());
-  emissionPositions[1] = Vec2f(1.f, 1.f) - emissionPositions[0];
+  emissionPositions[1] = vec2(1.f, 1.f) - emissionPositions[0];
 
   mVelShader.bind ();
   mVelShader.uniform ("positions",    0);
@@ -416,7 +416,7 @@ void GpuParticles::draw ()
   mPosShader.uniform ("scale", (float)PARTICLES);
 
   gl::color (ColorA (1.0f, 1.0f, 1.0f, 1.0f));
-  //glTranslatef(Vec3f(getWindowWidth() / 4  - PARTICLES,0.0f,0.0f));
+  //glTranslatef(vec3(getWindowWidth() / 4  - PARTICLES,0.0f,0.0f));
   gl::pushMatrices ();
 
   glScalef (getWindowHeight () / (float)PARTICLES, getWindowHeight () / (float)PARTICLES, 1.0f);
@@ -464,7 +464,7 @@ void GpuParticles::drawText ()
   layout.addLine (particleCount);
 
   glEnable (GL_TEXTURE_2D);
-  gl::draw (layout.render (true), Vec2f (getWindowWidth () - 150, 25));
+  gl::draw (layout.render (true), vec2 (getWindowWidth () - 150, 25));
   glDisable (GL_TEXTURE_2D);
 }
 

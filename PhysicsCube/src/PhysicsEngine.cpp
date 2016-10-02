@@ -9,13 +9,13 @@ using namespace std;
 
 PhysicsEngine::PhysicsEngine()
 {
-  cube = new DynamicObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, 70.0f);
-  cube->setPosition(Vec3f(0, 500, 0));
+  cube = new DynamicObject(1.0f, vec3(0, 0, 0), 70.0f, 70.0f, 70.0f);
+  cube->setPosition(vec3(0, 500, 0));
 
-  plane = new StaticObject(1.0f, Vec3f(0, 0, 0), 70.0f, 70.0f, Vec3f(0, 0, 100), Vec3f(100, 0, 0), Vec3f(0, 0, 0));
+  plane = new StaticObject(1.0f, vec3(0, 0, 0), 70.0f, 70.0f, vec3(0, 0, 100), vec3(100, 0, 0), vec3(0, 0, 0));
 
-  sphere = new DynamicObject(1.0f, Vec3f(0, 0, 0), 35.0f);
-  sphere->setPosition(Vec3f(100, 0, 0));
+  sphere = new DynamicObject(1.0f, vec3(0, 0, 0), 35.0f);
+  sphere->setPosition(vec3(100, 0, 0));
 
   mTimer.start ();
   mLastTimeStamp = (float)mTimer.getSeconds ();
@@ -41,10 +41,10 @@ void PhysicsEngine::update()
           4) update position and do 1)-3) until no collision.
   */
 
-  //Vec3f collisionPoint = getCollisionPoint();
+  //vec3 collisionPoint = getCollisionPoint();
 
- cube->applyForce(Vec3f(0, -50, 0));
- cube->applyTorque(Vec3f(1, 0, 0), Vec3f(0, -50, 0));
+ cube->applyForce(vec3(0, -50, 0));
+ cube->applyTorque(vec3(1, 0, 0), vec3(0, -50, 0));
 
 
   cube->update(deltaTime);
@@ -71,12 +71,12 @@ void  PhysicsEngine::setState(PhysicsObject physicsObject)
 
 }
 
-void PhysicsEngine::applyForce(PhysicsObject physicsObject, Vec3f force)
+void PhysicsEngine::applyForce(PhysicsObject physicsObject, vec3 force)
 {
 
 }
   
-void PhysicsEngine::applyTorque(PhysicsObject physicsObject, Vec3f pointOfAttack, Vec3f force)
+void PhysicsEngine::applyTorque(PhysicsObject physicsObject, vec3 pointOfAttack, vec3 force)
 {
   
 }
@@ -93,28 +93,28 @@ void PhysicsEngine::resolveCollisions ()
     {
       if (CollisionDetection::isCollision (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry))
       {
-        Vec3f normal, point;
+        vec3 normal, point;
 
         CollisionDetection::getCollisionPoint (objects[i]->mBoundingGeometry, objects[j]->mBoundingGeometry, point, normal);
 
         
-        Vec3f bodyAVelocity = objects[i]->getPointVelocity(point);
-        Vec3f bodyBVelocity = objects[j]->getPointVelocity(point);
+        vec3 bodyAVelocity = objects[i]->getPointVelocity(point);
+        vec3 bodyBVelocity = objects[j]->getPointVelocity(point);
 
-        Vec3f APvector =  point - objects[i]->mState.mPosition;
-        Vec3f BPvector =  point - objects[j]->mState.mPosition;
+        vec3 APvector =  point - objects[i]->mState.mPosition;
+        vec3 BPvector =  point - objects[j]->mState.mPosition;
 
-        Vec3f relativeVelocity = bodyAVelocity - bodyBVelocity;
+        vec3 relativeVelocity = bodyAVelocity - bodyBVelocity;
 
         float bounceCoeff = 0.5;
         float nominator = -(1+bounceCoeff)*(relativeVelocity).dot(normal);
         float denominator1 = (1/objects[i]->mMass + 1/objects[j]->mMass)*normal.dot(normal);
         
-        Vec3f APnAP = APvector;
+        vec3 APnAP = APvector;
         APnAP       = APnAP.cross(normal);
         APnAP       = APnAP.cross(APvector);
         
-        Vec3f BPnBP = BPvector;
+        vec3 BPnBP = BPvector;
         BPnBP       = BPvector.cross(normal);
         BPnBP       = BPnBP.cross(BPvector);
 
@@ -126,7 +126,7 @@ void PhysicsEngine::resolveCollisions ()
         
         objects[i]->setLinearMomentum(objects[i]->mState.mLinearMomentum + collisionImpulse*normal);
         
-        Vec3f AngularImpulse3D = APvector.cross(collisionImpulse*normal);
+        vec3 AngularImpulse3D = APvector.cross(collisionImpulse*normal);
         Vec4f AngularImpulse4D;
         AngularImpulse4D[0] = AngularImpulse3D[0]; 
         AngularImpulse4D[1] = AngularImpulse3D[1];

@@ -6,7 +6,7 @@
 #include "cinder/Rand.h"
 #include "cinder/ObjLoader.h"
 
-Grass::Grass (const float radius, const Vec3f& direction)
+Grass::Grass (const float radius, const vec3& direction)
 : m_radius (radius)
 {
 
@@ -14,7 +14,7 @@ Grass::Grass (const float radius, const Vec3f& direction)
 
   for (uint32_t i=0; i<20; i++)
   {
-    Vec3f grassDirection = (direction + MiscMath::getRandomDirection ()*Rand::randFloat (.2f,.4f)).normalized ();
+    vec3 grassDirection = (direction + MiscMath::getRandomDirection ()*Rand::randFloat (.2f,.4f)).normalized ();
 
     shared_ptr<Straw>  t(new Straw (grassDirection,                         // Start normal
                                     grassDirection * m_radius * 0.9f,      // Position
@@ -36,7 +36,7 @@ void Grass::rotate (const Matrix44<float>& rotationMatrix)
   m_rotation *= rotationMatrix;
 }
 
-void Grass::move (const Vec3f& offset)
+void Grass::move (const vec3& offset)
 {
 //  m_position += offset;
 }
@@ -46,7 +46,7 @@ void Grass::animate ()
 /*
   const float rotationsSpeed  = 0.001f;
 
-	Vec3f rotation  = m_perlin.dfBm (Vec3f ((m_position.x + m_animationCounter/2.f) * 0.005f, 
+	vec3 rotation  = m_perlin.dfBm (vec3 ((m_position.x + m_animationCounter/2.f) * 0.005f, 
                                           (m_position.y + m_animationCounter/2.f) * 0.005f,
                                           (m_position.z + m_animationCounter/2.f) * 0.005f));
 

@@ -18,7 +18,7 @@ public:
 
   virtual ~TubeParticle ();
 
-  void define (const Vec3f& position, float size, Vec3f velocity);
+  void define (const vec3& position, float size, vec3 velocity);
 
   void update ();
 
@@ -28,8 +28,8 @@ private:
   uint32_t        m_segmentLength;
   uint32_t        m_updateCount;
 
-  vector<Vec3f>   m_points;
-  vector<Vec3f>   m_normals;
+  vector<vec3>   m_points;
+  vector<vec3>   m_normals;
   vector<float>   m_radie;
 };
 
@@ -50,8 +50,13 @@ public:
   void createParticles (vector<Particle*> &particles);
 
   void beforeDraw           ();
-  void drawParticle         (const Particle &p, const Vec2f &textureSize);
+  void drawParticle         (const Particle &p, const vec2 &textureSize);
   void afterDraw            ();
+
+  void setAmbient (const ColorAf& c)  { m_material->setAmbient (c); }
+  void setDiffuse (const ColorAf& c)  { m_material->setDiffuse (c); }
+  void setSpecular (const ColorAf& c) { m_material->setSpecular (c); }
+  void setShininess (const float s)   { m_material->setShininess (s); }
 
 private:
   uint32_t        m_tubeMaxNofPoints;

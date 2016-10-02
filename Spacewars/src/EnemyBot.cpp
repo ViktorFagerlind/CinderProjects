@@ -53,7 +53,7 @@ EnemyBot::EnemyBot ()
   // -------------- setup animation ----------
   for (uint32_t i=0; i<10; i++)
   {
-    Vec2f newPosition = Vec2f (Rand::randFloat (-400.f, 400.f), Rand::randFloat (-700.f, 600.f));
+    vec2 newPosition = vec2 (Rand::randFloat (-400.f, 400.f), Rand::randFloat (-700.f, 600.f));
 
     timeline().appendTo (&m_positionAndAngle, PositionAndAngle (newPosition.x, newPosition.y, 0.f), 1.4f, EaseNone());
   }

@@ -17,7 +17,7 @@ class ParallaxObject
 public:
   gl::Texture m_texture;
   float       m_size;
-  Vec2f       m_relativePosition;
+  vec2       m_relativePosition;
   bool        m_blend;
 };
 
@@ -42,7 +42,7 @@ private:
 private:
   vector<ParallaxObject>  m_objects;
 
-  Vec3f                   m_position;
+  vec3                   m_position;
 
   float                   m_topObjectPosition;
 

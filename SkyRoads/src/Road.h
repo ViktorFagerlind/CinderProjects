@@ -19,32 +19,32 @@ public:
 
   Road ();
   
-  void updateVectors (const Vec3f& center);
+  void updateVectors (const vec3& center);
 
   // Requires at least one previous block...
-  void addRoadBlock (const Vec3f& center);
+  void addRoadBlock (const vec3& center);
   
   void update ();
 	
 	void draw ();
 	
-	const Vec3f& getCurrentRoadEnd ();
+	const vec3& getCurrentRoadEnd ();
 
 	const RoadBlock& getFirstRoadBlock ();
 
 private:
   list<RoadBlock *> roadBlocks;
   
-  Vec3f  mPreviousCenter;
-  Vec3f  mCurrentCenter;
-  Vec3f  mNextCenter;
+  vec3  mPreviousCenter;
+  vec3  mCurrentCenter;
+  vec3  mNextCenter;
   
-  Vec3f  mPreviousNormal;
-  Vec3f  mCurrentNormal;
+  vec3  mPreviousNormal;
+  vec3  mCurrentNormal;
 
-  Vec3f  mCurrentLeft;
+  vec3  mCurrentLeft;
   
-  Vec3f *mSteerPoints;
+  vec3 *mSteerPoints;
   
   float  mSplineTime;
   

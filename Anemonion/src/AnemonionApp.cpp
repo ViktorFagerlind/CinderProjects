@@ -52,11 +52,11 @@ void AnemonionApp::setup()
 	glLightfv(GL_LIGHT0, GL_POSITION, p1);
 	glEnable (GL_LIGHT0);
 
-  m_amoebas.push_back (shared_ptr<Amoeba> (new Amoeba (5.f, Vec3f(0,0,0))));
+  m_amoebas.push_back (shared_ptr<Amoeba> (new Amoeba (5.f, vec3(0,0,0))));
   for (uint32_t i=0; i<50; i++)
   {
     shared_ptr<Amoeba> amoeba(new Amoeba (Rand::randFloat(4.f,6.f),             // Size
-                                          Vec3f(Rand::randFloat(-150,150),     // Position
+                                          vec3(Rand::randFloat(-150,150),     // Position
                                                 Rand::randFloat(-150,150),
                                                 Rand::randFloat(-150,150))));
 
@@ -91,29 +91,29 @@ void AnemonionApp::keyDown (KeyEvent event)
 
 #if 0
   case 'x':
-    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1),  5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (vec3(0,0,1),  5.f * (float)M_PI / 180.f));
     break;
   case 'c':
-    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(0,0,1), -5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (vec3(0,0,1), -5.f * (float)M_PI / 180.f));
     break;
   case 'a':
-    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0),  5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (vec3(1,0,0),  5.f * (float)M_PI / 180.f));
     break;
   case 'z':
-    m_amoebas[0]->rotate (Matrix44<float>::createRotation (Vec3f(1,0,0), -5.f * (float)M_PI / 180.f));
+    m_amoebas[0]->rotate (Matrix44<float>::createRotation (vec3(1,0,0), -5.f * (float)M_PI / 180.f));
     break;
 
   case 'f':
-    m_amoebas[0]->move (Vec3f(-10,  0, 0));
+    m_amoebas[0]->move (vec3(-10,  0, 0));
     break;
   case 'h':
-    m_amoebas[0]->move (Vec3f( 10,  0, 0));
+    m_amoebas[0]->move (vec3( 10,  0, 0));
     break;
   case 't':
-    m_amoebas[0]->move (Vec3f(  0, 10, 0));
+    m_amoebas[0]->move (vec3(  0, 10, 0));
     break;
   case 'g':
-    m_amoebas[0]->move (Vec3f(  0,-10, 0));
+    m_amoebas[0]->move (vec3(  0,-10, 0));
     break;
 #endif
   }

@@ -77,8 +77,8 @@ namespace MSA {
 	inline int getWindowWidth()										{	return ci::app::getWindowWidth(); }
 	inline int getWindowHeight()									{	return ci::app::getWindowHeight(); }
 	inline float getWindowAspectRatio()								{	return ci::app::getWindowAspectRatio(); }
-	inline Vec2f getWindowSize()									{	return ci::app::getWindowSize(); }
-	inline Vec2f getWindowCenter()									{	return ci::app::getWindowCenter(); }
+	inline vec2 getWindowSize()									{	return ci::app::getWindowSize(); }
+	inline vec2 getWindowCenter()									{	return ci::app::getWindowCenter(); }
 	
 	inline void drawString(string s, float x, float y)				{	return;  /* todo */ }	
 }

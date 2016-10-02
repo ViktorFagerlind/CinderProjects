@@ -45,7 +45,7 @@ public:
 //    mOctaves.push_back (Octave (1.0f/256.0f,128.0f));
   }
 
-  float f (const Vec3f& p)
+  float f (const vec3& p)
   {
 //    float noise = mPerlin.fBm (p/200.0f);
 
@@ -95,8 +95,8 @@ class BlobApp : public AppBasic {
   bool          mPaused;
   bool          mWireFrameMode;
   float         mBallRadius;
-  vector<Vec3f> mBallPositions;
-  vector<Vec3f> mBallVelocities;
+  vector<vec3> mBallPositions;
+  vector<vec3> mBallVelocities;
 
   gl::VboMesh   mFunSurface;
 };
@@ -130,7 +130,7 @@ void BlobApp::mouseMove (MouseEvent event)
 void BlobApp::setup()
 {
   mCamera.reset (new MovingCamera (700.0f));
-  mCamera.get ()->setEyePos (Vec3f (0, 200.0f, 700.0f));
+  mCamera.get ()->setEyePos (vec3 (0, 200.0f, 700.0f));
 
   // Initialise light
   float ambient[]  = {0.3f, 0.3f, 0.3f, 1.0f};
@@ -185,15 +185,15 @@ void BlobApp::setup()
 
   for (int i=0; i<8; i++)
   {
-    mBallPositions.push_back (Vec3f (0,0,0));
-    mBallVelocities.push_back (Vec3f (Rand::randFloat(-3.0f, 3.0f),
+    mBallPositions.push_back (vec3 (0,0,0));
+    mBallVelocities.push_back (vec3 (Rand::randFloat(-3.0f, 3.0f),
                                       Rand::randFloat(-3.0f, 3.0f),
                                       Rand::randFloat(-3.0f, 3.0f)));
   }
 
   // Create function surface
   PerlinDensity pd;
-  mIsoMesh->getSurfaceMesh (pd, mFunSurface, Vec3f (50, 50, 50), Vec3i (20, 20, 20));
+  mIsoMesh->getSurfaceMesh (pd, mFunSurface, vec3 (50, 50, 50), ivec3 (20, 20, 20));
 }
 
 void BlobApp::prepareSettings (Settings *settings)

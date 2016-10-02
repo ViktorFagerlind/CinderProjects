@@ -19,7 +19,7 @@ public:
   gl::Fbo& render (gl::Fbo& original);
 
 private:
-  void blurStep (gl::Fbo& fromFbo, gl::Fbo& toFbo, const Vec2f& blur);
+  void blurStep (gl::Fbo& fromFbo, gl::Fbo& toFbo, const vec2& blur);
 
 private:
   const float mBlurSize;

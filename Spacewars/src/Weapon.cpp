@@ -51,7 +51,7 @@ Shot::~Shot ()
   World::getPhysicsWorld ().DestroyBody (m_body);
 }
 
-void Shot::define (const Vec2f& position, const Vec2f& speed, const float rotation, const EntityCategory category)
+void Shot::define (const vec2& position, const vec2& speed, const float rotation, const EntityCategory category)
 {
   m_isDead   = false;
 
@@ -82,10 +82,10 @@ void Shot::kill ()
   m_body->GetFixtureList ()->SetFilterData (filter);
 }
 
-void Shot::collide (float damage, const Vec2f& contactPoint)
+void Shot::collide (float damage, const vec2& contactPoint)
 {
   // Create small explosion at contact
-  ParticleSystemHelper::createMiniExplosion ()->setPosition (Conversions::Vec2fTo3f (contactPoint));
+  ParticleSystemHelper::createMiniExplosion ()->setPosition (Conversions::vec2To3f (contactPoint));
   
   kill ();
 };
@@ -93,7 +93,7 @@ void Shot::collide (float damage, const Vec2f& contactPoint)
 
 void Shot::update (const float dt)
 {
-  Vec2f position = Conversions::fromPhysics (m_body->GetPosition ());
+  vec2 position = Conversions::fromPhysics (m_body->GetPosition ());
 
   if (position.x >   20.f + World::getSingleton ().getDownRight ().x ||
       position.x <  -20.f + World::getSingleton ().getTopLeft   ().x || 
@@ -104,7 +104,7 @@ void Shot::update (const float dt)
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Weapon::Weapon (const Vec3f&              relativePos, 
+Weapon::Weapon (const vec3&              relativePos, 
                 const shared_ptr<Vessel>  vessel, 
                 const EntityCategory      shotCategory, 
                 const uint32_t            maxNofShots, 
@@ -175,8 +175,8 @@ void Weapon::fire ()
   if (m_nofShots >= m_maxNofShots)
     return;
 
-  Vec2f worldPosition = Conversions::Vec3fTo2f (m_vessel->vesselPositionToWorld (m_relativePos + Vec3f (0.f, 20.f, 0.f)));
-  Vec2f worldSpeed    = Conversions::Vec3fTo2f (m_vessel->vesselRotationToWorld (Vec3f (0.f, 2000.f, 0.f)));
+  vec2 worldPosition = Conversions::vec3To2f (m_vessel->vesselPositionToWorld (m_relativePos + vec3 (0.f, 20.f, 0.f)));
+  vec2 worldSpeed    = Conversions::vec3To2f (m_vessel->vesselRotationToWorld (vec3 (0.f, 2000.f, 0.f)));
 
   // Create new shot
   m_shots[m_nofShots]->define (worldPosition, worldSpeed, m_vessel->getRotation ().z, m_shotCategory);
@@ -191,7 +191,7 @@ void Weapon::fire ()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-Lazer::Lazer (const Vec3f& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots, const bool noSound)
+Lazer::Lazer (const vec3& relativePos, ColorAf color, const shared_ptr<Vessel> vessel, EntityCategory shotCategory, const uint32_t maxNofShots, const bool noSound)
 : Weapon (relativePos, vessel, shotCategory, maxNofShots, noSound ? AudioClip_NoSound_E : AudioClip_Lazer_E),
   m_color (color)
 {
@@ -218,7 +218,7 @@ void Lazer::drawTransparent ()
   {
     Shot *s = m_shots[i].get ();
 
-    Emitter::drawBillboard (Conversions::fromPhysics3f (s->m_body->GetPosition ()),  Vec2f (w, h), m_color, s->m_rotation);
+    Emitter::drawBillboard (Conversions::fromPhysics3f (s->m_body->GetPosition ()),  vec2 (w, h), m_color, s->m_rotation);
   }
 
   m_shotTexture.unbind ();
