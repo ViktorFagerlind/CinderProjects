@@ -1,25 +1,17 @@
 #pragma once
 
-#include "ParticleDrawerInterface.h"
+#include "NewParticleDrawer.h"
 #include "cinder/gl/gl.h"
-
-#include "SpriteData.h"
-#include "SpriteDataParser.h"
-#include <vector>
 
 using namespace std;
 
-class AnimParticleDrawer : public ParticleDrawerInterface
+class AnimParticleDrawer : public NewParticleDrawer
 {
 public:
-  AnimParticleDrawer (shared_ptr<vector<SpriteData>> spriteData);
+  AnimParticleDrawer (const string& vertexShaderName="pointspritesheet_es3.vert",
+                      const string& fragmentShaderName="pointspritesheet_es3.frag");
   virtual ~AnimParticleDrawer ();
-
-  // ParticleDrawerInterface operations
-  void beforeDraw ();
-  void drawParticle (const Particle &p, const vec2 &textureSize);
-  void afterDraw ();
-
-private:
-  shared_ptr<vector<SpriteData>> m_spriteData;
+  
+  // NewParticleDrawer operations
+  void beforeDraw () override;
 };

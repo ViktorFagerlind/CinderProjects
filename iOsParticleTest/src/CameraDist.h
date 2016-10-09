@@ -1,5 +1,5 @@
 //
-//  Explosion.hpp
+//  FireComet.hpp
 //  iOsParticleTest
 //
 //  Created by Viktor Fägerlind on 02/10/16.
@@ -13,11 +13,15 @@
 using namespace ci;
 using namespace std;
 
-class Emitter;
+class CameraEmitter;
 
-class Explosion
+class CameraDist
 {
 public:
-  static void create (vec3 pos);
+  CameraDist ();
+
+  SurfaceRef getImage ();
+  
+  CameraEmitter *m_cameraEmitter;
 };
 

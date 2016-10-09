@@ -6,22 +6,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../CinderGraphicsLib/src/Emitter.cpp"
-            timestampString = "497027804.077198"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "Emitter::updateEmitter ()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -57,22 +41,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../src/iOsParticleTestApp.cpp"
-            timestampString = "497094157.155912"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "iOsParticleTestApp::draw()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "../../CinderGraphicsLib/src/ParticleSystem.cpp"
             timestampString = "497095393.526804"
             startingColumnNumber = "9223372036854775807"
@@ -96,6 +64,213 @@
             startingLineNumber = "124"
             endingLineNumber = "124"
             landmarkName = "ParticleSystem::draw()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497173650.927229"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "CameraEmitter::defineParticle (Particle* particle)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/CameraDist.cpp"
+            timestampString = "497174410.47298"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "CameraDist::CameraDist()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497173650.927229"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "CameraEmitter::updateEmitter()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/Emitter.cpp"
+            timestampString = "497172734.183212"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "Emitter::updateEmitter ()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497177592.58752"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "CameraEmitter::defineParticle (Particle* particle)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497182000.051438"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "CameraEmitter::defineParticle (Particle* particle)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497193289.567085"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "CameraEmitter::getImagePosAndColor (ivec2&amp; imagePosition, ColorAf&amp; color)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497173650.927229"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "CameraEmitter::CameraEmitter (const size_t maxNofParticles, const float particlesPerFrame, const vec3&amp; position, float minParticleSize, float maxParticleSize, float minRandVelocity, float maxRandVelocity, float width, float height, float depth, shared_ptr&lt;ParticleDrawerInterface&gt; drawer)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CameraEmitter::CameraEmitter(unsigned long, float, glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;, float, float, float, float, float, float, float, std::__1::shared_ptr&lt;ParticleDrawerInterface&gt;)"
+                  moduleName = "iOsParticleTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Viktor/programming/CinderProjects/CinderGraphicsLib/src/CameraEmitter.cpp"
+                  timestampString = "497174562.032963"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "804">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CameraEmitter::CameraEmitter(unsigned long, float, glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;, float, float, float, float, float, float, float, std::__1::shared_ptr&lt;ParticleDrawerInterface&gt;)"
+                  moduleName = "iOsParticleTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Viktor/programming/CinderProjects/CinderGraphicsLib/src/CameraEmitter.cpp"
+                  timestampString = "497174562.03308"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "852">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CameraEmitter::CameraEmitter(unsigned long, float, glm::tvec3&lt;float, (glm::precision)0&gt; const&amp;, float, float, float, float, float, float, float, std::__1::shared_ptr&lt;ParticleDrawerInterface&gt;)"
+                  moduleName = "iOsParticleTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Viktor/programming/CinderProjects/CinderGraphicsLib/src/CameraEmitter.cpp"
+                  timestampString = "497174562.033169"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "108">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497193238.240616"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "CameraEmitter::getImagePosAndColor (ivec2&amp; imagePosition, ColorAf&amp; color)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../CinderGraphicsLib/src/CameraEmitter.cpp"
+            timestampString = "497193238.240616"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "CameraEmitter::getImagePosAndColor (ivec2&amp; imagePosition, ColorAf&amp; color)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

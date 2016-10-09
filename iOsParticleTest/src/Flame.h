@@ -1,5 +1,5 @@
 //
-//  FireComet.hpp
+//  Flame.hpp
 //  iOsParticleTest
 //
 //  Created by Viktor Fägerlind on 02/10/16.
@@ -16,11 +16,11 @@ using namespace std;
 class Emitter;
 class ParticleSystem;
 
-class FireComet
+class Flame
 {
 public:
-  FireComet ();
-  virtual ~FireComet ();
+  Flame ();
+  virtual ~Flame ();
   
   void setPosition (vec3 pos);
   

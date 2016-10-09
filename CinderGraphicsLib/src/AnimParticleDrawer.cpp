@@ -1,11 +1,9 @@
 #include "AnimParticleDrawer.h"
 
-#include "Billboard.h"
-
-
-AnimParticleDrawer::AnimParticleDrawer (shared_ptr<vector<SpriteData>> spriteData)
+AnimParticleDrawer::AnimParticleDrawer (const string& vertexShaderName,
+                                        const string& fragmentShaderName)
+: NewParticleDrawer (vertexShaderName, fragmentShaderName)
 {
-  m_spriteData = spriteData;
 }
 
 AnimParticleDrawer::~AnimParticleDrawer ()
@@ -14,14 +12,23 @@ AnimParticleDrawer::~AnimParticleDrawer ()
 
 void AnimParticleDrawer::beforeDraw ()
 {
-  // Enable arrays
-  glEnableClientState (GL_VERTEX_ARRAY);
-  glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-  glEnableClientState (GL_COLOR_ARRAY);
+  /*
+   uniform float ImageSize;      // Size of the individual images (in the sprite sheet)
+   uniform float NofWidthImages; // The number of images for each row
+   uniform float TotalNofImages; // The total number of images
+   */
+  
+  m_particleBatch->getGlslProg ()->uniform ("ImageSize", 7);
+  m_particleBatch->getGlslProg ()->uniform ("NofWidthImages", 146);
+  m_particleBatch->getGlslProg ()->uniform ("TotalNofImages", 89);
+  
+  NewParticleDrawer::beforeDraw();
 }
 
+/*
 void AnimParticleDrawer::drawParticle (const Particle &p, const vec2 &textureSize)
 {
+  
   GLfloat texCoords[8];
 
   uint32_t animationNofFrames = m_spriteData->size ();
@@ -56,12 +63,6 @@ void AnimParticleDrawer::drawParticle (const Particle &p, const vec2 &textureSiz
                                vec2 (p.mCurrentSize, p.mCurrentSize),
                                texCoords,
                                p.mColor);
+  
 }
-
-void AnimParticleDrawer::afterDraw ()
-{
-  // Disable arrays
-  glDisableClientState (GL_VERTEX_ARRAY);
-  glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState (GL_COLOR_ARRAY);
-}
+*/

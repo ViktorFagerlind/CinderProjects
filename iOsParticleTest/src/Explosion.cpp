@@ -34,7 +34,7 @@ void Explosion::create (vec3 pos)
   ///////////
   particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("Fireball 1.png"));
   
-  commonModifier = new CommonModifier (2.5f, 1.0f, 2.5f);
+  commonModifier = new CommonModifier (3.5f, 1.0f, 2.5f);
   colorModifier  = new ColorModifier  (ColorAf(0.8f,  0.8f,  1.0f,  1.0f),  //startColor
                                        ColorAf(1.0f,  1.0f,  1.0f,  0.5f),  //middleColor
                                        ColorAf(1.0f,  1.0f,  1.0f,  0.0f),  //endColor
@@ -47,17 +47,17 @@ void Explosion::create (vec3 pos)
   
   emitter = new AreaEmitter  (700,                 // maxNofParticles,
                               pos, // position,
-                              50.f,                 // particlesPerFrame,
-                              100.f,  // width,
-                              100.f, 	// height,
+                              150.f,                 // particlesPerFrame,
+                              80.f,  // width,
+                              80.f, 	// height,
                               0.f,   // depth
                               100.f,                // minParticleSize,
                               150.f,                // maxParticleSize,
                               vec3(0),             // baseVelocity,
-                              8.f,                 // minRandVelocity
-                              10.f);                // maxRandVelocity
+                              15.f,                 // minRandVelocity
+                              20.f);                // maxRandVelocity
   
-  emitter->setFramesToLive(5);
+  emitter->setFramesToLive(3);
   
   particleSystem->addEmitter (emitter);
   particleSystem->killSystem();

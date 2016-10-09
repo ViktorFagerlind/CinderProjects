@@ -3,10 +3,12 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
-using namespace cinder;
+using namespace ci;
 
-NewParticleDrawer::NewParticleDrawer ()
+NewParticleDrawer::NewParticleDrawer (const string& vertexShaderName, const string& fragmentShaderName)
 {
+  m_vertexShaderName    = vertexShaderName;
+  m_fragmentShaderName  = fragmentShaderName;
 }
 
 NewParticleDrawer::~NewParticleDrawer ()
@@ -25,7 +27,7 @@ void NewParticleDrawer::setup (const vector<Particle> &particles)
   m_particleVbo = gl::Vbo::create (GL_ARRAY_BUFFER, particles, GL_STREAM_DRAW );
   auto mesh = gl::VboMesh::create ((uint32_t) particles.size (), GL_POINTS, { { particleLayout, m_particleVbo } } );
   
-  gl::GlslProgRef shader = gl::GlslProg::create(app::loadAsset("pointsprite_es3.vert"), app::loadAsset("pointsprite_es3.frag"));
+  gl::GlslProgRef shader = gl::GlslProg::create(app::loadAsset(m_vertexShaderName), app::loadAsset(m_fragmentShaderName));
   m_particleBatch = gl::Batch::create( mesh, shader, { { geom::Attrib::CUSTOM_0, "vfSize" }, { geom::Attrib::CUSTOM_1, "vfLife" } }  );
 }
 

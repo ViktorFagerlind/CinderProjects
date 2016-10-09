@@ -42,6 +42,7 @@
 		73A6EDDF95094B929D8483AE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F7DA31FF4D42E8BE4E80AA /* CoreMotion.framework */; };
 		742133E4CCD04BB19F3A611F /* b2ChainShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD2B4A9BA78422186C03DED /* b2ChainShape.cpp */; };
 		74EA83DED3654D65944AC25D /* b2PolygonAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F25BE3C83B034BD787A6A423 /* b2PolygonAndCircleContact.cpp */; };
+		7773D9831DA591A9002EAE51 /* SpriteDataParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7773D9821DA591A9002EAE51 /* SpriteDataParser.cpp */; };
 		7784C7B61D9C416000707C35 /* Emitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7B01D9C416000707C35 /* Emitter.cpp */; };
 		7784C7B71D9C416000707C35 /* FluidModifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7B11D9C416000707C35 /* FluidModifier.cpp */; };
 		7784C7B81D9C416000707C35 /* ImageLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7B21D9C416000707C35 /* ImageLibrary.cpp */; };
@@ -50,11 +51,16 @@
 		7784C7BB1D9C416000707C35 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7B51D9C416000707C35 /* ParticleSystem.cpp */; };
 		7784C7D71D9C447F00707C35 /* fire_alpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7D11D9C447F00707C35 /* fire_alpha.png */; };
 		7784C7D81D9C447F00707C35 /* flare.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7D21D9C447F00707C35 /* flare.png */; };
-		7784C7D91D9C447F00707C35 /* smoke1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7D31D9C447F00707C35 /* smoke1.jpg */; };
 		7784C7DC1DA0EB0E00707C35 /* Fireball 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7DB1DA0EB0E00707C35 /* Fireball 1.png */; };
 		7784C7DF1DA0F49700707C35 /* FireComet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7DD1DA0F49700707C35 /* FireComet.cpp */; };
 		7784C7E21DA0F6A100707C35 /* Explosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7E01DA0F6A100707C35 /* Explosion.cpp */; };
-		7784C7E81DA1151A00707C35 /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C7E71DA1151A00707C35 /* smoke.png */; };
+		7784C7FD1DA23C0300707C35 /* CameraDist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7FB1DA23C0300707C35 /* CameraDist.cpp */; };
+		7784C8001DA23C4A00707C35 /* CameraEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7784C7FF1DA23C4A00707C35 /* CameraEmitter.cpp */; };
+		7784C8031DA23D2400707C35 /* basic particle 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C8011DA23D2400707C35 /* basic particle 2.png */; };
+		7784C8041DA23D2400707C35 /* smoke2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C8021DA23D2400707C35 /* smoke2.png */; };
+		7784C8061DA251D800707C35 /* dot_alpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C8051DA251D800707C35 /* dot_alpha.png */; };
+		77E8BDFF1DA6D420001FF61F /* AnimParticleDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77E8BDFE1DA6D420001FF61F /* AnimParticleDrawer.cpp */; };
+		77E8BE041DA8097A001FF61F /* Flame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77E8BE021DA8097A001FF61F /* Flame.cpp */; };
 		799D085B35E04B03929C0EB1 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CDB580066A430CA9C54467 /* b2BroadPhase.cpp */; };
 		80CF075052314AC5BB6659F3 /* b2DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6EB5067E78A4ED19BBFB867 /* b2DistanceJoint.cpp */; };
 		8153BA5378C0441FA9A637D4 /* b2Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D9983F55F60429CBDA34785 /* b2Timer.cpp */; };
@@ -141,7 +147,9 @@
 		655EC773BF1E4CC882DC52AB /* CinderApp_ios.png */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; name = CinderApp_ios.png; path = ../resources/CinderApp_ios.png; sourceTree = "<group>"; };
 		6F92AD25E6154547B609D60A /* b2TimeStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2TimeStep.h; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Dynamics/b2TimeStep.h; sourceTree = "<group>"; };
 		70F50D3C172B41ECBCBA2233 /* b2Island.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2Island.h; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Dynamics/b2Island.h; sourceTree = "<group>"; };
-		7784C7B01D9C416000707C35 /* Emitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Emitter.cpp; path = ../../CinderGraphicsLib/src/Emitter.cpp; sourceTree = "<group>"; };
+		7773D9811DA591A9002EAE51 /* SpriteDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteDataParser.h; path = ../../CinderGraphicsLib/include/SpriteDataParser.h; sourceTree = "<group>"; };
+		7773D9821DA591A9002EAE51 /* SpriteDataParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteDataParser.cpp; path = ../../CinderGraphicsLib/src/SpriteDataParser.cpp; sourceTree = "<group>"; };
+		7784C7B01D9C416000707C35 /* Emitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Emitter.cpp; path = ../../CinderGraphicsLib/src/Emitter.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7784C7B11D9C416000707C35 /* FluidModifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FluidModifier.cpp; path = ../../CinderGraphicsLib/src/FluidModifier.cpp; sourceTree = "<group>"; };
 		7784C7B21D9C416000707C35 /* ImageLibrary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageLibrary.cpp; path = ../../CinderGraphicsLib/src/ImageLibrary.cpp; sourceTree = "<group>"; };
 		7784C7B31D9C416000707C35 /* NewParticleDrawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NewParticleDrawer.cpp; path = ../../CinderGraphicsLib/src/NewParticleDrawer.cpp; sourceTree = "<group>"; };
@@ -154,7 +162,7 @@
 		7784C7C01D9C41B000707C35 /* Emitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Emitter.h; path = ../../CinderGraphicsLib/include/Emitter.h; sourceTree = "<group>"; };
 		7784C7C11D9C41B000707C35 /* FluidModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FluidModifier.h; path = ../../CinderGraphicsLib/include/FluidModifier.h; sourceTree = "<group>"; };
 		7784C7C21D9C41B000707C35 /* GravityModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GravityModifier.h; path = ../../CinderGraphicsLib/include/GravityModifier.h; sourceTree = "<group>"; };
-		7784C7C31D9C41B000707C35 /* ImageEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageEmitter.h; path = ../../CinderGraphicsLib/include/ImageEmitter.h; sourceTree = "<group>"; };
+		7784C7C31D9C41B000707C35 /* ImageEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageEmitter.h; path = ../../CinderGraphicsLib/include/ImageEmitter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7784C7C41D9C41B000707C35 /* ImageLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLibrary.h; path = ../../CinderGraphicsLib/include/ImageLibrary.h; sourceTree = "<group>"; };
 		7784C7C51D9C41B000707C35 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Modifier.h; path = ../../CinderGraphicsLib/include/Modifier.h; sourceTree = "<group>"; };
 		7784C7C61D9C41B000707C35 /* NewParticleDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewParticleDrawer.h; path = ../../CinderGraphicsLib/include/NewParticleDrawer.h; sourceTree = "<group>"; };
@@ -167,14 +175,23 @@
 		7784C7CD1D9C41B000707C35 /* VortexModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VortexModifier.h; path = ../../CinderGraphicsLib/include/VortexModifier.h; sourceTree = "<group>"; };
 		7784C7D11D9C447F00707C35 /* fire_alpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fire_alpha.png; path = ../../Media/Images/fire_alpha.png; sourceTree = "<group>"; };
 		7784C7D21D9C447F00707C35 /* flare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flare.png; path = ../../Media/Images/flare.png; sourceTree = "<group>"; };
-		7784C7D31D9C447F00707C35 /* smoke1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = smoke1.jpg; path = ../../Media/Images/smoke1.jpg; sourceTree = "<group>"; };
 		7784C7DA1D9FC83E00707C35 /* ParticleSystemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleSystemManager.h; path = ../../CinderGraphicsLib/include/ParticleSystemManager.h; sourceTree = "<group>"; };
 		7784C7DB1DA0EB0E00707C35 /* Fireball 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fireball 1.png"; path = "../../Media/Images/Fireball 1.png"; sourceTree = "<group>"; };
 		7784C7DD1DA0F49700707C35 /* FireComet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FireComet.cpp; path = ../src/FireComet.cpp; sourceTree = "<group>"; };
 		7784C7DE1DA0F49700707C35 /* FireComet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FireComet.h; path = ../src/FireComet.h; sourceTree = "<group>"; };
 		7784C7E01DA0F6A100707C35 /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Explosion.cpp; path = ../src/Explosion.cpp; sourceTree = "<group>"; };
 		7784C7E11DA0F6A100707C35 /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explosion.h; path = ../src/Explosion.h; sourceTree = "<group>"; };
-		7784C7E71DA1151A00707C35 /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
+		7784C7FB1DA23C0300707C35 /* CameraDist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CameraDist.cpp; path = ../src/CameraDist.cpp; sourceTree = "<group>"; };
+		7784C7FC1DA23C0300707C35 /* CameraDist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraDist.h; path = ../src/CameraDist.h; sourceTree = "<group>"; };
+		7784C7FE1DA23C3400707C35 /* CameraEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraEmitter.h; path = ../../CinderGraphicsLib/include/CameraEmitter.h; sourceTree = "<group>"; };
+		7784C7FF1DA23C4A00707C35 /* CameraEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CameraEmitter.cpp; path = ../../CinderGraphicsLib/src/CameraEmitter.cpp; sourceTree = "<group>"; };
+		7784C8011DA23D2400707C35 /* basic particle 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "basic particle 2.png"; path = "../../Media/Images/basic particle 2.png"; sourceTree = "<group>"; };
+		7784C8021DA23D2400707C35 /* smoke2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smoke2.png; path = ../../Media/Images/smoke2.png; sourceTree = "<group>"; };
+		7784C8051DA251D800707C35 /* dot_alpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dot_alpha.png; path = ../../Media/Images/dot_alpha.png; sourceTree = "<group>"; };
+		77E8BDFD1DA6D420001FF61F /* AnimParticleDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnimParticleDrawer.h; path = ../../CinderGraphicsLib/include/AnimParticleDrawer.h; sourceTree = "<group>"; };
+		77E8BDFE1DA6D420001FF61F /* AnimParticleDrawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimParticleDrawer.cpp; path = ../../CinderGraphicsLib/src/AnimParticleDrawer.cpp; sourceTree = "<group>"; };
+		77E8BE021DA8097A001FF61F /* Flame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flame.cpp; path = ../src/Flame.cpp; sourceTree = "<group>"; };
+		77E8BE031DA8097A001FF61F /* Flame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flame.h; path = ../src/Flame.h; sourceTree = "<group>"; };
 		77EE67AD95424FB18194D2CA /* b2EdgeShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2EdgeShape.h; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Collision/Shapes/b2EdgeShape.h; sourceTree = "<group>"; };
 		78CBB518C4D64CB887A1E000 /* b2World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2World.cpp; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Dynamics/b2World.cpp; sourceTree = "<group>"; };
 		7A1DD6DC94A34412B6FB106C /* b2Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2Math.cpp; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Common/b2Math.cpp; sourceTree = "<group>"; };
@@ -312,6 +329,10 @@
 		00692BD914FF149000D0A05E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				77E8BE021DA8097A001FF61F /* Flame.cpp */,
+				77E8BE031DA8097A001FF61F /* Flame.h */,
+				7784C7FB1DA23C0300707C35 /* CameraDist.cpp */,
+				7784C7FC1DA23C0300707C35 /* CameraDist.h */,
 				7784C7E01DA0F6A100707C35 /* Explosion.cpp */,
 				7784C7E11DA0F6A100707C35 /* Explosion.h */,
 				7784C7DD1DA0F49700707C35 /* FireComet.cpp */,
@@ -325,11 +346,12 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7784C7E71DA1151A00707C35 /* smoke.png */,
+				7784C8051DA251D800707C35 /* dot_alpha.png */,
+				7784C8011DA23D2400707C35 /* basic particle 2.png */,
+				7784C8021DA23D2400707C35 /* smoke2.png */,
 				7784C7DB1DA0EB0E00707C35 /* Fireball 1.png */,
 				7784C7D11D9C447F00707C35 /* fire_alpha.png */,
 				7784C7D21D9C447F00707C35 /* flare.png */,
-				7784C7D31D9C447F00707C35 /* smoke1.jpg */,
 				00748057165D41390024B57A /* assets */,
 				655EC773BF1E4CC882DC52AB /* CinderApp_ios.png */,
 				AEBCFF1F2BBF46C7829CF8AC /* Images.xcassets */,
@@ -410,7 +432,11 @@
 		7784C7AF1D9C412700707C35 /* Particles */ = {
 			isa = PBXGroup;
 			children = (
+				77E8BDFD1DA6D420001FF61F /* AnimParticleDrawer.h */,
+				77E8BDFE1DA6D420001FF61F /* AnimParticleDrawer.cpp */,
 				7784C7BC1D9C41B000707C35 /* AreaEmitter.h */,
+				7784C7FF1DA23C4A00707C35 /* CameraEmitter.cpp */,
+				7784C7FE1DA23C3400707C35 /* CameraEmitter.h */,
 				7784C7BD1D9C41B000707C35 /* ColorModifier.h */,
 				7784C7BE1D9C41B000707C35 /* CommonModifier.h */,
 				7784C7BF1D9C41B000707C35 /* DampingModifier.h */,
@@ -434,6 +460,8 @@
 				7784C7CA1D9C41B000707C35 /* PerlinModifier.h */,
 				7784C7CB1D9C41B000707C35 /* PointEmitter.h */,
 				7784C7CC1D9C41B000707C35 /* PointGravityModifier.h */,
+				7773D9821DA591A9002EAE51 /* SpriteDataParser.cpp */,
+				7773D9811DA591A9002EAE51 /* SpriteDataParser.h */,
 				7784C7CD1D9C41B000707C35 /* VortexModifier.h */,
 			);
 			name = Particles;
@@ -612,7 +640,12 @@
 		00692BC614FF149000D0A05E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
+				TargetAttributes = {
+					00692BCE14FF149000D0A05E = {
+						DevelopmentTeam = XC439GXRLD;
+					};
+				};
 			};
 			buildConfigurationList = 00692BC914FF149000D0A05E /* Build configuration list for PBXProject "iOsParticleTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -636,15 +669,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7784C8041DA23D2400707C35 /* smoke2.png in Resources */,
 				00748058165D41390024B57A /* assets in Resources */,
-				7784C7E81DA1151A00707C35 /* smoke.png in Resources */,
-				7784C7D91D9C447F00707C35 /* smoke1.jpg in Resources */,
 				7784C7D81D9C447F00707C35 /* flare.png in Resources */,
 				7784C7DC1DA0EB0E00707C35 /* Fireball 1.png in Resources */,
+				7784C8061DA251D800707C35 /* dot_alpha.png in Resources */,
 				F64D2FE3E6374897BEBAB1F1 /* CinderApp_ios.png in Resources */,
 				7784C7D71D9C447F00707C35 /* fire_alpha.png in Resources */,
 				5759F2E227DF4D28A43636E8 /* Images.xcassets in Resources */,
 				21DC9237C3F44F7F8DFC24D6 /* LaunchScreen.xib in Resources */,
+				7784C8031DA23D2400707C35 /* basic particle 2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,7 +693,9 @@
 				799D085B35E04B03929C0EB1 /* b2BroadPhase.cpp in Sources */,
 				877405EED4A24387B8C8086D /* b2CollideCircle.cpp in Sources */,
 				C0E1B91BAC62437886A7D3B6 /* b2CollideEdge.cpp in Sources */,
+				7784C7FD1DA23C0300707C35 /* CameraDist.cpp in Sources */,
 				5797FFAA79854F8A81B589F0 /* b2CollidePolygon.cpp in Sources */,
+				77E8BE041DA8097A001FF61F /* Flame.cpp in Sources */,
 				2B49EA9E6D514DD1BDC78BE4 /* b2Collision.cpp in Sources */,
 				7784C7B61D9C416000707C35 /* Emitter.cpp in Sources */,
 				7784C7DF1DA0F49700707C35 /* FireComet.cpp in Sources */,
@@ -679,6 +715,7 @@
 				8153BA5378C0441FA9A637D4 /* b2Timer.cpp in Sources */,
 				E27C36F3BD8043BCB33F7338 /* b2Body.cpp in Sources */,
 				0950B806153449FCBF346BB7 /* b2ContactManager.cpp in Sources */,
+				77E8BDFF1DA6D420001FF61F /* AnimParticleDrawer.cpp in Sources */,
 				68743DA3B96B4797833364B3 /* b2Fixture.cpp in Sources */,
 				3124AD088E504BE0BABE5ABE /* b2Island.cpp in Sources */,
 				12DE500832C34FB0A55C7A48 /* b2World.cpp in Sources */,
@@ -687,10 +724,12 @@
 				341192D1A9234B46AC477E74 /* b2ChainAndPolygonContact.cpp in Sources */,
 				0E64BFB3957D400F99782AB4 /* b2CircleContact.cpp in Sources */,
 				46A0D5BC4D7741448CE01C52 /* b2Contact.cpp in Sources */,
+				7773D9831DA591A9002EAE51 /* SpriteDataParser.cpp in Sources */,
 				F6A56D6EC79A46ED915C9F26 /* b2ContactSolver.cpp in Sources */,
 				982216396356491F9FD7A860 /* b2EdgeAndCircleContact.cpp in Sources */,
 				430DD1A64BFE400681A2FB71 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				74EA83DED3654D65944AC25D /* b2PolygonAndCircleContact.cpp in Sources */,
+				7784C8001DA23C4A00707C35 /* CameraEmitter.cpp in Sources */,
 				44A7652E552E4EF293079CAB /* b2PolygonContact.cpp in Sources */,
 				80CF075052314AC5BB6659F3 /* b2DistanceJoint.cpp in Sources */,
 				C0F8B3CBE9A944AAA2A37F16 /* b2FrictionJoint.cpp in Sources */,
@@ -729,12 +768,15 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = XC439GXRLD;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -758,7 +800,7 @@
 					"\"$(CINDER_PATH)/include\"",
 					../../../cinder_0.9.0_mac/blocks/Box2D/src,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -778,12 +820,15 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = XC439GXRLD;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -803,7 +848,7 @@
 					"\"$(CINDER_PATH)/include\"",
 					../../../cinder_0.9.0_mac/blocks/Box2D/src,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

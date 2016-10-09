@@ -9,8 +9,8 @@
 #include "FireComet.h"
 
 #include "Macros.h"
-#include "ParticleSystemManager.h"
-#include "ParticleSystem.h"
+#include "particleSystemManager.h"
+#include "particleSystem.h"
 #include "ImageLibrary.h"
 #include "Emitter.h"
 #include "AreaEmitter.h"
@@ -23,7 +23,6 @@
 
 FireComet::FireComet()
 {
-  ParticleSystem  *particleSystem;
   CommonModifier  *commonModifier;
   ColorModifier   *colorModifier;
   PerlinModifier  *perlinModifier;
@@ -33,7 +32,7 @@ FireComet::FireComet()
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   //  Smoke
   ///////////
-  particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("smoke.png"), false);
+  m_particleSystems.push_back (new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("smoke2.png"), false));
   
   commonModifier = new CommonModifier (.8f, 1.0f, 5.0f);
   colorModifier  = new ColorModifier  (ColorAf(1.0f,  1.0f,  1.0f,  0.04f),  //startColor
@@ -42,13 +41,13 @@ FireComet::FireComet()
                                        0.5f);                               //middleTime
   perlinModifier = new PerlinModifier (10.0f, 0.1, 0.003, 0.002f);
   
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  particleSystem->addModifier (perlinModifier);
+  m_particleSystems.back()->addModifier (commonModifier);
+  m_particleSystems.back()->addModifier (colorModifier);
+  m_particleSystems.back()->addModifier (perlinModifier);
   
   m_emitters.push_back ((shared_ptr<Emitter>) new AreaEmitter (1200,                 // maxNofParticles,
                                                                vec3((float)cinder::app::getWindowWidth()/2.f, (float)cinder::app::getWindowHeight()/2.f, 0.f), // position,
-                                                               3.f,                 // particlesPerFrame,
+                                                               4.f,                 // particlesPerFrame,
                                                                50.f,  // width,
                                                                50.f, 	// height,
                                                                0.f,   // depth
@@ -56,16 +55,16 @@ FireComet::FireComet()
                                                                100.f,                // maxParticleSize,
                                                                vec3(0,-2.5f,0),             // baseVelocity,
                                                                1.f,                 // minRandVelocity
-                                                               3.0f));                // maxRandVelocity
+                                                               4.0f));                // maxRandVelocity
   
-  particleSystem->addEmitterRef (m_emitters.back());
+  m_particleSystems.back()->addEmitterRef (m_emitters.back());
   
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
+  ParticleSystemManager::getSingleton().addParticleSystem (m_particleSystems.back());
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   //  Fire
   ///////////
-  particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("fire_alpha.png"));
+  m_particleSystems.push_back (new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("fire_alpha.png")));
   
   commonModifier = new CommonModifier (2.5f, 1.0f, 2.0f);
   colorModifier  = new ColorModifier  (ColorAf(0.8f,  0.8f,  1.0f,  1.0f),  //startColor
@@ -74,9 +73,9 @@ FireComet::FireComet()
                                        0.7f);                               //middleTime
   dampingModifier = new DampingModifier (0.025f);
   
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  particleSystem->addModifier (dampingModifier);
+  m_particleSystems.back()->addModifier (commonModifier);
+  m_particleSystems.back()->addModifier (colorModifier);
+  m_particleSystems.back()->addModifier (dampingModifier);
   
   m_emitters.push_back ((shared_ptr<Emitter>) new PointEmitter (700,                 // maxNofParticles,
                                                                 vec3((float)cinder::app::getWindowWidth()/2.f, (float)cinder::app::getWindowHeight()/2.f, 0.f), // position,
@@ -87,15 +86,15 @@ FireComet::FireComet()
                                                                 4.f,                 // minRandVelocity
                                                                 5.f));                // maxRandVelocity
   
-  particleSystem->addEmitterRef (m_emitters.back());
+  m_particleSystems.back()->addEmitterRef (m_emitters.back());
   
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
+  ParticleSystemManager::getSingleton().addParticleSystem (m_particleSystems.back());
   
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   //  Sparks
   ///////////
-  particleSystem = new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("flare.png"));
+  m_particleSystems.push_back (new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("flare.png")));
   
   commonModifier = new CommonModifier (1.5f, 1.0f, 0.8f);
   colorModifier  = new ColorModifier  (ColorAf(1.0f,  1.0f,  1.0f,  1.0f),  //startColor
@@ -104,9 +103,9 @@ FireComet::FireComet()
                                        0.8f);                               //middleTime
   perlinModifier = new PerlinModifier (10.0f, 0.03, 0.003, 0.002f);
   
-  particleSystem->addModifier (commonModifier);
-  particleSystem->addModifier (colorModifier);
-  particleSystem->addModifier (perlinModifier);
+  m_particleSystems.back()->addModifier (commonModifier);
+  m_particleSystems.back()->addModifier (colorModifier);
+  m_particleSystems.back()->addModifier (perlinModifier);
   
   m_emitters.push_back ((shared_ptr<Emitter>) new PointEmitter (100,                 // maxNofParticles,
                                                                 vec3((float)cinder::app::getWindowWidth()/2.f, (float)cinder::app::getWindowHeight()/2.f, 0.f), // position,
@@ -117,10 +116,16 @@ FireComet::FireComet()
                                                                 2.f,                 // minRandVelocity
                                                                 4.f));                // maxRandVelocity
   
-  particleSystem->addEmitterRef (m_emitters.back());
+  m_particleSystems.back()->addEmitterRef (m_emitters.back());
   
-  ParticleSystemManager::getSingleton().addParticleSystem (particleSystem);
+  ParticleSystemManager::getSingleton().addParticleSystem (m_particleSystems.back());
 
+}
+
+FireComet::~FireComet()
+{
+  for (auto ps : m_particleSystems)
+    ps->killSystemAndEmitters ();
 }
 
 void FireComet::setPosition (vec3 pos)
