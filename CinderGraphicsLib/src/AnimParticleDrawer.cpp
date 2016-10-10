@@ -1,9 +1,15 @@
 #include "AnimParticleDrawer.h"
 
-AnimParticleDrawer::AnimParticleDrawer (const string& vertexShaderName,
-                                        const string& fragmentShaderName)
+AnimParticleDrawer:: AnimParticleDrawer (const uint32_t nofWidthImages,
+                                         const uint32_t nofHeightImages,
+                                         const uint32_t totalNofImages,
+                                         const string& vertexShaderName,
+                                         const string& fragmentShaderName)
 : NewParticleDrawer (vertexShaderName, fragmentShaderName)
 {
+  m_nofWidthImages  = nofWidthImages;
+  m_nofHeightImages = nofHeightImages;
+  m_totalNofImages  = totalNofImages;
 }
 
 AnimParticleDrawer::~AnimParticleDrawer ()
@@ -18,9 +24,9 @@ void AnimParticleDrawer::beforeDraw ()
    uniform float TotalNofImages; // The total number of images
    */
   
-  m_particleBatch->getGlslProg ()->uniform ("uNofWidthImages", 16.f);
-  m_particleBatch->getGlslProg ()->uniform ("uNofHeightImages", 5.f);
-  m_particleBatch->getGlslProg ()->uniform ("uTotalNofImages", 76.f);
+  m_particleBatch->getGlslProg ()->uniform ("uNofWidthImages", (float) m_nofWidthImages);
+  m_particleBatch->getGlslProg ()->uniform ("uNofHeightImages",(float) m_nofHeightImages);
+  m_particleBatch->getGlslProg ()->uniform ("uTotalNofImages", (float) m_totalNofImages);
   
   NewParticleDrawer::beforeDraw();
 }

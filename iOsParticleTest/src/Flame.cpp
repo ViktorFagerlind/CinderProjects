@@ -66,7 +66,7 @@ Flame::Flame()
   ///////////
   m_particleSystems.push_back (new ParticleSystem (ImageLibrary::getSingleton ().getTexture ("FireBall2.png")));
   
-  commonModifier = new CommonModifier (1.8f, 1.0f, 1.0f);
+  commonModifier = new CommonModifier (2.3f, 1.0f, 1.0f);
   colorModifier  = new ColorModifier  (ColorAf(1.f,  1.f,  1.f,  0.7f),  //startColor
                                        ColorAf(1.f,  1.f,  1.f,  0.7f),  //middleColor
                                        ColorAf(1.f,  1.f,  1.f,  0.f),  //endColor
@@ -85,7 +85,7 @@ Flame::Flame()
                                                                 vec3(0,0,0),             // baseVelocity,
                                                                 4.f,                 // minRandVelocity
                                                                 5.f,                // maxRandVelocity
-                                                                shared_ptr<ParticleDrawerInterface> (new AnimParticleDrawer ())));
+                                                                shared_ptr<ParticleDrawerInterface> (new AnimParticleDrawer (8,7,50))));
   
   m_particleSystems.back()->addEmitterRef (m_emitters.back());
   
