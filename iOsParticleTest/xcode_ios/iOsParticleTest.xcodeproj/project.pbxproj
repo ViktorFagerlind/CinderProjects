@@ -61,6 +61,7 @@
 		7784C8061DA251D800707C35 /* dot_alpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 7784C8051DA251D800707C35 /* dot_alpha.png */; };
 		77E8BDFF1DA6D420001FF61F /* AnimParticleDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77E8BDFE1DA6D420001FF61F /* AnimParticleDrawer.cpp */; };
 		77E8BE041DA8097A001FF61F /* Flame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77E8BE021DA8097A001FF61F /* Flame.cpp */; };
+		77E8BE061DAA5512001FF61F /* FireBall2.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E8BE051DAA5512001FF61F /* FireBall2.png */; };
 		799D085B35E04B03929C0EB1 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CDB580066A430CA9C54467 /* b2BroadPhase.cpp */; };
 		80CF075052314AC5BB6659F3 /* b2DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6EB5067E78A4ED19BBFB867 /* b2DistanceJoint.cpp */; };
 		8153BA5378C0441FA9A637D4 /* b2Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D9983F55F60429CBDA34785 /* b2Timer.cpp */; };
@@ -192,6 +193,7 @@
 		77E8BDFE1DA6D420001FF61F /* AnimParticleDrawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimParticleDrawer.cpp; path = ../../CinderGraphicsLib/src/AnimParticleDrawer.cpp; sourceTree = "<group>"; };
 		77E8BE021DA8097A001FF61F /* Flame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flame.cpp; path = ../src/Flame.cpp; sourceTree = "<group>"; };
 		77E8BE031DA8097A001FF61F /* Flame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flame.h; path = ../src/Flame.h; sourceTree = "<group>"; };
+		77E8BE051DAA5512001FF61F /* FireBall2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FireBall2.png; path = ../../Media/Movies/FireBall2.png; sourceTree = "<group>"; };
 		77EE67AD95424FB18194D2CA /* b2EdgeShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = b2EdgeShape.h; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Collision/Shapes/b2EdgeShape.h; sourceTree = "<group>"; };
 		78CBB518C4D64CB887A1E000 /* b2World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2World.cpp; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Dynamics/b2World.cpp; sourceTree = "<group>"; };
 		7A1DD6DC94A34412B6FB106C /* b2Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = b2Math.cpp; path = ../../../cinder_0.9.0_mac/blocks/Box2D/src/Box2D/Common/b2Math.cpp; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 		00692BD914FF149000D0FFFF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				77E8BE051DAA5512001FF61F /* FireBall2.png */,
 				7784C8051DA251D800707C35 /* dot_alpha.png */,
 				7784C8011DA23D2400707C35 /* basic particle 2.png */,
 				7784C8021DA23D2400707C35 /* smoke2.png */,
@@ -673,6 +676,7 @@
 				00748058165D41390024B57A /* assets in Resources */,
 				7784C7D81D9C447F00707C35 /* flare.png in Resources */,
 				7784C7DC1DA0EB0E00707C35 /* Fireball 1.png in Resources */,
+				77E8BE061DAA5512001FF61F /* FireBall2.png in Resources */,
 				7784C8061DA251D800707C35 /* dot_alpha.png in Resources */,
 				F64D2FE3E6374897BEBAB1F1 /* CinderApp_ios.png in Resources */,
 				7784C7D71D9C447F00707C35 /* fire_alpha.png in Resources */,

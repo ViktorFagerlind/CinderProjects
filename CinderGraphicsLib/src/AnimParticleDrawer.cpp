@@ -18,9 +18,9 @@ void AnimParticleDrawer::beforeDraw ()
    uniform float TotalNofImages; // The total number of images
    */
   
-  m_particleBatch->getGlslProg ()->uniform ("ImageSize", 7);
-  m_particleBatch->getGlslProg ()->uniform ("NofWidthImages", 146);
-  m_particleBatch->getGlslProg ()->uniform ("TotalNofImages", 89);
+  m_particleBatch->getGlslProg ()->uniform ("uNofWidthImages", 16.f);
+  m_particleBatch->getGlslProg ()->uniform ("uNofHeightImages", 5.f);
+  m_particleBatch->getGlslProg ()->uniform ("uTotalNofImages", 76.f);
   
   NewParticleDrawer::beforeDraw();
 }
